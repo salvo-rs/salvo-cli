@@ -1,0 +1,13 @@
+[package]
+name = "code"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+{{#each dependencies}}
+{{#if this.version}}
+{{@key}} = { version = "{{this.version}}", features = ["{{this.features}}"] }
+{{else}}
+{{@key}} = "{{this}}"
+{{/if}}
+{{/each}}
