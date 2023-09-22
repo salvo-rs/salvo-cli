@@ -43,7 +43,7 @@ pub fn is_conflicting_artifact_name(name: &str) -> bool {
 pub fn validate_package_name(name: &str, what: &str) -> Result<()> {
     let mut chars = name.chars();
     if let Some(ch) = chars.next() {
-        if ch.is_digit(10) {
+        if ch.is_ascii_digit() {
             // A specific error for a potentially common case.
             bail!(
                 "the name `{}` cannot be used as a {}, \
@@ -82,13 +82,13 @@ pub fn validate_package_name(name: &str, what: &str) -> Result<()> {
 pub fn sanitize_package_name(name: &str, placeholder: char) -> String {
     let mut slug = String::new();
     let mut chars = name.chars();
-    while let Some(ch) = chars.next() {
-        if (unicode_xid::UnicodeXID::is_xid_start(ch) || ch == '_') && !ch.is_digit(10) {
+    for ch in chars.by_ref() {
+        if (unicode_xid::UnicodeXID::is_xid_start(ch) || ch == '_') && !ch.is_ascii_digit() {
             slug.push(ch);
             break;
         }
     }
-    while let Some(ch) = chars.next() {
+    for ch in chars {
         if unicode_xid::UnicodeXID::is_xid_continue(ch) || ch == '-' {
             slug.push(ch);
         } else {

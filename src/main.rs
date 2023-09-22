@@ -1,6 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
-use std::{fs, io::Write, net::IpAddr, path::Path};
+use std::{net::IpAddr};
 // use handlebars::Handlebars;
 // use serde_json::json;
 use dialoguer::{console::Style, theme::ColorfulTheme, Confirm, Input, Select};

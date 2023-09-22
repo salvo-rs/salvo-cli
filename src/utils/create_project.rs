@@ -19,8 +19,8 @@ pub fn create_project(project: Project) -> Result<()> {
         )
     }
 
-    check_path(&project_path)?;
-    init_git(&project_path)?;
+    check_path(project_path)?;
+    init_git(project_path)?;
 
     let handlebars = Handlebars::new();
 
@@ -34,7 +34,7 @@ pub fn create_project(project: Project) -> Result<()> {
     });
 
 
-    std::fs::create_dir_all(&project_path)?;
+    std::fs::create_dir_all(project_path)?;
 
     let src_path = project_path.join("src");
     std::fs::create_dir_all(&src_path)?;
@@ -151,7 +151,7 @@ pub fn init_git(project_path:&Path)->Result<()> {
 
 fn write_ignore_file(project_path: &Path) -> Result<()> {
     let fp_ignore = project_path.join(".gitignore");
-    let mut fp_ignore_file = File::create(&fp_ignore)?;
+    let mut fp_ignore_file = File::create(fp_ignore)?;
     fp_ignore_file.write_all(b"/target\n")?;
     Ok(())
 }
