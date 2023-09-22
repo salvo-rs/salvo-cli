@@ -1,27 +1,39 @@
-use anyhow::Result;
+use anyhow::{Result, Context};
 use handlebars::Handlebars;
 use serde_json::json;
-use std::{fs::File, io::Write, path::Path};
+use std::{fs::{File, self}, io::Write, path::Path, ffi::{OsStr, OsString}, env, slice};
 
 use crate::Project;
 
-use super::{restricted_names, warning};
+use super::{restricted_names, warning, print_util};
 
 pub fn create_project(project: Project) -> Result<()> {
 
     check_name(&project.project_name)?;
+    let project_name = project.project_name;
+    let project_path = Path::new(&project_name);
+    if project_path.exists() {
+        anyhow::bail!(
+            "destination `{}` already exists",
+             project_path.display()
+        )
+    }
+
+    check_path(&project_path)?;
+    init_git(&project_path)?;
+
     let handlebars = Handlebars::new();
 
     let data = json!({
         "dependencies": {
             "salvo": "0.55",
-            "tokio": { "version": "1", "features": ["macros"] },
+            "tokio": { "version": "1", "features": ["full"] },
             "tracing": "0.1",
-            "tracing_subscriber": "0.3"
+            "tracing-subscriber": "0.3"
         }
     });
-    let project_name = project.project_name;
-    let project_path = Path::new(&project_name);
+
+
     std::fs::create_dir_all(&project_path)?;
 
     let src_path = project_path.join("src");
@@ -94,5 +106,64 @@ fn check_name(name: &str) -> Result<()> {
             name
         ));
     }
+    Ok(())
+}
+fn check_path(path: &Path) -> Result<()> {
+    // warn if the path contains characters that will break `env::join_paths`
+    if let Err(_) = join_paths(slice::from_ref(&OsStr::new(path)), "") {
+        let path = path.to_string_lossy();
+        print_util::warning(format!(
+            "the path `{path}` contains invalid PATH characters (usually `:`, `;`, or `\"`)\n\
+            It is recommended to use a different name to avoid problems."
+        ));
+    }
+    Ok(())
+}
+
+pub fn join_paths<T: AsRef<OsStr>>(paths: &[T], env: &str) -> Result<OsString> {
+    env::join_paths(paths.iter()).with_context(|| {
+        let mut message = format!(
+            "failed to join paths from `${env}` together\n\n\
+             Check if any of path segments listed below contain an \
+             unterminated quote character or path separator:"
+        );
+        for path in paths {
+            use std::fmt::Write;
+            write!(&mut message, "\n    {:?}", Path::new(path)).unwrap();
+        }
+        message
+    })
+}
+
+pub fn init_git(project_path:&Path)->Result<()> {
+    if !project_path.join(".git").exists() {
+        // Temporary fix to work around bug in libgit2 when creating a
+        // directory in the root of a posix filesystem.
+        // See: https://github.com/libgit2/libgit2/issues/5130
+        create_dir_all(project_path)?;
+        git2::Repository::init(project_path)?;
+        write_ignore_file(project_path)?;
+    }
+    Ok(())
+
+}
+
+
+fn write_ignore_file(project_path: &Path) -> Result<()> {
+    let fp_ignore = project_path.join(".gitignore");
+    let mut fp_ignore_file = File::create(&fp_ignore)?;
+    fp_ignore_file.write_all(b"/target\n")?;
+    Ok(())
+}
+
+
+/// Equivalent to [`std::fs::create_dir_all`] with better error messages.
+pub fn create_dir_all(p: impl AsRef<Path>) -> Result<()> {
+    _create_dir_all(p.as_ref())
+}
+
+fn _create_dir_all(p: &Path) -> Result<()> {
+    fs::create_dir_all(p)
+        .with_context(|| format!("failed to create directory `{}`", p.display()))?;
     Ok(())
 }

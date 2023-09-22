@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 {{#each dependencies}}
 {{#if this.version}}
-{{@key}} = { version = "{{this.version}}", features = ["{{this.features}}"] }
+{{@key}} = { version = "{{this.version}}", features = [{{#each this.features}}"{{this}}"{{#unless @last}}, {{/unless}}{{/each}}] }
 {{else}}
 {{@key}} = "{{this}}"
 {{/if}}
