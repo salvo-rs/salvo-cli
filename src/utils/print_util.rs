@@ -1,4 +1,4 @@
-use ansi_term::Colour::{Blue, Green};
+use ansi_term::Colour::{Blue, Green, Yellow,Red};
 
 pub fn print_logo() {
     let art = r#"
@@ -13,4 +13,11 @@ pub fn print_logo() {
         let (part_blue, part_green) = line.split_at(line.len() / 2);
         println!("{}{}", Blue.paint(part_blue), Green.paint(part_green));
     }
+}
+
+pub fn warning(msg: String) {
+    println!("{}", Yellow.paint(msg));
+}
+pub fn error(msg: String) {
+    println!("{}", Red.paint(msg));
 }

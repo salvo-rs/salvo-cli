@@ -83,7 +83,10 @@ fn main() -> Result<()> {
     //dbg!(opts);
     match opts.subcmd {
         SubCommand::New(project) => {
-            utils::create_project(project)?;
+            match utils::create_project(project)  {
+                Ok(_) => (),
+                Err(e) => utils::error(e.to_string()),
+            };
         }
     }
     Ok(())

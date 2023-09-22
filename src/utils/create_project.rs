@@ -1,12 +1,15 @@
-use std::{fs::File, path::Path, io::Write};
-use serde_json::json;
 use anyhow::Result;
 use handlebars::Handlebars;
+use serde_json::json;
+use std::{fs::File, io::Write, path::Path};
 
 use crate::Project;
 
-pub fn create_project(project:Project)->Result<()>
-{
+use super::{restricted_names, warning};
+
+pub fn create_project(project: Project) -> Result<()> {
+
+    check_name(&project.project_name)?;
     let handlebars = Handlebars::new();
 
     let data = json!({
@@ -39,4 +42,57 @@ pub fn create_project(project:Project)->Result<()>
     Ok(())
 }
 
+fn check_name(name: &str) -> Result<()> {
 
+    restricted_names::validate_package_name(name, "package name")?;
+
+    if restricted_names::is_keyword(name) {
+        anyhow::bail!(
+            "the name `{}` cannot be used as a package name, it is a Rust keyword",
+            name,
+        );
+    }
+    if restricted_names::is_conflicting_artifact_name(name) {
+        warning(format!(
+            "the name `{}` will not support binary \
+            executables with that name, \
+            it conflicts with cargo's build directory names",
+            name
+        ));
+    }
+    if name == "test" {
+        anyhow::bail!(
+            "the name `test` cannot be used as a package name, \
+            it conflicts with Rust's built-in test library",
+        );
+    }
+    if ["core", "std", "alloc", "proc_macro", "proc-macro"].contains(&name) {
+        warning(format!(
+            "the name `{}` is part of Rust's standard library\n\
+            It is recommended to use a different name to avoid problems.",
+            name,
+        ));
+    }
+    if restricted_names::is_windows_reserved(name) {
+        if cfg!(windows) {
+            anyhow::bail!(
+                "cannot use name `{}`, it is a reserved Windows filename",
+                name,
+            );
+        } else {
+            warning(format!(
+                "the name `{}` is a reserved Windows filename\n\
+                This package will not work on Windows platforms.",
+                name
+            ));
+        }
+    }
+    if restricted_names::is_non_ascii_name(name) {
+        warning(format!(
+            "the name `{}` contains non-ASCII characters\n\
+            Non-ASCII crate names are not supported by Rust.",
+            name
+        ));
+    }
+    Ok(())
+}
