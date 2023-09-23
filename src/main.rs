@@ -25,27 +25,14 @@ pub struct Project {
 }
 fn main() -> Result<()> {
     utils::print_logo();
+    let config=init_config()?;
+    dbg!(config);
     // match init_config() {
     //     Ok(None) => println!("Aborted."),
     //     Ok(Some(config)) => println!("{:#?}", config),
     //     Err(err) => println!("error: {}", err),
     // }
 
-    // let selections = &[
-    //     "Ice Cream",
-    //     "Vanilla Cupcake",
-    //     "Chocolate Muffin",
-    //     "A Pile of sweet, sweet mustard",
-    // ];
-
-    // let selection = Select::with_theme(&ColorfulTheme::default())
-    //     .with_prompt("Pick your flavor")
-    //     .default(0)
-    //     .items(&selections[..])
-    //     .interact()
-    //     .unwrap();
-
-    // println!("Enjoy your {}!", selections[selection]);
 
     // let selection = Select::with_theme(&ColorfulTheme::default())
     //     .with_prompt("Optionally pick your flavor")
@@ -92,68 +79,39 @@ fn main() -> Result<()> {
     Ok(())
 }
 #[derive(Debug)]
-#[allow(dead_code)]
 struct Config {
-    interface: IpAddr,
-    hostname: String,
-    use_acme: bool,
-    private_key: Option<String>,
-    cert: Option<String>,
+    template_type: TemplateType,
 }
 
 fn init_config() -> Result<Option<Config>> {
     let theme = ColorfulTheme {
+        defaults_style: Style::new().blue(),
+        prompt_style: Style::new().green().bold(),    
         values_style: Style::new().yellow().dim(),
         ..ColorfulTheme::default()
     };
-    println!("Welcome to the setup wizard");
-    if !Confirm::with_theme(&theme)
-        .with_prompt("Do you want to continue?")
-        .interact()?
-    {
-        return Ok(None);
-    }
-
-    let interface = Input::with_theme(&theme)
-        .with_prompt("Interface")
-        .default("127.0.0.1".parse().unwrap())
-        .interact()?;
-
-    let hostname = Input::with_theme(&theme)
-        .with_prompt("Hostname")
-        .interact()?;
-
-    let tls = Select::with_theme(&theme)
-        .with_prompt("Configure TLS")
+    let selections = &[
+        "salvo_web_api (Default web api template) ",
+        "salvo_web_site (Default web site template)",
+        // "custom",
+    ];
+    let selection = Select::with_theme(&theme)
+        .with_prompt(" Welcome to use salvo cli, please choose a template type\n   space bar to confirm")
         .default(0)
-        .item("automatic with ACME")
-        .item("manual")
-        .item("no")
+        .items(&selections[..])
         .interact()?;
-
-    let (private_key, cert, use_acme) = match tls {
-        0 => (Some("acme.pkey".into()), Some("acme.cert".into()), true),
-        1 => (
-            Some(
-                Input::with_theme(&theme)
-                    .with_prompt("  Path to private key")
-                    .interact()?,
-            ),
-            Some(
-                Input::with_theme(&theme)
-                    .with_prompt("  Path to certificate")
-                    .interact()?,
-            ),
-            false,
-        ),
-        _ => (None, None, false),
+    println!("Enjoy your {}!", &selections[selection]);
+    let template_type= match selection {
+        0 => TemplateType::SalvoWebApi,
+        1 => TemplateType::SalvoWebSite,
+        _ => anyhow::bail!("Invalid selection"),
     };
-
     Ok(Some(Config {
-        hostname,
-        interface,
-        private_key,
-        cert,
-        use_acme,
+        template_type,
     }))
+}
+#[derive(Debug)]
+pub enum TemplateType{
+    SalvoWebSite,
+    SalvoWebApi,
 }

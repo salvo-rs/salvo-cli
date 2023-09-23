@@ -521,6 +521,7 @@ dependencies = [
  "dialoguer",
  "git2",
  "handlebars",
+ "serde",
  "serde_json",
  "unicode-xid",
 ]

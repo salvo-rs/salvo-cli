@@ -1,6 +1,5 @@
 use anyhow::bail;
 use anyhow::Result;
-use std::path::Path;
 
 /// Returns `true` if the name contains non-ASCII characters.
 pub fn is_non_ascii_name(name: &str) -> bool {
@@ -78,40 +77,3 @@ pub fn validate_package_name(name: &str, what: &str) -> Result<()> {
     Ok(())
 }
 
-/// Ensure a package name is [valid][validate_package_name]
-pub fn sanitize_package_name(name: &str, placeholder: char) -> String {
-    let mut slug = String::new();
-    let mut chars = name.chars();
-    for ch in chars.by_ref() {
-        if (unicode_xid::UnicodeXID::is_xid_start(ch) || ch == '_') && !ch.is_ascii_digit() {
-            slug.push(ch);
-            break;
-        }
-    }
-    for ch in chars {
-        if unicode_xid::UnicodeXID::is_xid_continue(ch) || ch == '-' {
-            slug.push(ch);
-        } else {
-            slug.push(placeholder);
-        }
-    }
-    if slug.is_empty() {
-        slug.push_str("package");
-    }
-    slug
-}
-
-/// Check the entire path for names reserved in Windows.
-pub fn is_windows_reserved_path(path: &Path) -> bool {
-    path.iter()
-        .filter_map(|component| component.to_str())
-        .any(|component| {
-            let stem = component.split('.').next().unwrap();
-            is_windows_reserved(stem)
-        })
-}
-
-/// Returns `true` if the name contains any glob pattern wildcards.
-pub fn is_glob_pattern<T: AsRef<str>>(name: T) -> bool {
-    name.as_ref().contains(&['*', '?', '[', ']'][..])
-}
