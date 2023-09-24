@@ -3,11 +3,11 @@ use handlebars::Handlebars;
 use serde_json::json;
 use std::{fs::{File, self}, io::Write, path::Path, ffi::{OsStr, OsString}, env, slice};
 
-use crate::Project;
+use crate::{Project, Config};
 
 use super::{restricted_names, warning, print_util};
 
-pub fn create_project(project: Project) -> Result<()> {
+pub fn create_project(project: Project,config:Config) -> Result<()> {
     check_name(&project.project_name)?;
     let project_name = project.project_name;
     let project_path = Path::new(&project_name);
