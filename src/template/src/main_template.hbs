@@ -1,0 +1,117 @@
+use crate::app_error::AppResult;
+use config::{CERT_KEY, CFG};
+use middleware::jwt::jwt_hoop;
+use salvo::catcher::Catcher;
+use salvo::conn::openssl::{Keycert, OpensslConfig};
+use salvo::prelude::*;
+use tokio::sync::oneshot;
+
+mod app_error;
+mod config;
+mod middleware;
+
+#[endpoint]
+async fn hello() -> AppResult<&'static str> {
+    Ok("Hello World from salvo")
+}
+
+#[handler]
+async fn handle404(&self, _req: &Request, _depot: &Depot, res: &mut Response, ctrl: &mut FlowCtrl) {
+    if let Some(StatusCode::NOT_FOUND) = res.status_code {
+        res.render(Json("404 not found"));
+        ctrl.skip_rest();
+    }
+}
+#[tokio::main]
+async fn main() {
+    //At the same time, logs are only output to the terminal or file
+    init_log();
+
+    let (tx, rx) = oneshot::channel();
+    let router = router();
+    let service: Service = router.into();
+    let service = service.catcher(Catcher::default().hoop(handle404));
+    match CFG.server.ssl {
+        true => {
+            let config = OpensslConfig::new(
+                Keycert::new()
+                    .with_cert(CERT_KEY.cert.clone())
+                    .with_key(CERT_KEY.key.clone()),
+            );
+            let acceptor = TcpListener::new(&CFG.server.address)
+                .openssl(config)
+                .bind()
+                .await;
+            let server = Server::new(acceptor).serve_with_graceful_shutdown(
+                service,
+                async {
+                    rx.await.ok();
+                },
+                None,
+            );
+            tokio::task::spawn(server);
+        }
+        false => {
+            let acceptor = TcpListener::new(&CFG.server.address).bind().await;
+            let server = Server::new(acceptor).serve_with_graceful_shutdown(
+                service,
+                async {
+                    rx.await.ok();
+                },
+                None,
+            );
+            tokio::task::spawn(server);
+        }
+    };
+    // Wait for Ctrl-C
+    tokio::signal::ctrl_c().await.unwrap();
+    // Then, start the shutdown...
+    let _ = tx.send(());
+}
+
+fn router() -> Router {
+    let router = Router::new()
+        .hoop(Logger::new())
+        .hoop(CatchPanic::new())
+        .hoop(jwt_hoop())
+        .get(hello);
+    let doc = OpenApi::new("salvo web api", "0.0.1").merge_router(&router);
+    router
+        .push(doc.into_router("/api-doc/openapi.json"))
+        .push(SwaggerUi::new("/api-doc/openapi.json").into_router("swagger-ui"))
+}
+
+fn init_log() {
+    let _guard = clia_tracing_config::build()
+        .filter_level(&CFG.log.filter_level)
+        .with_ansi(CFG.log.with_ansi)
+        .to_stdout(CFG.log.to_stdout)
+        .directory(&CFG.log.directory)
+        .file_name(&CFG.log.file_name)
+        .rolling(&CFG.log.rolling)
+        .init();
+    tracing::info!("log level: {}", &CFG.log.filter_level);
+}
+#[cfg(test)]
+mod tests {
+    use salvo::prelude::*;
+    use salvo::test::{ResponseExt, TestClient};
+
+    use crate::config::CFG;
+
+    #[tokio::test]
+    async fn test_hello_world() {
+        let service = Service::new(super::router());
+
+        let content = TestClient::get(format!(
+            "http://{}",
+            &CFG.server.address.replace("0.0.0.0", "127.0.0.1")
+        ))
+        .send(&service)
+        .await
+        .take_string()
+        .await
+        .unwrap();
+        assert_eq!(content, "Hello World from salvo");
+    }
+}

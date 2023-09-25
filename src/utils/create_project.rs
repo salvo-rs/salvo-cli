@@ -40,12 +40,12 @@ fn write_project_file(project_path: &Path) -> Result<()> {
     let src_path = project_path.join("src");
     std::fs::create_dir_all(&src_path)?;
     let main_file_path = src_path.join("main.rs");
-    let main_template = include_str!("../template/main_template.hbs");
+    let main_template = include_str!("../template/src/main_template.hbs");
     let main_rendered = handlebars.render_template(main_template, &data)?;
     let mut main_file = File::create(main_file_path)?;
     main_file.write_all(main_rendered.as_bytes())?;
     let cargo_file_path = project_path.join("Cargo.toml");
-    let cargo_template = include_str!("../template/cargo_template.hbs");
+    let cargo_template = include_str!("../template/src/cargo_template.hbs");
     let cargo_rendered = handlebars.render_template(cargo_template, &data)?;
     let mut cargo_file = File::create(cargo_file_path)?;
     cargo_file.write_all(cargo_rendered.as_bytes())?;
