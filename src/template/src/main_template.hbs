@@ -9,7 +9,37 @@ use tokio::sync::oneshot;
 mod app_error;
 mod config;
 mod middleware;
+{{#if is_web_site}}
 
+#[derive(Template)]
+#[template(path = "hello.html")]
+struct HelloTemplate<'a> {
+    name: &'a str,
+}
+
+#[endpoint]
+async fn hello(req: &mut Request, res: &mut Response)->AppResult<()>{
+    let hello_tmpl = HelloTemplate {
+        name: req.param::<&str>("name").unwrap_or("World"),
+    };
+    res.render(Text::Html(hello_tmpl.render().unwrap()));
+    Ok(())
+}
+
+#[derive(Template)]
+#[template(path = "404.html")]
+struct Handle404 {
+}
+
+#[handler]
+async fn handle404(&self, _req: &Request, _depot: &Depot, res: &mut Response, ctrl: &mut FlowCtrl) {
+    if let Some(StatusCode::NOT_FOUND) = res.status_code {
+        let handle_404 = Handle404{};
+        res.render(Text::Html(handle_404.render().unwrap()));
+        ctrl.skip_rest();
+    }
+}
+{{else}}
 #[endpoint]
 async fn hello() -> AppResult<&'static str> {
     Ok("Hello World from salvo")
@@ -22,6 +52,7 @@ async fn handle404(&self, _req: &Request, _depot: &Depot, res: &mut Response, ct
         ctrl.skip_rest();
     }
 }
+{{/if}}
 #[tokio::main]
 async fn main() {
     //At the same time, logs are only output to the terminal or file

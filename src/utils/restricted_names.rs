@@ -76,4 +76,3 @@ pub fn validate_package_name(name: &str, what: &str) -> Result<()> {
     }
     Ok(())
 }
-

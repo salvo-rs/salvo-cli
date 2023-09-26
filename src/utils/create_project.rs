@@ -1,16 +1,15 @@
-use anyhow::{Result, Context};
-use handlebars::Handlebars;
+use anyhow::{Context,Result};
+use handlebars::{Handlebars};
 use serde_json::json;
 use std::{fs::{File, self}, io::Write, path::Path, ffi::{OsStr, OsString}, env, slice};
-
-use crate::{Project, Config};
+use crate::{Project, Config, TemplateType};
 
 use super::{restricted_names, warning, print_util};
 
 pub fn create_project(project: Project,config:Config) -> Result<()> {
     check_name(&project.project_name)?;
-    let project_name = project.project_name;
-    let project_path = Path::new(&project_name);
+    let project_name = &project.project_name;
+    let project_path = Path::new(project_name);
     if project_path.exists() {
         anyhow::bail!(
             "destination `{}` already exists",
@@ -20,25 +19,43 @@ pub fn create_project(project: Project,config:Config) -> Result<()> {
 
     check_path(project_path)?;
 
-    write_project_file(project_path)?;
+    write_project_file(project_path,config,project.clone())?;
 
     init_git(project_path)?;
     Ok(())
 }
 
-fn write_project_file(project_path: &Path) -> Result<()> {
+fn write_project_file(project_path: &Path,config:Config,project: Project) -> Result<()> {
     let handlebars = Handlebars::new();
+    let is_web_site=config.template_type==TemplateType::SalvoWebSite;
     let data = json!({
+        "project_name": project.project_name,
         "dependencies": {
-            "salvo": "0.55",
-            "tokio": { "version": "1", "features": ["full"] },
-            "tracing": "0.1",
-            "tracing-subscriber": "0.3"
-        }
+            "anyhow": "1.0.75",
+            "clia-tracing-config": "0.2.5",
+            "jsonwebtoken": "8.3.0",
+            "once_cell": "1.18.0",
+            "salvo": {
+                "version": "*",
+                "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "openssl", "catch-panic"]
+            },
+            "serde": "1.0.188",
+            "thiserror": "1.0.48",
+            "time": "0.3.28",
+            "tokio": {
+                "version": "1",
+                "features": ["full"]
+            },
+            "toml": "0.8.0",
+            "tracing": "0.1"
+        },
+        "is_web_site":is_web_site,
     });
     std::fs::create_dir_all(project_path)?;
+
     let src_path = project_path.join("src");
     std::fs::create_dir_all(&src_path)?;
+    
     let main_file_path = src_path.join("main.rs");
     let main_template = include_str!("../template/src/main_template.hbs");
     let main_rendered = handlebars.render_template(main_template, &data)?;
@@ -49,6 +66,47 @@ fn write_project_file(project_path: &Path) -> Result<()> {
     let cargo_rendered = handlebars.render_template(cargo_template, &data)?;
     let mut cargo_file = File::create(cargo_file_path)?;
     cargo_file.write_all(cargo_rendered.as_bytes())?;
+    let config_rs=include_bytes!("../template/src/config.rs");
+    let mut config_file = File::create(src_path.join("config.rs"))?;
+    config_file.write_all(config_rs)?;
+    let app_error_rs=include_bytes!("../template/src/app_error.rs");
+    let mut app_error_file = File::create(src_path.join("app_error.rs"))?;
+    app_error_file.write_all(app_error_rs)?;
+
+    let middleware_path = src_path.join("middleware");
+    std::fs::create_dir_all(&middleware_path)?;
+    let jwt_bytes = include_bytes!("../template/src/middleware/jwt.rs");
+    let mut jwt_file = File::create(middleware_path.join("jwt.rs"))?;
+    jwt_file.write_all(jwt_bytes)?;
+    let mod_bytes = include_bytes!("../template/src/middleware/mod.rs");
+    let mut mod_file = File::create(middleware_path.join("mod.rs"))?;
+    mod_file.write_all(mod_bytes)?;
+
+    let config_path = project_path.join("config");
+    std::fs::create_dir_all(&config_path)?;
+    let config_template = include_str!("../template/config/config.toml");
+    let mut config_file = File::create(config_path.join("config.toml"))?;
+    config_file.write_all(config_template.as_bytes())?;
+
+    let cert_path = config_path.join("certs");
+    std::fs::create_dir_all(&cert_path)?;
+    let cert_template = include_str!("../template/config/certs/cert.pem");
+    let mut cert_file = File::create(cert_path.join("cert.pem"))?;
+    cert_file.write_all(cert_template.as_bytes())?;
+    let key_path = cert_path.join("key.pem");
+    let key_template = include_str!("../template/config/certs/key.pem");
+    let mut key_file = File::create(key_path)?;
+    key_file.write_all(key_template.as_bytes())?;
+    if is_web_site {
+    let template_path = project_path.join("template");
+    std::fs::create_dir_all(&template_path)?;
+    let hello_html_template = include_bytes!("../template/templates/hello.html");
+    let mut hello_html_file = File::create(template_path.join("hello.html"))?;
+    hello_html_file.write_all(hello_html_template)?;
+    let handle_404_template=include_bytes!("../template/templates/404.html");
+    let mut handle_404_file = File::create(template_path.join("handle_404.html"))?;
+    handle_404_file.write_all(handle_404_template)?;
+    }
     Ok(())
 }
 

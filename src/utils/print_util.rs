@@ -1,4 +1,4 @@
-use ansi_term::Colour::{Blue, Green, Yellow,Red};
+use ansi_term::Colour::{Blue, Green, Red, Yellow};
 
 pub fn print_logo() {
     let art = r"
