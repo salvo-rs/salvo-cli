@@ -1,5 +1,6 @@
-use crate::{Config, Project, TemplateType};
+use crate::Project;
 use anyhow::{Context, Result};
+use dialoguer::{console::Style, theme::ColorfulTheme, Select};
 use handlebars::Handlebars;
 use print_util::success;
 use serde_json::json;
@@ -14,7 +15,7 @@ use std::{
 
 use super::{print_util, restricted_names, warning};
 
-pub fn create_project(project: Project, config: Config) -> Result<()> {
+pub fn create_project(project: Project) -> Result<()> {
     check_name(&project.project_name)?;
     let project_name = &project.project_name;
     let project_path = Path::new(project_name);
@@ -23,16 +24,21 @@ pub fn create_project(project: Project, config: Config) -> Result<()> {
     }
 
     check_path(project_path)?;
+    let config = init_config()?;
+    match config {
+        Some(config) => {
+            write_project_file(project_path, config, project.clone())?;
 
-    write_project_file(project_path, config, project.clone())?;
+            init_git(project_path)?;
 
-    init_git(project_path)?;
-
-    success("🎉 Project successfully created!");
-    success("🚀 You can now navigate into your project directory and start running and testing your project:");
-    success(format!("1️⃣  use the command `cd {}`", project_name));
-    success("✨ To run your project, use the command `cargo run`.");
-    success("🎊 To test your project, use the command `cargo test`.");
+            success("🎉 Project successfully created!");
+            success("🚀 You can now navigate into your project directory and start running and testing your project:");
+            success(format!("1️⃣  use the command `cd {}`", project_name));
+            success("✨ To run your project, use the command `cargo run`.");
+            success("🎊 To test your project, use the command `cargo test`.");
+        }
+        None => anyhow::bail!("cli quit!"),
+    }
 
     Ok(())
 }
@@ -232,4 +238,41 @@ fn _create_dir_all(p: &Path) -> Result<()> {
     fs::create_dir_all(p)
         .with_context(|| format!("failed to create directory `{}`", p.display()))?;
     Ok(())
+}
+
+#[derive(Debug)]
+pub struct Config {
+    pub template_type: TemplateType,
+}
+
+fn init_config() -> Result<Option<Config>> {
+    let theme = ColorfulTheme {
+        defaults_style: Style::new().blue(),
+        prompt_style: Style::new().green().bold(),
+        values_style: Style::new().yellow().dim(),
+        ..ColorfulTheme::default()
+    };
+    let selections = &[
+        "salvo_web_api (Default web api template) ",
+        "salvo_web_site (Default web site template)",
+        // "custom",
+    ];
+    let selection = Select::with_theme(&theme)
+        .with_prompt(
+            " Welcome to use salvo cli, please choose a template type\n   space bar to confirm",
+        )
+        .default(0)
+        .items(&selections[..])
+        .interact()?;
+    let template_type = match selection {
+        0 => TemplateType::SalvoWebApi,
+        1 => TemplateType::SalvoWebSite,
+        _ => anyhow::bail!("Invalid selection"),
+    };
+    Ok(Some(Config { template_type }))
+}
+#[derive(Debug, PartialEq)]
+pub enum TemplateType {
+    SalvoWebSite,
+    SalvoWebApi,
 }
