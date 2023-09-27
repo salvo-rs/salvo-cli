@@ -27,7 +27,6 @@ fn main() -> Result<()> {
     match config {
         Some(config) => {
             let opts: Opts = Opts::parse();
-            //dbg!(opts);
             match opts.subcmd {
                 SubCommand::New(project) => {
                     match utils::create_project(project, config) {

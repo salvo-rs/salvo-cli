@@ -84,9 +84,11 @@ fn write_project_file(project_path: &Path,config:Config,project: Project) -> Res
 
     let config_path = project_path.join("config");
     std::fs::create_dir_all(&config_path)?;
-    let config_template = include_str!("../template/config/config.toml");
+    let config_template = include_str!("../template/config/config.hbs");
+
+    let config_toml_rendered = handlebars.render_template(config_template, &data)?;
     let mut config_file = File::create(config_path.join("config.toml"))?;
-    config_file.write_all(config_template.as_bytes())?;
+    config_file.write_all(config_toml_rendered.as_bytes())?;
 
     let cert_path = config_path.join("certs");
     std::fs::create_dir_all(&cert_path)?;

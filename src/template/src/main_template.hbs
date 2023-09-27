@@ -62,6 +62,8 @@ async fn main() {
     let router = router();
     let service: Service = router.into();
     let service = service.catcher(Catcher::default().hoop(handle404));
+    println!("💨 {} is staring ",&CFG.server.name);
+    println!(" listen on {}",&CFG.server.address.replace("0.0.0.0", "127.0.0.1"));
     match CFG.server.ssl {
         true => {
             let config = OpensslConfig::new(
