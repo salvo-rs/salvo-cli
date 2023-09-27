@@ -1,33 +1,45 @@
-use anyhow::{Context,Result};
-use handlebars::{Handlebars};
+use crate::{Config, Project, TemplateType};
+use anyhow::{Context, Result};
+use handlebars::Handlebars;
+use print_util::success;
 use serde_json::json;
-use std::{fs::{File, self}, io::Write, path::Path, ffi::{OsStr, OsString}, env, slice};
-use crate::{Project, Config, TemplateType};
+use std::{
+    env,
+    ffi::{OsStr, OsString},
+    fs::{self, File},
+    io::Write,
+    path::Path,
+    slice,
+};
 
-use super::{restricted_names, warning, print_util};
+use super::{print_util, restricted_names, warning};
 
-pub fn create_project(project: Project,config:Config) -> Result<()> {
+pub fn create_project(project: Project, config: Config) -> Result<()> {
     check_name(&project.project_name)?;
     let project_name = &project.project_name;
     let project_path = Path::new(project_name);
     if project_path.exists() {
-        anyhow::bail!(
-            "destination `{}` already exists",
-             project_path.display()
-        )
+        anyhow::bail!("destination `{}` already exists", project_path.display())
     }
 
     check_path(project_path)?;
 
-    write_project_file(project_path,config,project.clone())?;
+    write_project_file(project_path, config, project.clone())?;
 
     init_git(project_path)?;
+
+    success("🎉 Project successfully created!");
+    success("🚀 You can now navigate into your project directory and start running and testing your project:");
+    success(format!("1️⃣  use the command `cd {}`", project_name));
+    success("✨ To run your project, use the command `cargo run`.");
+    success("🎊 To test your project, use the command `cargo test`.");
+
     Ok(())
 }
 
-fn write_project_file(project_path: &Path,config:Config,project: Project) -> Result<()> {
+fn write_project_file(project_path: &Path, config: Config, project: Project) -> Result<()> {
     let handlebars = Handlebars::new();
-    let is_web_site=config.template_type==TemplateType::SalvoWebSite;
+    let is_web_site = config.template_type == TemplateType::SalvoWebSite;
     let data = json!({
         "project_name": project.project_name,
         "dependencies": {
@@ -55,7 +67,7 @@ fn write_project_file(project_path: &Path,config:Config,project: Project) -> Res
 
     let src_path = project_path.join("src");
     std::fs::create_dir_all(&src_path)?;
-    
+
     let main_file_path = src_path.join("main.rs");
     let main_template = include_str!("../template/src/main_template.hbs");
     let main_rendered = handlebars.render_template(main_template, &data)?;
@@ -66,10 +78,10 @@ fn write_project_file(project_path: &Path,config:Config,project: Project) -> Res
     let cargo_rendered = handlebars.render_template(cargo_template, &data)?;
     let mut cargo_file = File::create(cargo_file_path)?;
     cargo_file.write_all(cargo_rendered.as_bytes())?;
-    let config_rs=include_bytes!("../template/src/config.rs");
+    let config_rs = include_bytes!("../template/src/config.rs");
     let mut config_file = File::create(src_path.join("config.rs"))?;
     config_file.write_all(config_rs)?;
-    let app_error_rs=include_bytes!("../template/src/app_error.rs");
+    let app_error_rs = include_bytes!("../template/src/app_error.rs");
     let mut app_error_file = File::create(src_path.join("app_error.rs"))?;
     app_error_file.write_all(app_error_rs)?;
 
@@ -100,20 +112,19 @@ fn write_project_file(project_path: &Path,config:Config,project: Project) -> Res
     let mut key_file = File::create(key_path)?;
     key_file.write_all(key_template.as_bytes())?;
     if is_web_site {
-    let template_path = project_path.join("template");
-    std::fs::create_dir_all(&template_path)?;
-    let hello_html_template = include_bytes!("../template/templates/hello.html");
-    let mut hello_html_file = File::create(template_path.join("hello.html"))?;
-    hello_html_file.write_all(hello_html_template)?;
-    let handle_404_template=include_bytes!("../template/templates/404.html");
-    let mut handle_404_file = File::create(template_path.join("handle_404.html"))?;
-    handle_404_file.write_all(handle_404_template)?;
+        let template_path = project_path.join("template");
+        std::fs::create_dir_all(&template_path)?;
+        let hello_html_template = include_bytes!("../template/templates/hello.html");
+        let mut hello_html_file = File::create(template_path.join("hello.html"))?;
+        hello_html_file.write_all(hello_html_template)?;
+        let handle_404_template = include_bytes!("../template/templates/404.html");
+        let mut handle_404_file = File::create(template_path.join("handle_404.html"))?;
+        handle_404_file.write_all(handle_404_template)?;
     }
     Ok(())
 }
 
 fn check_name(name: &str) -> Result<()> {
-
     restricted_names::validate_package_name(name, "package name")?;
 
     if restricted_names::is_keyword(name) {
@@ -168,7 +179,7 @@ fn check_name(name: &str) -> Result<()> {
 }
 fn check_path(path: &Path) -> Result<()> {
     // warn if the path contains characters that will break `env::join_paths`
-    if let Err(_) = join_paths(slice::from_ref(&OsStr::new(path)), "") {
+    if join_paths(slice::from_ref(&OsStr::new(path)), "").is_err() {
         let path = path.to_string_lossy();
         print_util::warning(format!(
             "the path `{path}` contains invalid PATH characters (usually `:`, `;`, or `\"`)\n\
@@ -193,7 +204,7 @@ pub fn join_paths<T: AsRef<OsStr>>(paths: &[T], env: &str) -> Result<OsString> {
     })
 }
 
-pub fn init_git(project_path:&Path)->Result<()> {
+pub fn init_git(project_path: &Path) -> Result<()> {
     if !project_path.join(".git").exists() {
         // Temporary fix to work around bug in libgit2 when creating a
         // directory in the root of a posix filesystem.
@@ -203,9 +214,7 @@ pub fn init_git(project_path:&Path)->Result<()> {
         write_ignore_file(project_path)?;
     }
     Ok(())
-
 }
-
 
 fn write_ignore_file(project_path: &Path) -> Result<()> {
     let fp_ignore = project_path.join(".gitignore");

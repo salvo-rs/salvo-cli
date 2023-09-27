@@ -36,7 +36,7 @@ fn main() -> Result<()> {
                 }
             }
         }
-        None =>     anyhow::bail!("failed to create project")        ,
+        None => anyhow::bail!("failed to create project"),
     }
     Ok(())
 }
@@ -72,7 +72,7 @@ fn init_config() -> Result<Option<Config>> {
     };
     Ok(Some(Config { template_type }))
 }
-#[derive(Debug,PartialEq)]
+#[derive(Debug, PartialEq)]
 pub enum TemplateType {
     SalvoWebSite,
     SalvoWebApi,

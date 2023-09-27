@@ -15,9 +15,12 @@ pub fn print_logo() {
     }
 }
 
-pub fn warning(msg: String) {
-    println!("{}", Yellow.paint(msg));
+pub fn warning<S: AsRef<str>>(msg: S) {
+    println!("{}", Yellow.paint(msg.as_ref()));
 }
-pub fn error(msg: String) {
-    println!("{}", Red.paint(msg));
+pub fn error<S: AsRef<str>>(msg: S) {
+    println!("{}", Red.paint(msg.as_ref()));
+}
+pub fn success<S: AsRef<str>>(msg: S) {
+    println!("{}", Blue.paint(msg.as_ref()));
 }
