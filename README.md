@@ -17,6 +17,11 @@ salvo-cli new project_name
 ```
 This will create a new directory named project_name, and it will set up a basic project structure suitable for a Salvo-based application.
 
+## Update
+```bash
+cargo install --force salvo-cli
+```
+
 ## License
 This project is licensed under the MIT OR Apache-2.0 License.
 

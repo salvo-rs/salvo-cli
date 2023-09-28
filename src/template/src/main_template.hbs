@@ -2,7 +2,7 @@ use crate::app_error::AppResult;
 use config::{CERT_KEY, CFG};
 use middleware::jwt::jwt_hoop;
 use salvo::catcher::Catcher;
-use salvo::conn::openssl::{Keycert, OpensslConfig};
+use salvo::conn::rustls::{Keycert, RustlsConfig};
 use salvo::prelude::*;
 use tokio::sync::oneshot;
 
@@ -66,13 +66,13 @@ async fn main() {
     println!(" listen on {}",&CFG.server.address.replace("0.0.0.0", "127.0.0.1"));
     match CFG.server.ssl {
         true => {
-            let config = OpensslConfig::new(
+            let config = RustlsConfig::new(
                 Keycert::new()
-                    .with_cert(CERT_KEY.cert.clone())
-                    .with_key(CERT_KEY.key.clone()),
+                    .cert(CERT_KEY.cert.clone())
+                    .key(CERT_KEY.key.clone()),
             );
             let acceptor = TcpListener::new(&CFG.server.address)
-                .openssl(config)
+                .rustls(config)
                 .bind()
                 .await;
             let server = Server::new(acceptor).serve_with_graceful_shutdown(

@@ -55,7 +55,7 @@ fn write_project_file(project_path: &Path, config: Config, project: Project) -> 
             "once_cell": "1.18.0",
             "salvo": {
                 "version": "*",
-                "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "openssl", "catch-panic"]
+                "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "rustls", "catch-panic"]
             },
             "serde": "1.0.188",
             "thiserror": "1.0.48",
