@@ -18,7 +18,7 @@ salvo-cli new project_name
 This will create a new directory named project_name, and it will set up a basic project structure suitable for a Salvo-based application.
 
 ## Update
-```bash
+```bashs
 cargo install --force salvo-cli
 ```
 

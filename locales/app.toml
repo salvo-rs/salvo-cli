@@ -1,0 +1,7 @@
+[hello]
+en = "Hello world"
+zh-CN = "你好世界"
+
+[messages.hello]
+en = "Hello, %{name}"
+zh-CN = "你好，%{name}"
