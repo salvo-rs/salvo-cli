@@ -1,8 +1,11 @@
+use std::env;
+
 use anyhow::Result;
 use clap::Parser;
 
 mod utils;
-use rust_i18n::t;
+use i18n::set_locale;
+mod i18n;
 rust_i18n::i18n!("locales");
 #[derive(Parser, Debug)]
 #[clap(version = "0.0.1", author = "Fankai liu <liufankai137@outlook.com>")]
@@ -20,8 +23,7 @@ pub struct Project {
     pub project_name: String,
 }
 fn main() -> Result<()> {
-    println!("{}",t!("hello"));
-    println!("{:?}", rust_i18n::available_locales!());
+    set_locale();
     utils::print_logo();
     let opts: Opts = Opts::parse();
     match opts.subcmd {

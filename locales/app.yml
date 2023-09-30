@@ -1,0 +1,242 @@
+_version: 2
+hello:
+  en: Hello world
+  zh_CN: 你好世界
+messages.hello:
+  en: Hello, %{name}
+  zh_CN: 你好，%{name}
+welcome_message:
+  en: Welcome to use salvo cli, please choose a template type\n   space bar to confirm
+  zh_CN: 欢迎使用 salvo cli，请选择一个模板类型\n   空格键确认
+  zh_TW: 歡迎使用 salvo cli，請選擇一個模板類型\n   空格鍵確認
+  fr: Bienvenue à utiliser salvo cli, veuillez choisir un type de modèle\n   barre d'espace pour confirmer
+  ja: salvo cliを使用していただきありがとうございます。テンプレートタイプを選択してください\n   スペースバーを押して確認してください
+  es: Bienvenido a usar salvo cli, por favor elija un tipo de plantilla\n   barra espaciadora para confirmar
+  de: Willkommen bei der Verwendung von salvo cli, bitte wählen Sie einen Vorlagentyp\n   Leertaste zur Bestätigung
+  ru: Добро пожаловать в salvo cli, пожалуйста, выберите тип шаблона\n   пробел для подтверждения
+  it: Benvenuti a usare salvo cli, per favore scegli un tipo di modello\n   spazio per confermare
+  pt: Bem-vindo a usar salvo cli, por favor escolha um tipo de modelo\n   barra de espaço para confirmar
+  ko: salvo cli를 사용하신 것을 환영합니다. 템플릿 유형을 선택하십시오\n   스페이스 바를 눌러 확인하십시오
+  no: Velkommen til å bruke salvo cli, vennligst velg en maltype\n   mellomrom for å bekrefte
+  is: Velkomin til að nota salvo cli, vinsamlegast veldu tegund sniðmáls\n   bil til að staðfesta
+  uk: Ласкаво просимо до використання salvo cli, будь ласка, виберіть тип шаблону\n   пробіл для підтвердження
+  th: ยินดีต้อนรับสู่การใช้ salvo cli โปรดเลือกประเภทเทมเพลต\n   ช่องว่างเพื่อยืนยัน
+  el: Καλώς ήλθατε στη χρήση του salvo cli, παρακαλώ επιλέξτε έναν τύπο προτύπου\n   διάστημα για επιβεβαίωση
+  da: Velkommen til at bruge salvo cli, vælg venligst en skabelon type\n   mellemrum for at bekræfte
+salvo_web_api:
+  en: salvo_web_api (Default web api template)
+  zh_CN: salvo_web_api (默认 web api 模板)
+  zh_TW: salvo_web_api (默認 web api 模板)
+  fr: salvo_web_api (Modèle web api par défaut)
+  ja: salvo_web_api (デフォルトのWeb APIテンプレート)
+  es: salvo_web_api (Plantilla web api predeterminada)
+  de: salvo_web_api (Standard-Web-API-Vorlage)
+  ru: salvo_web_api (Шаблон веб-интерфейса по умолчанию)
+  it: salvo_web_api (Modello web api predefinito)
+  pt: salvo_web_api (Modelo web api padrão)
+  ko: salvo_web_api (기본 웹 API 템플릿)
+  no: salvo_web_api (Standard web api mal)
+  is: salvo_web_api (Sjálfgefið vef api sniðmát)
+  uk: salvo_web_api (Шаблон веб-інтерфейсу за замовчуванням)
+  th: salvo_web_api (เทมเพลตเว็บ api ตั้งต้น)
+  el: salvo_web_api (Προεπιλεγμένο πρότυπο διαδικτύου api)
+  da: salvo_web_api (Standard web api skabelon)
+salvo_web_site:
+  en: salvo_web_site (Default web site template)
+  zh_CN: salvo_web_site (默认 web site 模板)
+  zh_TW: salvo_web_site (默認 web site 模板)
+  fr: salvo_web_site (Modèle de site Web par défaut)
+  ja: salvo_web_site (デフォルトのWebサイトテンプレート)
+  es: salvo_web_site (Plantilla de sitio web predeterminada)
+  de: salvo_web_site (Standard-Website-Vorlage)
+  ru: salvo_web_site (Шаблон веб-сайта по умолчанию)
+  it: salvo_web_site (Modello di sito web predefinito)
+  pt: salvo_web_site (Modelo de site padrão)
+  ko: salvo_web_site (기본 웹 사이트 템플릿)
+  no: salvo_web_site (Standard web site mal)
+  is: salvo_web_site (Sjálfgefið vefsvæði sniðmát)
+  uk: salvo_web_site (Шаблон веб-сайту за замовчуванням)
+  th: salvo_web_site (เทมเพลตเว็บไซต์ตั้งต้น)
+  el: salvo_web_site (Προεπιλεγμένο πρότυπο ιστότοπου)
+  da: salvo_web_site (Standard websted skabelon)
+create_success:
+  en: 🎉 Project successfully created!\n🚀 You can now navigate into your project directory and start running and testing your project\n1️⃣  use the command `cd %{project_name}`\n✨ To run your project, use the command `cargo run`.\n🎊 To test your project, use the command `cargo test`.
+  zh_CN: 🎉 项目创建成功！\n🚀 您现在可以移动到项目目录并开始运行和测试项目\n1️⃣  使用命令 `cd %{project_name}`\n✨ 运行项目，请使用命令 `cargo run`。\n🎊 测试项目，请使用命令 `cargo test`。
+  zh_TW: 🎉 專案建立成功！\n🚀 您現在可以移動到專案目錄並開始執行和測試專案\n1️⃣  使用命令 `cd %{project_name}`\n✨ 執行專案，請使用命令 `cargo run`。\n🎊 測試專案，請使用命令 `cargo test`。
+  fr: 🎉 Projet créé avec succès!\n🚀 Vous pouvez maintenant naviguer dans votre répertoire de projet et commencer à exécuter et tester votre projet\n1️⃣  utilisez la commande `cd %{project_name}`\n✨ Pour exécuter votre projet, utilisez la commande `cargo run`.\n🎊 Pour tester votre projet, utilisez la commande `cargo test`.
+  ja: 🎉 プロジェクトが正常に作成されました！\n🚀 プロジェクトディレクトリに移動してプロジェクトを実行およびテストを開始できます\n1️⃣  コマンド `cd %{project_name}` を使用します\n✨ プロジェクトを実行するには、コマンド `cargo run` を使用します。\n🎊 プロジェクトをテストするには、コマンド `cargo test` を使用します。
+  es: 🎉 ¡Proyecto creado con éxito!\n🚀 Ahora puede navegar al directorio de su proyecto y comenzar a ejecutar y probar su proyecto\n1️⃣  use el comando `cd %{project_name}`\n✨ Para ejecutar su proyecto, use el comando `cargo run`.\n🎊 Para probar su proyecto, use el comando `cargo test`.
+  de: 🎉 Projekt erfolgreich erstellt!\n🚀 Sie können nun in Ihr Projektverzeichnis wechseln und Ihr Projekt ausführen und testen\n1️⃣  verwenden Sie den Befehl `cd %{project_name}`\n✨ Um Ihr Projekt auszuführen, verwenden Sie den Befehl `cargo run`.\n🎊 Um Ihr Projekt zu testen, verwenden Sie den Befehl `cargo test`.
+  ru: 🎉 Проект успешно создан!\n🚀 Теперь вы можете перейти в каталог своего проекта и начать запускать и тестировать свой проект\n1️⃣  используйте команду `cd %{project_name}`\n✨ Чтобы запустить свой проект, используйте команду `cargo run`.\n🎊 Чтобы протестировать свой проект, используйте команду `cargo test`.
+  it: 🎉 Progetto creato con successo!\n🚀 Ora puoi navigare nella directory del tuo progetto e iniziare a eseguire e testare il tuo progetto\n1️⃣  usa il comando `cd %{project_name}`\n✨ Per eseguire il tuo progetto, usa il comando `cargo run`.\n🎊 Per testare il tuo progetto, usa il comando `cargo test`.
+  pt: 🎉 Projeto criado com sucesso!\n🚀 Agora você pode navegar no diretório do seu projeto e começar a executar e testar seu projeto\n1️⃣  use o comando `cd %{project_name}`\n✨ Para executar seu projeto, use o comando `cargo run`.\n🎊 Para testar seu projeto, use o comando `cargo test`.
+  ko: 🎉 프로젝트가 성공적으로 생성되었습니다!\n🚀 이제 프로젝트 디렉토리로 이동하여 프로젝트를 실행하고 테스트를 시작할 수 있습니다.\n1️⃣  명령 `cd %{project_name}`을 사용하십시오.\n✨ 프로젝트를 실행하려면 명령 `cargo run`을 사용하십시오.\n🎊 프로젝트를 테스트하려면 명령 `cargo test`을 사용하십시오.
+  no: 🎉 Prosjekt opprettet!\n🚀 Du kan nå navigere til prosjektmappen og begynne å kjøre og teste prosjektet ditt\n1️⃣  bruk kommandoen `cd %{project_name}`\n✨ For å kjøre prosjektet ditt, bruk kommandoen `cargo run`.\n🎊 For å teste prosjektet ditt, bruk kommandoen `cargo test`.
+  is: 🎉 Verkefnið var búið til!\n🚀 Þú getur nú farið inn í verkefnis möppuna þína og byrjað að keyra og prófa verkefnið þitt\n1️⃣  notaðu skipunina `cd %{project_name}`\n✨ Til að keyra verkefnið þitt, notaðu skipunina `cargo run`.\n🎊 Til að prófa verkefnið þitt, notaðu skipunina `cargo test`.
+  uk: 🎉 Проект успішно створено!\n🚀 Тепер ви можете перейти до каталогу свого проекту та почати запускати та тестувати свій проект\n1️⃣  використовуйте команду `cd %{project_name}`\n✨ Щоб запустити свій проект, використовуйте команду `cargo run`.\n🎊 Щоб протестувати свій проект, використовуйте команду `cargo test`.
+  th: 🎉 สร้างโปรเจคสำเร็จแล้ว!\n🚀 ตอนนี้คุณสามารถนำทางไปยังไดเรกทอรีโปรเจกต์ของคุณและเริ่มการทดสอบโปรเจกต์ของคุณ\n1️⃣  ใช้คำสั่ง `cd %{project_name}`\n✨ เพื่อเรียกใช้โปรเจกต์ของคุณใช้คำสั่ง `cargo run`.\n🎊 เพื่อทดสอบโปรเจกต์ของคุณใช้คำสั่ง `cargo test`.
+  el: 🎉 Το έργο δημιουργήθηκε με επιτυχία!\n🚀 Τώρα μπορείτε να πλοηγηθείτε στον κατάλογο του έργου σας και να ξεκινήσετε την εκτέλεση και τη δοκιμή του έργου σας\n1️⃣  χρησιμοποιήστε την εντολή `cd %{project_name}`\n✨ Για να εκτελέσετε το έργο σας, χρησιμοποιήστε την εντολή `cargo run`.\n🎊 Για να δοκιμάσετε το έργο σας, χρησιμοποιήστε την εντολή `cargo test`.
+  da: 🎉 Projektet blev oprettet!\n🚀 Du kan nu navigere til din projektmappe og begynde at køre og teste dit projekt\n1️⃣  brug kommandoen `cd %{project_name}`\n✨ For at køre dit projekt skal du bruge kommandoen `cargo run`.\n🎊 For at teste dit projekt skal du bruge kommandoen `cargo test`.
+error_is_keyword:
+  en: "the name `%{name}` cannot be used as a project name, it is a Rust keyword"
+  zh_CN: "名称 `%{name}` 不能作为项目名称，它是 Rust 关键字"
+  zh_TW: "名稱 `%{name}` 不能作為專案名稱，它是 Rust 關鍵字"
+  fr: "le nom `%{name}` ne peut pas être utilisé comme nom de projet, c'est un mot clé Rust"
+  ja: "名前 `%{name}` はプロジェクト名として使用できません。これはRustのキーワードです"
+  es: "el nombre `%{name}` no se puede usar como nombre de proyecto, es una palabra clave de Rust"
+  de: "der Name `%{name}` kann nicht als Projektname verwendet werden, es ist ein Rust-Schlüsselwort"
+  ru: "имя `%{name}` нельзя использовать в качестве имени проекта, это ключевое слово Rust"
+  it: "il nome `%{name}` non può essere utilizzato come nome del progetto, è una parola chiave Rust"
+  pt: "o nome `%{name}` não pode ser usado como nome do projeto, é uma palavra-chave Rust"
+  ko: "`%{name}` 이름은 프로젝트 이름으로 사용할 수 없습니다. 이것은 Rust 키워드입니다"
+  no: "navnet `%{name}` kan ikke brukes som et prosjektnavn, det er et Rust-nøkkelord"
+  is: "nafn `%{name}` má ekki nota sem verkefnanafn, það er lykilorð Rust"
+  uk: "ім'я `%{name}` не може бути використано як ім'я проекту, це ключове слово Rust"
+  th: "ชื่อ `%{name}` ไม่สามารถใช้เป็นชื่อโปรเจกต์ได้เนื่องจากเป็นคำสำคัญของ Rust"
+  el: "το όνομα `%{name}` δεν μπορεί να χρησιμοποιηθεί ως όνομα έργου, είναι μια λέξη-κλειδί Rust"
+  da: "navnet `%{name}` kan ikke bruges som et projektnavn, det er et Rust-nøgleord"
+error_is_conflicting_artifact_name:
+  en: the name `%{name}` will not support binary  executables with that name, \n it conflicts with cargo's build directory names
+  zh_CN: 名称 `%{name}` 不支持二进制可执行文件，\n它与 cargo 的构建目录名称冲突
+  zh_TW: 名稱 `%{name}` 不支援二進位可執行檔，\n它與 cargo 的建置目錄名稱衝突
+  fr: le nom `%{name}` ne prendra pas en charge les exécutables binaires avec ce nom, \n il entre en conflit avec les noms de répertoire de construction de cargo
+  ja: 名前 `%{name}` はその名前のバイナリ実行可能ファイルをサポートしません、\n cargoのビルドディレクトリ名と競合します
+  es: el nombre `%{name}` no admitirá ejecutables binarios con ese nombre, \n entra en conflicto con los nombres de directorio de compilación de cargo
+  de: der Name `%{name}` unterstützt keine ausführbaren Binärdateien mit diesem Namen, \n er steht im Konflikt mit den Build-Verzeichnisnamen von Cargo
+  ru: имя `%{name}` не поддерживает двоичные исполняемые файлы с таким именем, \n оно конфликтует с именами каталогов сборки груза
+  it: il nome `%{name}` non supporterà eseguibili binari con quel nome, \n entra in conflitto con i nomi delle directory di compilazione di cargo
+  pt: o nome `%{name}` não suportará executáveis binários com esse nome, \n entra em conflito com os nomes de diretório de compilação de carga
+  ko: error:`%{name}` 이름은 해당 이름의 바이너리 실행 파일을 지원하지 않습니다. \n 카고의 빌드 디렉토리 이름과 충돌합니다
+  no: navnet `%{name}` vil ikke støtte binære kjørbare filer med det navnet, \n det er i konflikt med lastebilens byggkatalognavn
+  is: nafnið `%{name}` styður ekki keyranlegar tvíundar skrár með því nafni, \n það er í árekstri við byggingar skráarnöfn lastbíls
+  uk: ім'я `%{name}` не підтримує бінарні виконувані файли з таким ім'ям, \n воно конфліктує з іменами каталогів збірки вантажівки
+  th: ชื่อ `%{name}` จะไม่รองรับไฟล์ที่รันได้ที่มีชื่อนั้น \n มันขัดแย้งกับชื่อไดเรกทอรีการสร้างของ cargo
+  el: το όνομα `%{name}` δεν θα υποστηρίξει δυαδικά εκτελέσιμα με αυτό το όνομα, \n συγκρούεται με τα ονόματα καταλόγων δημιουργίας φορτίου
+  da: navnet `%{name}` vil ikke understøtte binære eksekverbare filer med det navn, \n det er i konflikt med lastbilens bygningskatalognavne
+error_equal_test:
+  en: the name `test` cannot be used as a package name, \n it conflicts with Rust's built-in test library
+  zh_CN: 名称 `test` 不能作为包名称，\n它与 Rust 内置的测试库冲突
+  zh_TW: 名稱 `test` 不能作為套件名稱，\n它與 Rust 內建的測試函式庫衝突
+  fr: le nom `test` ne peut pas être utilisé comme nom de package, \n il entre en conflit avec la bibliothèque de test intégrée de Rust
+  ja: 名前 `test` はパッケージ名として使用できません、\n Rustの組み込みテストライブラリと競合します
+  es: el nombre `test` no se puede usar como nombre de paquete, \n entra en conflicto con la biblioteca de prueba incorporada de Rust
+  de: der Name `test` kann nicht als Paketname verwendet werden, \n er steht im Konflikt mit der integrierten Testbibliothek von Rust
+  ru: имя `test` нельзя использовать в качестве имени пакета, \n оно конфликтует с встроенной тестовой библиотекой Rust
+  it: il nome `test` non può essere utilizzato come nome del pacchetto, \n entra in conflitto con la libreria di test integrata di Rust
+  pt: o nome `test` não pode ser usado como nome do pacote, \n entra em conflito com a biblioteca de teste integrada do Rust
+  ko: error:`test` 이름은 패키지 이름으로 사용할 수 없습니다. \n Rust의 내장 테스트 라이브러리와 충돌합니다
+  no: navnet `test` kan ikke brukes som pakkenavn, \n det er i konflikt med Rusts innebygde testbibliotek
+  is: nafnið `test` má ekki nota sem nafn pakka, \n það er í árekstri við innbyggt prófunar safn Rust
+  uk: ім'я `test` не може бути використано як ім'я пакета, \n воно конфліктує з вбудованою тестовою бібліотекою Rust
+  th: ชื่อ `test` ไม่สามารถใช้เป็นชื่อแพ็คเกจได้ \n มันขัดแย้งกับไลบรารีการทดสอบที่ซ่อนอยู่ของ Rust
+  el: το όνομα `test` δεν μπορεί να χρησιμοποιηθεί ως όνομα πακέτου, \n συγκρούεται με την ενσωματωμένη βιβλιοθήκη δοκιμής του Rust
+  da: navnet `test` kan ikke bruges som pakkenavn, \n det er i konflikt med Rusts indbyggede testbibliotek
+error_part_of_standard_library:
+  en: the name `%{name}` is part of Rust's standard library\n It is recommended to use a different name to avoid problems
+  zh_CN: 名称 `%{name}` 是 Rust 标准库的一部分\n建议使用其他名称以避免问题
+  zh_TW: 名稱 `%{name}` 是 Rust 標準函式庫的一部分\n建議使用其他名稱以避免問題
+  fr: le nom `%{name}` fait partie de la bibliothèque standard de Rust\n Il est recommandé d'utiliser un nom différent pour éviter les problèmes
+  ja: 名前 `%{name}` はRustの標準ライブラリの一部です\n 問題を避けるために別の名前を使用することをお勧めします
+  es: el nombre `%{name}` es parte de la biblioteca estándar de Rust\n Se recomienda usar un nombre diferente para evitar problemas
+  de: der Name `%{name}` ist Teil der Standardbibliothek von Rust\n Es wird empfohlen, einen anderen Namen zu verwenden, um Probleme zu vermeiden
+  ru: имя `%{name}` является частью стандартной библиотеки Rust\n Рекомендуется использовать другое имя, чтобы избежать проблем
+  it: il nome `%{name}` fa parte della libreria standard di Rust\n Si consiglia di utilizzare un nome diverso per evitare problemi
+  pt: o nome `%{name}` faz parte da biblioteca padrão do Rust\n É recomendável usar um nome diferente para evitar problemas
+  ko: erroe:`%{name}` 이름은 Rust의 표준 라이브러리의 일부입니다\n 문제를 피하기 위해 다른 이름을 사용하는 것이 좋습니다
+  no: navnet `%{name}` er en del av Rusts standardbibliotek\n Det anbefales å bruke et annet navn for å unngå problemer
+  is: nafnið `%{name}` er hluti af innbyggðu safni Rust\n Það er mælt með að nota annað nafn til að forðast vandamál
+  uk: ім'я `%{name}` є частиною стандартної бібліотеки Rust\n Рекомендується використовувати інше ім'я, щоб уникнути проблем
+  th: ชื่อ `%{name}` เป็นส่วนหนึ่งของไลบรารีมาตรฐานของ Rust \n แนะนำให้ใช้ชื่ออื่นเพื่อหลีกเลี่ยงปัญหา
+  el: το όνομα `%{name}` είναι μέρος της τυπικής βιβλιοθήκης του Rust\n Συνιστάται να χρησιμοποιήσετε διαφορετικό όνομα για να αποφύγετε προβλήματα
+  da: navnet `%{name}` er en del af Rusts standardbibliotek\n Det anbefales at bruge et andet navn for at undgå problemer
+error_is_windows_reserved:
+  en: cannot use name `%{name}`, it is a reserved Windows filename
+  zh_CN: 不能使用名称 `%{name}`，它是保留的 Windows 文件名
+  zh_TW: 不能使用名稱 `%{name}`，它是保留的 Windows 檔案名稱
+  fr: impossible d'utiliser le nom `%{name}`, c'est un nom de fichier Windows réservé
+  ja: 名前 `%{name}` は使用できません、それは予約済みのWindowsファイル名です
+  es: no se puede usar el nombre `%{name}`, es un nombre de archivo de Windows reservado
+  de: der Name `%{name}` kann nicht verwendet werden, es ist ein reservierter Windows-Dateiname
+  ru: нельзя использовать имя `%{name}`, это зарезервированное имя файла Windows
+  it: non è possibile utilizzare il nome `%{name}`, è un nome file Windows riservato
+  pt: não é possível usar o nome `%{name}`, é um nome de arquivo Windows reservado
+  ko: error:`%{name}` 이름을 사용할 수 없습니다. 예약 된 Windows 파일 이름입니다
+  no: kan ikke bruke navnet `%{name}`, det er et reservert Windows-filnavn
+  is: nafnið `%{name}` má ekki nota, það er forvarið Windows skráarheiti
+  uk: не можна використовувати ім'я `%{name}`, це зарезервоване ім'я файлу Windows
+  th: ไม่สามารถใช้ชื่อ `%{name}` ได้เนื่องจากเป็นชื่อไฟล์ Windows ที่สงวนไว้
+  el: δεν μπορείτε να χρησιμοποιήσετε το όνομα `%{name}`, είναι ένα κρατημένο όνομα αρχείου Windows
+  da: kan ikke bruge navnet `%{name}`, det er et reserveret Windows-filnavn
+warning_is_windows_reserved:
+  en: the name `%{name}` is a reserved Windows filename\n This package will not work on Windows platforms.
+  zh_CN: 名称 `%{name}` 是保留的 Windows 文件名\n此包将无法在 Windows 平台上工作。
+  zh_TW: 名稱 `%{name}` 是保留的 Windows 檔案名稱\n此套件將無法在 Windows 平台上工作。
+  fr: le nom `%{name}` est un nom de fichier Windows réservé\n Ce package ne fonctionnera pas sur les plates-formes Windows.
+  ja: 名前 `%{name}` は予約済みのWindowsファイル名です\n このパッケージはWindowsプラットフォームでは動作しません。
+  es: el nombre `%{name}` es un nombre de archivo de Windows reservado\n Este paquete no funcionará en plataformas Windows.
+  de: der Name `%{name}` ist ein reservierter Windows-Dateiname\n Dieses Paket funktioniert nicht auf Windows-Plattformen.
+  ru: имя `%{name}` является зарезервированным именем файла Windows\n Этот пакет не будет работать на платформах Windows.
+  it: il nome `%{name}` è un nome file Windows riservato\n Questo pacchetto non funzionerà su piattaforme Windows.
+  pt: o nome `%{name}` é um nome de arquivo Windows reservado\n Este pacote não funcionará em plataformas Windows.
+  ko: error:`%{name}` 이름은 예약 된 Windows 파일 이름입니다\n이 패키지는 Windows 플랫폼에서 작동하지 않습니다.
+  no: navnet `%{name}` er et reservert Windows-filnavn\n Denne pakken vil ikke fungere på Windows-plattformer.
+  is: nafnið `%{name}` er forvarið Windows skráarheiti\n Þessi pakki virkar ekki á Windows vélum.
+  uk: ім'я `%{name}` є зарезервованим ім'ям файлу Windows\n Цей пакет не працюватиме на платформах Windows.
+  th: ชื่อ `%{name}` เป็นชื่อไฟล์ Windows ที่สงวนไว้\n แพ็คเกจนี้จะไม่ทำงานบนแพลตฟอร์ม Windows
+  el: το όνομα `%{name}` είναι ένα κρατημένο όνομα αρχείου Windows\n Αυτό το πακέτο δεν θα λειτουργήσει σε πλατφόρμες Windows.
+  da: navnet `%{name}` er et reserveret Windows-filnavn\n Denne pakke fungerer ikke på Windows-platforme.
+warning_is_non_ascii_name:
+  en: the name `%{name}` contains non-ASCII characters\n Non-ASCII crate names are not supported by Rust.
+  zh_CN: 名称 `%{name}` 包含非 ASCII 字符\nRust 不支持非 ASCII 的包名称。
+  zh_TW: 名稱 `%{name}` 包含非 ASCII 字元\nRust 不支援非 ASCII 的套件名稱。
+  fr: le nom `%{name}` contient des caractères non-ASCII\n Les noms de caisses non-ASCII ne sont pas pris en charge par Rust.
+  ja: 名前 `%{name}` にはASCII以外の文字が含まれています\n ASCII以外のクレート名はRustではサポートされていません。
+  es: el nombre `%{name}` contiene caracteres no ASCII\n Los nombres de cajas no ASCII no son compatibles con Rust.
+  de: der Name `%{name}` enthält nicht-ASCII-Zeichen\n Nicht-ASCII-Kistenamen werden von Rust nicht unterstützt.
+  ru: имя `%{name}` содержит символы не ASCII\n Имена ящиков не ASCII не поддерживаются Rust.
+  it: il nome `%{name}` contiene caratteri non ASCII\n I nomi delle casse non ASCII non sono supportati da Rust.
+  pt: o nome `%{name}` contém caracteres não ASCII\n Nomes de caixas não ASCII não são suportados pelo Rust.
+  ko: error:`%{name}` 이름에는 ASCII가 아닌 문자가 포함되어 있습니다\n ASCII가 아닌 크레이트 이름은 Rust에서 지원되지 않습니다.
+  no: navnet `%{name}` inneholder ikke-ASCII-tegn\n Ikke-ASCII-kasse navn støttes ikke av Rust.
+  is: nafnið `%{name}` inniheldur ekki ASCII stafi\n Ekki ASCII kassa nöfn eru ekki studd af Rust.
+  uk: ім'я `%{name}` містить символи не ASCII\n Імена ящиків не ASCII не підтримуються Rust.
+  th: ชื่อ `%{name}` มีอักขระที่ไม่ใช่ ASCII\n ชื่อกระบอกที่ไม่ใช่ ASCII ไม่ได้รับการสนับสนุนโดย Rust
+  el: το όνομα `%{name}` περιέχει μη ASCII χαρακτήρες\n Τα ονόματα κιβωτίων μη ASCII δεν υποστηρίζονται από το Rust.
+  da: navnet `%{name}` indeholder ikke-ASCII-tegn\n Ikke-ASCII-kasse navne understøttes ikke af Rust.
+warning_invalid_path:
+  en: the path `%{path}` contains invalid PATH characters (usually `:`, `;`, or `\"`)\n It is recommended to use a different name to avoid problems
+  zh_CN: 路径 `%{path}` 包含无效的路径字符（通常是 `:`、`;` 或 `\"`）\n建议使用其他名称以避免问题
+  zh_TW: 路徑 `%{path}` 包含無效的路徑字元（通常是 `:`、`;` 或 `\"`）\n建議使用其他名稱以避免問題
+  fr: le chemin `%{path}` contient des caractères de chemin non valides (généralement `:`, `;` ou `\"`)\n Il est recommandé d'utiliser un nom différent pour éviter les problèmes
+  ja: パス `%{path}` には無効なパス文字が含まれています（通常は `:`、`;` または `\"`）\n 問題を避けるために別の名前を使用することをお勧めします
+  es: la ruta `%{path}` contiene caracteres de ruta no válidos (generalmente `:`, `;` o `\"`)\n Se recomienda usar un nombre diferente para evitar problemas
+  de: der Pfad `%{path}` enthält ungültige Pfadzeichen (normalerweise `:`, `;` oder `\"`)\n Es wird empfohlen, einen anderen Namen zu verwenden, um Probleme zu vermeiden
+  ru: путь `%{path}` содержит недопустимые символы пути (обычно `:`, `;` или `\"`)\n Рекомендуется использовать другое имя, чтобы избежать проблем
+  it: il percorso `%{path}` contiene caratteri di percorso non validi (di solito `:`, `;` o `\"`)\n Si consiglia di utilizzare un nome diverso per evitare problemi
+  pt: o caminho `%{path}` contém caracteres de caminho inválidos (geralmente `:`, `;` ou `\"`)\n É recomendável usar um nome diferente para evitar problemas
+  ko: error:`%{path}` 경로에 유효하지 않은 경로 문자가 포함되어 있습니다 (일반적으로 `:`, `;` 또는 `\"`)\n 문제를 피하기 위해 다른 이름을 사용하는 것이 좋습니다
+  no: stien `%{path}` inneholder ugyldige sti-tegn (vanligvis `:`, `;` eller `\"`)\n Det anbefales å bruke et annet navn for å unngå problemer
+  is: slóðin `%{path}` inniheldur ógild staf (venjulega `:`, `;` eða `\"`)\n Það er mælt með að nota annað nafn til að forðast vandamál
+  uk: шлях `%{path}` містить недійсні символи шляху (зазвичай `:`, `;` або `\"`)\n Рекомендується використовувати інше ім'я, щоб уникнути проблем
+  th: พาธ `%{path}` มีอักขระที่ไม่ถูกต้อง (โดยปกติ `:`, `;` หรือ `\"`)\n แนะนำให้ใช้ชื่ออื่นเพื่อหลีกเลี่ยงปัญหา
+  el: η διαδρομή `%{path}` περιέχει μη έγκυρους χαρακτήρες διαδρομής (συνήθως `:`, `;` ή `\"`)\n Συνιστάται να χρησιμοποιήσετε διαφορετικό όνομα για να αποφύγετε προβλήματα
+  da: stien `%{path}` indeholder ugyldige sti-tegn (normalt `:`, `;` eller `\"`)\n Det anbefales at bruge et andet navn for at undgå problemer
+erroe_join_paths:
+  en: failed to join paths from `$%{env}` together\n Check if any of path segments listed below contain an \n unterminated quote character or path separator
+  zh_CN: 无法将 `$%{env}` 中的路径连接在一起\n请检查下面列出的路径段中是否包含未终止的引号字符或路径分隔符
+  zh_TW: 無法將 `$%{env}` 中的路徑連接在一起\n請檢查下面列出的路徑段中是否包含未終止的引號字元或路徑分隔符
+  fr: failed to join paths from `$%{env}` together\n Vérifiez si l'un des segments de chemin répertoriés ci-dessous contient un \n caractère de guillemet non terminé ou un séparateur de chemin
+  ja: error:`$%{env}` からパスを結合できませんでした\n 以下にリストされているパスセグメントのいずれかに、\n 終了していない引用符文字またはパスセパレータが含まれていないか確認してください
+  es: no se pudo unir las rutas de `$%{env}` juntas\n Compruebe si alguno de los segmentos de ruta enumerados a continuación contiene un \n carácter de comillas sin terminar o un separador de ruta
+  de: fehlgeschlagen, um Pfade von `$%{env}` zusammenzuführen\n Überprüfen Sie, ob einer der unten aufgeführten Pfadsegmente enthält ein \n nicht abgeschlossenes Anführungszeichen oder Pfadtrennzeichen
+  ru: error:`$%{env}` не удалось объединить пути\n Проверьте, содержит ли один из перечисленных ниже сегментов пути \n не завершенный символ кавычки или разделитель пути
+  it: impossibile unire i percorsi da `$%{env}` insieme\n Controlla se uno dei segmenti di percorso elencati di seguito contiene un \n carattere di virgoletta non terminato o un separatore di percorso
+  pt: falha ao unir caminhos de `$%{env}` juntos\n Verifique se algum dos segmentos de caminho listados abaixo contém um \n caractere de aspas não terminado ou separador de caminho
+  ko: error:`$%{env}` 경로를 함께 연결하지 못했습니다\n 아래에 나열된 경로 세그먼트 중 하나에 \n 종료되지 않은 따옴표 문자 또는 경로 구분 기호가 포함되어 있는지 확인하십시오
+  no: kunne ikke slå sammen stier fra `$%{env}` sammen\n Sjekk om noen av sti-segmentene som er oppført nedenfor inneholder en \n ikke-avsluttet sitat-tegn eller sti-separator
+  is: erroe:`$%{env}` tókst ekki að sameina slóðir saman\n Athugaðu hvort einhver af slóð hlutum sem eru listuð hér að neðan innihalda \n ólokið tilvitnun staf eða slóð aðskilari
+  uk: не вдалося об'єднати шляхи з `$%{env}` разом\n Перевірте, чи містить один з наведених нижче сегментів шляху \n незавершений символ лапки або роздільник шляху
+  th: ไม่สามารถรวมเส้นทางจาก `$%{env}` ไว้ด้วยกัน\n ตรวจสอบว่าเส้นทางเซกเมนต์ใดที่ระบุด้านล่างนี้มี \n อักขระเครื่องหมายคำพูดที่ไม่สมบูรณ์หรือตัวคั่นเส้นทาง
+  el: απέτυχε να ενώσει διαδρομές από το `$%{env}` μαζί\n Ελέγξτε εάν κάποιο από τα τμήματα διαδρομής που αναφέρονται παρακάτω περιέχει ένα \n μη τερματισμένο χαρακτήρα παράθεσης ή διαχωριστικό διαδρομής
+  da: kunne ikke slå stier fra `$%{env}` sammen\n Kontroller, om nogen af sti-segmenterne, der er anført nedenfor, indeholder en \n ikke-afsluttet anførselstegn eller sti-separator
+  

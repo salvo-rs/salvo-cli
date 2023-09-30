@@ -3,6 +3,7 @@ use anyhow::{Context, Result};
 use dialoguer::{console::Style, theme::ColorfulTheme, Select};
 use handlebars::Handlebars;
 use print_util::success;
+use rust_i18n::t;
 use serde_json::json;
 use std::{
     env,
@@ -31,11 +32,7 @@ pub fn create_project(project: Project) -> Result<()> {
 
             init_git(project_path)?;
 
-            success("🎉 Project successfully created!");
-            success("🚀 You can now navigate into your project directory and start running and testing your project:");
-            success(format!("1️⃣  use the command `cd {}`", project_name));
-            success("✨ To run your project, use the command `cargo run`.");
-            success("🎊 To test your project, use the command `cargo test`.");
+            success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
         }
         None => anyhow::bail!("cli quit!"),
     }
@@ -134,52 +131,26 @@ fn check_name(name: &str) -> Result<()> {
     restricted_names::validate_package_name(name, "package name")?;
 
     if restricted_names::is_keyword(name) {
-        anyhow::bail!(
-            "the name `{}` cannot be used as a package name, it is a Rust keyword",
-            name,
-        );
+        anyhow::bail!(t!("error_is_keyword", name = name));
     }
     if restricted_names::is_conflicting_artifact_name(name) {
-        warning(format!(
-            "the name `{}` will not support binary \
-            executables with that name, \
-            it conflicts with cargo's build directory names",
-            name
-        ));
+        warning(t!("error_is_conflicting_artifact_name", name = name).replace(r"\n", "\n"));
     }
     if name == "test" {
-        anyhow::bail!(
-            "the name `test` cannot be used as a package name, \
-            it conflicts with Rust's built-in test library",
-        );
+        anyhow::bail!(t!("error_equal_test").replace(r"\n", "\n"))
     }
     if ["core", "std", "alloc", "proc_macro", "proc-macro"].contains(&name) {
-        warning(format!(
-            "the name `{}` is part of Rust's standard library\n\
-            It is recommended to use a different name to avoid problems.",
-            name,
-        ));
+        warning(t!("error_part_of_standard_library", name = name,).replace(r"\n", "\n"));
     }
     if restricted_names::is_windows_reserved(name) {
         if cfg!(windows) {
-            anyhow::bail!(
-                "cannot use name `{}`, it is a reserved Windows filename",
-                name,
-            );
+            anyhow::bail!(t!("error_is_windows_reserved", name = name),);
         } else {
-            warning(format!(
-                "the name `{}` is a reserved Windows filename\n\
-                This package will not work on Windows platforms.",
-                name
-            ));
+            warning(t!("warning_is_windows_reserved", name = name).replace(r"\n", "\n"));
         }
     }
     if restricted_names::is_non_ascii_name(name) {
-        warning(format!(
-            "the name `{}` contains non-ASCII characters\n\
-            Non-ASCII crate names are not supported by Rust.",
-            name
-        ));
+        warning(t!("warning_is_non_ascii_name", name = name).replace(r"\n", "\n"));
     }
     Ok(())
 }
@@ -187,21 +158,14 @@ fn check_path(path: &Path) -> Result<()> {
     // warn if the path contains characters that will break `env::join_paths`
     if join_paths(slice::from_ref(&OsStr::new(path)), "").is_err() {
         let path = path.to_string_lossy();
-        print_util::warning(format!(
-            "the path `{path}` contains invalid PATH characters (usually `:`, `;`, or `\"`)\n\
-            It is recommended to use a different name to avoid problems."
-        ));
+        print_util::warning(t!("warning_invalid_path", path = path));
     }
     Ok(())
 }
 
 pub fn join_paths<T: AsRef<OsStr>>(paths: &[T], env: &str) -> Result<OsString> {
     env::join_paths(paths.iter()).with_context(|| {
-        let mut message = format!(
-            "failed to join paths from `${env}` together\n\n\
-             Check if any of path segments listed below contain an \
-             unterminated quote character or path separator:"
-        );
+        let mut message = t!("erroe_join_paths", env = env).replace(r"\n", "\n");
         for path in paths {
             use std::fmt::Write;
             write!(&mut message, "\n    {:?}", Path::new(path)).unwrap();
@@ -253,14 +217,12 @@ fn init_config() -> Result<Option<Config>> {
         ..ColorfulTheme::default()
     };
     let selections = &[
-        "salvo_web_api (Default web api template) ",
-        "salvo_web_site (Default web site template)",
+        t!("salvo_web_api"),
+        t!("salvo_web_site"),
         // "custom",
     ];
     let selection = Select::with_theme(&theme)
-        .with_prompt(
-            " Welcome to use salvo cli, please choose a template type\n   space bar to confirm",
-        )
+        .with_prompt(t!("welcome_message").replace(r"\n", "\n"))
         .default(0)
         .items(&selections[..])
         .interact()?;
