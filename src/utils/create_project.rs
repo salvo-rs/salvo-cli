@@ -21,7 +21,7 @@ pub fn create_project(project: Project) -> Result<()> {
     let project_name = &project.project_name;
     let project_path = Path::new(project_name);
     if project_path.exists() {
-        anyhow::bail!("destination `{}` already exists", project_path.display())
+        anyhow::bail!(t!("error_project_path_exist",path=project_path.to_string_lossy()))
     }
 
     check_path(project_path)?;
@@ -65,6 +65,11 @@ fn write_project_file(project_path: &Path, config: Config, project: Project) -> 
             "tracing": "0.1"
         },
         "is_web_site":is_web_site,
+        "main_log_message":t!("main_log_message"),
+        "config_error_no_exits":t!("config_error_no_exits"),
+        "config_error_read":t!("config_error_read"),
+        "config_error_parse":t!("config_error_parse"),
+        "config_error_read_failed":t!("config_error_read_failed"),
     });
     std::fs::create_dir_all(project_path)?;
 
@@ -81,9 +86,10 @@ fn write_project_file(project_path: &Path, config: Config, project: Project) -> 
     let cargo_rendered = handlebars.render_template(cargo_template, &data)?;
     let mut cargo_file = File::create(cargo_file_path)?;
     cargo_file.write_all(cargo_rendered.as_bytes())?;
-    let config_rs = include_bytes!("../template/src/config.rs");
+    let config_template = include_str!("../template/src/config_template.hbs");
+    let config_rendered = handlebars.render_template(config_template, &data)?;
     let mut config_file = File::create(src_path.join("config.rs"))?;
-    config_file.write_all(config_rs)?;
+    config_file.write_all(config_rendered.as_bytes())?;
     let app_error_rs = include_bytes!("../template/src/app_error.rs");
     let mut app_error_file = File::create(src_path.join("app_error.rs"))?;
     app_error_file.write_all(app_error_rs)?;

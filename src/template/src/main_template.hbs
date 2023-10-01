@@ -55,7 +55,7 @@ async fn handle404(&self, _req: &Request, _depot: &Depot, res: &mut Response, ct
 {{/if}}
 #[tokio::main]
 async fn main() {
-    //At the same time, logs are only output to the terminal or file
+    //{{main_log_message}}
     init_log();
 
     let (tx, rx) = oneshot::channel();

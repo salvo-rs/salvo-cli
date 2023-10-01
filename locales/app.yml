@@ -239,4 +239,21 @@ erroe_join_paths:
   th: ไม่สามารถรวมเส้นทางจาก `$%{env}` ไว้ด้วยกัน\n ตรวจสอบว่าเส้นทางเซกเมนต์ใดที่ระบุด้านล่างนี้มี \n อักขระเครื่องหมายคำพูดที่ไม่สมบูรณ์หรือตัวคั่นเส้นทาง
   el: απέτυχε να ενώσει διαδρομές από το `$%{env}` μαζί\n Ελέγξτε εάν κάποιο από τα τμήματα διαδρομής που αναφέρονται παρακάτω περιέχει ένα \n μη τερματισμένο χαρακτήρα παράθεσης ή διαχωριστικό διαδρομής
   da: kunne ikke slå stier fra `$%{env}` sammen\n Kontroller, om nogen af sti-segmenterne, der er anført nedenfor, indeholder en \n ikke-afsluttet anførselstegn eller sti-separator
-  
+error_project_path_exist:
+  en: destination `%{path}` already exists  
+  zh_CN: 目标路径 `%{path}` 已存在
+  zh_TW: 目標路徑 `%{path}` 已存在
+  fr: la destination `%{path}` existe déjà
+  ja: 宛先 `%{path}` は既に存在します
+  es: el destino `%{path}` ya existe
+  de: das Ziel `%{path}` existiert bereits
+  ru: пункт назначения `%{path}` уже существует
+  it: la destinazione `%{path}` esiste già
+  pt: o destino `%{path}` já existe
+  ko: 목적지 `%{path}`이 이미 존재합니다
+  no: destinasjon `%{path}` finnes allerede
+  is: áfangastaður `%{path}` er þegar til
+  uk: призначення `%{path}` вже існує
+  th: ปลายทาง `%{path}` มีอยู่แล้ว
+  el: ο προορισμός `%{path}` υπάρχει ήδη
+  da: destination `%{path}` findes allerede

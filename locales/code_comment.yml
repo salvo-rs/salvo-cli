@@ -1,0 +1,91 @@
+_version: 2
+main_log_message:
+  en: At the same time, logs are only output to the terminal or file
+  zh_CN: 同一时间，日志只输出到终端或文件
+  zh_TW: 同一時間，日誌只輸出到終端或文件
+  fr: En même temps, les journaux ne sont sortis que vers le terminal ou le fichier
+  ja: 同時に、ログはターミナルまたはファイルにのみ出力されます
+  es: Al mismo tiempo, los registros solo se envían a la terminal o al archivo
+  de: Gleichzeitig werden Protokolle nur auf das Terminal oder die Datei ausgegeben
+  ru: В то же время журналы выводятся только в терминал или файл
+  it: Allo stesso tempo, i log vengono inviati solo al terminale o al file
+  pt: Ao mesmo tempo, os logs são enviados apenas para o terminal ou arquivo
+  ko: 동시에 로그는 터미널 또는 파일로만 출력됩니다
+  no: Samtidig blir logger bare sendt til terminalen eller filen
+  is: Á sama tíma eru skráarstofur aðeins sendar til endastöðvarinnar eða skráarinnar
+  uk: У той же час журнали виводяться тільки в термінал або файл
+  th: ในเวลาเดียวกันบันทึกจะถูกส่งออกไปที่เทอร์มินัลหรือไฟล์เท่านั้น
+  el: Ταυτόχρονα, τα αρχεία καταγραφής εξάγονται μόνο στο τερματικό ή στο αρχείο
+  da: Samtidig sendes logfiler kun til terminalen eller filen
+config_error_no_exits:
+  en: Configuration file does not exist:{},error message:{}
+  zh_CN: 配置文件不存在:{},错误信息:{}
+  zh_TW: 配置文件不存在:{},錯誤信息:{}
+  fr: Le fichier de configuration n'existe pas:{}, message d'erreur:{}
+  ja: 設定ファイルが存在しません:{},エラーメッセージ:{}
+  es: El archivo de configuración no existe:{}, mensaje de error:{}
+  de: Die Konfigurationsdatei existiert nicht:{}, Fehlermeldung:{}
+  ru: Файл конфигурации не существует:{}, сообщение об ошибке:{}
+  it: Il file di configurazione non esiste:{}, messaggio di errore:{}
+  pt: O arquivo de configuração não existe:{}, mensagem de erro:{}
+  ko: 구성 파일이 없습니다:{}, 오류 메시지:{}
+  no: Konfigurasjonsfilen eksisterer ikke:{}, feilmelding:{}
+  is: Stillingaskráin er ekki til:{}, villuboð:{}
+  uk: Файл конфігурації не існує:{}, повідомлення про помилку:{}
+  th: ไม่มีไฟล์กำหนดค่า:{}, ข้อความผิดพลาด:{}
+  el: Το αρχείο ρυθμίσεων δεν υπάρχει:{}, μήνυμα σφάλματος:{}
+  da: Konfigurationsfilen findes ikke:{}, fejlmeddelelse:{}
+config_error_read:
+  en: Failed to read configuration file, error message:{}
+  zh_CN: 读取配置文件失败,错误信息:{}
+  zh_TW: 讀取配置文件失敗,錯誤信息:{}
+  fr: Échec de la lecture du fichier de configuration, message d'erreur:{}
+  ja: 設定ファイルの読み取りに失敗しました。エラーメッセージ:{}
+  es: Error al leer el archivo de configuración, mensaje de error:{}
+  de: Fehler beim Lesen der Konfigurationsdatei, Fehlermeldung:{}
+  ru: Ошибка чтения файла конфигурации, сообщение об ошибке:{}
+  it: Impossibile leggere il file di configurazione, messaggio di errore:{}
+  pt: Falha ao ler o arquivo de configuração, mensagem de erro:{}
+  ko: 구성 파일을 읽는 데 실패했습니다. 오류 메시지:{}
+  no: Kunne ikke lese konfigurasjonsfilen, feilmelding:{}
+  is: Tókst ekki að lesa stillingaskrá, villuboð:{}
+  uk: Не вдалося прочитати файл конфігурації, повідомлення про помилку:{}
+  th: ไม่สามารถอ่านไฟล์กำหนดค่าได้ ข้อความผิดพลาด:{}
+  el: Απέτυχε η ανάγνωση του αρχείου ρυθμίσεων, μήνυμα σφάλματος:{}
+  da: Kunne ikke læse konfigurationsfilen, fejlmeddelelse:{}
+config_error_parse:
+  en: Failed to parse configuration file, error message:{}
+  zh_CN: 解析配置文件失败,错误信息:{}
+  zh_TW: 解析配置文件失敗,錯誤信息:{}
+  fr: Échec de l'analyse du fichier de configuration, message d'erreur:{}
+  ja: 設定ファイルの解析に失敗しました。エラーメッセージ:{}
+  es: Error al analizar el archivo de configuración, mensaje de error:{}
+  de: Fehler beim Analysieren der Konfigurationsdatei, Fehlermeldung:{}
+  ru: Ошибка анализа файла конфигурации, сообщение об ошибке:{}
+  it: Impossibile analizzare il file di configurazione, messaggio di errore:{}
+  pt: Falha ao analisar o arquivo de configuração, mensagem de erro:{}
+  ko: 구성 파일을 구문 분석하는 데 실패했습니다. 오류 메시지:{}
+  no: Kunne ikke analysere konfigurasjonsfilen, feilmelding:{}
+  is: Tókst ekki að greina stillingaskrá, villuboð:{}
+  uk: Не вдалося проаналізувати файл конфігурації, повідомлення про помилку:{}
+  th: ไม่สามารถแยกวิเคราะห์ไฟล์กำหนดค่าได้ ข้อความผิดพลาด:{}
+  el: Απέτυχε η ανάλυση του αρχείου ρυθμίσεων, μήνυμα σφάλματος:{}
+  da: Kunne ikke analysere konfigurationsfilen, fejlmeddelelse:{}
+config_error_read_failed:
+  en: failed to read file
+  zh_CN: 读取文件失败
+  zh_TW: 讀取文件失敗
+  fr: échec de la lecture du fichier
+  ja: ファイルの読み取りに失敗しました
+  es: error al leer el archivo
+  de: Fehler beim Lesen der Datei
+  ru: не удалось прочитать файл
+  it: impossibile leggere il file
+  pt: falha ao ler o arquivo
+  ko: 파일을 읽는 데 실패했습니다
+  no: kunne ikke lese filen
+  is: tókst ekki að lesa skrána
+  uk: не вдалося прочитати файл
+  th: อ่านไฟล์ล้มเหลว
+  el: απέτυχε η ανάγνωση του αρχείου
+  da: kunne ikke læse filen
