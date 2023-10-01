@@ -1,4 +1,7 @@
+use rust_i18n::i18n;
+
 pub fn set_locale() {
+    i18n!("locales", fallback = "en");
     match get_language() {
         Some(lang) => {
             rust_i18n::set_locale(lang.as_str());
