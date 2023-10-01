@@ -1,6 +1,5 @@
 use crate::Project;
 use anyhow::{Context, Result};
-use dialoguer::{console::Style, theme::ColorfulTheme, Select};
 use handlebars::Handlebars;
 use print_util::success;
 use rust_i18n::t;
@@ -14,7 +13,7 @@ use std::{
     slice,
 };
 
-use super::{print_util, restricted_names, warning};
+use super::{print_util, restricted_names, warning, get_selection::{get_user_selected, UserSelected, TemplateType}};
 
 pub fn create_project(project: Project) -> Result<()> {
     check_name(&project.project_name)?;
@@ -25,14 +24,14 @@ pub fn create_project(project: Project) -> Result<()> {
     }
 
     check_path(project_path)?;
-    let config = init_config()?;
+    let config = get_user_selected()?;
     match config {
         Some(config) => {
-            write_project_file(project_path, config, project.clone())?;
+            // write_project_file(project_path, config, project.clone())?;
 
-            init_git(project_path)?;
+            // init_git(project_path)?;
 
-            success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
+            // success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
         }
         None => anyhow::bail!("cli quit!"),
     }
@@ -40,7 +39,7 @@ pub fn create_project(project: Project) -> Result<()> {
     Ok(())
 }
 
-fn write_project_file(project_path: &Path, config: Config, project: Project) -> Result<()> {
+fn write_project_file(project_path: &Path, config: UserSelected, project: Project) -> Result<()> {
     let handlebars = Handlebars::new();
     let is_web_site = config.template_type == TemplateType::SalvoWebSite;
     let data = json!({
@@ -210,37 +209,3 @@ fn _create_dir_all(p: &Path) -> Result<()> {
     Ok(())
 }
 
-#[derive(Debug)]
-pub struct Config {
-    pub template_type: TemplateType,
-}
-
-fn init_config() -> Result<Option<Config>> {
-    let theme = ColorfulTheme {
-        defaults_style: Style::new().blue(),
-        prompt_style: Style::new().green().bold(),
-        values_style: Style::new().yellow().dim(),
-        ..ColorfulTheme::default()
-    };
-    let selections = &[
-        t!("salvo_web_api"),
-        t!("salvo_web_site"),
-        // "custom",
-    ];
-    let selection = Select::with_theme(&theme)
-        .with_prompt(t!("welcome_message").replace(r"\n", "\n"))
-        .default(0)
-        .items(&selections[..])
-        .interact()?;
-    let template_type = match selection {
-        0 => TemplateType::SalvoWebApi,
-        1 => TemplateType::SalvoWebSite,
-        _ => anyhow::bail!("Invalid selection"),
-    };
-    Ok(Some(Config { template_type }))
-}
-#[derive(Debug, PartialEq)]
-pub enum TemplateType {
-    SalvoWebSite,
-    SalvoWebApi,
-}
