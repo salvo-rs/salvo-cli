@@ -1,8 +1,9 @@
 [package]
 name = "salvo-cli"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
-authors = ["Fankai Liu  liufankai137@outlook.com"] 
+authors = ["Fankai Liu  liufankai137@outlook.com"]
+keywords = ["salvo", "cli"]
 description = "This CLI tool aims to streamline the process of setting up a new project by generating a template structure. Key features might include generating boilerplate code, configuring necessary dependencies, and setting up a basic project structure suitable for Salvo-based applications"
 license = "MIT/Apache-2.0"
 repository = "https://github.com/fankaiLiu/salvo-cli"
