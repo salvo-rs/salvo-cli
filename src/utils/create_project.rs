@@ -13,14 +13,20 @@ use std::{
     slice,
 };
 
-use super::{print_util, restricted_names, warning, get_selection::{get_user_selected, UserSelected, TemplateType, DbConnectionType, DbType}};
+use super::{
+    get_selection::{get_user_selected, DbConnectionType, DbType, TemplateType, UserSelected},
+    print_util, restricted_names, warning,
+};
 
 pub fn create_project(project: Project) -> Result<()> {
     check_name(&project.project_name)?;
     let project_name = &project.project_name;
     let project_path = Path::new(project_name);
     if project_path.exists() {
-        anyhow::bail!(t!("error_project_path_exist",path=project_path.to_string_lossy()))
+        anyhow::bail!(t!(
+            "error_project_path_exist",
+            path = project_path.to_string_lossy()
+        ))
     }
 
     check_path(project_path)?;
@@ -39,11 +45,15 @@ pub fn create_project(project: Project) -> Result<()> {
     Ok(())
 }
 
-fn write_project_file(project_path: &Path, user_selected: UserSelected, project: Project) -> Result<()> {
+fn write_project_file(
+    project_path: &Path,
+    user_selected: UserSelected,
+    project: Project,
+) -> Result<()> {
     let handlebars = Handlebars::new();
     let is_web_site = user_selected.template_type == TemplateType::SalvoWebSite;
-    let need_db_conn=user_selected.db_conn_type!=DbConnectionType::Nothing;
-    let is_sqlx=user_selected.db_conn_type==DbConnectionType::Sqlx;
+    let need_db_conn = user_selected.db_conn_type != DbConnectionType::Nothing;
+    let is_sqlx = user_selected.db_conn_type == DbConnectionType::Sqlx;
     let is_mysql = user_selected.db_type == DbType::Mysql;
     let is_postgres = user_selected.db_type == DbType::Postgres;
     let is_sqlite = user_selected.db_type == DbType::Sqlite;
@@ -83,62 +93,139 @@ fn write_project_file(project_path: &Path, user_selected: UserSelected, project:
     std::fs::create_dir_all(project_path)?;
 
     let src_path = project_path.join("src");
+    //src
     std::fs::create_dir_all(&src_path)?;
-
+    //src/main.rs
     let main_file_path = src_path.join("main.rs");
     let main_template = include_str!("../template/src/main_template.hbs");
     let main_rendered = handlebars.render_template(main_template, &data)?;
     let mut main_file = File::create(main_file_path)?;
     main_file.write_all(main_rendered.as_bytes())?;
+    //src/Cargo.toml
     let cargo_file_path = project_path.join("Cargo.toml");
     let cargo_template = include_str!("../template/src/cargo_template.hbs");
     let cargo_rendered = handlebars.render_template(cargo_template, &data)?;
     let mut cargo_file = File::create(cargo_file_path)?;
     cargo_file.write_all(cargo_rendered.as_bytes())?;
+    //src/config.rs
     let config_template = include_str!("../template/src/config_template.hbs");
     let config_rendered = handlebars.render_template(config_template, &data)?;
     let mut config_file = File::create(src_path.join("config.rs"))?;
     config_file.write_all(config_rendered.as_bytes())?;
+    //src/app_error.rs
     let app_error_template = include_str!("../template/src/app_error.hbs");
     let app_error_rendered = handlebars.render_template(app_error_template, &data)?;
     let mut app_error_file = File::create(src_path.join("app_error.rs"))?;
     app_error_file.write_all(app_error_rendered.as_bytes())?;
+    if need_db_conn {
+        //src/db.rs
+        let db_template = include_str!("../template/src/db.hbs");
+        let db_rendered = handlebars.render_template(db_template, &data)?;
+        let mut db_file = File::create(src_path.join("db.rs"))?;
+        db_file.write_all(db_rendered.as_bytes())?;
+        //src/app_response.rs
+        let app_response_template = include_str!("../template/src/app_response.hbs");
+        let app_response_rendered = handlebars.render_template(app_response_template, &data)?;
+        let mut app_response_file = File::create(src_path.join("app_response.rs"))?;
+        app_response_file.write_all(app_response_rendered.as_bytes())?;
+    }
+    //src/middleware
     let middleware_path = src_path.join("middleware");
     std::fs::create_dir_all(&middleware_path)?;
     let jwt_bytes = include_bytes!("../template/src/middleware/jwt.rs");
     let mut jwt_file = File::create(middleware_path.join("jwt.rs"))?;
     jwt_file.write_all(jwt_bytes)?;
+    //src/middleware/mod.rs
     let mod_bytes = include_bytes!("../template/src/middleware/mod.rs");
     let mut mod_file = File::create(middleware_path.join("mod.rs"))?;
     mod_file.write_all(mod_bytes)?;
+    //src/middleware/handle404.rs
+    let handle404_template = include_str!("../template/src/middleware/handle404.hbs");
+    let handle404_rendered = handlebars.render_template(handle404_template, &data)?;
+    let mut handle404_file = File::create(middleware_path.join("handle404.rs"))?;
+    handle404_file.write_all(handle404_rendered.as_bytes())?;
 
+    //config
     let config_path = project_path.join("config");
     std::fs::create_dir_all(&config_path)?;
+    //config/config.toml
     let config_template = include_str!("../template/config/config.hbs");
-
     let config_toml_rendered = handlebars.render_template(config_template, &data)?;
     let mut config_file = File::create(config_path.join("config.toml"))?;
     config_file.write_all(config_toml_rendered.as_bytes())?;
-
+    //config/certs
     let cert_path = config_path.join("certs");
     std::fs::create_dir_all(&cert_path)?;
+    //config/certs/cert.pem
     let cert_template = include_str!("../template/config/certs/cert.pem");
     let mut cert_file = File::create(cert_path.join("cert.pem"))?;
     cert_file.write_all(cert_template.as_bytes())?;
+    //config/certs/key.pem
     let key_path = cert_path.join("key.pem");
     let key_template = include_str!("../template/config/certs/key.pem");
     let mut key_file = File::create(key_path)?;
     key_file.write_all(key_template.as_bytes())?;
     if is_web_site {
+        //template
         let template_path = project_path.join("template");
         std::fs::create_dir_all(&template_path)?;
+        //template/hello.html
         let hello_html_template = include_bytes!("../template/templates/hello.html");
         let mut hello_html_file = File::create(template_path.join("hello.html"))?;
         hello_html_file.write_all(hello_html_template)?;
+        //template/handle_404.html
         let handle_404_template = include_bytes!("../template/templates/404.html");
         let mut handle_404_file = File::create(template_path.join("handle_404.html"))?;
         handle_404_file.write_all(handle_404_template)?;
+        if need_db_conn {
+            //template/login.html
+            let login_html_template = include_bytes!("../template/templates/login.html");
+            let mut login_html_file = File::create(template_path.join("login.html"))?;
+            login_html_file.write_all(login_html_template)?;
+            //template/user_list_page
+            let user_list_page_template =
+                include_bytes!("../template/templates/user_list_page.html");
+            let mut user_list_page_file = File::create(template_path.join("user_list_page.html"))?;
+            user_list_page_file.write_all(user_list_page_template)?;
+        }
     }
+    //src/router
+    let router_path = src_path.join("routers");
+    std::fs::create_dir_all(&router_path)?;
+    //src/router/mod.rs
+    let router_mod_template = include_str!("../template/src/routers/mod.hbs");
+    let router_mod_rendered = handlebars.render_template(router_mod_template, &data)?;
+    let mut router_mod_file = File::create(router_path.join("mod.rs"))?;
+    router_mod_file.write_all(router_mod_rendered.as_bytes())?;
+    //src/router/demo.rs
+    let router_demo_template = include_str!("../template/src/routers/demo.hbs");
+    let router_demo_rendered = handlebars.render_template(router_demo_template, &data)?;
+    let mut router_demo_file = File::create(router_path.join("demo.rs"))?;
+    router_demo_file.write_all(router_demo_rendered.as_bytes())?;
+    if need_db_conn {
+        //src/router/user.rs
+        let router_user_template = include_str!("../template/src/routers/user.hbs");
+        let router_user_rendered = handlebars.render_template(router_user_template, &data)?;
+        let mut router_user_file = File::create(router_path.join("user.rs"))?;
+        router_user_file.write_all(router_user_rendered.as_bytes())?;
+    }
+
+    if need_db_conn {
+        //src/services
+        let services_path = src_path.join("services");
+        std::fs::create_dir_all(&services_path)?;
+        //src/services/mod.rs
+        let services_mod_template = include_str!("../template/src/services/mod.hbs");
+        let services_mod_rendered = handlebars.render_template(services_mod_template, &data)?;
+        let mut services_mod_file = File::create(services_path.join("mod.rs"))?;
+        services_mod_file.write_all(services_mod_rendered.as_bytes())?;
+        //src/services/user.rs
+        let services_user_template = include_str!("../template/src/services/user.hbs");
+        let services_user_rendered = handlebars.render_template(services_user_template, &data)?;
+        let mut services_user_file = File::create(services_path.join("user.rs"))?;
+        services_user_file.write_all(services_user_rendered.as_bytes())?;
+    }
+
     Ok(())
 }
 
@@ -218,4 +305,3 @@ fn _create_dir_all(p: &Path) -> Result<()> {
         .with_context(|| format!("failed to create directory `{}`", p.display()))?;
     Ok(())
 }
-

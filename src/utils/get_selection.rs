@@ -1,6 +1,6 @@
 use anyhow::Result;
+use dialoguer::{console::Style, theme::ColorfulTheme, Select};
 use rust_i18n::t;
-use dialoguer::{theme::ColorfulTheme, Select, console::Style};
 
 #[derive(Debug)]
 pub struct UserSelected {
@@ -8,7 +8,6 @@ pub struct UserSelected {
     pub db_type: DbType,
     pub db_conn_type: DbConnectionType,
 }
-
 
 pub fn get_user_selected() -> Result<Option<UserSelected>> {
     let theme = ColorfulTheme {
@@ -47,20 +46,17 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         .items(&db_conn_types[..])
         .interact()?;
 
-        let db_conn_type = match db_conn_type_selection {
-            0 => DbConnectionType::Sqlx,
-            1 => DbConnectionType::Diesel,
-            2 => DbConnectionType::SeaOrm,
-            3 => DbConnectionType::Rbatis,
-            4 => DbConnectionType::Nothing,
-            _ => anyhow::bail!("Invalid db connection type selection"),
-        };
-
+    let db_conn_type = match db_conn_type_selection {
+        0 => DbConnectionType::Sqlx,
+        1 => DbConnectionType::Diesel,
+        2 => DbConnectionType::SeaOrm,
+        3 => DbConnectionType::Rbatis,
+        4 => DbConnectionType::Nothing,
+        _ => anyhow::bail!("Invalid db connection type selection"),
+    };
 
     let db_types = &[
-        "sqlite",
-        "mysql",
-        "postgres",
+        "sqlite", "mysql", "postgres",
         // "custom",
     ];
     let db_type_selection = Select::with_theme(&theme)
@@ -75,7 +71,11 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         _ => anyhow::bail!("Invalid db type selection"),
     };
 
-        Ok(Some(UserSelected { template_type, db_type, db_conn_type }))
+    Ok(Some(UserSelected {
+        template_type,
+        db_type,
+        db_conn_type,
+    }))
 }
 #[derive(Debug, PartialEq)]
 pub enum TemplateType {
@@ -84,14 +84,14 @@ pub enum TemplateType {
 }
 
 #[derive(Debug, PartialEq)]
-pub enum  DbType {
+pub enum DbType {
     Sqlite,
     Mysql,
     Postgres,
 }
 
-#[derive(Debug,PartialEq)]
-pub enum  DbConnectionType {
+#[derive(Debug, PartialEq)]
+pub enum DbConnectionType {
     Sqlx,
     Diesel,
     SeaOrm,

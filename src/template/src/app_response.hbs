@@ -1,0 +1,53 @@
+use salvo::{prelude::StatusCode, writing::Json, Response};
+use serde::Serialize;
+
+#[derive(Debug, Serialize, Default)]
+pub struct Res<T> {
+    pub code: i32,
+    pub data: T,
+    pub msg: String,
+}
+
+#[derive(Debug, Serialize, Default)]
+pub struct ErrRes {
+    pub code: i32,
+    pub msg: String,
+}
+
+impl<T: Serialize + Send + Default> Res<T> {
+    pub fn with_data(data: T) -> Self {
+        Self {
+            code: 200,
+            data,
+            msg: "success".to_string(),
+        }
+    }
+    #[allow(dead_code)]
+    pub fn with_data_msg(data: T, msg: &str) -> Self {
+        Self {
+            code: 200,
+            data,
+            msg: msg.to_string(),
+        }
+    }
+}
+
+impl ErrRes {
+    pub fn with_err(err: &str) -> Self {
+        Self {
+            code: 500,
+            msg: err.to_string(),
+        }
+    }
+}
+impl<T: Serialize + Send + Default> Res<T> {
+    pub fn into_response(self, res: &mut Response) {
+        res.render(Json(self));
+    }
+}
+
+impl ErrRes {
+    pub fn into_response(self, res: &mut Response) {
+        res.stuff(StatusCode::INTERNAL_SERVER_ERROR, Json(self));
+    }
+}
