@@ -1,0 +1,43 @@
+use crate::middleware::jwt::jwt_hoop;
+use salvo::{
+    prelude::{CatchPanic, Logger, OpenApi, SwaggerUi},
+    Router,
+};
+
+use self::{
+    demo::hello,
+{{#if need_db_conn}}
+    user::{
+        delete_user, get_users, login_page, post_add_user, post_login, post_update_user,
+        user_list_page,
+    },
+{{/if}}
+};
+pub mod demo;
+pub mod user;
+
+pub fn router() -> Router {
+    let router = Router::new()
+        .hoop(Logger::new())
+        .hoop(CatchPanic::new())
+        .get(hello)
+        .push(Router::with_path("login").get(login_page).post(post_login))
+        .push(user_router().hoop(jwt_hoop()));
+    let doc = OpenApi::new("salvo web api", "0.0.1").merge_router(&router);
+    router
+        .push(doc.into_router("/api-doc/openapi.json"))
+        .push(SwaggerUi::new("/api-doc/openapi.json").into_router("swagger-ui"))
+}
+{{#if need_db_conn}}
+pub fn user_router() -> Router {
+    Router::with_path("user")
+        .post(post_add_user)
+        .put(post_update_user)
+        .delete(delete_user)
+        {{#if is_web_site}}
+        .get(user_list_page)
+        {{else}}
+        .get(get_users)
+        {{/if}}
+}
+{{/if}}

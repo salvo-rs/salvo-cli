@@ -1,0 +1,96 @@
+<div id="body">
+    <div class="px-4 sm:px-6 lg:px-8" >
+      <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+          <h1 class="text-base font-semibold leading-6 text-gray-900">
+            用户列表
+          </h1>
+          <p class="mt-2 text-sm text-gray-700">名称</p>
+        </div>
+      </div>
+      <div class="mt-8 flow-root">
+        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div
+            class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
+          >
+            <table class="min-w-full divide-y divide-gray-300">
+              <thead>
+                <tr>
+                  <th
+                    scope="col"
+                    class="hidden py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                  >
+                    user_id
+                  </th>
+                  <th
+                    scope="col"
+                    class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                  >
+                    Name
+                  </th>
+                  <th scope="col" class="relative py-3.5 pl-3 pr-4 text-right sm:pr-0">
+                    <span class="sr-only">Delete</span>
+                    Delete
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                {% for user in users %}
+                <tr>
+                  <td
+                    class="hidden whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
+                  >
+                    {{user.id}}
+                  </td>
+                  <td
+                    class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
+                  >
+                    {{user.username}}
+                  </td>
+                  <td
+                    class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
+                    onclick="
+    Swal.fire({
+      title: '确定删除吗',
+      showCancelButton: true,
+      confirmButtonText: 'yes',
+      preConfirm: () => {
+        return fetch('/user', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: '{{user.id}}',
+          })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(response.statusText)
+          }
+          location.reload();
+          return
+        })
+        .catch(error => {
+          Swal.showValidationMessage(
+            `Request failed: ${error}`
+          )
+        })
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    })
+  "
+                    ><a href="#" class="text-indigo-600 hover:text-indigo-900"
+                      >删除<span class="sr-only">删除</span></a
+                    >
+                  </td>
+                </tr>
+                {% endfor %}
+                <!-- More people... -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

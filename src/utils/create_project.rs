@@ -13,7 +13,7 @@ use std::{
     slice,
 };
 
-use super::{print_util, restricted_names, warning, get_selection::{get_user_selected, UserSelected, TemplateType}};
+use super::{print_util, restricted_names, warning, get_selection::{get_user_selected, UserSelected, TemplateType, DbConnectionType, DbType}};
 
 pub fn create_project(project: Project) -> Result<()> {
     check_name(&project.project_name)?;
@@ -39,9 +39,14 @@ pub fn create_project(project: Project) -> Result<()> {
     Ok(())
 }
 
-fn write_project_file(project_path: &Path, config: UserSelected, project: Project) -> Result<()> {
+fn write_project_file(project_path: &Path, user_selected: UserSelected, project: Project) -> Result<()> {
     let handlebars = Handlebars::new();
-    let is_web_site = config.template_type == TemplateType::SalvoWebSite;
+    let is_web_site = user_selected.template_type == TemplateType::SalvoWebSite;
+    let need_db_conn=user_selected.db_conn_type!=DbConnectionType::Nothing;
+    let is_sqlx=user_selected.db_conn_type==DbConnectionType::Sqlx;
+    let is_mysql = user_selected.db_type == DbType::Mysql;
+    let is_postgres = user_selected.db_type == DbType::Postgres;
+    let is_sqlite = user_selected.db_type == DbType::Sqlite;
     let data = json!({
         "project_name": project.project_name,
         "dependencies": {
@@ -64,6 +69,11 @@ fn write_project_file(project_path: &Path, config: UserSelected, project: Projec
             "tracing": "0.1"
         },
         "is_web_site":is_web_site,
+        "need_db_conn":need_db_conn,
+        "is_sqlx":is_sqlx,
+        "is_mysql":is_mysql,
+        "is_postgres":is_postgres,
+        "is_sqlite":is_sqlite,
         "main_log_message":t!("main_log_message"),
         "config_error_no_exits":t!("config_error_no_exits"),
         "config_error_read":t!("config_error_read"),
@@ -89,10 +99,10 @@ fn write_project_file(project_path: &Path, config: UserSelected, project: Projec
     let config_rendered = handlebars.render_template(config_template, &data)?;
     let mut config_file = File::create(src_path.join("config.rs"))?;
     config_file.write_all(config_rendered.as_bytes())?;
-    let app_error_rs = include_bytes!("../template/src/app_error.rs");
+    let app_error_template = include_str!("../template/src/app_error.hbs");
+    let app_error_rendered = handlebars.render_template(app_error_template, &data)?;
     let mut app_error_file = File::create(src_path.join("app_error.rs"))?;
-    app_error_file.write_all(app_error_rs)?;
-
+    app_error_file.write_all(app_error_rendered.as_bytes())?;
     let middleware_path = src_path.join("middleware");
     std::fs::create_dir_all(&middleware_path)?;
     let jwt_bytes = include_bytes!("../template/src/middleware/jwt.rs");
