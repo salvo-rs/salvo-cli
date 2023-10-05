@@ -1,7 +1,7 @@
-{{#if need_db_coon}}
+{{#if need_db_conn}}
 use crate::db::init_db_conn;
 {{/if}}
-use crate::middleware::handle404::handle_404;
+use crate::middleware::handle_404::handle_404;
 use crate::routers::router;
 use config::{CERT_KEY, CFG};
 use salvo::catcher::Catcher;
@@ -11,21 +11,23 @@ use tokio::sync::oneshot;
 mod app_error;
 mod app_response;
 mod config;
-{{#if need_db_coon}}
+{{#if need_db_conn}}
 mod db;
 mod dtos;
 mod services;
+mod models;
+mod utils;
 {{/if}}
 mod middleware;
-mod models;
 mod routers;
-mod utils;
 
 #[tokio::main]
 async fn main() {
     //{{main_log_message}}
     init_log();
+    {{#if need_db_conn}}
     init_db_conn().await;
+    {{/if}}
     let (tx, rx) = oneshot::channel();
     let router = router();
     let service: Service = router.into();

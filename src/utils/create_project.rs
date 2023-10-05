@@ -33,11 +33,11 @@ pub fn create_project(project: Project) -> Result<()> {
     let config = get_user_selected()?;
     match config {
         Some(config) => {
-            // write_project_file(project_path, config, project.clone())?;
+            write_project_file(project_path, config, project.clone())?;
 
-            // init_git(project_path)?;
+            init_git(project_path)?;
 
-            // success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
+            success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
         }
         None => anyhow::bail!("cli quit!"),
     }
@@ -57,7 +57,7 @@ fn write_project_file(
     let is_mysql = user_selected.db_type == DbType::Mysql;
     let is_postgres = user_selected.db_type == DbType::Postgres;
     let is_sqlite = user_selected.db_type == DbType::Sqlite;
-    let data = json!({
+    let mut data = json!({
         "project_name": project.project_name,
         "dependencies": {
             "anyhow": "1.0.75",
@@ -90,6 +90,43 @@ fn write_project_file(
         "config_error_parse":t!("config_error_parse"),
         "config_error_read_failed":t!("config_error_read_failed"),
     });
+    if is_sqlx {
+        // Add sqlx dependencies
+        let mut dependencies = data["dependencies"].clone();
+        if is_mysql {
+            dependencies["sqlx"] = json!({
+                "version": "0.7",
+                "features": ["runtime-tokio", "macros", "mysql"]
+            });
+        }
+        if is_postgres {
+            dependencies["sqlx"] = json!({
+                "version": "0.7",
+                "features": ["runtime-tokio", "macros", "postgres"]
+            });
+        }
+        if is_sqlite {
+            dependencies["sqlx"] = json!({
+                "version": "0.7",
+                "features": ["runtime-tokio", "macros", "sqlite"]
+            });
+        }
+        //add uuid dependency
+        dependencies["uuid"] = json!({
+            "version": "1.4.1",
+            "features": ["v4", "fast-rng", "macro-diagnostics"]
+        });
+        //add rand dependency
+        dependencies["rand"] = json!({
+            "version": "0.8.5",
+        });
+        //add argon2 dependency
+        dependencies["argon2"] = json!({
+            "version": "0.5.2",
+        });
+        data["dependencies"] = dependencies;
+    }   
+
     std::fs::create_dir_all(project_path)?;
 
     let src_path = project_path.join("src");
@@ -123,12 +160,13 @@ fn write_project_file(
         let db_rendered = handlebars.render_template(db_template, &data)?;
         let mut db_file = File::create(src_path.join("db.rs"))?;
         db_file.write_all(db_rendered.as_bytes())?;
-        //src/app_response.rs
-        let app_response_template = include_str!("../template/src/app_response.hbs");
-        let app_response_rendered = handlebars.render_template(app_response_template, &data)?;
-        let mut app_response_file = File::create(src_path.join("app_response.rs"))?;
-        app_response_file.write_all(app_response_rendered.as_bytes())?;
     }
+    //src/app_response.rs
+    let app_response_template = include_str!("../template/src/app_response.hbs");
+    let app_response_rendered = handlebars.render_template(app_response_template, &data)?;
+    let mut app_response_file = File::create(src_path.join("app_response.rs"))?;
+    app_response_file.write_all(app_response_rendered.as_bytes())?;
+
     //src/middleware
     let middleware_path = src_path.join("middleware");
     std::fs::create_dir_all(&middleware_path)?;
@@ -140,9 +178,9 @@ fn write_project_file(
     let mut mod_file = File::create(middleware_path.join("mod.rs"))?;
     mod_file.write_all(mod_bytes)?;
     //src/middleware/handle404.rs
-    let handle404_template = include_str!("../template/src/middleware/handle404.hbs");
+    let handle404_template = include_str!("../template/src/middleware/handle_404.hbs");
     let handle404_rendered = handlebars.render_template(handle404_template, &data)?;
-    let mut handle404_file = File::create(middleware_path.join("handle404.rs"))?;
+    let mut handle404_file = File::create(middleware_path.join("handle_404.rs"))?;
     handle404_file.write_all(handle404_rendered.as_bytes())?;
 
     //config
@@ -166,8 +204,8 @@ fn write_project_file(
     let mut key_file = File::create(key_path)?;
     key_file.write_all(key_template.as_bytes())?;
     if is_web_site {
-        //template
-        let template_path = project_path.join("template");
+        //templates
+        let template_path = project_path.join("templates");
         std::fs::create_dir_all(&template_path)?;
         //template/hello.html
         let hello_html_template = include_bytes!("../template/templates/hello.html");
@@ -224,6 +262,66 @@ fn write_project_file(
         let services_user_rendered = handlebars.render_template(services_user_template, &data)?;
         let mut services_user_file = File::create(services_path.join("user.rs"))?;
         services_user_file.write_all(services_user_rendered.as_bytes())?;
+        //src/utils
+        let utils_path = src_path.join("utils");
+        std::fs::create_dir_all(&utils_path)?;
+        //src/utils/mod.rs
+        let utils_mod_template = include_str!("../template/src/utils/mod.hbs");
+        let utils_mod_rendered = handlebars.render_template(utils_mod_template, &data)?;
+        let mut utils_mod_file = File::create(utils_path.join("mod.rs"))?;
+        utils_mod_file.write_all(utils_mod_rendered.as_bytes())?;
+
+        //src/utils/rand_utils.rs
+        let rand_utils_template = include_str!("../template/src/utils/rand_utils.hbs");
+        let rand_utils_rendered = handlebars.render_template(rand_utils_template, &data)?;
+        let mut rand_utils_file = File::create(utils_path.join("rand_utils.rs"))?;
+        rand_utils_file.write_all(rand_utils_rendered.as_bytes())?;
+
+        //src/dtos
+        let dtos_path = src_path.join("dtos");
+        std::fs::create_dir_all(&dtos_path)?;
+        //src/dtos/mod.rs
+        let dtos_mod_template = include_str!("../template/src/dtos/mod.hbs");
+        let dtos_mod_rendered = handlebars.render_template(dtos_mod_template, &data)?;
+        let mut dtos_mod_file = File::create(dtos_path.join("mod.rs"))?;
+        dtos_mod_file.write_all(dtos_mod_rendered.as_bytes())?;
+
+        //src/dtos/user.rs
+        let dtos_user_template = include_str!("../template/src/dtos/user.hbs");
+        let dtos_user_rendered = handlebars.render_template(dtos_user_template, &data)?;
+        let mut dtos_user_file = File::create(dtos_path.join("user.rs"))?;
+        dtos_user_file.write_all(dtos_user_rendered.as_bytes())?;
+
+        //src/models
+        let models_path = src_path.join("models");
+        std::fs::create_dir_all(&models_path)?;
+        //src/models/mod.rs
+        let models_mod_template = include_str!("../template/src/models/mod.hbs");
+        let models_mod_rendered = handlebars.render_template(models_mod_template, &data)?;
+        let mut models_mod_file = File::create(models_path.join("mod.rs"))?;
+        models_mod_file.write_all(models_mod_rendered.as_bytes())?;
+
+        //src/models/user.rs
+        let models_user_template = include_str!("../template/src/models/user.hbs");
+        let models_user_rendered = handlebars.render_template(models_user_template, &data)?;
+        let mut models_user_file = File::create(models_path.join("user.rs"))?;
+        models_user_file.write_all(models_user_rendered.as_bytes())?;
+
+        if is_sqlx {
+            if is_sqlite {
+                //data
+                let data_path = project_path.join("data");
+                std::fs::create_dir_all(&data_path)?;
+                //data/demo.db
+                let demo_db_bytes= include_bytes!("../template/data/demo.db");
+                let mut demo_db_file = File::create(data_path.join("demo.db"))?;
+            }
+            //.env
+            let env_template = include_str!("../template/.env.hbs");
+            let env_rendered = handlebars.render_template(env_template, &data)?;
+            let mut env_file = File::create(project_path.join(".env"))?;
+            env_file.write_all(env_rendered.as_bytes())?;
+        }
     }
 
     Ok(())

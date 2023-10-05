@@ -1,4 +1,6 @@
+{{#if is_web_site}}
 use askama::Template;
+{{/if}}
 use salvo::{
     endpoint,
     http::cookie::Cookie,
@@ -6,7 +8,6 @@ use salvo::{
     writing::{Redirect, Text},
     Request, Response,
 };
-
 use crate::{
     app_error::AppResult,
     app_response::{ErrRes, Res},

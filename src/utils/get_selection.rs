@@ -54,7 +54,13 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         4 => DbConnectionType::Nothing,
         _ => anyhow::bail!("Invalid db connection type selection"),
     };
-
+    if db_conn_type == DbConnectionType::Nothing {
+        return Ok(Some(UserSelected {
+            template_type,
+            db_type: DbType::Sqlite,
+            db_conn_type,
+        }));
+    }
     let db_types = &[
         "sqlite", "mysql", "postgres",
         // "custom",

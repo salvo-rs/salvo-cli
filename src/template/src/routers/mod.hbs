@@ -7,22 +7,34 @@ use salvo::{
 use self::{
     demo::hello,
 {{#if need_db_conn}}
+{{#if is_web_site}}
     user::{
         delete_user, get_users, login_page, post_add_user, post_login, post_update_user,
         user_list_page,
     },
+{{else}}
+    user::{
+        delete_user, get_users, post_add_user, post_login, post_update_user,
+    },
+{{/if}}
 {{/if}}
 };
 pub mod demo;
+{{#if need_db_conn}}
 pub mod user;
+{{/if}}
 
 pub fn router() -> Router {
     let router = Router::new()
         .hoop(Logger::new())
         .hoop(CatchPanic::new())
+        {{#if need_db_conn}}
         .get(hello)
         .push(Router::with_path("login").get(login_page).post(post_login))
         .push(user_router().hoop(jwt_hoop()));
+        {{else}}
+        .get(hello);
+        {{/if}}
     let doc = OpenApi::new("salvo web api", "0.0.1").merge_router(&router);
     router
         .push(doc.into_router("/api-doc/openapi.json"))

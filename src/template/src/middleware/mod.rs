@@ -1,2 +1,2 @@
-pub mod handle404;
+pub mod handle_404;
 pub mod jwt;

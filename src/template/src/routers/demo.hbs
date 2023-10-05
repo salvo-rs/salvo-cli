@@ -1,4 +1,6 @@
+{{#if is_web_site}}
 use askama::Template;
+{{/if}}
 use salvo::{endpoint, writing::Text, Request, Response};
 
 use crate::app_error::AppResult;
@@ -11,7 +13,7 @@ struct HelloTemplate<'a> {
 }
 
 #[endpoint]
-async fn hello(req: &mut Request, res: &mut Response)->AppResult<()>{
+pub async fn hello(req: &mut Request, res: &mut Response)->AppResult<()>{
     let hello_tmpl = HelloTemplate {
         name: req.param::<&str>("name").unwrap_or("World"),
     };
@@ -20,7 +22,7 @@ async fn hello(req: &mut Request, res: &mut Response)->AppResult<()>{
 }
 {{else}}
 #[endpoint]
-async fn hello() -> AppResult<&'static str> {
+pub async fn hello() -> AppResult<&'static str> {
     Ok("Hello World from salvo")
 }
 {{/if}}
