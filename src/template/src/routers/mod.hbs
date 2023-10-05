@@ -30,7 +30,11 @@ pub fn router() -> Router {
         .hoop(CatchPanic::new())
         {{#if need_db_conn}}
         .get(hello)
+        {{#if is_web_site}}
         .push(Router::with_path("login").get(login_page).post(post_login))
+        {{else}}
+        .push(Router::with_path("login").post(post_login))
+        {{/if}}
         .push(user_router().hoop(jwt_hoop()));
         {{else}}
         .get(hello);

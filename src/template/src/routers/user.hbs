@@ -92,11 +92,11 @@ pub async fn post_login(req: FormBody<UserLoginRequest>, res: &mut Response) {
                 .http_only(true)
                 .finish();
             res.add_cookie(cookie);
-            //Res::with_data(data).into_response(res)},
             res.render(Redirect::other("/user"));
         }
         Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
     }
+}
 {{else}}
 #[endpoint]
 pub async fn post_login(req: FormBody<UserLoginRequest>, res: &mut Response) {

@@ -66,7 +66,7 @@ fn write_project_file(
             "once_cell": "1.18.0",
             "salvo": {
                 "version": "*",
-                "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "rustls", "catch-panic"]
+                "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "rustls", "catch-panic","cookie"]
             },
             "serde": "1.0.188",
             "thiserror": "1.0.48",
@@ -225,6 +225,10 @@ fn write_project_file(
                 include_bytes!("../template/templates/user_list_page.html");
             let mut user_list_page_file = File::create(template_path.join("user_list_page.html"))?;
             user_list_page_file.write_all(user_list_page_template)?;
+            //template/user_list.html
+            let user_list_html_template = include_bytes!("../template/templates/user_list.html");
+            let mut user_list_html_file = File::create(template_path.join("user_list.html"))?;
+            user_list_html_file.write_all(user_list_html_template)?;
         }
     }
     //src/router
@@ -315,7 +319,15 @@ fn write_project_file(
                 //data/demo.db
                 let demo_db_bytes= include_bytes!("../template/data/demo.db");
                 let mut demo_db_file = File::create(data_path.join("demo.db"))?;
+                demo_db_file.write_all(demo_db_bytes)?;   
             }
+            //migrations
+            let migrations_path = project_path.join("migrations");
+            std::fs::create_dir_all(&migrations_path)?;
+            //migrations/2021-10-20-000000_create_users_table/up.sql
+            let up_sql_bytes = include_bytes!("../template/migrations/20231001143156_users.sql");
+            let mut up_sql_file = File::create(migrations_path.join("20231001143156_users.sql"))?;
+            up_sql_file.write_all(up_sql_bytes)?;
             //.env
             let env_template = include_str!("../template/.env.hbs");
             let env_rendered = handlebars.render_template(env_template, &data)?;
