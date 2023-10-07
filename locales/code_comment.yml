@@ -89,3 +89,115 @@ config_error_read_failed:
   th: อ่านไฟล์ล้มเหลว
   el: απέτυχε η ανάγνωση του αρχείου
   da: kunne ikke læse filen
+user_does_not_exist:
+  en: User does not exist.
+  zh_CN: 用户不存在。
+  zh_TW: 用戶不存在。
+  fr: L'utilisateur n'existe pas.
+  ja: ユーザーが存在しません。
+  es: El usuario no existe.
+  de: Benutzer existiert nicht.
+  ru: Пользователь не существует.
+  it: L'utente non esiste.
+  pt: O usuário não existe.
+  ko: 사용자가 존재하지 않습니다.
+  no: Brukeren eksisterer ikke.
+  is: Notandinn er ekki til.
+  uk: Користувача не існує.
+  th: ไม่มีผู้ใช้นี้
+  el: Ο χρήστης δεν υπάρχει.
+  da: Brugeren findes ikke.
+
+incorrect_password:
+  en: Incorrect password.
+  zh_CN: 密码不正确。
+  zh_TW: 密碼不正確。
+  fr: Mot de passe incorrect.
+  ja: パスワードが間違っています。
+  es: Contraseña incorrecta.
+  de: Falsches Passwort.
+  ru: Неверный пароль.
+  it: Password errata.
+  pt: Senha incorreta.
+  ko: 잘못된 비밀번호입니다.
+  no: Feil passord.
+  is: Rangt lykilorð.
+  uk: Невірний пароль.
+  th: รหัสผ่านไม่ถูกต้อง
+  el: Λάθος κωδικός πρόσβασης.
+  da: Forkert adgangskode.
+
+database_connection_failed:
+  en: Database connection failed.
+  zh_CN: 数据库连接失败。
+  zh_TW: 數據庫連接失敗。
+  fr: La connexion à la base de données a échoué.
+  ja: データベースへの接続に失敗しました。
+  es: Falló la conexión a la base de datos.
+  de: Datenbankverbindung fehlgeschlagen.
+  ru: Сбой подключения к базе данных.
+  it: Connessione al database fallita.
+  pt: Falha na conexão com o banco de dados.
+  ko: 데이터베이스 연결에 실패했습니다.
+  no: Tilkobling til databasen mislyktes.
+  is: Tókst ekki að tengjast gagnagrunninum.
+  uk: Помилка підключення до бази даних.
+  th: การเชื่อมต่อฐานข้อมูลล้มเหลว
+  el: Η σύνδεση με τη βάση δεδομένων απέτυχε.
+  da: Databasetilkobling mislykkedes.
+account:
+  en: Account
+  zh_CN: 账号
+  zh_TW: 帳號
+  fr: Compte
+  ja: アカウント
+  es: Cuenta
+  de: Konto
+  ru: Учетная запись
+  it: Account
+  pt: Conta
+  ko: 계정
+  no: Konto
+  is: Reikningur
+  uk: Обліковий запис
+  th: บัญชี
+  el: Λογαριασμός
+  da: Konto
+
+password:
+  en: Password
+  zh_CN: 密码
+  zh_TW: 密碼
+  fr: Mot de passe
+  ja: パスワード
+  es: Contraseña
+  de: Passwort
+  ru: Пароль
+  it: Password
+  pt: Senha
+  ko: 비밀번호
+  no: Passord
+  is: Lykilorð
+  uk: Пароль
+  th: รหัสผ่าน
+  el: Κωδικός
+  da: Adgangskode
+
+login:
+  en: Login
+  zh_CN: 登录
+  zh_TW: 登入
+  fr: Connexion
+  ja: ログイン
+  es: Iniciar sesión
+  de: Anmelden
+  ru: Войти
+  it: Accedi
+  pt: Login
+  ko: 로그인
+  no: Logg inn
+  is: Innskráning
+  uk: Увійти
+  th: เข้าสู่ระบบ
+  el: Σύνδεση
+  da: Log ind
