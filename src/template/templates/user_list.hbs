@@ -3,9 +3,8 @@
       <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
           <h1 class="text-base font-semibold leading-6 text-gray-900">
-            用户列表
+            {{user_list}}
           </h1>
-          <p class="mt-2 text-sm text-gray-700">名称</p>
         </div>
       </div>
       <div class="mt-8 flow-root">
@@ -26,11 +25,11 @@
                     scope="col"
                     class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
                   >
-                    Name
+                    {{username}}
                   </th>
                   <th scope="col" class="relative py-3.5 pl-3 pr-4 text-right sm:pr-0">
-                    <span class="sr-only">Delete</span>
-                    Delete
+                    <span class="sr-only">{{delete}}</span>
+                    {{operation}}
                   </th>
                 </tr>
               </thead>
@@ -40,20 +39,21 @@
                   <td
                     class="hidden whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
                   >
-                    {{user.id}}
+                    [[user.id]]
                   </td>
                   <td
                     class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
                   >
-                    {{user.username}}
+                    [[user.username]]
                   </td>
                   <td
                     class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
                     onclick="
     Swal.fire({
-      title: '确定删除吗',
+      title: '{{are_you_sure_you_want_to_delete}}',
       showCancelButton: true,
-      confirmButtonText: 'yes',
+      confirmButtonText: '{{yes}}',
+      cancelButtonText:'{{cancel}}'
       preConfirm: () => {
         return fetch('/user', {
           method: 'DELETE',
@@ -61,7 +61,7 @@
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            id: '{{user.id}}',
+            id: '[[user.id]]',
           })
         })
         .then(response => {
@@ -81,7 +81,7 @@
     })
   "
                     ><a href="#" class="text-indigo-600 hover:text-indigo-900"
-                      >删除<span class="sr-only">删除</span></a
+                      >{{delete}}<span class="sr-only">{{delete}}</span></a
                     >
                   </td>
                 </tr>

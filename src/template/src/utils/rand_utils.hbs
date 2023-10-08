@@ -2,7 +2,8 @@ use anyhow::Context;
 use argon2::{password_hash::SaltString, Argon2, PasswordHash};
 use rand::Rng;
 use std::iter;
-///  生成指定长度的字符串
+///  {{generate_a_string_of_a_specified_length}}
+#[allow(dead_code)]
 #[inline]
 pub fn random_string(limit: usize) -> String {
     iter::repeat(())

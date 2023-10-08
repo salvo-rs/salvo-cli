@@ -27,7 +27,6 @@ pub async fn hello() -> AppResult<&'static str> {
 }
 {{/if}}
 mod tests {
-    use salvo::prelude::*;
     use salvo::test::{ResponseExt, TestClient};
 
     use crate::config::CFG;

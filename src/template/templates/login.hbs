@@ -15,14 +15,14 @@
           <h2
             class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900"
           >
-            login
+            {{login}}
           </h2>
         </div>
         <form class="mt-8 space-y-6" action="#" method="POST">
           <input type="hidden" name="remember" value="true" />
           <div class="-space-y-px rounded-md shadow-sm">
             <div>
-              <label for="username" class="sr-only">账号</label>
+              <label for="username" class="sr-only">{{username}}</label>
               <input
                 id="username"
                 name="username"
@@ -34,7 +34,7 @@
               />
             </div>
             <div>
-              <label for="password" class="sr-only">密码</label>
+              <label for="password" class="sr-only">{{password}}</label>
               <input
                 id="password"
                 name="password"

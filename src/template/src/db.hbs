@@ -29,17 +29,17 @@ pub async fn init_db_conn() {
         {{#if is_sqlite}}
         SqlitePool::connect(&CFG.database.database_url)
             .await
-            .expect("数据库打开失败")
+            .expect("{{database_connection_failed}}")
         {{/if}}
         {{#if is_postgres}}
         PgPool::connect(&CFG.database.database_url)
             .await
-            .expect("数据库打开失败")
+            .expect("{{database_connection_failed}}")
         {{/if}}
         {{#if is_mysql}}
         MySqlPool::connect(&CFG.database.database_url)
         .await
-        .expect("数据库打开失败")
+        .expect("{{database_connection_failed}}")
         {{/if}}
         {{/if}}
     })

@@ -201,3 +201,202 @@ login:
   th: เข้าสู่ระบบ
   el: Σύνδεση
   da: Log ind
+user_list:
+  en: User list
+  zh_CN: 用户列表
+  zh_TW: 使用者列表
+  fr: Liste d'utilisateurs
+  ja: ユーザーリスト
+  es: Lista de usuarios
+  de: Benutzerliste
+  ru: Список пользователей
+  it: Lista utenti
+  pt: Lista de usuários
+  ko: 사용자 목록
+  no: Brukerliste
+  is: Notendalisti
+  uk: Список користувачів
+  th: รายชื่อผู้ใช้
+  el: Λίστα χρηστών
+  da: Brugerliste
+
+delete:
+  en: Delete
+  zh_CN: 删除
+  zh_TW: 刪除
+  fr: Supprimer
+  ja: 削除
+  es: Eliminar
+  de: Löschen
+  ru: Удалить
+  it: Elimina
+  pt: Deletar
+  ko: 삭제
+  no: Slett
+  is: Eyða
+  uk: Видалити
+  th: ลบ
+  el: Διαγραφή
+  da: Slet
+return_to_homepage:
+  en: Return to homepage
+  zh_CN: 返回主页
+  zh_TW: 返回主頁
+  fr: Retour à la page d'accueil
+  ja: ホームページに戻る
+  es: Volver a la página principal
+  de: Zur Startseite zurückkehren
+  ru: Вернуться на главную страницу
+  it: Torna alla homepage
+  pt: Retornar à página inicial
+  ko: 홈페이지로 돌아가기
+  no: Returner til hovedsiden
+  is: Fara aftur á heimasíðu
+  uk: Повернутися на головну сторінку
+  th: กลับสู่หน้าหลัก
+  el: Επιστροφή στην αρχική σελίδα
+  da: Returner til hjemmesiden
+username:
+  en: Username
+  zh_CN: 用户名
+  zh_TW: 用戶名
+  fr: Nom d'utilisateur
+  ja: ユーザーネーム
+  es: Nombre de usuario
+  de: Benutzername
+  ru: Имя пользователя
+  it: Nome utente
+  pt: Nome de usuário
+  ko: 사용자 이름
+  no: Brukernavn
+  is: Notendanafn
+  uk: Ім'я користувача
+  th: ชื่อผู้ใช้
+  el: Όνομα χρήστη
+  da: Brugernavn
+generate_a_string_of_a_specified_length:
+  en: Generate a string of a specified length
+  zh_CN: 生成指定长度的字符串
+  zh_TW: 生成指定長度的字串
+  fr: Générer une chaîne de caractères d'une longueur spécifiée
+  ja: 指定した長さの文字列を生成する
+  es: Generar una cadena de una longitud especificada
+  de: Erzeugen Sie eine Zeichenkette einer bestimmten Länge
+  ru: Генерировать строку заданной длины
+  it: Generare una stringa di una lunghezza specificata
+  pt: Gerar uma string de um comprimento especificado
+  ko: 지정된 길이의 문자열 생성
+  no: Generer en streng av en spesifisert lengde
+  is: Búa til streng af tiltekinni lengd
+  uk: Генерувати рядок заданої довжини
+  th: สร้างสตริงความยาวที่ระบุ
+  el: Δημιουργήστε μια συμβολοσειρά ενός καθορισμένου μήκους
+  da: Generer en streng af en bestemt længde
+contact_support:
+  en: Contact Support
+  zh_CN: 联系支持
+  zh_TW: 聯繫支援
+  fr: Contacter le support
+  ja: サポートに連絡する
+  es: Contactar con soporte
+  de: Support kontaktieren
+  ru: Связаться со службой поддержки
+  it: Contatta il supporto
+  pt: Contato com o suporte
+  ko: 지원에 문의하세요
+  no: Kontaktstøtte
+  is: Hafa samband við þjónustu
+  uk: Звернутися до служби підтримки
+  th: ติดต่อฝ่ายสนับสนุน
+  el: Επικοινωνία με την υποστήριξη
+  da: Kontakt support
+page_not_found:
+  en: Page Not Found
+  zh_CN: 页面未找到
+  zh_TW: 找不到網頁
+  fr: Page non trouvée
+  ja: ページが見つかりません
+  es: Página no encontrada
+  de: Seite nicht gefunden
+  ru: Страница не найдена
+  it: Pagina non trovata
+  pt: Página não encontrada
+  ko: 페이지를 찾을 수 없습니다
+  no: Siden ble ikke funnet
+  is: Síða fannst ekki
+  uk: Сторінку не знайдено
+  th: ไม่พบหน้านี้
+  el: Η σελίδα δεν βρέθηκε
+  da: Side ikke fundet
+are_you_sure_you_want_to_delete:
+  en: Are you sure you want to delete?
+  zh_CN: 确定删除吗？
+  zh_TW: 確定要刪除嗎？
+  fr: Êtes-vous sûr de vouloir supprimer ?
+  ja: 削除してもよろしいですか？
+  es: ¿Estás seguro de que quieres eliminar?
+  de: Sind Sie sicher, dass Sie löschen möchten?
+  ru: Вы уверены, что хотите удалить?
+  it: Sei sicuro di voler eliminare?
+  pt: Tem certeza de que deseja excluir?
+  ko: 정말로 삭제하시겠습니까?
+  no: Er du sikker på at du vil slette?
+  is: Ertu viss um að þú viljir eyða?
+  uk: Ви впевнені, що хочете видалити?
+  th: คุณแน่ใจหรือว่าต้องการลบ?
+  el: Είστε σίγουροι ότι θέλετε να διαγράψετε;
+  da: Er du sikker på, at du vil slette?
+yes:
+  en: Yes
+  zh_CN: 是
+  zh_TW: 是
+  fr: Oui
+  ja: はい
+  es: Sí
+  de: Ja
+  ru: Да
+  it: Sì
+  pt: Sim
+  ko: 예
+  no: Ja
+  is: Já
+  uk: Так
+  th: ใช่
+  el: Ναι
+  da: Ja
+cancel:
+  en: Cancel
+  zh_CN: 取消
+  zh_TW: 取消
+  fr: Annuler
+  ja: キャンセル
+  es: Cancelar
+  de: Abbrechen
+  ru: Отмена
+  it: Annulla
+  pt: Cancelar
+  ko: 취소
+  no: Avbryt
+  is: Hætta við
+  uk: Відмінити
+  th: ยกเลิก
+  el: Ακύρωση
+  da: Annuller
+operation:
+  en: Operation
+  zh_CN: 操作
+  zh_TW: 操作
+  fr: Opération
+  ja: 操作
+  es: Operación
+  de: Betrieb
+  ru: Операция
+  it: Operazione
+  pt: Operação
+  ko: 작업
+  no: Operasjon
+  is: Aðgerð
+  uk: Операція
+  th: การดำเนินการ
+  el: Λειτουργία
+  da: Operation

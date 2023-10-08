@@ -89,6 +89,20 @@ fn write_project_file(
         "config_error_read":t!("config_error_read"),
         "config_error_parse":t!("config_error_parse"),
         "config_error_read_failed":t!("config_error_read_failed"),
+        "generate_a_string_of_a_specified_length":t!("generate_a_string_of_a_specified_length"),
+        "username":t!("username"),
+        "password":t!("password"),
+        "incorrect_password":t!("incorrect_password"),
+        "login":t!("login"),
+        "user_list":t!("user_list"),
+        "are_you_sure_you_want_to_delete":t!("are_you_sure_you_want_to_delete"),
+        "page_not_found":t!("page_not_found"),
+        "contact_support":t!("contact_support"),
+        "return_to_homepage":t!("return_to_homepage"),
+        "delete":t!("delete"),
+        "yes":t!("yes"),
+        "cancel":t!("cancel"),
+        "operation":t!("operation"),
     });
     if is_sqlx {
         // Add sqlx dependencies
@@ -125,7 +139,7 @@ fn write_project_file(
             "version": "0.5.2",
         });
         data["dependencies"] = dependencies;
-    }   
+    }
 
     std::fs::create_dir_all(project_path)?;
 
@@ -207,28 +221,44 @@ fn write_project_file(
         //templates
         let template_path = project_path.join("templates");
         std::fs::create_dir_all(&template_path)?;
+
         //template/hello.html
-        let hello_html_template = include_bytes!("../template/templates/hello.html");
-        let mut hello_html_file = File::create(template_path.join("hello.html"))?;
-        hello_html_file.write_all(hello_html_template)?;
+        let hello_template = include_str!("../template/templates/hello.hbs");
+        let mut hello_file = File::create(template_path.join("hello.html"))?;
+        hello_file.write_all(hello_template.as_bytes())?;
+
         //template/handle_404.html
-        let handle_404_template = include_bytes!("../template/templates/404.html");
+        let handle_404_template = include_str!("../template/templates/404.hbs");
+        let handle_404_template_rendered =
+            handlebars.render_template(handle_404_template, &data)?;
         let mut handle_404_file = File::create(template_path.join("handle_404.html"))?;
-        handle_404_file.write_all(handle_404_template)?;
+        handle_404_file.write_all(handle_404_template_rendered.as_bytes())?;
+
         if need_db_conn {
             //template/login.html
-            let login_html_template = include_bytes!("../template/templates/login.html");
-            let mut login_html_file = File::create(template_path.join("login.html"))?;
-            login_html_file.write_all(login_html_template)?;
-            //template/user_list_page
-            let user_list_page_template =
-                include_bytes!("../template/templates/user_list_page.html");
-            let mut user_list_page_file = File::create(template_path.join("user_list_page.html"))?;
-            user_list_page_file.write_all(user_list_page_template)?;
+            let login_template = include_str!("../template/templates/login.hbs");
+            let login_template_rendered = handlebars.render_template(login_template, &data)?;
+            let mut login_file = File::create(template_path.join("login.html"))?;
+            login_file.write_all(login_template_rendered.as_bytes())?;
+
             //template/user_list.html
-            let user_list_html_template = include_bytes!("../template/templates/user_list.html");
-            let mut user_list_html_file = File::create(template_path.join("user_list.html"))?;
-            user_list_html_file.write_all(user_list_html_template)?;
+            let user_list_template = include_str!("../template/templates/user_list.hbs");
+            let user_list_template_rendered =
+                handlebars.render_template(user_list_template, &data)?;
+            let mut user_list_file = File::create(template_path.join("user_list.html"))?;
+            user_list_file.write_all(
+                user_list_template_rendered
+                    .replace("[[", "{{")
+                    .replace("]]", "}}")
+                    .as_bytes(),
+            )?;
+
+            //template/user_list_page.html
+            let user_list_page_template = include_str!("../template/templates/user_list_page.hbs");
+            let user_list_page_template_rendered =
+                handlebars.render_template(user_list_page_template, &data)?;
+            let mut user_list_page_file = File::create(template_path.join("user_list_page.html"))?;
+            user_list_page_file.write_all(user_list_page_template_rendered.as_bytes())?;
         }
     }
     //src/router
@@ -317,9 +347,9 @@ fn write_project_file(
                 let data_path = project_path.join("data");
                 std::fs::create_dir_all(&data_path)?;
                 //data/demo.db
-                let demo_db_bytes= include_bytes!("../template/data/demo.db");
+                let demo_db_bytes = include_bytes!("../template/data/demo.db");
                 let mut demo_db_file = File::create(data_path.join("demo.db"))?;
-                demo_db_file.write_all(demo_db_bytes)?;   
+                demo_db_file.write_all(demo_db_bytes)?;
             }
             //migrations
             let migrations_path = project_path.join("migrations");
