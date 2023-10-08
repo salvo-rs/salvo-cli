@@ -26,6 +26,8 @@ pub async fn hello() -> AppResult<&'static str> {
     Ok("Hello World from salvo")
 }
 {{/if}}
+
+#[allow(unused_imports)]
 mod tests {
     use salvo::test::{ResponseExt, TestClient};
 

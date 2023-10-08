@@ -9,7 +9,7 @@ use self::{
 {{#if need_db_conn}}
 {{#if is_web_site}}
     user::{
-        delete_user, get_users, login_page, post_add_user, post_login, post_update_user,
+        delete_user,login_page, post_add_user, post_login, post_update_user,
         user_list_page,
     },
 {{else}}
