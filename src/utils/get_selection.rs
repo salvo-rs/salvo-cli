@@ -2,7 +2,7 @@ use anyhow::Result;
 use dialoguer::{console::Style, theme::ColorfulTheme, Select};
 use rust_i18n::t;
 
-#[derive(Debug)]
+#[derive(Debug,Clone)]
 pub struct UserSelected {
     pub template_type: TemplateType,
     pub db_type: DbType,
@@ -34,9 +34,9 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
     };
     let db_conn_types = &[
         t!("db_conn_types_sqlx"),
-        t!("db_conn_types_diesel"),
-        t!("db_conn_types_sea_orm"),
-        t!("db_conn_types_rbatis"),
+        // t!("db_conn_types_diesel"),
+        // t!("db_conn_types_sea_orm"),
+        // t!("db_conn_types_rbatis"),
         t!("db_conn_types_nothing"),
         // "custom",
     ];
@@ -83,20 +83,20 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         db_conn_type,
     }))
 }
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq,Clone)]
 pub enum TemplateType {
     SalvoWebSite,
     SalvoWebApi,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq,Clone)]
 pub enum DbType {
     Sqlite,
     Mysql,
     Postgres,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq,Clone)]
 pub enum DbConnectionType {
     Sqlx,
     Diesel,

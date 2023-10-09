@@ -1,3 +1,4 @@
+{{#if is_web_site}}
 use salvo::{
     async_trait,
     http::ParseError,
@@ -5,6 +6,15 @@ use salvo::{
     writing::Json,
     Depot, Request, Response, Writer,
 };
+{{else}}
+use salvo::{
+    async_trait,
+    http::ParseError,
+    prelude::EndpointOutRegister,
+    writing::Json,
+    Depot, Request, Response, Writer,
+};
+{{/if}}
 use thiserror::Error;
 
 #[derive(Error, Debug)]

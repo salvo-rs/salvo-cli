@@ -33,11 +33,20 @@ pub fn create_project(project: Project) -> Result<()> {
     let config = get_user_selected()?;
     match config {
         Some(config) => {
-            write_project_file(project_path, config, project.clone())?;
+            write_project_file(project_path, config.clone(), project.clone())?;
 
             init_git(project_path)?;
 
             success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
+            if config.db_conn_type== DbConnectionType::Sqlx {
+                success(t!("create_success_sqlx", project_name = project_name).replace(r"\n", "\n"));
+                if config.db_type == DbType::Sqlite {
+                    success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
+                }
+                else {
+                    success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
+                }                    
+            }
         }
         None => anyhow::bail!("cli quit!"),
     }
@@ -342,14 +351,20 @@ fn write_project_file(
         models_user_file.write_all(models_user_rendered.as_bytes())?;
 
         if is_sqlx {
+            //data
+            let data_path = project_path.join("data");
+            std::fs::create_dir_all(&data_path)?;            
             if is_sqlite {
-                //data
-                let data_path = project_path.join("data");
-                std::fs::create_dir_all(&data_path)?;
                 //data/demo.db
                 let demo_db_bytes = include_bytes!("../template/data/demo.db");
                 let mut demo_db_file = File::create(data_path.join("demo.db"))?;
                 demo_db_file.write_all(demo_db_bytes)?;
+            }
+            else{
+                //data/init_sql.sql
+                let init_sql_bytes = include_bytes!("../template/data/init_sql.sql");
+                let mut init_sql_file = File::create(data_path.join("init_sql.sql"))?;
+                init_sql_file.write_all(init_sql_bytes)?;
             }
             //migrations
             let migrations_path = project_path.join("migrations");

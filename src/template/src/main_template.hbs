@@ -9,6 +9,10 @@ use salvo::conn::rustls::{Keycert, RustlsConfig};
 use salvo::prelude::*;
 use tokio::sync::oneshot;
 mod app_error;
+{{#if need_db_conn}}
+{{else}}
+#[allow(dead_code)]
+{{/if}}
 mod app_response;
 mod config;
 {{#if need_db_conn}}

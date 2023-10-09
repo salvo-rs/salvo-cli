@@ -1,8 +1,11 @@
 {{#if is_web_site}}
 use askama::Template;
 {{/if}}
+{{#if is_web_site}}
 use salvo::{endpoint, writing::Text, Request, Response};
-
+{{else}}
+use salvo::endpoint;
+{{/if}}
 use crate::app_error::AppResult;
 {{#if is_web_site}}
 
@@ -30,7 +33,7 @@ pub async fn hello() -> AppResult<&'static str> {
 #[allow(unused_imports)]
 mod tests {
     use salvo::test::{ResponseExt, TestClient};
-
+    use salvo::Service;
     use crate::config::CFG;
 
     #[tokio::test]

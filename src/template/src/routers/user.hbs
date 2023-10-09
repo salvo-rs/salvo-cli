@@ -1,6 +1,7 @@
 {{#if is_web_site}}
 use askama::Template;
 {{/if}}
+{{#if is_web_site}}
 use salvo::{
     endpoint,
     http::cookie::Cookie,
@@ -16,6 +17,20 @@ use crate::{
     },
     services::user,
 };
+{{else}}
+use salvo::{
+    endpoint,
+    oapi::extract::{FormBody, JsonBody},
+    Response,
+};
+use crate::{
+    app_response::{ErrRes, Res},
+    dtos::user::{
+        UserAddRequest, UserDeleteRequest, UserLoginRequest, UserUpdateRequest,
+    },
+    services::user,
+};
+{{/if}}
 {{#if is_web_site}}
 #[derive(Template)]
 #[template(path = "login.html")]

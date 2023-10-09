@@ -1,4 +1,6 @@
+{{#if need_db_conn}}
 use crate::middleware::jwt::jwt_hoop;
+{{/if}}
 use salvo::{
     prelude::{CatchPanic, Logger, OpenApi, SwaggerUi},
     Router,
