@@ -361,7 +361,7 @@ fn write_project_file(
                 demo_db_file.write_all(demo_db_bytes)?;
             }
             else{
-                //data/init_sql.sql
+                //data/init_sql.sql        
                 let init_sql_bytes = include_bytes!("../template/data/init_sql.sql");
                 let mut init_sql_file = File::create(data_path.join("init_sql.sql"))?;
                 init_sql_file.write_all(init_sql_bytes)?;

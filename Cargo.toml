@@ -3,8 +3,8 @@ name = "salvo-cli"
 version = "0.1.5"
 edition = "2021"
 authors = ["Fankai Liu  liufankai137@outlook.com"]
-keywords = ["salvo", "cli"]
-description = "This CLI tool aims to streamline the process of setting up a new project by generating a template structure. Key features might include generating boilerplate code, configuring necessary dependencies, and setting up a basic project structure suitable for Salvo-based applications"
+keywords = ["salvo", "cli","web template"]
+description = "This CLI tool is designed to streamline the creation of new Salvo web projects through the generation of template structures. It offers the flexibility to select from web API templates or web site templates, and the convenience of choosing a database connector. It auto-generates foundational code to give users a head start in their development process."
 license = "MIT/Apache-2.0"
 repository = "https://github.com/fankaiLiu/salvo-cli"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
