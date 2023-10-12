@@ -112,6 +112,7 @@ fn write_project_file(
         "yes":t!("yes"),
         "cancel":t!("cancel"),
         "operation":t!("operation"),
+        "create_success_mysql_or_pgsql_fist_use":t!("create_success_mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
     });
     if is_sqlx {
         // Add sqlx dependencies
@@ -362,9 +363,10 @@ fn write_project_file(
             }
             else{
                 //data/init_sql.sql        
-                let init_sql_bytes = include_bytes!("../template/data/init_sql.sql");
+                let init_sql_templte = include_str!("../template/data/init_sql_sql.hbs");
+                let init_sql_rendered = handlebars.render_template(init_sql_templte, &data)?;
                 let mut init_sql_file = File::create(data_path.join("init_sql.sql"))?;
-                init_sql_file.write_all(init_sql_bytes)?;
+                init_sql_file.write_all(init_sql_rendered.as_bytes())?;
             }
             //migrations
             let migrations_path = project_path.join("migrations");
