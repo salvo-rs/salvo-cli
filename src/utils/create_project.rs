@@ -360,20 +360,20 @@ fn write_project_file(
         let mut dtos_user_file = File::create(dtos_path.join("user.rs"))?;
         dtos_user_file.write_all(dtos_user_rendered.as_bytes())?;
 
-        //src/models
-        let models_path = src_path.join("models");
-        std::fs::create_dir_all(&models_path)?;
-        //src/models/mod.rs
-        let models_mod_template = include_str!("../template/src/models/mod.hbs");
-        let models_mod_rendered = handlebars.render_template(models_mod_template, &data)?;
-        let mut models_mod_file = File::create(models_path.join("mod.rs"))?;
-        models_mod_file.write_all(models_mod_rendered.as_bytes())?;
+        //src/entities
+        let entities_path = src_path.join("entities");
+        std::fs::create_dir_all(&entities_path)?;
+        //src/entities/mod.rs
+        let entities_mod_template = include_str!("../template/src/entities/mod.hbs");
+        let entities_mod_rendered = handlebars.render_template(entities_mod_template, &data)?;
+        let mut entities_mod_file = File::create(entities_path.join("mod.rs"))?;
+        entities_mod_file.write_all(entities_mod_rendered.as_bytes())?;
 
-        //src/models/user.rs
-        let models_user_template = include_str!("../template/src/models/user.hbs");
-        let models_user_rendered = handlebars.render_template(models_user_template, &data)?;
-        let mut models_user_file = File::create(models_path.join("user.rs"))?;
-        models_user_file.write_all(models_user_rendered.as_bytes())?;
+        //src/entities/user.rs
+        let entities_user_template = include_str!("../template/src/entities/user.hbs");
+        let entities_user_rendered = handlebars.render_template(entities_user_template, &data)?;
+        let mut entities_user_file = File::create(entities_path.join("user.rs"))?;
+        entities_user_file.write_all(entities_user_rendered.as_bytes())?;
 
         if is_sqlx {
             //data
@@ -500,7 +500,7 @@ pub fn init_git(project_path: &Path) -> Result<()> {
 fn write_ignore_file(project_path: &Path) -> Result<()> {
     let fp_ignore = project_path.join(".gitignore");
     let mut fp_ignore_file = File::create(fp_ignore)?;
-    fp_ignore_file.write_all(b"/target\n")?;
+    fp_ignore_file.write_all(b"/target\n/migration/target")?;
     Ok(())
 }
 
