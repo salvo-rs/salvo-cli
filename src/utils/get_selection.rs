@@ -34,8 +34,8 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
     };
     let db_conn_types = &[
         t!("db_conn_types_sqlx"),
-        // t!("db_conn_types_diesel"),
         t!("db_conn_types_sea_orm"),
+        // t!("db_conn_types_diesel"),
         // t!("db_conn_types_rbatis"),
         t!("db_conn_types_nothing"),
         // "custom",
@@ -48,10 +48,10 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
 
     let db_conn_type = match db_conn_type_selection {
         0 => DbConnectionType::Sqlx,
-        1 => DbConnectionType::Diesel,
-        2 => DbConnectionType::SeaOrm,
-        3 => DbConnectionType::Rbatis,
-        4 => DbConnectionType::Nothing,
+        1 => DbConnectionType::SeaOrm,
+        2 => DbConnectionType::Nothing,
+        // 2 => DbConnectionType::Diesel,
+        // 3 => DbConnectionType::Rbatis,
         _ => anyhow::bail!("Invalid db connection type selection"),
     };
     if db_conn_type == DbConnectionType::Nothing {
@@ -99,8 +99,8 @@ pub enum DbType {
 #[derive(Debug, PartialEq, Clone)]
 pub enum DbConnectionType {
     Sqlx,
-    Diesel,
     SeaOrm,
-    Rbatis,
+    // Diesel,
+    // Rbatis,
     Nothing,
 }
