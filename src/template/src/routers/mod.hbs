@@ -1,0 +1,61 @@
+{{#if need_db_conn}}
+use crate::middleware::jwt::jwt_hoop;
+{{/if}}
+use salvo::{
+    prelude::{CatchPanic, Logger, OpenApi, SwaggerUi},
+    Router,
+};
+
+use self::{
+    demo::hello,
+{{#if need_db_conn}}
+{{#if is_web_site}}
+    user::{
+        delete_user,login_page, post_add_user, post_login, post_update_user,
+        user_list_page,
+    },
+{{else}}
+    user::{
+        delete_user, get_users, post_add_user, post_login, post_update_user,
+    },
+{{/if}}
+{{/if}}
+};
+pub mod demo;
+{{#if need_db_conn}}
+pub mod user;
+{{/if}}
+
+pub fn router() -> Router {
+    let router = Router::new()
+        .hoop(Logger::new())
+        .hoop(CatchPanic::new())
+        {{#if need_db_conn}}
+        .get(hello)
+        {{#if is_web_site}}
+        .push(Router::with_path("login").get(login_page).post(post_login))
+        {{else}}
+        .push(Router::with_path("login").post(post_login))
+        {{/if}}
+        .push(user_router().hoop(jwt_hoop()));
+        {{else}}
+        .get(hello);
+        {{/if}}
+    let doc = OpenApi::new("salvo web api", "0.0.1").merge_router(&router);
+    router
+        .push(doc.into_router("/api-doc/openapi.json"))
+        .push(SwaggerUi::new("/api-doc/openapi.json").into_router("swagger-ui"))
+}
+{{#if need_db_conn}}
+pub fn user_router() -> Router {
+    Router::with_path("user")
+        .post(post_add_user)
+        .put(post_update_user)
+        .delete(delete_user)
+        {{#if is_web_site}}
+        .get(user_list_page)
+        {{else}}
+        .get(get_users)
+        {{/if}}
+}
+{{/if}}

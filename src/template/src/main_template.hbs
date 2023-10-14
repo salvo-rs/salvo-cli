@@ -1,71 +1,50 @@
-use crate::app_error::AppResult;
+{{#if need_db_conn}}
+use crate::db::init_db_conn;
+{{/if}}
+use crate::middleware::handle_404::handle_404;
+use crate::routers::router;
 use config::{CERT_KEY, CFG};
-use middleware::jwt::jwt_hoop;
 use salvo::catcher::Catcher;
 use salvo::conn::rustls::{Keycert, RustlsConfig};
 use salvo::prelude::*;
 use tokio::sync::oneshot;
-
 mod app_error;
-mod config;
-mod middleware;
-{{#if is_web_site}}
-
-#[derive(Template)]
-#[template(path = "hello.html")]
-struct HelloTemplate<'a> {
-    name: &'a str,
-}
-
-#[endpoint]
-async fn hello(req: &mut Request, res: &mut Response)->AppResult<()>{
-    let hello_tmpl = HelloTemplate {
-        name: req.param::<&str>("name").unwrap_or("World"),
-    };
-    res.render(Text::Html(hello_tmpl.render().unwrap()));
-    Ok(())
-}
-
-#[derive(Template)]
-#[template(path = "404.html")]
-struct Handle404 {
-}
-
-#[handler]
-async fn handle404(&self, _req: &Request, _depot: &Depot, res: &mut Response, ctrl: &mut FlowCtrl) {
-    if let Some(StatusCode::NOT_FOUND) = res.status_code {
-        let handle_404 = Handle404{};
-        res.render(Text::Html(handle_404.render().unwrap()));
-        ctrl.skip_rest();
-    }
-}
+{{#if need_db_conn}}
 {{else}}
-#[endpoint]
-async fn hello() -> AppResult<&'static str> {
-    Ok("Hello World from salvo")
-}
-
-#[handler]
-async fn handle404(&self, _req: &Request, _depot: &Depot, res: &mut Response, ctrl: &mut FlowCtrl) {
-    if let Some(StatusCode::NOT_FOUND) = res.status_code {
-        res.render(Json("404 not found"));
-        ctrl.skip_rest();
-    }
-}
+#[allow(dead_code)]
 {{/if}}
+mod app_response;
+mod config;
+{{#if need_db_conn}}
+mod db;
+mod dtos;
+mod services;
+mod models;
+mod utils;
+{{/if}}
+mod middleware;
+mod routers;
+
 #[tokio::main]
 async fn main() {
     //{{main_log_message}}
     init_log();
-
+    {{#if need_db_conn}}
+    init_db_conn().await;
+    {{/if}}
     let (tx, rx) = oneshot::channel();
     let router = router();
     let service: Service = router.into();
-    let service = service.catcher(Catcher::default().hoop(handle404));
-    println!("💨 {} is staring ",&CFG.server.name);
-    println!(" listen on {}",&CFG.server.address.replace("0.0.0.0", "127.0.0.1"));
+    let service = service.catcher(Catcher::default().hoop(handle_404));
+    println!("💨 {} is staring ", &CFG.server.name);
+    println!(" listen on {}", &CFG.server.address);
+
     match CFG.server.ssl {
         true => {
+            println!(
+                "swagger-ui: https://{}/swagger-ui",
+                &CFG.server.address.replace("0.0.0.0", "127.0.0.1")
+            );
             let config = RustlsConfig::new(
                 Keycert::new()
                     .cert(CERT_KEY.cert.clone())
@@ -85,6 +64,10 @@ async fn main() {
             tokio::task::spawn(server);
         }
         false => {
+            println!(
+                "swagger-ui: http://{}/swagger-ui",
+                &CFG.server.address.replace("0.0.0.0", "127.0.0.1")
+            );
             let acceptor = TcpListener::new(&CFG.server.address).bind().await;
             let server = Server::new(acceptor).serve_with_graceful_shutdown(
                 service,
@@ -100,18 +83,6 @@ async fn main() {
     tokio::signal::ctrl_c().await.unwrap();
     // Then, start the shutdown...
     let _ = tx.send(());
-}
-
-fn router() -> Router {
-    let router = Router::new()
-        .hoop(Logger::new())
-        .hoop(CatchPanic::new())
-        .hoop(jwt_hoop())
-        .get(hello);
-    let doc = OpenApi::new("salvo web api", "0.0.1").merge_router(&router);
-    router
-        .push(doc.into_router("/api-doc/openapi.json"))
-        .push(SwaggerUi::new("/api-doc/openapi.json").into_router("swagger-ui"))
 }
 
 fn init_log() {

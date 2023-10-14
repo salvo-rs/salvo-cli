@@ -1,7 +1,20 @@
+{{#if is_web_site}}
 use salvo::{
-    async_trait, http::ParseError, prelude::EndpointOutRegister, writing::Json, Depot, Request,
-    Response, Writer,
+    async_trait,
+    http::ParseError,
+    prelude::{EndpointOutRegister, StatusCode},
+    writing::Json,
+    Depot, Request, Response, Writer,
 };
+{{else}}
+use salvo::{
+    async_trait,
+    http::ParseError,
+    prelude::EndpointOutRegister,
+    writing::Json,
+    Depot, Request, Response, Writer,
+};
+{{/if}}
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -10,6 +23,10 @@ pub enum AppError {
     AnyHow(#[from] anyhow::Error),
     #[error("http::ParseError:`{0}`")]
     ParseError(#[from] ParseError),
+    {{#if is_sqlx}}
+    #[error("sqlx::Error:`{0}`")]
+    SqlxError(#[from] sqlx::Error),
+    {{/if}}
 }
 
 pub type AppResult<T> = Result<T, AppError>;
@@ -17,7 +34,11 @@ pub type AppResult<T> = Result<T, AppError>;
 #[async_trait]
 impl Writer for AppError {
     async fn write(mut self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
+        {{#if is_web_site}}
+        res.stuff(StatusCode::INTERNAL_SERVER_ERROR, Json(self.to_string()));
+        {{else}}
         res.render(Json(self.to_string()));
+        {{/if}}
     }
 }
 

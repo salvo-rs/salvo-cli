@@ -1,0 +1,124 @@
+{{#if is_web_site}}
+use askama::Template;
+{{/if}}
+{{#if is_web_site}}
+use salvo::{
+    endpoint,
+    http::cookie::Cookie,
+    oapi::extract::{FormBody, JsonBody},
+    writing::{Redirect, Text},
+    Response,
+};
+use crate::{
+    app_error::AppResult,
+    app_response::{ErrRes, Res},
+    dtos::user::{
+        UserAddRequest, UserDeleteRequest, UserLoginRequest, UserResponse, UserUpdateRequest,
+    },
+    services::user,
+};
+{{else}}
+use salvo::{
+    endpoint,
+    oapi::extract::{FormBody, JsonBody},
+    Response,
+};
+use crate::{
+    app_response::{ErrRes, Res},
+    dtos::user::{
+        UserAddRequest, UserDeleteRequest, UserLoginRequest, UserUpdateRequest,
+    },
+    services::user,
+};
+{{/if}}
+{{#if is_web_site}}
+#[derive(Template)]
+#[template(path = "login.html")]
+struct LoginTemplate {}
+
+#[endpoint]
+pub async fn login_page(res: &mut Response) -> AppResult<()> {
+    let hello_tmpl = LoginTemplate {};
+    res.render(Text::Html(hello_tmpl.render().unwrap()));
+    Ok(())
+}
+{{/if}}
+
+#[endpoint]
+pub async fn post_add_user(req: JsonBody<UserAddRequest>, res: &mut Response) {
+    let result = user::add_user(req.0).await;
+    match result {
+        Ok(data) => Res::with_data(data).into_response(res),
+        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
+    }
+}
+
+#[endpoint]
+pub async fn post_update_user(req: JsonBody<UserUpdateRequest>, res: &mut Response) {
+    let result = user::update_user(req.0).await;
+    match result {
+        Ok(data) => Res::with_data(data).into_response(res),
+        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
+    }
+}
+
+#[endpoint]
+pub async fn delete_user(req: JsonBody<UserDeleteRequest>, res: &mut Response) {
+    let result = user::delete_user(req.0).await;
+    match result {
+        Ok(_) => Res::with_data(()).into_response(res),
+        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
+    }
+}
+
+#[endpoint]
+pub async fn get_users(res: &mut Response) {
+    let result = user::users().await;
+    match result {
+        Ok(data) => Res::with_data(data).into_response(res),
+        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
+    }
+}
+{{#if is_web_site}}
+
+#[derive(Template)]
+#[template(path = "user_list_page.html")]
+pub struct UserListPageTemplate {
+    users: Vec<UserResponse>,
+}
+
+#[endpoint]
+pub async fn user_list_page(res: &mut Response) -> AppResult<()> {
+    let users = user::users().await?;
+    let hello_tmpl = UserListPageTemplate { users };
+
+    res.render(Text::Html(hello_tmpl.render().unwrap()));
+    Ok(())
+}
+
+#[endpoint]
+pub async fn post_login(req: FormBody<UserLoginRequest>, res: &mut Response) {
+    let result = user::login(req.0).await;
+    match result {
+        Ok(data) => {
+            let jwt_token = data.token.clone();
+            let cookie = Cookie::build("jwt_token", jwt_token)
+                .path("/")
+                .http_only(true)
+                .finish();
+            res.add_cookie(cookie);
+            res.render(Redirect::other("/user"));
+        }
+        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
+    }
+}
+{{else}}
+#[endpoint]
+pub async fn post_login(req: FormBody<UserLoginRequest>, res: &mut Response) {
+    let result = user::login(req.0).await;
+    match result {
+        Ok(data) => Res::with_data(data).into_response(res),
+        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
+    }
+}
+{{/if}}

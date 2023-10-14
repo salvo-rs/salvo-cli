@@ -1,0 +1,47 @@
+{{#if is_sqlx}}
+{{#if is_mysql}}
+use sqlx::MySqlPool;
+{{/if}}
+{{#if is_postgres}}
+use sqlx::PgPool;
+{{/if}}
+{{#if is_sqlite}}
+use sqlx::SqlitePool;
+{{/if}}
+{{/if}}
+use tokio::sync::OnceCell;
+
+use crate::config::CFG;
+{{#if is_sqlx}}
+{{#if is_sqlite}}
+pub static DB: OnceCell<SqlitePool> = OnceCell::const_new();
+{{/if}}
+{{#if is_postgres}}
+pub static DB: OnceCell<PgPool> = OnceCell::const_new();
+{{/if}}
+{{#if is_mysql}}
+pub static DB: OnceCell<MySqlPool> = OnceCell::const_new();
+{{/if}}
+{{/if}}
+pub async fn init_db_conn() {
+    DB.get_or_init(|| async {
+        {{#if is_sqlx}}
+        {{#if is_sqlite}}
+        SqlitePool::connect(&CFG.database.database_url)
+            .await
+            .expect("{{database_connection_failed}}")
+        {{/if}}
+        {{#if is_postgres}}
+        PgPool::connect(&CFG.database.database_url)
+            .await
+            .expect("{{database_connection_failed}}")
+        {{/if}}
+        {{#if is_mysql}}
+        MySqlPool::connect(&CFG.database.database_url)
+        .await
+        .expect("{{database_connection_failed}}")
+        {{/if}}
+        {{/if}}
+    })
+    .await;
+}
