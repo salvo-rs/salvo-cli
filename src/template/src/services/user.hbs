@@ -1,3 +1,4 @@
+{{#if is_sqlx}}
 use crate::{
     app_error::AppResult,
     db::DB,
@@ -9,7 +10,19 @@ use crate::{
     entities::user::User,
     utils::rand_utils,
 };
+{{/if}}
 {{#if is_sea_orm}}
+use crate::{
+    app_error::AppResult,
+    db::DB,
+    dtos::user::{
+        UserAddRequest, UserDeleteRequest, UserLoginRequest, UserLoginResponse, UserResponse,
+        UserUpdateRequest,
+    },
+    middleware::jwt::get_token,
+    entities::{prelude::User,user},
+    utils::rand_utils,
+};
 use sea_orm::{EntityTrait, Set, ActiveModelTrait, QueryFilter, ColumnTrait};
 {{/if}}
 use uuid::Uuid;
@@ -127,7 +140,7 @@ pub async fn users() -> AppResult<Vec<UserResponse>> {
 {{/if}}
 {{#if is_sea_orm}}
 pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
-    let db = DB.get().ok_or(anyhow::anyhow!("数据库连接失败"))?;
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
     let model =user::ActiveModel {
         id: Set(Uuid::new_v4().to_string()),
         username: Set(req.username.clone()),
@@ -141,17 +154,17 @@ pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
 }
 
 pub async fn login(req: UserLoginRequest) -> AppResult<UserLoginResponse> {
-    let db = DB.get().ok_or(anyhow::anyhow!("数据库连接失败"))?;
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
     let user = User::find().filter(user::Column::Username.eq(req.username)).one(db).await?;
     if user.is_none() {
-        return Err(anyhow::anyhow!("用户不存在").into());
+        return Err(anyhow::anyhow!("{{user_does_not_exist}}").into());
     }
     let user = user.unwrap();
     if rand_utils::verify_password(req.password, user.password)
         .await
         .is_err()
     {
-        return Err(anyhow::anyhow!("密码不正确").into());
+        return Err(anyhow::anyhow!("{{incorrect_password}}").into());
     }
     let (token, exp) = get_token(user.username.clone(), user.id.clone())?;
     let res = UserLoginResponse {
@@ -164,11 +177,11 @@ pub async fn login(req: UserLoginRequest) -> AppResult<UserLoginResponse> {
 }
 
 pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
-    let db = DB.get().ok_or(anyhow::anyhow!("数据库连接失败"))?;
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
 
     let user = User::find_by_id(req.id).one(db).await?;
     if user.is_none() {
-        return Err(anyhow::anyhow!("用户不存在").into());
+        return Err(anyhow::anyhow!("{{user_does_not_exist}}").into());
     }
     let mut user: user::ActiveModel = user.unwrap().into();
 
@@ -184,13 +197,13 @@ pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
 }
 
 pub async fn delete_user(req: UserDeleteRequest) -> AppResult<()> {
-    let db = DB.get().ok_or(anyhow::anyhow!("数据库连接失败"))?;
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
     User::delete_by_id(req.id, ).exec(db).await?;
     Ok(())
 }
 
 pub async fn users() -> AppResult<Vec<UserResponse>> {
-    let db = DB.get().ok_or(anyhow::anyhow!("数据库连接失败"))?;
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
     let users = User::find().all(db).await?;
     let res = users
         .into_iter()

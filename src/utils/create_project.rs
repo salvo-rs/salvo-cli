@@ -38,10 +38,17 @@ pub fn create_project(project: Project) -> Result<()> {
             init_git(project_path)?;
 
             success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
-            if config.db_conn_type == DbConnectionType::Sqlx {
-                success(
-                    t!("create_success_sqlx", project_name = project_name).replace(r"\n", "\n"),
-                );
+            if config.db_conn_type == DbConnectionType::Sqlx||config.db_conn_type == DbConnectionType::SeaOrm{
+                if config.db_conn_type == DbConnectionType::Sqlx {
+                    success(
+                        t!("create_success_sqlx", project_name = project_name).replace(r"\n", "\n"),
+                    );
+                }
+                if config.db_conn_type == DbConnectionType::SeaOrm {
+                    success(
+                        t!("create_success_sea_orm", project_name = project_name).replace(r"\n", "\n"),
+                    );
+                }
                 if config.db_type == DbType::Sqlite {
                     success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
                 } else {
@@ -115,7 +122,9 @@ fn write_project_file(
         "yes":t!("yes"),
         "cancel":t!("cancel"),
         "operation":t!("operation"),
+        "create_success_sea_orm__mysql_or_pgsql_install_sea_orm":t!("create_success_sea_orm__mysql_or_pgsql_install_sea_orm"),
         "create_success_mysql_or_pgsql_fist_use":t!("create_success_mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
+        "create_success_sea_orm__mysql_or_pgsql_fist_use":t!("create_success_sea_orm__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
     });
     if need_db_conn {
         // Add sqlx dependencies
@@ -143,19 +152,19 @@ fn write_project_file(
             if is_mysql {
                 dependencies["sea-orm"] = json!({
                     "version": "0",
-                    "features": ["sqlx-mysql"]
+                    "features": ["runtime-tokio-native-tls","sqlx-mysql"]
                 });
             }
             if is_postgres {
                 dependencies["sea-orm"] = json!({
                     "version": "0",
-                    "features": ["sqlx-postgres"]
+                    "features": ["runtime-tokio-native-tls","sqlx-postgres"]
                 });
             }
             if is_sqlite {
                 dependencies["sea-orm"] = json!({
                     "version": "0",
-                    "features": ["sqlx-sqlite"]
+                    "features": ["runtime-tokio-native-tls","sqlx-sqlite"]
                 });
             }
         }
@@ -399,7 +408,7 @@ fn write_project_file(
                 init_sql_file.write_all(init_sql_rendered.as_bytes())?;
             }
             //migrations
-            let migrations_path = project_path.join("migrations");
+            let migrations_path: std::path::PathBuf = project_path.join("migrations");
             std::fs::create_dir_all(&migrations_path)?;
             //migrations/2021-10-20-000000_create_users_table/up.sql
             let up_sql_bytes = include_bytes!("../template/migrations/20231001143156_users.sql");
@@ -444,11 +453,28 @@ fn write_project_file(
             migration_readme_file.write_all(migration_readme_bytes)?;
 
             if is_sqlite {
+                //data
+                let data_path = project_path.join("data");
+                std::fs::create_dir_all(&data_path)?;
                 //data/demo.db
                 let demo_db_bytes = include_bytes!("../template/data/demo_sea_orm.db");
-                let mut demo_db_file = File::create(project_path.join("/data/demo.db"))?;
+                let mut demo_db_file = File::create(data_path.join("demo.db"))?;
                 demo_db_file.write_all(demo_db_bytes)?;
             }
+            else {
+                let data_path = project_path.join("data");
+                std::fs::create_dir_all(&data_path)?;
+                //data/init_sql.sql
+                let init_sql_templte = include_str!("../template/data/init_sql_sql.hbs");
+                let init_sql_rendered = handlebars.render_template(init_sql_templte, &data)?;
+                let mut init_sql_file = File::create(data_path.join("init_sql.sql"))?;
+                init_sql_file.write_all(init_sql_rendered.as_bytes())?;
+            }
+            //.env
+            let env_template = include_str!("../template/.env.hbs");
+            let env_rendered = handlebars.render_template(env_template, &data)?;
+            let mut env_file = File::create(project_path.join(".env"))?;
+            env_file.write_all(env_rendered.as_bytes())?;
         }
     }
     Ok(())
