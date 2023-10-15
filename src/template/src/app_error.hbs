@@ -27,6 +27,10 @@ pub enum AppError {
     #[error("sqlx::Error:`{0}`")]
     SqlxError(#[from] sqlx::Error),
     {{/if}}
+    {{#if is_sea_orm}}
+    #[error("sea_orm::DbErr:Error:`{0}`")]
+    DbErr(#[from] sea_orm::DbErr),
+    {{/if}}
 }
 
 pub type AppResult<T> = Result<T, AppError>;
