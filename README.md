@@ -21,14 +21,14 @@ cargo install --force salvo-cli
 
 ### Feature Development Plan
 
-|  Status |Task   |   
+|  Status |Plan   |   
 |:---:|:---:| 
 |✅| web api template |    
 |✅| web site with htmlx template |   
 |✅|with sqlx  template| 
 |✅|basic midware |
 |✅|suport sqlite,pgsql,mysql|
-||with seaorm template|   
+|✅|with seaorm template|   
 || better web site | 
 || with diese template|  
 || with Rbatis template|  
