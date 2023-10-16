@@ -30,7 +30,7 @@ cargo install --force salvo-cli
 |✅|suport sqlite,pgsql,mysql|
 |✅|with seaorm template|   
 || better web site | 
-|| with diese template|  
+|| with diesel template|  
 || with Rbatis template|  
 ## License
 This project is licensed under the MIT OR Apache-2.0 License.
