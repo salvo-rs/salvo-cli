@@ -1,5 +1,5 @@
 use anyhow::Result;
-use jsonwebtoken::EncodingKey;
+use jsonwebtoken::{decode, Algorithm, DecodingKey, EncodingKey, Validation};
 use salvo::jwt_auth::{ConstDecoder, CookieFinder, HeaderFinder, QueryFinder};
 use salvo::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -13,7 +13,6 @@ pub struct JwtClaims {
     exp: i64,
 }
 
-#[allow(dead_code)]
 pub fn jwt_hoop() -> JwtAuth<JwtClaims, ConstDecoder> {
     let auth_handler: JwtAuth<JwtClaims, _> = JwtAuth::new(ConstDecoder::from_secret(
         CFG.jwt.jwt_secret.to_owned().as_bytes(),
@@ -35,10 +34,21 @@ pub fn get_token(username: String, user_id: String) -> Result<(String, i64)> {
         user_id,
         exp: exp.unix_timestamp(),
     };
-    let token = jsonwebtoken::encode(
+    let token: String = jsonwebtoken::encode(
         &jsonwebtoken::Header::default(),
         &claim,
         &EncodingKey::from_secret(CFG.jwt.jwt_secret.as_bytes()),
     )?;
     Ok((token, exp.unix_timestamp()))
+}
+
+#[allow(dead_code)]
+pub fn decode_token(token: &str) -> bool {
+    let validation = Validation::new(Algorithm::HS256);
+    decode::<JwtClaims>(
+        token,
+        &DecodingKey::from_secret(CFG.jwt.jwt_secret.as_bytes()),
+        &validation,
+    )
+    .is_ok()
 }
