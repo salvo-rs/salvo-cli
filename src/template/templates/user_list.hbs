@@ -3,10 +3,7 @@
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
         <h1 class="text-base font-semibold leading-6 text-gray-900">Users</h1>
-        <p class="mt-2 text-sm text-gray-700">
-          A list of all the users in your account including their name, title,
-          email and role.
-        </p>
+        <p class="mt-2 text-sm text-gray-700">A list of all the users</p>
       </div>
       <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
         <button
@@ -45,7 +42,7 @@
                 </th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200">
+            <tbody class="divide-y divide-gray-200" hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML">
               {% for user in users %}
               <tr>
                 <td
@@ -60,11 +57,9 @@
                 </td>
                 <td
                   class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
-                  data-user-id="{{ user.id }}"
-                  onclick="deleteUser(this)"
-                >
+                  hx-delete="/user/{{user.id}}"                >
                   <a href="#" class="text-sky-600 hover:text-sky-900"
-                    >删除<span class="sr-only">删除</span></a
+                    >delete<span class="sr-only">delete</span></a
                   >
                 </td>
               </tr>
@@ -77,39 +72,10 @@
   </div>
 </div>
 <script>
-  const deleteUser = (element) => {
-    const userId = element.getAttribute("data-user-id");
-    Swal.fire({
-      title: "确定删除吗",
-      showCancelButton: true,
-      confirmButtonText: "yes",
-      preConfirm: () => {
-        return fetch("/user", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: userId,
-          }),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error(response.statusText);
-            }
-            location.reload();
-            return;
-          })
-          .catch((error) => {
-            Swal.showValidationMessage(`Request failed: ${error}`);
-          });
-      },
-      allowOutsideClick: () => !Swal.isLoading(),
-    });
-  };
   const addUser = () => {
     Swal.fire({
-      title: "添加用户",
+      title: "Add User",
+      showCancelButton: true,
       html: `
     <input id="swal-input1" class="swal2-input" placeholder="username">
     <input id="swal-input2" class="swal2-input" placeholder="password">
