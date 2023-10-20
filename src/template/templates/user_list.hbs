@@ -1,4 +1,4 @@
-<div id="body">
+<div id="app" x-data="userForm" x-init="fetchData()">
   <div class="px-4 sm:px-6 lg:px-8">
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
@@ -7,8 +7,7 @@
       </div>
       <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
         <button
-          type="button"
-          onclick="addUser()"
+          @click="addUser()"
           class="block rounded-md bg-sky-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
         >
           Add user
@@ -23,12 +22,6 @@
               <tr>
                 <th
                   scope="col"
-                  class="hidden py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
-                >
-                  user_id
-                </th>
-                <th
-                  scope="col"
                   class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
                 >
                   Name
@@ -37,33 +30,29 @@
                   scope="col"
                   class="relative py-3.5 pl-3 pr-4 text-right sm:pr-0"
                 >
-                  <span class="sr-only">Delete</span>
                   Delete
                 </th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200" hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML">
-              {% for user in users %}
-              <tr>
-                <td
-                  class="hidden whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
-                >
-                  {{user.id}}
-                </td>
-                <td
-                  class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
-                >
-                  {{user.username}}
-                </td>
-                <td
-                  class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
-                  hx-delete="/user/{{user.id}}"                >
-                  <a href="#" class="text-sky-600 hover:text-sky-900"
-                    >delete<span class="sr-only">delete</span></a
+            <tbody class="divide-y divide-gray-200">
+              <template x-for="user in users" :key="user.id">
+                <tr>
+                  <td
+                    class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
+                    x-text="user.username"
+                  ></td>
+                  <td
+                    class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
                   >
-                </td>
-              </tr>
-              {% endfor %}
+                    <a
+                      href="#"
+                      class="text-sky-600 hover:text-sky-900"
+                      @click.prevent="deleteUser(user.id)"
+                      >delete<span class="sr-only">delete</span></a
+                    >
+                  </td>
+                </tr>
+              </template>
             </tbody>
           </table>
         </div>
@@ -71,38 +60,87 @@
     </div>
   </div>
 </div>
+
 <script>
-  const addUser = () => {
-    Swal.fire({
-      title: "Add User",
-      showCancelButton: true,
-      html: `
+  function userForm() {
+    return {
+      users: [],
+      fetchData() {
+        fetch("/api/users")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            this.users = data.data;
+          })
+          .catch((error) => {
+            console.error(
+              "There has been a problem with your fetch operation:",
+              error
+            );
+          });
+      },
+      addUser() {
+        Swal.fire({
+          title: "Add User",
+          showCancelButton: true,
+          html: `
     <input id="swal-input1" class="swal2-input" placeholder="username">
     <input id="swal-input2" class="swal2-input" placeholder="password">
     `,
-      preConfirm: () => {
-        return fetch("/user", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+          preConfirm: () => {
+            return fetch("/users", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                username: document.getElementById("swal-input1").value,
+                password: document.getElementById("swal-input2").value,
+              }),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error(response.statusText);
+                }
+                this.fetchData();
+                return;
+              })
+              .catch((error) => {
+                Swal.showValidationMessage(`Request failed: ${error}`);
+              });
           },
-          body: JSON.stringify({
-            username: document.getElementById("swal-input1").value,
-            password: document.getElementById("swal-input2").value,
-          }),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error(response.statusText);
-            }
-            location.reload();
-            return;
-          })
-          .catch((error) => {
-            Swal.showValidationMessage(`Request failed: ${error}`);
-          });
+          allowOutsideClick: () => !Swal.isLoading(),
+        });
       },
-      allowOutsideClick: () => !Swal.isLoading(),
-    });
-  };
+      deleteUser(id) {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+          preConfirm: () => {
+            return fetch(`/api/users/${id}`, {
+              method: "DELETE",
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error(response.statusText);
+                }
+                this.fetchData();
+                return;
+              })
+              .catch((error) => {
+                Swal.showValidationMessage(`Request failed: ${error}`);
+              });
+          },
+          allowOutsideClick: () => !Swal.isLoading(),
+        }).then((result) => {});
+      },
+    };
+  }
 </script>

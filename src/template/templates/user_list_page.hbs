@@ -7,34 +7,7 @@
     <title>salvo</title>
   </head>
     {% include "user_list.html" %}
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/htmx.org@1.8.4"></script>
-  <script src="https://unpkg.com/hyperscript.org@0.9.7"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script>
-    htmx.onLoad(function (target) {
-      document.body.addEventListener("htmx:afterRequest", function (evt) {
-        const targetError =
-          evt.target.attributes.getNamedItem("hx-target-error");
-        if (evt.detail.failed && targetError) {
-          let data = JSON.parse(evt.detail.xhr.response);
-          Swal.fire({
-            title: "Error!",
-            text: data.msg,
-            icon: "error",
-            confirmButtonText: "close",
-          });
-        }
-      });
-      document.body.addEventListener("htmx:beforeRequest", function (evt) {
-        const targetError =
-          evt.target.attributes.getNamedItem("hx-target-error");
-        if (targetError) {
-          //document.getElementById(targetError.value).style.display = "none";
-        }
-      });
-    });
-  </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
 </html>
