@@ -45,6 +45,11 @@ async fn main() {
                 "swagger-ui: https://{}/swagger-ui",
                 &CFG.server.address.replace("0.0.0.0", "127.0.0.1")
             );
+            {{#if is_web_site}}
+            {{#if need_db_conn}}
+            println!("login page: https://{}/login", &CFG.server.address.replace("0.0.0.0", "127.0.0.1"));
+            {{/if}}
+            {{/if}}
             let config = RustlsConfig::new(
                 Keycert::new()
                     .cert(CERT_KEY.cert.clone())
@@ -68,6 +73,11 @@ async fn main() {
                 "swagger-ui: http://{}/swagger-ui",
                 &CFG.server.address.replace("0.0.0.0", "127.0.0.1")
             );
+            {{#if is_web_site}}
+            {{#if need_db_conn}}
+            println!("login page: http://{}/login", &CFG.server.address.replace("0.0.0.0", "127.0.0.1"));
+            {{/if}}
+            {{/if}}
             let acceptor = TcpListener::new(&CFG.server.address).bind().await;
             let server = Server::new(acceptor).serve_with_graceful_shutdown(
                 service,
