@@ -24,12 +24,12 @@ cargo install --force salvo-cli
 |  Status |Plan   |   
 |:---:|:---:| 
 |✅| web api template |    
-|✅| web site with htmlx template |   
+|✅| web site with template |   
 |✅|with sqlx  template| 
 |✅|basic midware |
 |✅|suport sqlite,pgsql,mysql|
 |✅|with seaorm template|   
-|| better web site | 
+|✅| better web site | 
 || with diesel template|  
 || with Rbatis template|  
 ## License
