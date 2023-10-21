@@ -3,7 +3,7 @@ use crate::{
     app_error::AppResult,
     db::DB,
     dtos::user::{
-        UserAddRequest, UserDeleteRequest, UserLoginRequest, UserLoginResponse, UserResponse,
+        UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse,
         UserUpdateRequest,
     },
     middleware::jwt::get_token,
@@ -16,7 +16,7 @@ use crate::{
     app_error::AppResult,
     db::DB,
     dtos::user::{
-        UserAddRequest, UserDeleteRequest, UserLoginRequest, UserLoginResponse, UserResponse,
+        UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse,
         UserUpdateRequest,
     },
     middleware::jwt::get_token,
@@ -103,14 +103,14 @@ pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
     })
 }
 
-pub async fn delete_user(req: UserDeleteRequest) -> AppResult<()> {
+pub async fn delete_user(id: String) -> AppResult<()> {
     let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
     sqlx::query!(
         r#"
             DELETE FROM users
             WHERE id = $1
             "#,
-        req.id,
+        id,
     )
     .execute(db)
     .await?;
@@ -196,9 +196,9 @@ pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
     })
 }
 
-pub async fn delete_user(req: UserDeleteRequest) -> AppResult<()> {
-    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
-    User::delete_by_id(req.id, ).exec(db).await?;
+pub async fn delete_user(id: String) -> AppResult<()> {
+    let db = DB.get().ok_or(anyhow::anyhow!("数据库连接失败"))?;
+    User::delete_by_id(id).exec(db).await?;
     Ok(())
 }
 

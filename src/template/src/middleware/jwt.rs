@@ -13,6 +13,7 @@ pub struct JwtClaims {
     exp: i64,
 }
 
+#[allow(dead_code)]
 pub fn jwt_hoop() -> JwtAuth<JwtClaims, ConstDecoder> {
     let auth_handler: JwtAuth<JwtClaims, _> = JwtAuth::new(ConstDecoder::from_secret(
         CFG.jwt.jwt_secret.to_owned().as_bytes(),

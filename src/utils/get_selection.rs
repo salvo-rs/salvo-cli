@@ -18,8 +18,8 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         ..ColorfulTheme::default()
     };
     let selections = &[
-        t!("salvo_web_api"),
         t!("salvo_web_site"),
+        t!("salvo_web_api"),
         // "custom",
     ];
     let selection = Select::with_theme(&theme)
@@ -28,8 +28,8 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         .items(&selections[..])
         .interact()?;
     let template_type = match selection {
-        0 => TemplateType::SalvoWebApi,
-        1 => TemplateType::SalvoWebSite,
+        0 => TemplateType::SalvoWebSite,
+        1 => TemplateType::SalvoWebApi,
         _ => anyhow::bail!("Invalid selection"),
     };
     let db_conn_types = &[

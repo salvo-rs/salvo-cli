@@ -92,7 +92,7 @@
         userList: "",
         async submit() {
           try {
-            const response = await fetch("/login", {
+            const response = await fetch("/api/login", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -107,13 +107,13 @@
               throw new Error(`${data.msg}`);
             }
             this.isLoggedIn = true;
-            const userListResponse = await fetch("/user", {
+            const userListResponse = await fetch("/users", {
               headers: {
                 "X-Fragment-Header": "true",
               },
             });
             this.userList = await userListResponse.text();
-            //history.pushState(null, '', '/user');
+            history.pushState(null, '', '/users');
           } catch (error) {
             Swal.fire({
               title: "Error!",
@@ -125,5 +125,86 @@
         },
       };
     }
+    function userForm() {
+    return {
+      users: [],
+      fetchData() {
+        fetch("/api/users")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            this.users = data.data;
+          })
+          .catch((error) => {
+            console.error(
+              "There has been a problem with your fetch operation:",
+              error
+            );
+          });
+      },
+      addUser() {
+        Swal.fire({
+          title: "Add User",
+          showCancelButton: true,
+          html: `
+    <input id="swal-input1" class="swal2-input" placeholder="username">
+    <input id="swal-input2" class="swal2-input" placeholder="password">
+    `,
+          preConfirm: () => {
+            return fetch("/api/users", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                username: document.getElementById("swal-input1").value,
+                password: document.getElementById("swal-input2").value,
+              }),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error(response.statusText);
+                }
+                this.fetchData();
+                return;
+              })
+              .catch((error) => {
+                Swal.showValidationMessage(`Request failed: ${error}`);
+              });
+          },
+          allowOutsideClick: () => !Swal.isLoading(),
+        });
+      },
+      deleteUser(id) {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+          preConfirm: () => {
+            return fetch(`/api/users/${id}`, {
+              method: "DELETE",
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error(response.statusText);
+                }
+                this.fetchData();
+                return;
+              })
+              .catch((error) => {
+                Swal.showValidationMessage(`Request failed: ${error}`);
+              });
+          },
+          allowOutsideClick: () => !Swal.isLoading(),
+        }).then((result) => {});
+      },
+    };
+  }
   </script>
 </html>
