@@ -5,7 +5,7 @@ ssl = false
 {{#if need_db_conn}}
 [database]
 {{#if is_sqlite}}
-database_url= "sqlite:data/test.db"
+database_url= "file:data/test.db"
 {{/if}}
 {{#if is_postgres}}
 database_url="postgresql://liufankai:1@localhost/salvo_demo"
