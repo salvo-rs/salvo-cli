@@ -132,6 +132,7 @@ fn write_project_file(
         "create_success_sea_orm__mysql_or_pgsql_install_sea_orm":t!("create_success_sea_orm__mysql_or_pgsql_install_sea_orm"),
         "create_success_mysql_or_pgsql_fist_use":t!("create_success_mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
         "create_success_sea_orm__mysql_or_pgsql_fist_use":t!("create_success_sea_orm__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
+        "create_success_diesel__mysql_or_pgsql_fist_use":t!("create_success_diesel__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
     });
     if need_db_conn {
         // Add sqlx dependencies
@@ -549,6 +550,11 @@ fn write_project_file(
             let gitkeep_bytes: [u8; 0] = [];
             let mut gitkeep_file = File::create(migrations_path.join(".keep"))?;
             gitkeep_file.write_all(&gitkeep_bytes)?;
+            //migrations/README.md
+            let migration_readme_bytes = include_bytes!("../template/diesel_migrations/README.md");
+            let mut migration_readme_file = File::create(migrations_path.join("README.md"))?;
+            migration_readme_file.write_all(migration_readme_bytes)?;
+
             //.env
             let env_template = include_str!("../template/.env.hbs");
             let env_rendered = handlebars.render_template(env_template, &data)?;
