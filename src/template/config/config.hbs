@@ -4,16 +4,28 @@ address = "0.0.0.0:5800"
 ssl = false
 {{#if need_db_conn}}
 [database]
-{{#if is_sqlite}}
-database_url= "sqlite:data/demo.db"
-{{/if}}
+{{#if is_sea_orm_or_sqlx}}
 {{#if is_postgres}}
-database_url="postgresql://liufankai:1@localhost/salvo_demo"
+database_url=postgresql://liufankai:1@localhost/salvo_demo
+{{/if}}
+{{#if is_sqlite}}
+database_url="sqlite:data/demo.db"
 {{/if}}
 {{#if is_mysql}}
 database_url="mysql://root:981109@localhost/salvo_demo"
 {{/if}}
 {{/if}}
+{{#if is_diesel}}
+{{#if is_postgres}}
+database_url=postgres://liufankai:1@localhost/diesel_example
+{{/if}}
+{{#if is_sqlite}}
+database_url="file:data/test.db"
+{{/if}}
+{{#if is_mysql}}
+database_url="mysql://root:123@127.0.0.1:3306/diesel_example"
+{{/if}}
+{{/if}}{{/if}}
 [jwt]
 jwt_secret = "secret"
 jwt_exp = 6000

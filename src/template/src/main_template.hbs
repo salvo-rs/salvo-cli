@@ -1,4 +1,4 @@
-{{#if need_db_conn}}
+{{#if is_sea_orm_or_sqlx}}
 use crate::db::init_db_conn;
 {{/if}}
 use crate::middleware::handle_404::handle_404;
@@ -19,8 +19,14 @@ mod config;
 mod db;
 mod dtos;
 mod services;
-mod entities;
 mod utils;
+{{/if}}
+{{#if is_sea_orm_or_sqlx}}
+mod entities;
+{{/if}}
+{{#if is_diesel}}
+mod models;
+mod schema;
 {{/if}}
 mod middleware;
 mod routers;
@@ -29,7 +35,7 @@ mod routers;
 async fn main() {
     //{{main_log_message}}
     init_log();
-    {{#if need_db_conn}}
+    {{#if is_sea_orm_or_sqlx}}
     init_db_conn().await;
     {{/if}}
     let (tx, rx) = oneshot::channel();

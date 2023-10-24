@@ -31,6 +31,10 @@ pub enum AppError {
     #[error("sea_orm::DbErr:Error:`{0}`")]
     DbErr(#[from] sea_orm::DbErr),
     {{/if}}
+    {{#if is_diesel}}
+    #[error("diesel::result::Error:`{0}`")]
+    DieselErr(#[from] diesel::result::Error),
+    {{/if}}
 }
 
 pub type AppResult<T> = Result<T, AppError>;

@@ -38,7 +38,10 @@ pub fn create_project(project: Project) -> Result<()> {
             init_git(project_path)?;
 
             success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
-            if config.db_conn_type == DbConnectionType::Sqlx||config.db_conn_type == DbConnectionType::SeaOrm{
+            if config.db_conn_type == DbConnectionType::Sqlx
+                || config.db_conn_type == DbConnectionType::SeaOrm
+                || config.db_conn_type == DbConnectionType::Diesel
+            {
                 if config.db_conn_type == DbConnectionType::Sqlx {
                     success(
                         t!("create_success_sqlx", project_name = project_name).replace(r"\n", "\n"),
@@ -46,7 +49,8 @@ pub fn create_project(project: Project) -> Result<()> {
                 }
                 if config.db_conn_type == DbConnectionType::SeaOrm {
                     success(
-                        t!("create_success_sea_orm", project_name = project_name).replace(r"\n", "\n"),
+                        t!("create_success_sea_orm", project_name = project_name)
+                            .replace(r"\n", "\n"),
                     );
                 }
                 if config.db_type == DbType::Sqlite {
@@ -72,9 +76,11 @@ fn write_project_file(
     let need_db_conn = user_selected.db_conn_type != DbConnectionType::Nothing;
     let is_sqlx = user_selected.db_conn_type == DbConnectionType::Sqlx;
     let is_sea_orm = user_selected.db_conn_type == DbConnectionType::SeaOrm;
+    let is_diesel = user_selected.db_conn_type == DbConnectionType::Diesel;
     let is_mysql = user_selected.db_type == DbType::Mysql;
     let is_postgres = user_selected.db_type == DbType::Postgres;
     let is_sqlite = user_selected.db_type == DbType::Sqlite;
+    let is_sea_orm_or_sqlx = is_sea_orm || is_sqlx;
     let mut data = json!({
         "project_name": project.project_name,
         "dependencies": {
@@ -103,6 +109,8 @@ fn write_project_file(
         "is_postgres":is_postgres,
         "is_sqlite":is_sqlite,
         "is_sea_orm":is_sea_orm,
+        "is_sea_orm_or_sqlx":is_sea_orm_or_sqlx,
+        "is_diesel":is_diesel,
         "main_log_message":t!("main_log_message"),
         "config_error_no_exits":t!("config_error_no_exits"),
         "config_error_read":t!("config_error_read"),
@@ -125,6 +133,7 @@ fn write_project_file(
         "create_success_sea_orm__mysql_or_pgsql_install_sea_orm":t!("create_success_sea_orm__mysql_or_pgsql_install_sea_orm"),
         "create_success_mysql_or_pgsql_fist_use":t!("create_success_mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
         "create_success_sea_orm__mysql_or_pgsql_fist_use":t!("create_success_sea_orm__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
+        "create_success_diesel__mysql_or_pgsql_fist_use":t!("create_success_diesel__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
     });
     if need_db_conn {
         // Add sqlx dependencies
@@ -165,6 +174,25 @@ fn write_project_file(
                 dependencies["sea-orm"] = json!({
                     "version": "0",
                     "features": ["runtime-tokio-native-tls","sqlx-sqlite"]
+                });
+            }
+        } else if is_diesel {
+            if is_mysql {
+                dependencies["diesel"] = json!({
+                    "version": "2.1.0",
+                    "features": ["mysql"]
+                });
+            }
+            if is_postgres {
+                dependencies["diesel"] = json!({
+                    "version": "2.1.0",
+                    "features": ["postgres"]
+                });
+            }
+            if is_sqlite {
+                dependencies["diesel"] = json!({
+                    "version": "2.1.0",
+                    "features": ["sqlite","returning_clauses_for_sqlite_3_35"]
                 });
             }
         }
@@ -368,113 +396,192 @@ fn write_project_file(
         let dtos_user_rendered = handlebars.render_template(dtos_user_template, &data)?;
         let mut dtos_user_file = File::create(dtos_path.join("user.rs"))?;
         dtos_user_file.write_all(dtos_user_rendered.as_bytes())?;
+        if is_sea_orm || is_sqlx {
+            //src/entities
+            let entities_path = src_path.join("entities");
+            std::fs::create_dir_all(&entities_path)?;
+            //src/entities/mod.rs
+            let entities_mod_template = include_str!("../template/src/entities/mod.hbs");
+            let entities_mod_rendered = handlebars.render_template(entities_mod_template, &data)?;
+            let mut entities_mod_file = File::create(entities_path.join("mod.rs"))?;
+            entities_mod_file.write_all(entities_mod_rendered.as_bytes())?;
 
-        //src/entities
-        let entities_path = src_path.join("entities");
-        std::fs::create_dir_all(&entities_path)?;
-        //src/entities/mod.rs
-        let entities_mod_template = include_str!("../template/src/entities/mod.hbs");
-        let entities_mod_rendered = handlebars.render_template(entities_mod_template, &data)?;
-        let mut entities_mod_file = File::create(entities_path.join("mod.rs"))?;
-        entities_mod_file.write_all(entities_mod_rendered.as_bytes())?;
-
-        //src/entities/user.rs
-        let entities_user_template = include_str!("../template/src/entities/user.hbs");
-        let entities_user_rendered = handlebars.render_template(entities_user_template, &data)?;
-        let mut entities_user_file = File::create(entities_path.join("user.rs"))?;
-        entities_user_file.write_all(entities_user_rendered.as_bytes())?;
-        if is_sea_orm {
-            //src/entities/prelude.rs
-            let entities_prelude_template = include_str!("../template/src/entities/prelude.hbs");
-            let entities_prelude_rendered =
-                handlebars.render_template(entities_prelude_template, &data)?;
-            let mut entities_prelude_file = File::create(entities_path.join("prelude.rs"))?;
-            entities_prelude_file.write_all(entities_prelude_rendered.as_bytes())?;
-        }
-        if is_sqlx {
-            //data
-            let data_path = project_path.join("data");
-            std::fs::create_dir_all(&data_path)?;
-            if is_sqlite {
-                //data/demo.db
-                let demo_db_bytes = include_bytes!("../template/data/demo.db");
-                let mut demo_db_file = File::create(data_path.join("demo.db"))?;
-                demo_db_file.write_all(demo_db_bytes)?;
-            } else {
-                //data/init_sql.sql
-                let init_sql_templte = include_str!("../template/data/init_sql_sql.hbs");
-                let init_sql_rendered = handlebars.render_template(init_sql_templte, &data)?;
-                let mut init_sql_file = File::create(data_path.join("init_sql.sql"))?;
-                init_sql_file.write_all(init_sql_rendered.as_bytes())?;
+            //src/entities/user.rs
+            let entities_user_template = include_str!("../template/src/entities/user.hbs");
+            let entities_user_rendered =
+                handlebars.render_template(entities_user_template, &data)?;
+            let mut entities_user_file = File::create(entities_path.join("user.rs"))?;
+            entities_user_file.write_all(entities_user_rendered.as_bytes())?;
+            if is_sea_orm {
+                //src/entities/prelude.rs
+                let entities_prelude_template =
+                    include_str!("../template/src/entities/prelude.hbs");
+                let entities_prelude_rendered =
+                    handlebars.render_template(entities_prelude_template, &data)?;
+                let mut entities_prelude_file = File::create(entities_path.join("prelude.rs"))?;
+                entities_prelude_file.write_all(entities_prelude_rendered.as_bytes())?;
             }
-            //migrations
-            let migrations_path: std::path::PathBuf = project_path.join("migrations");
-            std::fs::create_dir_all(&migrations_path)?;
-            //migrations/2021-10-20-000000_create_users_table/up.sql
-            let up_sql_bytes = include_bytes!("../template/migrations/20231001143156_users.sql");
-            let mut up_sql_file = File::create(migrations_path.join("20231001143156_users.sql"))?;
-            up_sql_file.write_all(up_sql_bytes)?;
-            //.env
-            let env_template = include_str!("../template/.env.hbs");
-            let env_rendered = handlebars.render_template(env_template, &data)?;
-            let mut env_file = File::create(project_path.join(".env"))?;
-            env_file.write_all(env_rendered.as_bytes())?;
-        }
-        if is_sea_orm {
-            //migration
-            let migration_path = project_path.join("migration");
-            std::fs::create_dir_all(&migration_path)?;
-            //migration/src
-            let migration_src_path = migration_path.join("src");
-            std::fs::create_dir_all(&migration_src_path)?;
-            //migration/src/main.rs
-            let migration_main_byetes = include_bytes!("../template/migration/src/main.rs");
-            let mut migration_main_file = File::create(migration_src_path.join("main.rs"))?;
-            migration_main_file.write_all(migration_main_byetes)?;
-            //migration/src/lib.rs
-            let migration_lib_byetes = include_bytes!("../template/migration/src/lib.rs");
-            let mut migration_lib_file = File::create(migration_src_path.join("lib.rs"))?;
-            migration_lib_file.write_all(migration_lib_byetes)?;
-            //migration/src/m20220101_000001_create_table.rs
-            let migration_create_table_byetes =
-                include_bytes!("../template/migration/src/m20220101_000001_create_table.rs");
-            let mut migration_create_table_file =
-                File::create(migration_src_path.join("m20220101_000001_create_table.rs"))?;
-            migration_create_table_file.write_all(migration_create_table_byetes)?;
-            //migration/Cargo.toml
-            let migration_cargo_template = include_str!("../template/migration/Cargo.toml.hbs");
-            let migration_cargo_rendered =
-                handlebars.render_template(migration_cargo_template, &data)?;
-            let mut migration_cargo_file = File::create(migration_path.join("Cargo.toml"))?;
-            migration_cargo_file.write_all(migration_cargo_rendered.as_bytes())?;
-            //migration/README.md
-            let migration_readme_bytes = include_bytes!("../template/migration/README.md");
-            let mut migration_readme_file = File::create(migration_path.join("README.md"))?;
-            migration_readme_file.write_all(migration_readme_bytes)?;
-
-            if is_sqlite {
+            if is_sqlx {
                 //data
                 let data_path = project_path.join("data");
                 std::fs::create_dir_all(&data_path)?;
-                //data/demo.db
-                let demo_db_bytes = include_bytes!("../template/data/demo_sea_orm.db");
-                let mut demo_db_file = File::create(data_path.join("demo.db"))?;
-                demo_db_file.write_all(demo_db_bytes)?;
+                if is_sqlite {
+                    //data/demo.db
+                    let demo_db_bytes = include_bytes!("../template/data/demo.db");
+                    let mut demo_db_file = File::create(data_path.join("demo.db"))?;
+                    demo_db_file.write_all(demo_db_bytes)?;
+                } else {
+                    //data/init_sql.sql
+                    let init_sql_templte = include_str!("../template/data/init_sql_sql.hbs");
+                    let init_sql_rendered = handlebars.render_template(init_sql_templte, &data)?;
+                    let mut init_sql_file = File::create(data_path.join("init_sql.sql"))?;
+                    init_sql_file.write_all(init_sql_rendered.as_bytes())?;
+                }
+                //migrations
+                let migrations_path: std::path::PathBuf = project_path.join("migrations");
+                std::fs::create_dir_all(&migrations_path)?;
+                //migrations/2021-10-20-000000_create_users_table/up.sql
+                let up_sql_bytes =
+                    include_bytes!("../template/migrations/20231001143156_users.sql");
+                let mut up_sql_file =
+                    File::create(migrations_path.join("20231001143156_users.sql"))?;
+                up_sql_file.write_all(up_sql_bytes)?;
+                //.env
+                let env_template = include_str!("../template/.env.hbs");
+                let env_rendered = handlebars.render_template(env_template, &data)?;
+                let mut env_file = File::create(project_path.join(".env"))?;
+                env_file.write_all(env_rendered.as_bytes())?;
             }
-            else {
-                let data_path = project_path.join("data");
-                std::fs::create_dir_all(&data_path)?;
-                //data/init_sql.sql
-                let init_sql_templte = include_str!("../template/data/init_sql_sql.hbs");
-                let init_sql_rendered = handlebars.render_template(init_sql_templte, &data)?;
-                let mut init_sql_file = File::create(data_path.join("init_sql.sql"))?;
-                init_sql_file.write_all(init_sql_rendered.as_bytes())?;
+            if is_sea_orm {
+                //migration
+                let migration_path = project_path.join("migration");
+                std::fs::create_dir_all(&migration_path)?;
+                //migration/src
+                let migration_src_path = migration_path.join("src");
+                std::fs::create_dir_all(&migration_src_path)?;
+                //migration/src/main.rs
+                let migration_main_byetes = include_bytes!("../template/migration/src/main.rs");
+                let mut migration_main_file = File::create(migration_src_path.join("main.rs"))?;
+                migration_main_file.write_all(migration_main_byetes)?;
+                //migration/src/lib.rs
+                let migration_lib_byetes = include_bytes!("../template/migration/src/lib.rs");
+                let mut migration_lib_file = File::create(migration_src_path.join("lib.rs"))?;
+                migration_lib_file.write_all(migration_lib_byetes)?;
+                //migration/src/m20220101_000001_create_table.rs
+                let migration_create_table_byetes =
+                    include_bytes!("../template/migration/src/m20220101_000001_create_table.rs");
+                let mut migration_create_table_file =
+                    File::create(migration_src_path.join("m20220101_000001_create_table.rs"))?;
+                migration_create_table_file.write_all(migration_create_table_byetes)?;
+                //migration/Cargo.toml
+                let migration_cargo_template = include_str!("../template/migration/Cargo.toml.hbs");
+                let migration_cargo_rendered =
+                    handlebars.render_template(migration_cargo_template, &data)?;
+                let mut migration_cargo_file = File::create(migration_path.join("Cargo.toml"))?;
+                migration_cargo_file.write_all(migration_cargo_rendered.as_bytes())?;
+                //migration/README.md
+                let migration_readme_bytes = include_bytes!("../template/migration/README.md");
+                let mut migration_readme_file = File::create(migration_path.join("README.md"))?;
+                migration_readme_file.write_all(migration_readme_bytes)?;
+
+                if is_sqlite {
+                    //data
+                    let data_path = project_path.join("data");
+                    std::fs::create_dir_all(&data_path)?;
+                    //data/demo.db
+                    let demo_db_bytes = include_bytes!("../template/data/demo_sea_orm.db");
+                    let mut demo_db_file = File::create(data_path.join("demo.db"))?;
+                    demo_db_file.write_all(demo_db_bytes)?;
+                } else {
+                    let data_path = project_path.join("data");
+                    std::fs::create_dir_all(&data_path)?;
+                    //data/init_sql.sql
+                    let init_sql_templte = include_str!("../template/data/init_sql_sql.hbs");
+                    let init_sql_rendered = handlebars.render_template(init_sql_templte, &data)?;
+                    let mut init_sql_file = File::create(data_path.join("init_sql.sql"))?;
+                    init_sql_file.write_all(init_sql_rendered.as_bytes())?;
+                }
+                //.env
+                let env_template = include_str!("../template/.env.hbs");
+                let env_rendered = handlebars.render_template(env_template, &data)?;
+                let mut env_file = File::create(project_path.join(".env"))?;
+                env_file.write_all(env_rendered.as_bytes())?;
             }
+        }
+        if is_diesel {
+            //src/schema.rs
+            let schema_template = include_str!("../template/src/schema.hbs");
+            let schema_rendered = handlebars.render_template(schema_template, &data)?;
+            let mut schema_file = File::create(src_path.join("schema.rs"))?;
+            schema_file.write_all(schema_rendered.as_bytes())?;
+            //src/models
+            let models_path = src_path.join("models");
+            std::fs::create_dir_all(&models_path)?;
+            //src/models/mod.rs
+            let models_mod_template = include_str!("../template/src/models/mod.hbs");
+            let models_mod_rendered = handlebars.render_template(models_mod_template, &data)?;
+            let mut models_mod_file = File::create(models_path.join("mod.rs"))?;
+            models_mod_file.write_all(models_mod_rendered.as_bytes())?;
+            //src/models/user.rs
+            let models_user_template = include_str!("../template/src/models/user.hbs");
+            let models_user_rendered = handlebars.render_template(models_user_template, &data)?;
+            let mut models_user_file = File::create(models_path.join("user.rs"))?;
+            models_user_file.write_all(models_user_rendered.as_bytes())?;
+            //migrations
+            let migrations_path: std::path::PathBuf = project_path.join("migrations");
+            std::fs::create_dir_all(&migrations_path)?;
+            //migrations/2023-10-21-084227_create_users_table
+            let migrations_create_users_table_path =
+                migrations_path.join("2023-10-21-084227_create_users_table");
+            std::fs::create_dir_all(&migrations_create_users_table_path)?;
+            //migrations/2023-10-21-084227_create_users_table/up.sql
+            let up_sql_bytes = include_bytes!(
+                "../template/diesel_migrations/2023-10-21-084227_create_users_table/up.sql"
+            );
+            let mut up_sql_file = File::create(migrations_create_users_table_path.join("up.sql"))?;
+            up_sql_file.write_all(up_sql_bytes)?;
+            //migrations/2023-10-21-084227_create_users_table/down.sql
+            let down_sql_bytes = include_bytes!(
+                "../template/diesel_migrations/2023-10-21-084227_create_users_table/down.sql"
+            );
+            let mut down_sql_file: File =
+                File::create(migrations_create_users_table_path.join("down.sql"))?;
+            down_sql_file.write_all(down_sql_bytes)?;
+            //migrations/.keep
+            let gitkeep_bytes: [u8; 0] = [];
+            let mut gitkeep_file = File::create(migrations_path.join(".keep"))?;
+            gitkeep_file.write_all(&gitkeep_bytes)?;
+            //migrations/README.md
+            let migration_readme_bytes = include_bytes!("../template/diesel_migrations/README.md");
+            let mut migration_readme_file = File::create(migrations_path.join("README.md"))?;
+            migration_readme_file.write_all(migration_readme_bytes)?;
+
             //.env
             let env_template = include_str!("../template/.env.hbs");
             let env_rendered = handlebars.render_template(env_template, &data)?;
             let mut env_file = File::create(project_path.join(".env"))?;
             env_file.write_all(env_rendered.as_bytes())?;
+
+            //template//diesel.toml
+            let diesel_template = include_str!("../template/diesel.hbs");
+            let diesel_rendered = handlebars.render_template(diesel_template, &data)?;
+            let mut diesel_file = File::create(project_path.join("diesel.toml"))?;
+            diesel_file.write_all(diesel_rendered.as_bytes())?;
+
+            //data
+            let data_path = project_path.join("data");
+            std::fs::create_dir_all(&data_path)?;
+            //data/init_sql.sql
+            let init_sql_templte = include_str!("../template/data/init_sql_sql.hbs");
+            let init_sql_rendered = handlebars.render_template(init_sql_templte, &data)?;
+            let mut init_sql_file = File::create(data_path.join("init_sql.sql"))?;
+            init_sql_file.write_all(init_sql_rendered.as_bytes())?;
+            if is_sqlite {
+                //data/test.db
+                let demo_db_bytes = include_bytes!("../template/data/diesel_test.db");
+                let mut test_db_file = File::create(data_path.join("test.db"))?;
+                test_db_file.write_all(demo_db_bytes)?;
+            }
         }
     }
     Ok(())
