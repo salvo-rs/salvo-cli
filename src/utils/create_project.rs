@@ -40,6 +40,7 @@ pub fn create_project(project: Project) -> Result<()> {
             success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
             if config.db_conn_type == DbConnectionType::Sqlx
                 || config.db_conn_type == DbConnectionType::SeaOrm
+                || config.db_conn_type == DbConnectionType::Diesel
             {
                 if config.db_conn_type == DbConnectionType::Sqlx {
                     success(
@@ -543,7 +544,7 @@ fn write_project_file(
             let down_sql_bytes = include_bytes!(
                 "../template/diesel_migrations/2023-10-21-084227_create_users_table/down.sql"
             );
-            let mut down_sql_file =
+            let mut down_sql_file: File =
                 File::create(migrations_create_users_table_path.join("down.sql"))?;
             down_sql_file.write_all(down_sql_bytes)?;
             //migrations/.keep
