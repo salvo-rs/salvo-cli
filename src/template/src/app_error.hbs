@@ -35,6 +35,10 @@ pub enum AppError {
     #[error("diesel::result::Error:`{0}`")]
     DieselErr(#[from] diesel::result::Error),
     {{/if}}
+    {{#if is_rbatis}}
+    #[error("rbatis::Error:`{0}`")]
+    RbatisErr(#[from] rbatis::Error),
+    {{/if}}
 }
 
 pub type AppResult<T> = Result<T, AppError>;

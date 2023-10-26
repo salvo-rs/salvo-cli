@@ -61,13 +61,9 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
             db_conn_type,
         }));
     }
-    let mut db_types: Vec<&str> = vec![
-        "sqlite", "mysql", "postgres",
-    ];
+    let mut db_types: Vec<&str> = vec!["sqlite", "mysql", "postgres"];
     if db_conn_type == DbConnectionType::Rbatis {
-        db_types = vec![
-            "sqlite", "mysql", "postgres", "mssql",
-        ];       
+        db_types = vec!["sqlite", "mysql", "postgres", "mssql"];
     }
     let db_type_selection = Select::with_theme(&theme)
         .with_prompt(t!("select_db_type").replace(r"\n", "\n"))
