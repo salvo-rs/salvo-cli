@@ -36,7 +36,7 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         t!("db_conn_types_sqlx"),
         t!("db_conn_types_sea_orm"),
         t!("db_conn_types_diesel"),
-        // t!("db_conn_types_rbatis"),
+        t!("db_conn_types_rbatis"),
         t!("db_conn_types_nothing"),
         // "custom",
     ];
@@ -50,8 +50,8 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         0 => DbConnectionType::Sqlx,
         1 => DbConnectionType::SeaOrm,
         2 => DbConnectionType::Diesel,
-        3 => DbConnectionType::Nothing,
-        // 3 => DbConnectionType::Rbatis,
+        3 => DbConnectionType::Rbatis,
+        4 => DbConnectionType::Nothing,
         _ => anyhow::bail!("Invalid db connection type selection"),
     };
     if db_conn_type == DbConnectionType::Nothing {
@@ -61,10 +61,14 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
             db_conn_type,
         }));
     }
-    let db_types = &[
+    let mut db_types: Vec<&str> = vec![
         "sqlite", "mysql", "postgres",
-        // "custom",
     ];
+    if db_conn_type == DbConnectionType::Rbatis {
+        db_types = vec![
+            "sqlite", "mysql", "postgres", "mssql",
+        ];       
+    }
     let db_type_selection = Select::with_theme(&theme)
         .with_prompt(t!("select_db_type").replace(r"\n", "\n"))
         .default(0)
@@ -74,6 +78,7 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         0 => DbType::Sqlite,
         1 => DbType::Mysql,
         2 => DbType::Postgres,
+        3 => DbType::Mssql,
         _ => anyhow::bail!("Invalid db type selection"),
     };
 
@@ -94,6 +99,7 @@ pub enum DbType {
     Sqlite,
     Mysql,
     Postgres,
+    Mssql,
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -101,6 +107,6 @@ pub enum DbConnectionType {
     Sqlx,
     SeaOrm,
     Diesel,
-    // Rbatis,
+    Rbatis,
     Nothing,
 }
