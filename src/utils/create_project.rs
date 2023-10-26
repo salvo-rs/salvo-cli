@@ -77,6 +77,7 @@ fn write_project_file(
     let is_sqlx = user_selected.db_conn_type == DbConnectionType::Sqlx;
     let is_sea_orm = user_selected.db_conn_type == DbConnectionType::SeaOrm;
     let is_diesel = user_selected.db_conn_type == DbConnectionType::Diesel;
+    let is_rbatis = user_selected.db_conn_type == DbConnectionType::Rbatis;
     let is_mysql = user_selected.db_type == DbType::Mysql;
     let is_postgres = user_selected.db_type == DbType::Postgres;
     let is_sqlite = user_selected.db_type == DbType::Sqlite;
@@ -111,6 +112,7 @@ fn write_project_file(
         "is_sea_orm":is_sea_orm,
         "is_sea_orm_or_sqlx":is_sea_orm_or_sqlx,
         "is_diesel":is_diesel,
+        "is_rbatis":is_rbatis,
         "main_log_message":t!("main_log_message"),
         "config_error_no_exits":t!("config_error_no_exits"),
         "config_error_read":t!("config_error_read"),
@@ -135,82 +137,15 @@ fn write_project_file(
         "create_success_sea_orm__mysql_or_pgsql_fist_use":t!("create_success_sea_orm__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
         "create_success_diesel__mysql_or_pgsql_fist_use":t!("create_success_diesel__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
     });
-    if need_db_conn {
-        // Add sqlx dependencies
-        let mut dependencies = data["dependencies"].clone();
-        if is_sqlx {
-            if is_mysql {
-                dependencies["sqlx"] = json!({
-                    "version": "0.7",
-                    "features": ["runtime-tokio", "macros", "mysql"]
-                });
-            }
-            if is_postgres {
-                dependencies["sqlx"] = json!({
-                    "version": "0.7",
-                    "features": ["runtime-tokio", "macros", "postgres"]
-                });
-            }
-            if is_sqlite {
-                dependencies["sqlx"] = json!({
-                    "version": "0.7",
-                    "features": ["runtime-tokio", "macros", "sqlite"]
-                });
-            }
-        } else if is_sea_orm {
-            if is_mysql {
-                dependencies["sea-orm"] = json!({
-                    "version": "0",
-                    "features": ["runtime-tokio-native-tls","sqlx-mysql"]
-                });
-            }
-            if is_postgres {
-                dependencies["sea-orm"] = json!({
-                    "version": "0",
-                    "features": ["runtime-tokio-native-tls","sqlx-postgres"]
-                });
-            }
-            if is_sqlite {
-                dependencies["sea-orm"] = json!({
-                    "version": "0",
-                    "features": ["runtime-tokio-native-tls","sqlx-sqlite"]
-                });
-            }
-        } else if is_diesel {
-            if is_mysql {
-                dependencies["diesel"] = json!({
-                    "version": "2.1.0",
-                    "features": ["mysql"]
-                });
-            }
-            if is_postgres {
-                dependencies["diesel"] = json!({
-                    "version": "2.1.0",
-                    "features": ["postgres"]
-                });
-            }
-            if is_sqlite {
-                dependencies["diesel"] = json!({
-                    "version": "2.1.0",
-                    "features": ["sqlite","returning_clauses_for_sqlite_3_35"]
-                });
-            }
-        }
-        //add uuid dependency
-        dependencies["uuid"] = json!({
-            "version": "1.4.1",
-            "features": ["v4", "fast-rng", "macro-diagnostics"]
-        });
-        //add rand dependency
-        dependencies["rand"] = json!({
-            "version": "0.8.5",
-        });
-        //add argon2 dependency
-        dependencies["argon2"] = json!({
-            "version": "0.5.2",
-        });
-        data["dependencies"] = dependencies;
-    }
+    let mut dependencies = data["dependencies"].clone();
+    handle_dependencies(
+        &mut dependencies, 
+        need_db_conn,
+        user_selected.db_type,
+        user_selected.db_conn_type,
+    );
+    data["dependencies"] = dependencies;
+    
 
     std::fs::create_dir_all(project_path)?;
 
@@ -621,6 +556,122 @@ fn check_path(path: &Path) -> Result<()> {
         print_util::warning(t!("warning_invalid_path", path = path));
     }
     Ok(())
+}
+
+fn handle_dependencies(
+    dependencies: &mut serde_json::Value,
+    need_db_conn: bool,
+    db_type: DbType,
+    conn_type: DbConnectionType
+) {
+    if need_db_conn {
+        match (conn_type, db_type) {
+            (DbConnectionType::Sqlx, DbType::Mysql) => {
+                dependencies["sqlx"] = json!({
+                    "version": "0.7",
+                    "features": ["runtime-tokio", "macros", "mysql"]
+                });
+            }
+            (DbConnectionType::Sqlx, DbType::Postgres) => {
+                dependencies["sqlx"] = json!({
+                    "version": "0.7",
+                    "features": ["runtime-tokio", "macros", "postgres"]
+                });
+            }
+            (DbConnectionType::Sqlx, DbType::Sqlite) => {
+                dependencies["sqlx"] = json!({
+                    "version": "0.7",
+                    "features": ["runtime-tokio", "macros", "sqlite"]
+                });
+            }
+            (DbConnectionType::SeaOrm, DbType::Mysql) => {
+                dependencies["sea-orm"] = json!({
+                    "version": "0",
+                    "features": ["runtime-tokio-native-tls","sqlx-mysql"]
+                });
+            }
+            (DbConnectionType::SeaOrm, DbType::Postgres) => {
+                dependencies["sea-orm"] = json!({
+                    "version": "0",
+                    "features": ["runtime-tokio-native-tls","sqlx-postgres"]
+                });
+            }
+            (DbConnectionType::SeaOrm, DbType::Sqlite) => {
+                dependencies["sea-orm"] = json!({
+                    "version": "0",
+                    "features": ["runtime-tokio-native-tls","sqlx-sqlite"]
+                });
+            }
+            (DbConnectionType::Diesel, DbType::Mysql) => {
+                dependencies["diesel"] = json!({
+                    "version": "2.1.0",
+                    "features": ["mysql"]
+                });
+            }
+            (DbConnectionType::Diesel, DbType::Postgres) => {
+                dependencies["diesel"] = json!({
+                    "version": "2.1.0",
+                    "features": ["postgres"]
+                });
+            }
+            (DbConnectionType::Diesel, DbType::Sqlite) => {
+                dependencies["diesel"] = json!({
+                    "version": "2.1.0",
+                    "features": ["sqlite","returning_clauses_for_sqlite_3_35"]
+                });
+            }
+            (DbConnectionType::Rbatis, DbType::Mysql) => {
+                dependencies["rbdc-mysql"] = json!({
+                    "version": "4.4"
+                });
+                dependencies["rbatis"] = json!({
+                    "version": "4.4",
+                    "features": ["debug_mode"]
+                });
+            }
+            (DbConnectionType::Rbatis, DbType::Postgres) => {
+                dependencies["rbdc-pg"] = json!({
+                    "version": "4.4"
+                });
+                dependencies["rbatis"] = json!({
+                    "version": "4.4",
+                    "features": ["debug_mode"]
+                });
+            }
+            (DbConnectionType::Rbatis, DbType::Sqlite) => {
+                dependencies["rbdc-sqlite"] = json!({
+                    "version": "4.4"
+                });
+                dependencies["rbatis"] = json!({
+                    "version": "4.4",
+                    "features": ["debug_mode"]
+                });
+            }
+            (DbConnectionType::Rbatis, DbType::Mssql) => {
+                dependencies["rbdc-mssql"] = json!({
+                    "version": "4.4"
+                });
+                dependencies["rbatis"] = json!({
+                    "version": "4.4",
+                    "features": ["debug_mode"]
+                });
+            }
+            _ => {}
+        }
+        //add uuid dependency
+        dependencies["uuid"] = json!({
+            "version": "1.4.1",
+            "features": ["v4", "fast-rng", "macro-diagnostics"]
+        });
+        //add rand dependency
+        dependencies["rand"] = json!({
+            "version": "0.8.5",
+        });
+        //add argon2 dependency
+        dependencies["argon2"] = json!({
+            "version": "0.5.2",
+        });
+    }
 }
 
 pub fn join_paths<T: AsRef<OsStr>>(paths: &[T], env: &str) -> Result<OsString> {
