@@ -168,12 +168,6 @@ fn write_project_file(
         handle_404_file.write_all(handle_404_template_rendered.as_bytes())?;
 
         if need_db_conn {
-            //src/db.rs
-            let db_template = include_str!("../template/src/db.hbs");
-            let db_rendered = handlebars.render_template(db_template, &data)?;
-            let mut db_file = File::create(src_path.join("db.rs"))?;
-            db_file.write_all(db_rendered.as_bytes())?;
-
             //template/login.html
             let login_template = include_str!("../template/templates/login.hbs");
             let login_template_rendered = handlebars.render_template(login_template, &data)?;
@@ -201,6 +195,12 @@ fn write_project_file(
         }
     }
     if need_db_conn {
+        //src/db.rs
+        let db_template = include_str!("../template/src/db.hbs");
+        let db_rendered = handlebars.render_template(db_template, &data)?;
+        let mut db_file = File::create(src_path.join("db.rs"))?;
+        db_file.write_all(db_rendered.as_bytes())?;
+
         //src/router/user.rs
         let router_user_template = include_str!("../template/src/routers/user.hbs");
         let router_user_rendered = handlebars.render_template(router_user_template, &data)?;
