@@ -33,7 +33,7 @@ pub fn create_project(project: Project) -> Result<()> {
     let config = get_user_selected()?;
     match config {
         Some(config) => {
-            write_project_file(project_path, config.clone(), project.clone())?;
+            write_project_file(project_path, config, project.clone())?;
 
             init_git(project_path)?;
 
