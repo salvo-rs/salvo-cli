@@ -1,6 +1,9 @@
 {{#if is_sea_orm_or_sqlx}}
 use crate::db::init_db_conn;
 {{/if}}
+{{#if is_rbatis}}
+use crate::db::init_db_conn;
+{{/if}}
 use crate::middleware::handle_404::handle_404;
 use crate::routers::router;
 use config::{CERT_KEY, CFG};
@@ -28,6 +31,9 @@ mod entities;
 mod models;
 mod schema;
 {{/if}}
+{{#if is_rbatis}}
+mod entities;
+{{/if}}
 mod middleware;
 mod routers;
 
@@ -36,6 +42,9 @@ async fn main() {
     //{{main_log_message}}
     init_log();
     {{#if is_sea_orm_or_sqlx}}
+    init_db_conn().await;
+    {{/if}}
+    {{#if is_rbatis}}
     init_db_conn().await;
     {{/if}}
     let (tx, rx) = oneshot::channel();

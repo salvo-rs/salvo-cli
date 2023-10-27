@@ -9,7 +9,7 @@ use std::{
     ffi::{OsStr, OsString},
     fs::{self, File},
     io::Write,
-    path::Path,
+    path::{Path, PathBuf},
     slice,
 };
 
@@ -59,10 +59,15 @@ pub fn create_project(project: Project) -> Result<()> {
                     success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
                 }
             }
+            match (config.db_conn_type, config.db_type) {
+                (DbConnectionType::Rbatis, DbType::Mysql | DbType::Postgres | DbType::Mssql) => {
+                    success(t!("create_success_rbatis"));
+                }
+                (_, _) => {}
+            }
         }
         None => anyhow::bail!("cli quit!"),
     }
-
     Ok(())
 }
 
@@ -81,6 +86,7 @@ fn write_project_file(
     let is_mysql = user_selected.db_type == DbType::Mysql;
     let is_postgres = user_selected.db_type == DbType::Postgres;
     let is_sqlite = user_selected.db_type == DbType::Sqlite;
+    let is_mssql = user_selected.db_type == DbType::Mssql;
     let is_sea_orm_or_sqlx = is_sea_orm || is_sqlx;
     let mut data = json!({
         "project_name": project.project_name,
@@ -109,6 +115,7 @@ fn write_project_file(
         "is_mysql":is_mysql,
         "is_postgres":is_postgres,
         "is_sqlite":is_sqlite,
+        "is_mssql":is_mssql,
         "is_sea_orm":is_sea_orm,
         "is_sea_orm_or_sqlx":is_sea_orm_or_sqlx,
         "is_diesel":is_diesel,
@@ -139,90 +146,15 @@ fn write_project_file(
     });
     let mut dependencies = data["dependencies"].clone();
     handle_dependencies(
-        &mut dependencies, 
+        &mut dependencies,
         need_db_conn,
         user_selected.db_type,
         user_selected.db_conn_type,
     );
     data["dependencies"] = dependencies;
-    
 
-    std::fs::create_dir_all(project_path)?;
+    let (src_path, router_path) = create_basic_file(project_path, &handlebars, &data)?;
 
-    let src_path = project_path.join("src");
-    //src
-    std::fs::create_dir_all(&src_path)?;
-    //src/main.rs
-    let main_file_path = src_path.join("main.rs");
-    let main_template = include_str!("../template/src/main_template.hbs");
-    let main_rendered = handlebars.render_template(main_template, &data)?;
-    let mut main_file = File::create(main_file_path)?;
-    main_file.write_all(main_rendered.as_bytes())?;
-    //src/Cargo.toml
-    let cargo_file_path = project_path.join("Cargo.toml");
-    let cargo_template = include_str!("../template/src/cargo_template.hbs");
-    let cargo_rendered = handlebars.render_template(cargo_template, &data)?;
-    let mut cargo_file = File::create(cargo_file_path)?;
-    cargo_file.write_all(cargo_rendered.as_bytes())?;
-    //src/config.rs
-    let config_template = include_str!("../template/src/config_template.hbs");
-    let config_rendered = handlebars.render_template(config_template, &data)?;
-    let mut config_file = File::create(src_path.join("config.rs"))?;
-    config_file.write_all(config_rendered.as_bytes())?;
-    //src/app_error.rs
-    let app_error_template = include_str!("../template/src/app_error.hbs");
-    let app_error_rendered = handlebars.render_template(app_error_template, &data)?;
-    let mut app_error_file = File::create(src_path.join("app_error.rs"))?;
-    app_error_file.write_all(app_error_rendered.as_bytes())?;
-    if need_db_conn {
-        //src/db.rs
-        let db_template = include_str!("../template/src/db.hbs");
-        let db_rendered = handlebars.render_template(db_template, &data)?;
-        let mut db_file = File::create(src_path.join("db.rs"))?;
-        db_file.write_all(db_rendered.as_bytes())?;
-    }
-    //src/app_response.rs
-    let app_response_template = include_str!("../template/src/app_response.hbs");
-    let app_response_rendered = handlebars.render_template(app_response_template, &data)?;
-    let mut app_response_file = File::create(src_path.join("app_response.rs"))?;
-    app_response_file.write_all(app_response_rendered.as_bytes())?;
-
-    //src/middleware
-    let middleware_path = src_path.join("middleware");
-    std::fs::create_dir_all(&middleware_path)?;
-    let jwt_bytes = include_bytes!("../template/src/middleware/jwt.rs");
-    let mut jwt_file = File::create(middleware_path.join("jwt.rs"))?;
-    jwt_file.write_all(jwt_bytes)?;
-    //src/middleware/mod.rs
-    let mod_bytes = include_bytes!("../template/src/middleware/mod.rs");
-    let mut mod_file = File::create(middleware_path.join("mod.rs"))?;
-    mod_file.write_all(mod_bytes)?;
-    //src/middleware/handle404.rs
-    let handle404_template = include_str!("../template/src/middleware/handle_404.hbs");
-    let handle404_rendered = handlebars.render_template(handle404_template, &data)?;
-    let mut handle404_file = File::create(middleware_path.join("handle_404.rs"))?;
-    handle404_file.write_all(handle404_rendered.as_bytes())?;
-
-    //config
-    let config_path = project_path.join("config");
-    std::fs::create_dir_all(&config_path)?;
-    //config/config.toml
-    let config_template = include_str!("../template/config/config.hbs");
-    let config_toml_rendered = handlebars.render_template(config_template, &data)?;
-    let mut config_file = File::create(config_path.join("config.toml"))?;
-    config_file.write_all(config_toml_rendered.as_bytes())?;
-    //config/certs
-    let cert_path = config_path.join("certs");
-    std::fs::create_dir_all(&cert_path)?;
-    //config/certs/cert.pem
-    let cert_template = include_str!("../template/config/certs/cert.pem");
-    let mut cert_file = File::create(cert_path.join("cert.pem"))?;
-    cert_file.write_all(cert_template.as_bytes())?;
-    //config/certs/key.pem
-    let key_path = cert_path.join("key.pem");
-    let key_template = include_str!("../template/config/certs/key.pem");
-    let mut key_file = File::create(key_path)?;
-    key_file.write_all(key_template.as_bytes())?;
     if is_web_site {
         //templates
         let template_path = project_path.join("templates");
@@ -267,28 +199,18 @@ fn write_project_file(
             user_list_page_file.write_all(user_list_page_template_rendered.as_bytes())?;
         }
     }
-    //src/router
-    let router_path = src_path.join("routers");
-    std::fs::create_dir_all(&router_path)?;
-    //src/router/mod.rs
-    let router_mod_template = include_str!("../template/src/routers/mod.hbs");
-    let router_mod_rendered = handlebars.render_template(router_mod_template, &data)?;
-    let mut router_mod_file = File::create(router_path.join("mod.rs"))?;
-    router_mod_file.write_all(router_mod_rendered.as_bytes())?;
-    //src/router/demo.rs
-    let router_demo_template = include_str!("../template/src/routers/demo.hbs");
-    let router_demo_rendered = handlebars.render_template(router_demo_template, &data)?;
-    let mut router_demo_file = File::create(router_path.join("demo.rs"))?;
-    router_demo_file.write_all(router_demo_rendered.as_bytes())?;
     if need_db_conn {
+        //src/db.rs
+        let db_template = include_str!("../template/src/db.hbs");
+        let db_rendered = handlebars.render_template(db_template, &data)?;
+        let mut db_file = File::create(src_path.join("db.rs"))?;
+        db_file.write_all(db_rendered.as_bytes())?;
+
         //src/router/user.rs
         let router_user_template = include_str!("../template/src/routers/user.hbs");
         let router_user_rendered = handlebars.render_template(router_user_template, &data)?;
         let mut router_user_file = File::create(router_path.join("user.rs"))?;
         router_user_file.write_all(router_user_rendered.as_bytes())?;
-    }
-
-    if need_db_conn {
         //src/services
         let services_path = src_path.join("services");
         std::fs::create_dir_all(&services_path)?;
@@ -518,51 +440,149 @@ fn write_project_file(
                 test_db_file.write_all(demo_db_bytes)?;
             }
         }
-    }
-    Ok(())
-}
+        if is_rbatis {
+            //src/entities
+            let entities_path = src_path.join("entities");
+            std::fs::create_dir_all(&entities_path)?;
+            //src/entities/mod.rs
+            let entities_mod_template = include_str!("../template/src/entities/mod.hbs");
+            let entities_mod_rendered = handlebars.render_template(entities_mod_template, &data)?;
+            let mut entities_mod_file = File::create(entities_path.join("mod.rs"))?;
+            entities_mod_file.write_all(entities_mod_rendered.as_bytes())?;
 
-fn check_name(name: &str) -> Result<()> {
-    restricted_names::validate_package_name(name, "package name")?;
+            //src/entities/user.rs
+            let entities_user_template = include_str!("../template/src/entities/user.hbs");
+            let entities_user_rendered =
+                handlebars.render_template(entities_user_template, &data)?;
+            let mut entities_user_file = File::create(entities_path.join("user.rs"))?;
+            entities_user_file.write_all(entities_user_rendered.as_bytes())?;
 
-    if restricted_names::is_keyword(name) {
-        anyhow::bail!(t!("error_is_keyword", name = name));
-    }
-    if restricted_names::is_conflicting_artifact_name(name) {
-        warning(t!("error_is_conflicting_artifact_name", name = name).replace(r"\n", "\n"));
-    }
-    if name == "test" {
-        anyhow::bail!(t!("error_equal_test").replace(r"\n", "\n"))
-    }
-    if ["core", "std", "alloc", "proc_macro", "proc-macro"].contains(&name) {
-        warning(t!("error_part_of_standard_library", name = name,).replace(r"\n", "\n"));
-    }
-    if restricted_names::is_windows_reserved(name) {
-        if cfg!(windows) {
-            anyhow::bail!(t!("error_is_windows_reserved", name = name),);
-        } else {
-            warning(t!("warning_is_windows_reserved", name = name).replace(r"\n", "\n"));
+            //data
+            let data_path = project_path.join("data");
+            std::fs::create_dir_all(&data_path)?;
+            match user_selected.db_type {
+                DbType::Sqlite => {
+                    //data/table_sqlite.sql
+                    let table_sqlite_template = include_bytes!("../template/data/table_sqlite.sql");
+                    let mut table_sqlite_file = File::create(data_path.join("table_sqlite.sql"))?;
+                    table_sqlite_file.write_all(table_sqlite_template)?;
+                }
+                DbType::Mysql => {
+                    //data/table_mysql.sql
+                    let table_mysql_template = include_bytes!("../template/data/table_mysql.sql");
+                    let mut table_mysql_file = File::create(data_path.join("table_mysql.sql"))?;
+                    table_mysql_file.write_all(table_mysql_template)?;
+                }
+                DbType::Postgres => {
+                    //data/table_postgres.sql
+                    let table_postgres_template =
+                        include_bytes!("../template/data/table_postgres.sql");
+                    let mut table_postgres_file =
+                        File::create(data_path.join("table_postgres.sql"))?;
+                    table_postgres_file.write_all(table_postgres_template)?;
+                }
+                DbType::Mssql => {
+                    //data/table_mssql.sql
+                    let table_mssql_template = include_bytes!("../template/data/table_mssql.sql");
+                    let mut table_mssql_file = File::create(data_path.join("table_mssql.sql"))?;
+                    table_mssql_file.write_all(table_mssql_template)?;
+                }
+            }
         }
     }
-    if restricted_names::is_non_ascii_name(name) {
-        warning(t!("warning_is_non_ascii_name", name = name).replace(r"\n", "\n"));
-    }
     Ok(())
 }
-fn check_path(path: &Path) -> Result<()> {
-    // warn if the path contains characters that will break `env::join_paths`
-    if join_paths(slice::from_ref(&OsStr::new(path)), "").is_err() {
-        let path = path.to_string_lossy();
-        print_util::warning(t!("warning_invalid_path", path = path));
-    }
-    Ok(())
+
+fn create_basic_file(
+    project_path: &Path,
+    handlebars: &Handlebars<'_>,
+    data: &serde_json::Value,
+) -> Result<(PathBuf, PathBuf)> {
+    std::fs::create_dir_all(project_path)?;
+    let src_path = project_path.join("src");
+    std::fs::create_dir_all(&src_path)?;
+    let main_file_path = src_path.join("main.rs");
+    let main_template = include_str!("../template/src/main_template.hbs");
+    let main_rendered = handlebars.render_template(main_template, data)?;
+    let mut main_file = File::create(main_file_path)?;
+    main_file.write_all(main_rendered.as_bytes())?;
+    let cargo_file_path = project_path.join("Cargo.toml");
+    let cargo_template = include_str!("../template/src/cargo_template.hbs");
+    let cargo_rendered = handlebars.render_template(cargo_template, data)?;
+    let mut cargo_file = File::create(cargo_file_path)?;
+    cargo_file.write_all(cargo_rendered.as_bytes())?;
+    let config_template = include_str!("../template/src/config_template.hbs");
+    let config_rendered = handlebars.render_template(config_template, data)?;
+    let mut config_file = File::create(src_path.join("config.rs"))?;
+    config_file.write_all(config_rendered.as_bytes())?;
+    let app_error_template = include_str!("../template/src/app_error.hbs");
+    let app_error_rendered = handlebars.render_template(app_error_template, data)?;
+    let mut app_error_file = File::create(src_path.join("app_error.rs"))?;
+    app_error_file.write_all(app_error_rendered.as_bytes())?;
+    //src/app_response.rs
+    let app_response_template = include_str!("../template/src/app_response.hbs");
+    let app_response_rendered = handlebars.render_template(app_response_template, &data)?;
+    let mut app_response_file = File::create(src_path.join("app_response.rs"))?;
+    app_response_file.write_all(app_response_rendered.as_bytes())?;
+
+    //src/middleware
+    let middleware_path = src_path.join("middleware");
+    std::fs::create_dir_all(&middleware_path)?;
+    let jwt_bytes = include_bytes!("../template/src/middleware/jwt.rs");
+    let mut jwt_file = File::create(middleware_path.join("jwt.rs"))?;
+    jwt_file.write_all(jwt_bytes)?;
+    //src/middleware/mod.rs
+    let mod_bytes = include_bytes!("../template/src/middleware/mod.rs");
+    let mut mod_file = File::create(middleware_path.join("mod.rs"))?;
+    mod_file.write_all(mod_bytes)?;
+    //src/middleware/handle404.rs
+    let handle404_template = include_str!("../template/src/middleware/handle_404.hbs");
+    let handle404_rendered = handlebars.render_template(handle404_template, &data)?;
+    let mut handle404_file = File::create(middleware_path.join("handle_404.rs"))?;
+    handle404_file.write_all(handle404_rendered.as_bytes())?;
+
+    //config
+    let config_path = project_path.join("config");
+    std::fs::create_dir_all(&config_path)?;
+    //config/config.toml
+    let config_template = include_str!("../template/config/config.hbs");
+    let config_toml_rendered = handlebars.render_template(config_template, &data)?;
+    let mut config_file = File::create(config_path.join("config.toml"))?;
+    config_file.write_all(config_toml_rendered.as_bytes())?;
+    //config/certs
+    let cert_path = config_path.join("certs");
+    std::fs::create_dir_all(&cert_path)?;
+    //config/certs/cert.pem
+    let cert_template = include_str!("../template/config/certs/cert.pem");
+    let mut cert_file = File::create(cert_path.join("cert.pem"))?;
+    cert_file.write_all(cert_template.as_bytes())?;
+    //config/certs/key.pem
+    let key_path = cert_path.join("key.pem");
+    let key_template = include_str!("../template/config/certs/key.pem");
+    let mut key_file = File::create(key_path)?;
+    key_file.write_all(key_template.as_bytes())?;
+    //src/router
+    let router_path = src_path.join("routers");
+    std::fs::create_dir_all(&router_path)?;
+    //src/router/mod.rs
+    let router_mod_template = include_str!("../template/src/routers/mod.hbs");
+    let router_mod_rendered = handlebars.render_template(router_mod_template, &data)?;
+    let mut router_mod_file = File::create(router_path.join("mod.rs"))?;
+    router_mod_file.write_all(router_mod_rendered.as_bytes())?;
+    //src/router/demo.rs
+    let router_demo_template = include_str!("../template/src/routers/demo.hbs");
+    let router_demo_rendered = handlebars.render_template(router_demo_template, &data)?;
+    let mut router_demo_file = File::create(router_path.join("demo.rs"))?;
+    router_demo_file.write_all(router_demo_rendered.as_bytes())?;
+
+    Ok((src_path, router_path))
 }
 
 fn handle_dependencies(
     dependencies: &mut serde_json::Value,
     need_db_conn: bool,
     db_type: DbType,
-    conn_type: DbConnectionType
+    conn_type: DbConnectionType,
 ) {
     if need_db_conn {
         match (conn_type, db_type) {
@@ -621,6 +641,7 @@ fn handle_dependencies(
                 });
             }
             (DbConnectionType::Rbatis, DbType::Mysql) => {
+                dependencies["rbs"] = json!({"version":"4.4"});
                 dependencies["rbdc-mysql"] = json!({
                     "version": "4.4"
                 });
@@ -630,6 +651,7 @@ fn handle_dependencies(
                 });
             }
             (DbConnectionType::Rbatis, DbType::Postgres) => {
+                dependencies["rbs"] = json!({"version":"4.4"});
                 dependencies["rbdc-pg"] = json!({
                     "version": "4.4"
                 });
@@ -639,6 +661,7 @@ fn handle_dependencies(
                 });
             }
             (DbConnectionType::Rbatis, DbType::Sqlite) => {
+                dependencies["rbs"] = json!({"version":"4.4"});
                 dependencies["rbdc-sqlite"] = json!({
                     "version": "4.4"
                 });
@@ -648,6 +671,7 @@ fn handle_dependencies(
                 });
             }
             (DbConnectionType::Rbatis, DbType::Mssql) => {
+                dependencies["rbs"] = json!({"version":"4.4"});
                 dependencies["rbdc-mssql"] = json!({
                     "version": "4.4"
                 });
@@ -672,6 +696,42 @@ fn handle_dependencies(
             "version": "0.5.2",
         });
     }
+}
+
+fn check_name(name: &str) -> Result<()> {
+    restricted_names::validate_package_name(name, "package name")?;
+
+    if restricted_names::is_keyword(name) {
+        anyhow::bail!(t!("error_is_keyword", name = name));
+    }
+    if restricted_names::is_conflicting_artifact_name(name) {
+        warning(t!("error_is_conflicting_artifact_name", name = name).replace(r"\n", "\n"));
+    }
+    if name == "test" {
+        anyhow::bail!(t!("error_equal_test").replace(r"\n", "\n"))
+    }
+    if ["core", "std", "alloc", "proc_macro", "proc-macro"].contains(&name) {
+        warning(t!("error_part_of_standard_library", name = name,).replace(r"\n", "\n"));
+    }
+    if restricted_names::is_windows_reserved(name) {
+        if cfg!(windows) {
+            anyhow::bail!(t!("error_is_windows_reserved", name = name),);
+        } else {
+            warning(t!("warning_is_windows_reserved", name = name).replace(r"\n", "\n"));
+        }
+    }
+    if restricted_names::is_non_ascii_name(name) {
+        warning(t!("warning_is_non_ascii_name", name = name).replace(r"\n", "\n"));
+    }
+    Ok(())
+}
+fn check_path(path: &Path) -> Result<()> {
+    // warn if the path contains characters that will break `env::join_paths`
+    if join_paths(slice::from_ref(&OsStr::new(path)), "").is_err() {
+        let path = path.to_string_lossy();
+        print_util::warning(t!("warning_invalid_path", path = path));
+    }
+    Ok(())
 }
 
 pub fn join_paths<T: AsRef<OsStr>>(paths: &[T], env: &str) -> Result<OsString> {
