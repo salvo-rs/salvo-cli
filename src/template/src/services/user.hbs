@@ -360,7 +360,7 @@ use crate::{
         UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse, UserUpdateRequest,
     },
     middleware::jwt::get_token,
-    utils::rand_utils, db::DB, entity::user::Users,
+    utils::rand_utils, db::DB, entities::user::Users,
 };
 
 pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {

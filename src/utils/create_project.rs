@@ -59,10 +59,15 @@ pub fn create_project(project: Project) -> Result<()> {
                     success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
                 }
             }
+            match (config.db_conn_type, config.db_type) {
+                (DbConnectionType::Rbatis, DbType::Mysql | DbType::Postgres | DbType::Mssql) => {
+                    success(t!("create_success_rbatis"));
+                }
+                (_, _) => {}
+            }
         }
         None => anyhow::bail!("cli quit!"),
     }
-
     Ok(())
 }
 
@@ -435,6 +440,55 @@ fn write_project_file(
                 test_db_file.write_all(demo_db_bytes)?;
             }
         }
+        if is_rbatis {
+            //src/entities
+            let entities_path = src_path.join("entities");
+            std::fs::create_dir_all(&entities_path)?;
+            //src/entities/mod.rs
+            let entities_mod_template = include_str!("../template/src/entities/mod.hbs");
+            let entities_mod_rendered = handlebars.render_template(entities_mod_template, &data)?;
+            let mut entities_mod_file = File::create(entities_path.join("mod.rs"))?;
+            entities_mod_file.write_all(entities_mod_rendered.as_bytes())?;
+
+            //src/entities/user.rs
+            let entities_user_template = include_str!("../template/src/entities/user.hbs");
+            let entities_user_rendered =
+                handlebars.render_template(entities_user_template, &data)?;
+            let mut entities_user_file = File::create(entities_path.join("user.rs"))?;
+            entities_user_file.write_all(entities_user_rendered.as_bytes())?;
+
+            //data
+            let data_path = project_path.join("data");
+            std::fs::create_dir_all(&data_path)?;
+            match user_selected.db_type {
+                DbType::Sqlite => {
+                    //data/table_sqlite.sql
+                    let table_sqlite_template = include_bytes!("../template/data/table_sqlite.sql");
+                    let mut table_sqlite_file = File::create(data_path.join("table_sqlite.sql"))?;
+                    table_sqlite_file.write_all(table_sqlite_template)?;
+                }
+                DbType::Mysql => {
+                    //data/table_mysql.sql
+                    let table_mysql_template = include_bytes!("../template/data/table_mysql.sql");
+                    let mut table_mysql_file = File::create(data_path.join("table_mysql.sql"))?;
+                    table_mysql_file.write_all(table_mysql_template)?;
+                }
+                DbType::Postgres => {
+                    //data/table_postgres.sql
+                    let table_postgres_template =
+                        include_bytes!("../template/data/table_postgres.sql");
+                    let mut table_postgres_file =
+                        File::create(data_path.join("table_postgres.sql"))?;
+                    table_postgres_file.write_all(table_postgres_template)?;
+                }
+                DbType::Mssql => {
+                    //data/table_mssql.sql
+                    let table_mssql_template = include_bytes!("../template/data/table_mssql.sql");
+                    let mut table_mssql_file = File::create(data_path.join("table_mssql.sql"))?;
+                    table_mssql_file.write_all(table_mssql_template)?;
+                }
+            }
+        }
     }
     Ok(())
 }
@@ -587,6 +641,7 @@ fn handle_dependencies(
                 });
             }
             (DbConnectionType::Rbatis, DbType::Mysql) => {
+                dependencies["rbs"] = json!({"version":"4.4"});
                 dependencies["rbdc-mysql"] = json!({
                     "version": "4.4"
                 });
@@ -596,6 +651,7 @@ fn handle_dependencies(
                 });
             }
             (DbConnectionType::Rbatis, DbType::Postgres) => {
+                dependencies["rbs"] = json!({"version":"4.4"});
                 dependencies["rbdc-pg"] = json!({
                     "version": "4.4"
                 });
@@ -605,6 +661,7 @@ fn handle_dependencies(
                 });
             }
             (DbConnectionType::Rbatis, DbType::Sqlite) => {
+                dependencies["rbs"] = json!({"version":"4.4"});
                 dependencies["rbdc-sqlite"] = json!({
                     "version": "4.4"
                 });
@@ -614,6 +671,7 @@ fn handle_dependencies(
                 });
             }
             (DbConnectionType::Rbatis, DbType::Mssql) => {
+                dependencies["rbs"] = json!({"version":"4.4"});
                 dependencies["rbdc-mssql"] = json!({
                     "version": "4.4"
                 });

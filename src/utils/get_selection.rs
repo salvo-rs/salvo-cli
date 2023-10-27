@@ -2,7 +2,7 @@ use anyhow::Result;
 use dialoguer::{console::Style, theme::ColorfulTheme, Select};
 use rust_i18n::t;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct UserSelected {
     pub template_type: TemplateType,
     pub db_type: DbType,
@@ -84,13 +84,13 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         db_conn_type,
     }))
 }
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum TemplateType {
     SalvoWebSite,
     SalvoWebApi,
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum DbType {
     Sqlite,
     Mysql,
@@ -98,7 +98,7 @@ pub enum DbType {
     Mssql,
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum DbConnectionType {
     Sqlx,
     SeaOrm,
