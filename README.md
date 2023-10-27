@@ -24,14 +24,11 @@ cargo install --force salvo-cli
 |  Status |Plan   |   
 |:---:|:---:| 
 |✅| web api template |    
-|✅| web site with template |   
-|✅|with sqlx  template| 
-|✅|basic midware |
-|✅|suport sqlite,pgsql,mysql|
-|✅|with seaorm template|   
-|✅| better web site | 
-|✅| with diesel template|  
-|| with Rbatis template|  
+|✅| web site template |   
+|✅|Template with SQLx, SeaORM, Diesel, Rbatis (support for SQLite, PostgreSQL, MySQL)| 
+|✅|Basic middleware |
+|⏳|More middleware|
+|⏳|Support for MongoDB|   
 ## License
 This project is licensed under the MIT OR Apache-2.0 License.
 
