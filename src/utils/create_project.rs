@@ -59,11 +59,10 @@ pub fn create_project(project: Project) -> Result<()> {
                     success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
                 }
             }
-            match (config.db_conn_type, config.db_type) {
-                (DbConnectionType::Rbatis, DbType::Mysql | DbType::Postgres | DbType::Mssql) => {
-                    success(t!("create_success_rbatis"));
-                }
-                (_, _) => {}
+            if let (DbConnectionType::Rbatis, DbType::Mysql | DbType::Postgres | DbType::Mssql) =
+                (config.db_conn_type, config.db_type)
+            {
+                success(t!("create_success_rbatis"));
             }
         }
         None => anyhow::bail!("cli quit!"),
