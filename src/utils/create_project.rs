@@ -48,33 +48,25 @@ fn after_print_info(project_name: &String, config: UserSelected) {
     success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
     match config.db_conn_type {
         DbConnectionType::Sqlx => {
-            success(
-                t!("create_success_sqlx", project_name = project_name).replace(r"\n", "\n"),
-            );
+            success(t!("create_success_sqlx", project_name = project_name).replace(r"\n", "\n"));
         }
         DbConnectionType::SeaOrm => {
-            success(
-                t!("create_success_sea_orm", project_name = project_name).replace(r"\n", "\n"),
-            );
+            success(t!("create_success_sea_orm", project_name = project_name).replace(r"\n", "\n"));
         }
-        DbConnectionType::Diesel => {
-            match config.db_type {
-                DbType::Sqlite => {
-                    success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
-                }
-                _ => {
-                    success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
-                }
+        DbConnectionType::Diesel => match config.db_type {
+            DbType::Sqlite => {
+                success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
             }
-        }
-        DbConnectionType::Rbatis => {
-            match config.db_type {
-                DbType::Mysql | DbType::Postgres | DbType::Mssql => {
-                    success(t!("create_success_rbatis"));
-                }
-                _ => {}
+            _ => {
+                success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
             }
-        }
+        },
+        DbConnectionType::Rbatis => match config.db_type {
+            DbType::Mysql | DbType::Postgres | DbType::Mssql => {
+                success(t!("create_success_rbatis"));
+            }
+            _ => {}
+        },
         _ => {}
     }
 }
