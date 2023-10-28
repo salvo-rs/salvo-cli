@@ -38,31 +38,36 @@ pub fn create_project(project: Project) -> Result<()> {
             init_git(project_path)?;
 
             success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
-            if config.db_conn_type == DbConnectionType::Sqlx
-                || config.db_conn_type == DbConnectionType::SeaOrm
-                || config.db_conn_type == DbConnectionType::Diesel
-            {
-                if config.db_conn_type == DbConnectionType::Sqlx {
+            match config.db_conn_type {
+                DbConnectionType::Sqlx => {
                     success(
                         t!("create_success_sqlx", project_name = project_name).replace(r"\n", "\n"),
                     );
                 }
-                if config.db_conn_type == DbConnectionType::SeaOrm {
+                DbConnectionType::SeaOrm => {
                     success(
-                        t!("create_success_sea_orm", project_name = project_name)
-                            .replace(r"\n", "\n"),
+                        t!("create_success_sea_orm", project_name = project_name).replace(r"\n", "\n"),
                     );
                 }
-                if config.db_type == DbType::Sqlite {
-                    success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
-                } else {
-                    success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
+                DbConnectionType::Diesel => {
+                    match config.db_type {
+                        DbType::Sqlite => {
+                            success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
+                        }
+                        _ => {
+                            success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
+                        }
+                    }
                 }
-            }
-            if let (DbConnectionType::Rbatis, DbType::Mysql | DbType::Postgres | DbType::Mssql) =
-                (config.db_conn_type, config.db_type)
-            {
-                success(t!("create_success_rbatis"));
+                DbConnectionType::Rbatis => {
+                    match config.db_type {
+                        DbType::Mysql | DbType::Postgres | DbType::Mssql => {
+                            success(t!("create_success_rbatis"));
+                        }
+                        _ => {}
+                    }
+                }
+                _ => {}
             }
         }
         None => anyhow::bail!("cli quit!"),
