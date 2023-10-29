@@ -48,22 +48,40 @@ fn after_print_info(project_name: &String, config: UserSelected) {
     success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
     match config.db_conn_type {
         DbConnectionType::Sqlx => {
-            success(t!("create_success_sqlx", project_name = project_name).replace(r"\n", "\n"));
+            success(t!("create_success_sqlx").replace(r"\n", "\n"));
+            match config.db_type
+            {
+                DbType::Sqlite => {
+                    success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
+                },
+                _=>{
+                    success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n")); 
+                }
+            }
         }
         DbConnectionType::SeaOrm => {
-            success(t!("create_success_sea_orm", project_name = project_name).replace(r"\n", "\n"));
+            success(t!("create_success_sea_orm").replace(r"\n", "\n"));
+            match config.db_type
+            {
+                DbType::Sqlite => {
+                    success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
+                },
+                _=>{
+                    success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n")); 
+                }
+            }
         }
         DbConnectionType::Diesel => match config.db_type {
             DbType::Sqlite => {
-                success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
-            }
-            _ => {
-                success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
+                success(t!("create_success_sqlx_diesel").replace(r"\n", "\n"));
+            },
+            _=>{
+                success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n")); 
             }
         },
         DbConnectionType::Rbatis => match config.db_type {
             DbType::Mysql | DbType::Postgres | DbType::Mssql => {
-                success(t!("create_success_rbatis"));
+                success(t!("create_success_rbatis").replace(r"\n", "\n"));
             }
             _ => {}
         },
@@ -96,7 +114,7 @@ fn write_project_file(
             "jsonwebtoken": "8.3.0",
             "once_cell": "1.18.0",
             "salvo": {
-                "version": "0.57",
+                "version": "0.58",
                 "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "rustls", "catch-panic","cookie"]
             },
             "serde": "1.0.188",

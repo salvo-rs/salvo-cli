@@ -1,6 +1,5 @@
 <div align="center">
-<p><img alt="Savlo" width="132" style="max-width:40%;min-width:60px;" src="https://p.sda1.dev/13/9268fb110f27611fa143c7aafbac61ab/monkeybread4352_a_technology_software_logo_for_windseabird_with_8fb4a0df-e233-414e-80a3-cf144ef44209.png" /></p>
-<p>
+<p><img alt="Savlo" width="132" style="max-width:40%;min-width:60px;" src="https://p.sda1.dev/13/9268fb110f27611fa143c7aafbac61ab/monkeybread4352_a_technology_software_logo_for_windseabird_with_8fb4a0df-e233-414e-80a3-cf144ef44209.png" />
 <a href="https://github.com/salvo-rs/salvo-cli/actions">
     <img alt="build status" src="https://github.com/salvo-rs/salvo-cli/actions/workflows/rust.yml/badge.svg?branch=main" />
 </a>
@@ -9,6 +8,8 @@
 <img alt="License" src="https://img.shields.io/crates/l/salvo-cli.svg" />
 </p>
 </div>
+
+## Introduction
 Salvo CLI is a command-line interface tool for the [Salvo](https://github.com/salvo-rs/salvo) web framework. It helps streamline the process of setting up a new Salvo project by generating a template structure.
 
 ## Installation
