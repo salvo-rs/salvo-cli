@@ -51,7 +51,8 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         1 => DbConnectionType::SeaOrm,
         2 => DbConnectionType::Diesel,
         3 => DbConnectionType::Rbatis,
-        4 => DbConnectionType::Nothing,
+        4 => DbConnectionType::Mongodb,
+        5 => DbConnectionType::Nothing,
         _ => anyhow::bail!("Invalid db connection type selection"),
     };
     if db_conn_type == DbConnectionType::Nothing {
@@ -104,5 +105,6 @@ pub enum DbConnectionType {
     SeaOrm,
     Diesel,
     Rbatis,
+    Mongodb,
     Nothing,
 }
