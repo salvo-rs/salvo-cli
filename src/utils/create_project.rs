@@ -33,42 +33,58 @@ pub fn create_project(project: Project) -> Result<()> {
     let config = get_user_selected()?;
     match config {
         Some(config) => {
-            write_project_file(project_path, config.clone(), project.clone())?;
+            write_project_file(project_path, config, project.clone())?;
 
             init_git(project_path)?;
 
-            success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
-            if config.db_conn_type == DbConnectionType::Sqlx
-                || config.db_conn_type == DbConnectionType::SeaOrm
-                || config.db_conn_type == DbConnectionType::Diesel
-            {
-                if config.db_conn_type == DbConnectionType::Sqlx {
-                    success(
-                        t!("create_success_sqlx", project_name = project_name).replace(r"\n", "\n"),
-                    );
-                }
-                if config.db_conn_type == DbConnectionType::SeaOrm {
-                    success(
-                        t!("create_success_sea_orm", project_name = project_name)
-                            .replace(r"\n", "\n"),
-                    );
-                }
-                if config.db_type == DbType::Sqlite {
-                    success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
-                } else {
-                    success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
-                }
-            }
-            match (config.db_conn_type, config.db_type) {
-                (DbConnectionType::Rbatis, DbType::Mysql | DbType::Postgres | DbType::Mssql) => {
-                    success(t!("create_success_rbatis"));
-                }
-                (_, _) => {}
-            }
+            after_print_info(project_name, config);
         }
         None => anyhow::bail!("cli quit!"),
     }
     Ok(())
+}
+
+fn after_print_info(project_name: &String, config: UserSelected) {
+    success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
+    match config.db_conn_type {
+        DbConnectionType::Sqlx => {
+            success(t!("create_success_sqlx").replace(r"\n", "\n"));
+            match config.db_type {
+                DbType::Sqlite => {
+                    success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
+                }
+                _ => {
+                    success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
+                }
+            }
+        }
+        DbConnectionType::SeaOrm => {
+            success(t!("create_success_sea_orm").replace(r"\n", "\n"));
+            match config.db_type {
+                DbType::Sqlite => {
+                    success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
+                }
+                _ => {
+                    success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
+                }
+            }
+        }
+        DbConnectionType::Diesel => match config.db_type {
+            DbType::Sqlite => {
+                success(t!("create_success_sqlx_diesel").replace(r"\n", "\n"));
+            }
+            _ => {
+                success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
+            }
+        },
+        DbConnectionType::Rbatis => match config.db_type {
+            DbType::Mysql | DbType::Postgres | DbType::Mssql => {
+                success(t!("create_success_rbatis").replace(r"\n", "\n"));
+            }
+            _ => {}
+        },
+        _ => {}
+    }
 }
 
 fn write_project_file(
@@ -96,7 +112,7 @@ fn write_project_file(
             "jsonwebtoken": "8.3.0",
             "once_cell": "1.18.0",
             "salvo": {
-                "version": "0.57",
+                "version": "0.58",
                 "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "rustls", "catch-panic","cookie"]
             },
             "serde": "1.0.188",

@@ -383,3 +383,21 @@ select_db_type:
   th: เลือกประเภทฐานข้อมูล
   el: επιλέξτε τύπο βάσης δεδομένων
   da: vælg databasetype
+access_instructions:
+  en: After running it, you can access /login with the default username:zhangsan and password:123
+  zh_CN: 运行之后，您可以使用默认用户名:zhangsan和密码:123访问/login
+  zh_TW: 運行之後，您可以使用預設的使用者名稱:zhangsan和密碼:123來訪問/login
+  fr: Après l'avoir exécuté, vous pouvez accéder à /login avec le nom d'utilisateur par défaut:zhangsan et le mot de passe:123
+  ja: 実行した後、デフォルトのユーザー名:zhangsanとパスワード:123で/loginにアクセスできます
+  es: Después de ejecutarlo, puedes acceder a /login con el nombre de usuario predeterminado:zhangsan y la contraseña:123
+  de: Nach dem Ausführen können Sie sich mit dem Standard-Benutzernamen:zhangsan und Passwort:123 bei /login anmelden
+  ru: После запуска вы можете войти в /login с использованием стандартного имени пользователя:zhangsan и пароля:123
+  it: Dopo averlo eseguito, è possibile accedere a /login con il nome utente predefinito:zhangsan e la password:123
+  pt: Depois de executá-lo, você pode acessar /login com o nome de usuário padrão:zhangsan e a senha:123
+  ko: 실행한 후 기본 사용자 이름:zhangsan 및 비밀번호:123으로 /login에 접속할 수 있습니다
+  no: Etter at du har kjørt det, kan du få tilgang til /login med standard brukernavn:zhangsan og passord:123
+  is: Eftir að hafa keyrt það, getur þú notað /login með sjálfgefna notendanafnið:zhangsan og lykilorðið:123
+  uk: Після його запуску Ви можете отримати доступ до /login за допомогою стандартного імені користувача:zhangsan та пароля:123
+  th: หลังจากทำการรันแล้ว คุณสามารถเข้าถึง /login ด้วยชื่อผู้ใช้งานเริ่มต้น:zhangsan และรหัสผ่าน:123
+  el: Αφού το τρέξετε, μπορείτε να προσπελάσετε το /login με το προεπιλεγμένο όνομα χρήστη:zhangsan και τον κωδικό πρόσβασης:123
+  da: Efter du har kørt det, kan du få adgang til /login med standard brugernavn:zhangsan og adgangskode:123

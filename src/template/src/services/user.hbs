@@ -399,15 +399,19 @@ pub async fn login(req: UserLoginRequest) -> AppResult<UserLoginResponse> {
 
 pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
     let db = DB.get().ok_or(anyhow::anyhow!("数据库连接失败"))?;
-    let user = Users::select_by_column(db,"id",&req.id).await?;
-    if user.len()==0 {
+    let users = Users::select_by_column(db,"id",&req.id).await?;
+    if users.len()==0 {
         return Err(anyhow::anyhow!("用户不存在").into());
     }
-    Users::update_by_column(db,&user[0],"id").await?;
-
+    let user = Users {
+        id: users[0].clone().id,
+        username: users[0].clone().username,
+        password: rand_utils::hash_password(req.password).await?,
+    };
+    Users::update_by_column(db,&user,"id").await?;
     Ok(UserResponse {
-        id: user[0].id.clone(),
-        username: user[0].username.clone(),
+        id: users[0].id.clone(),
+        username: users[0].username.clone(),
     })
 }
 

@@ -4,9 +4,9 @@ use clap::Parser;
 mod utils;
 use i18n::set_locale;
 mod i18n;
-rust_i18n::i18n!("locales");
+rust_i18n::i18n!("locales", fallback = "en");
 #[derive(Parser, Debug)]
-#[clap(version = "0.0.1", author = "Fankai liu <liufankai137@outlook.com>")]
+#[clap(version = "0.1.19", author = "Fankai liu <liufankai137@outlook.com>")]
 struct Opts {
     #[clap(subcommand)]
     subcmd: SubCommand,
@@ -19,13 +19,15 @@ enum SubCommand {
 #[derive(Parser, Debug, Clone)]
 pub struct Project {
     pub project_name: String,
+    #[clap(short, long)]
+    lang: Option<String>,
 }
 fn main() -> Result<()> {
-    set_locale();
     utils::print_logo();
     let opts: Opts = Opts::parse();
     match opts.subcmd {
         SubCommand::New(project) => {
+            set_locale(&project.lang);
             match utils::create_project(project) {
                 Ok(_) => (),
                 Err(e) => utils::error(e.to_string()),
