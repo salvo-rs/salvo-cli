@@ -99,6 +99,7 @@ fn write_project_file(
     let is_sea_orm = user_selected.db_conn_type == DbConnectionType::SeaOrm;
     let is_diesel = user_selected.db_conn_type == DbConnectionType::Diesel;
     let is_rbatis = user_selected.db_conn_type == DbConnectionType::Rbatis;
+    let is_mongodb = user_selected.db_conn_type== DbConnectionType::Mongodb;
     let is_mysql = user_selected.db_type == DbType::Mysql;
     let is_postgres = user_selected.db_type == DbType::Postgres;
     let is_sqlite = user_selected.db_type == DbType::Sqlite;
@@ -136,6 +137,7 @@ fn write_project_file(
         "is_sea_orm_or_sqlx":is_sea_orm_or_sqlx,
         "is_diesel":is_diesel,
         "is_rbatis":is_rbatis,
+        "is_mongodb":is_mongodb,
         "main_log_message":t!("main_log_message"),
         "config_error_no_exits":t!("config_error_no_exits"),
         "config_error_read":t!("config_error_read"),
@@ -694,6 +696,12 @@ fn handle_dependencies(
                 dependencies["rbatis"] = json!({
                     "version": "4.4",
                     "features": ["debug_mode"]
+                });
+            }
+            (DbConnectionType::Mongodb,_)=>{
+                dependencies["mongodb"] = json!({"version":"2.0"});
+                dependencies["futures-util"] = json!({
+                    "version": "0.3",
                 });
             }
             _ => {}
