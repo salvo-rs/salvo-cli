@@ -27,6 +27,9 @@ mod utils;
 {{#if is_sea_orm_or_sqlx}}
 mod entities;
 {{/if}}
+{{#if is_mongodb}}
+mod entities;
+{{/if}}
 {{#if is_diesel}}
 mod models;
 mod schema;

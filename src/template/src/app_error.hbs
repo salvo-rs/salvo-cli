@@ -15,6 +15,11 @@ use salvo::{
     Depot, Request, Response, Writer,
 };
 {{/if}}
+{{#if is_mongodb}}
+use mongodb::bson::document::ValueAccessError as MongoBsonAccessError;
+use mongodb::bson::oid::Error as MongoBsonOidError;
+use mongodb::error::Error as MongoDbError;
+{{/if}}
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -38,6 +43,14 @@ pub enum AppError {
     {{#if is_rbatis}}
     #[error("rbatis::Error:`{0}`")]
     RbatisErr(#[from] rbatis::Error),
+    {{/if}}
+    {{#if is_mongodb}}
+    #[error("mongodb::error::Error:`{0}`")]
+    MongoDbErr(#[from] MongoDbError),
+    #[error("mongodb::bson::document::ValueAccessError:`{0}`")]
+    MongoBsonAccessError(#[from] MongoBsonAccessError),
+    #[error("mongodb::bson::oid::Error`{0}`")]
+    MongoBsonOidError(#[from] MongoBsonOidError),
     {{/if}}
 }
 

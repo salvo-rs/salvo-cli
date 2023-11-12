@@ -198,7 +198,7 @@ pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
 }
 
 pub async fn delete_user(id: String) -> AppResult<()> {
-    let db = DB.get().ok_or(anyhow::anyhow!("数据库连接失败"))?;
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
     User::delete_by_id(id).exec(db).await?;
     Ok(())
 }
@@ -364,7 +364,7 @@ use crate::{
 };
 
 pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
-    let db = DB.get().ok_or(anyhow::anyhow!("数据库连接失败"))?;
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
     let user = Users {
         id: Uuid::new_v4().to_string(),
         username: req.username.clone(),
@@ -379,13 +379,13 @@ pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
 }
 
 pub async fn login(req: UserLoginRequest) -> AppResult<UserLoginResponse> {
-    let db = DB.get().ok_or(anyhow::anyhow!("数据库连接失败"))?;
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
     let user = Users::select_by_column(db,"username",&req.username).await?;
     if user.len()==0 {
-        return Err(anyhow::anyhow!("用户不存在").into());
+        return Err(anyhow::anyhow!("{{user_does_not_exist}}").into());
     }
     if rand_utils::verify_password(req.password, user[0].password.clone()).await.is_err() {
-        return Err(anyhow::anyhow!("密码不正确").into());
+        return Err(anyhow::anyhow!("{{incorrect_password}}").into());
     }
     let (token, exp) = get_token(user[0].username.clone(), user[0].id.clone())?;
     let res = UserLoginResponse {
@@ -398,10 +398,10 @@ pub async fn login(req: UserLoginRequest) -> AppResult<UserLoginResponse> {
 }
 
 pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
-    let db = DB.get().ok_or(anyhow::anyhow!("数据库连接失败"))?;
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
     let users = Users::select_by_column(db,"id",&req.id).await?;
     if users.len()==0 {
-        return Err(anyhow::anyhow!("用户不存在").into());
+        return Err(anyhow::anyhow!("{{user_does_not_exist}}").into());
     }
     let user = Users {
         id: users[0].clone().id,
@@ -416,13 +416,13 @@ pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
 }
 
 pub async fn delete_user(req: String) -> AppResult<()> {
-    let db = DB.get().ok_or(anyhow::anyhow!("数据库连接失败"))?;
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
     Users::delete_by_column(db, "id",&req).await?;
     Ok(())
 }
 
 pub async fn users() -> AppResult<Vec<UserResponse>> {
-    let db = DB.get().ok_or(anyhow::anyhow!("数据库连接失败"))?;
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
     let users=Users::select_all(db).await?;
 
     let res = users
@@ -433,5 +433,125 @@ pub async fn users() -> AppResult<Vec<UserResponse>> {
         })
         .collect::<Vec<_>>();
     Ok(res)
+}
+{{/if}}
+{{#if is_mongodb}}
+use std::str::FromStr;
+use futures_util::StreamExt;
+use mongodb::{
+    bson::{doc, oid::ObjectId, Document},
+    Collection,
+};
+use crate::{
+    app_error::AppResult,
+    db::{COLL_NAME, DB_NAME, MONGODB_CLIENT},
+    dtos::user::{
+        UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse, UserUpdateRequest,
+    },
+    middleware::jwt::get_token,
+    utils::rand_utils,
+};
+
+pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
+    let db = MONGODB_CLIENT
+        .get()
+        .ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
+    let coll_users = db.database(DB_NAME).collection::<Document>(COLL_NAME);
+
+    let user = doc! {
+        "username": req.username,
+        "password": rand_utils::hash_password(req.password).await?
+    };
+    coll_users.insert_one(user.clone(), None).await?;
+    let user = coll_users
+        .find_one(user, None)
+        .await?
+        .ok_or(anyhow::anyhow!("{{user_does_not_exist}}"))?;
+    Ok(UserResponse {
+        id: user.get_object_id("_id")?.to_string(),
+        username: user.get_str("username")?.to_string(),
+    })
+}
+
+pub async fn login(req: UserLoginRequest) -> AppResult<UserLoginResponse> {
+    let db = MONGODB_CLIENT
+        .get()
+        .ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
+    let coll_users: Collection<Document> = db.database(DB_NAME).collection(COLL_NAME);
+
+    let user_doc = coll_users
+        .find_one(doc! { "username": req.username }, None)
+        .await?;
+
+    let user = match user_doc {
+        Some(user) => user,
+        None => return Err(anyhow::anyhow!("{{user_does_not_exist}}").into()),
+    };
+
+    if rand_utils::verify_password(req.password, user.get_str("password")?.to_string())
+        .await
+        .is_err()
+    {
+        return Err(anyhow::anyhow!("{{incorrect_password}}").into());
+    }
+    let (token, exp) = get_token(
+        user.get_str("username")?.to_string(),
+        user.get_object_id("_id")?.to_string(),
+    )?;
+
+    Ok(UserLoginResponse {
+        id: user.get_object_id("_id")?.to_string(),
+        username: user.get_str("username")?.to_owned(),
+        token,
+        exp,
+    })
+}
+
+pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
+    let db = MONGODB_CLIENT
+        .get()
+        .ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
+    let coll_users: Collection<Document> = db.database(DB_NAME).collection(COLL_NAME);
+    let id = ObjectId::from_str(&req.id.clone())?;
+    let hash_password = rand_utils::hash_password(req.password).await?;
+    coll_users
+        .update_one(
+            doc! { "_id": id },
+            doc! { "$set": { "username": req.username.clone(),"password": hash_password } },
+            None,
+        )
+        .await?;
+    Ok(UserResponse {
+        id: req.id.clone(),
+        username: req.username,
+    })
+}
+
+pub async fn delete_user(req: String) -> AppResult<()> {
+    let db = MONGODB_CLIENT
+        .get()
+        .ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
+    let coll_users: Collection<Document> = db.database(DB_NAME).collection(COLL_NAME);
+    let id = ObjectId::from_str(&req)?;
+
+    coll_users.delete_one(doc! { "_id": id }, None).await?;
+    Ok(())
+}
+
+pub async fn users() -> AppResult<Vec<UserResponse>> {
+    let db = MONGODB_CLIENT
+        .get()
+        .ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
+    let coll_users: Collection<Document> = db.database(DB_NAME).collection(COLL_NAME);
+
+    let mut cursor = coll_users.find(None, None).await?;
+    let mut users = Vec::new();
+    while let Some(result) = cursor.next().await {
+        let document = result?;
+        let id = document.get_object_id("_id")?.to_string();
+        let username = document.get_str("username")?.to_owned();
+        users.push(UserResponse { id, username });
+    }
+    Ok(users)
 }
 {{/if}}

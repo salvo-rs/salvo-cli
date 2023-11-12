@@ -37,6 +37,7 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         t!("db_conn_types_sea_orm"),
         t!("db_conn_types_diesel"),
         t!("db_conn_types_rbatis"),
+        t!("db_conn_types_mongodb"),
         t!("db_conn_types_nothing"),
         // "custom",
     ];

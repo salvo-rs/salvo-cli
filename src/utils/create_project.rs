@@ -99,7 +99,7 @@ fn write_project_file(
     let is_sea_orm = user_selected.db_conn_type == DbConnectionType::SeaOrm;
     let is_diesel = user_selected.db_conn_type == DbConnectionType::Diesel;
     let is_rbatis = user_selected.db_conn_type == DbConnectionType::Rbatis;
-    let is_mongodb = user_selected.db_conn_type== DbConnectionType::Mongodb;
+    let is_mongodb = user_selected.db_conn_type == DbConnectionType::Mongodb;
     let is_mysql = user_selected.db_type == DbType::Mysql;
     let is_postgres = user_selected.db_type == DbType::Postgres;
     let is_sqlite = user_selected.db_type == DbType::Sqlite;
@@ -507,6 +507,31 @@ fn write_project_file(
                 }
             }
         }
+        if is_mongodb {
+            //src/entities
+            let entities_path = src_path.join("entities");
+            std::fs::create_dir_all(&entities_path)?;
+            //src/entities/mod.rs
+            let entities_mod_template = include_str!("../template/src/entities/mod.hbs");
+            let entities_mod_rendered = handlebars.render_template(entities_mod_template, &data)?;
+            let mut entities_mod_file = File::create(entities_path.join("mod.rs"))?;
+            entities_mod_file.write_all(entities_mod_rendered.as_bytes())?;
+
+            //src/entities/user.rs
+            let entities_user_template = include_str!("../template/src/entities/user.hbs");
+            let entities_user_rendered =
+                handlebars.render_template(entities_user_template, &data)?;
+            let mut entities_user_file = File::create(entities_path.join("user.rs"))?;
+            entities_user_file.write_all(entities_user_rendered.as_bytes())?;
+
+            //data
+            let data_path = project_path.join("data");
+            std::fs::create_dir_all(&data_path)?;
+            //data/users.json
+            let users_json_bytes = include_bytes!("../template/data/users.json");
+            let mut users_json_file = File::create(data_path.join("users.json"))?;
+            users_json_file.write_all(users_json_bytes)?;
+        }
     }
     Ok(())
 }
@@ -698,7 +723,7 @@ fn handle_dependencies(
                     "features": ["debug_mode"]
                 });
             }
-            (DbConnectionType::Mongodb,_)=>{
+            (DbConnectionType::Mongodb, _) => {
                 dependencies["mongodb"] = json!({"version":"2.0"});
                 dependencies["futures-util"] = json!({
                     "version": "0.3",

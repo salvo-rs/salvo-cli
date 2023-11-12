@@ -72,7 +72,6 @@ pub async fn init_db_conn() {
     .await;
 }
 {{/if}}
-
 {{#if is_sea_orm}}
 pub static DB: OnceCell<DatabaseConnection> = OnceCell::const_new();
 
@@ -131,5 +130,31 @@ pub async fn init_db_conn() {
         return rb;    
     })
     .await;
+}
+{{/if}}
+{{#if is_mongodb}}
+use crate::{entities::user::User};
+use mongodb::{bson::doc, options::IndexOptions, Client, IndexModel};
+use once_cell::sync::OnceCell;
+pub const DB_NAME: &str = "myApp";
+pub const COLL_NAME: &str = "users";
+pub static MONGODB_CLIENT: OnceCell<Client> = OnceCell::new();
+pub async fn init_db_conn() {
+        let mongodb_uri = &CFG.database.database_url;
+    let client = Client::with_uri_str(mongodb_uri)
+        .await
+        .expect("failed to connect");
+    let options = IndexOptions::builder().unique(true).build();
+    let model = IndexModel::builder()
+        .keys(doc! { "username": 1 })
+        .options(options)
+        .build();
+    client
+        .database(DB_NAME)
+        .collection::<User>(COLL_NAME)
+        .create_index(model, None)
+        .await
+        .expect("creating an index should succeed");
+    MONGODB_CLIENT.get_or_init(|| client);
 }
 {{/if}}
