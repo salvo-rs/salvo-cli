@@ -46,7 +46,6 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         .default(0)
         .items(&db_conn_types[..])
         .interact()?;
-
     let db_conn_type = match db_conn_type_selection {
         0 => DbConnectionType::Sqlx,
         1 => DbConnectionType::SeaOrm,

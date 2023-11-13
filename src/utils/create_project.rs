@@ -83,6 +83,10 @@ fn after_print_info(project_name: &String, config: UserSelected) {
             }
             _ => {}
         },
+        DbConnectionType::Mongodb => {
+            success(t!("mongodb_usage_import_user_data").replace(r"\n", "\n"));
+            success(t!("access_instructions").replace(r"\n", "\n"));
+        }
         _ => {}
     }
 }
