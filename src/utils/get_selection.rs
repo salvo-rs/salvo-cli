@@ -37,6 +37,7 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         t!("db_conn_types_sea_orm"),
         t!("db_conn_types_diesel"),
         t!("db_conn_types_rbatis"),
+        t!("db_conn_types_mongodb"),
         t!("db_conn_types_nothing"),
         // "custom",
     ];
@@ -45,16 +46,16 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         .default(0)
         .items(&db_conn_types[..])
         .interact()?;
-
     let db_conn_type = match db_conn_type_selection {
         0 => DbConnectionType::Sqlx,
         1 => DbConnectionType::SeaOrm,
         2 => DbConnectionType::Diesel,
         3 => DbConnectionType::Rbatis,
-        4 => DbConnectionType::Nothing,
+        4 => DbConnectionType::Mongodb,
+        5 => DbConnectionType::Nothing,
         _ => anyhow::bail!("Invalid db connection type selection"),
     };
-    if db_conn_type == DbConnectionType::Nothing {
+    if db_conn_type == DbConnectionType::Nothing || db_conn_type == DbConnectionType::Mongodb {
         return Ok(Some(UserSelected {
             template_type,
             db_type: DbType::Sqlite,
@@ -104,5 +105,6 @@ pub enum DbConnectionType {
     SeaOrm,
     Diesel,
     Rbatis,
+    Mongodb,
     Nothing,
 }

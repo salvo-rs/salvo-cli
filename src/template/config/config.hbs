@@ -41,6 +41,9 @@ database_url="mssql://SA:TestPass!123456@localhost:1433/rbatis_example"
 {{/if}}
 {{/if}}
 {{/if}}
+{{#if is_mongodb}}
+database_url="mongodb://localhost:27017"
+{{/if}}
 [jwt]
 jwt_secret = "secret"
 jwt_exp = 6000

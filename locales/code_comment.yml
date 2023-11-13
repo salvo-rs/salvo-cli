@@ -580,3 +580,21 @@ create_success_sqlx_diesel:
   th: 🎯 สร้างฐานข้อมูลเริ่มต้นใน `/data/test.db`. \n หลังจากเรียกใช้งาน คุณสามารถเข้าถึง /login ด้วยชื่อผู้ใช้เริ่มต้น:zhangsan และรหัสผ่าน:123
   el: 🎯 Δημιουργήθηκε η προεπιλεγμένη βάση δεδομένων στο `/data/test.db`. \n Μετά την εκτέλεσή του, μπορείτε να αποκτήσετε πρόσβαση στο /login με το όνομα χρήστη:zhangsan και τον κωδικό πρόσβασης:123
   da: 🎯 Standarddatabasen er oprettet i `/data/test.db`. \n Efter at have kørt det, kan du få adgang til /login med standardbrugernavnet:zhangsan og adgangskoden:123
+mongodb_usage_import_user_data:
+  en: 🎯 Please first run the program, then import data from data/user.json into the user table 
+  zh_CN: 🎯 请首先运行程序，然后将 data/user.json 中的数据导入到 user 表中 
+  zh_TW: 🎯 請先運行程序，然後將 data/user.json 中的數據導入到 user 表中 
+  fr: 🎯 Veuillez d'abord exécuter le programme, puis importer les données de data/user.json dans la table utilisateur 
+  ja: 🎯 プログラムを最初に実行し、その後、data/user.json からデータを user テーブルにインポートしてください 
+  es: 🎯 Por favor, primero ejecute el programa, luego importe los datos de data/user.json a la tabla de usuarios 
+  de: 🎯 Bitte führen Sie zuerst das Programm aus und importieren Sie dann die Daten aus data/user.json in die Benutzertabelle 
+  ru: 🎯 Пожалуйста, сначала запустите программу, затем импортируйте данные из data/user.json в таблицу пользователей 
+  it: 🎯 Si prega di eseguire prima il programma, poi importare i dati da data/user.json nella tabella degli utenti 
+  pt: 🎯 Por favor, primeiro execute o programa, depois importe os dados de data/user.json para a tabela de usuários 
+  ko: 🎯 먼저 프로그램을 실행한 다음, data/user.json의 데이터를 사용자 테이블에 가져와 주세요. 
+  no: 🎯 Vennligst kjør først programmet, deretter importer data fra data/user.json inn i brukertabellen 
+  is: 🎯 Vinsamlegast keyraðu fyrst forritið, síðan flytjaðu gögn úr data/user.json inn í notandatafluna 
+  uk: 🎯 Будь ласка, спочатку запустіть програму, а потім імпортуйте дані з data/user.json до таблиці користувачів 
+  th: 🎯 โปรดเรียกใช้โปรแกรมก่อน, จากนั้นนำเข้าข้อมูลจาก data/user.json ไปยังตารางผู้ใช้ 
+  el: 🎯 Παρακαλώ πρώτα τρέξτε το πρόγραμμα, στη συνέχεια εισάγετε τα δεδομένα από το data/user.json στον πίνακα χρήστη 
+  da: 🎯 Kør venligst først programmet, importér derefter data fra data/user.json ind i brugertabellen 

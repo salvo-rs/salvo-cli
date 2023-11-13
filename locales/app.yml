@@ -347,6 +347,24 @@ db_conn_types_rbatis:
   th: rbatis:เฟรมเวิร์ก ORM แบบ async ที่คล้ายกับ Mybatis (java)
   el: rbatis:ένα παρόμοιο Mybatis (java) ασύγχρονο πλαίσιο ORM
   da: rbatis:Et lignende Mybatis (java) asynkront ORM-rammeverk
+db_conn_types_mongodb:
+  en: The official MongoDB driver for Rust
+  zh_CN: Rust 的官方 MongoDB 驱动程序
+  zh_TW: Rust 的官方 MongoDB 驱動程式
+  fr: Le pilote MongoDB officiel pour Rust
+  ja: Rust の公式 MongoDB ドライバー
+  es: El controlador MongoDB oficial para Rust
+  de: Der offizielle MongoDB-Treiber für Rust
+  ru: Официальный драйвер MongoDB для Rust
+  it: Il driver MongoDB ufficiale per Rust
+  pt: O driver oficial do MongoDB para Rust
+  ko: Rust의 공식 MongoDB 드라이버
+  no: Den offisielle MongoDB-driveren for Rust
+  is: Opinber MongoDB keyrir fyrir Rust
+  uk: Офіційний драйвер MongoDB для Rust
+  th: ไดร์เวอร์ MongoDB อย่างเป็นทางการสำหรับ Rust
+  el: Ο επίσημος οδηγός MongoDB για Rust
+  da: Den officielle MongoDB-driver for Rust
 db_conn_types_nothing:
   en: unnecessary
   zh_CN: 不需要
