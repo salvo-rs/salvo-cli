@@ -45,7 +45,13 @@ pub fn create_project(project: Project) -> Result<()> {
 }
 
 fn after_print_info(project_name: &String, config: UserSelected) {
+    println!(); // a new line
+
+    // print success info
     success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
+
+    println!(); // a new line
+
     match config.db_conn_type {
         DbConnectionType::Sqlx => {
             success(t!("create_success_sqlx").replace(r"\n", "\n"));
