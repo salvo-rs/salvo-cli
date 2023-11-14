@@ -9,6 +9,10 @@ license = "MIT/Apache-2.0"
 repository = "https://github.com/fankaiLiu/salvo-cli"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[[bin]]
+name = "salvo"
+path = "src/main.rs"
+
 [dependencies]
 ansi_term = "0.12.1"
 anyhow = "1.0.75"
