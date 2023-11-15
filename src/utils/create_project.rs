@@ -169,6 +169,7 @@ fn write_project_file(
     let mut dependencies = data["dependencies"].clone();
     handle_dependencies(
         &mut dependencies,
+        is_web_site,
         need_db_conn,
         user_selected.db_type,
         user_selected.db_conn_type,
@@ -193,8 +194,28 @@ fn write_project_file(
             handlebars.render_template(handle_404_template, &data)?;
         let mut handle_404_file = File::create(template_path.join("handle_404.html"))?;
         handle_404_file.write_all(handle_404_template_rendered.as_bytes())?;
-
+        //assets
+        let assets_path = project_path.join("assets");
+        //assets/favicon.ico
+        let favicon_bytes = include_bytes!("../template/assets/favicon.ico");
+        let mut favicon_file = File::create(assets_path.join("favicon.ico"))?;
+        favicon_file.write_all(favicon_bytes)?;
         if need_db_conn {
+            //assets/js
+            let js_path = assets_path.join("js");
+            std::fs::create_dir_all(&js_path)?;
+            //assets/js/alpinejs.js
+            let alpinejs_bytes = include_bytes!("../template/assets/js/alpinejs.js");
+            let mut alpinejs_file = File::create(js_path.join("alpinejs.js"))?;
+            alpinejs_file.write_all(alpinejs_bytes)?;
+            //assets/js/sweetalert2.js
+            let sweetalert2_bytes = include_bytes!("../template/assets/js/sweetalert2.js");
+            let mut sweetalert2_file = File::create(js_path.join("sweetalert2.js"))?;
+            sweetalert2_file.write_all(sweetalert2_bytes)?;
+            //assets/js/tailwindcss.js
+            let tailwindcss_bytes = include_bytes!("../template/assets/js/tailwindcss.js");
+            let mut tailwindcss_file = File::create(js_path.join("tailwindcss.js"))?;
+            tailwindcss_file.write_all(tailwindcss_bytes)?;
             //template/login.html
             let login_template = include_str!("../template/templates/login.hbs");
             let login_template_rendered = handlebars.render_template(login_template, &data)?;
@@ -627,10 +648,21 @@ fn create_basic_file(
 
 fn handle_dependencies(
     dependencies: &mut serde_json::Value,
+    is_website: bool,
     need_db_conn: bool,
     db_type: DbType,
     conn_type: DbConnectionType,
 ) {
+    if is_website {
+        dependencies["rust-embed"] = json!({
+            "version": "8.0.0",
+        });
+        if let Some(salvo) = dependencies["salvo"].as_object_mut() {
+            if let Some(features) = salvo["features"].as_array_mut() {
+                features.push(serde_json::json!("serve-static"));
+            }
+        }
+    }
     if need_db_conn {
         match (conn_type, db_type) {
             (DbConnectionType::Sqlx, DbType::Mysql) => {
