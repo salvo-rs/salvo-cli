@@ -97,11 +97,11 @@ cargo install --force salvo-cli
 |   ✅   |                                  web api template                                  |
 |   ✅   |                                 web site template                                  |
 |   ✅   | Template with SQLx, SeaORM, Diesel, Rbatis (support for SQLite, PostgreSQL, MySQL) |
-|   ✅   |                                  Basic middleware                                  |
+|   ✅   |                                jwt,cors... middleware                              |
 |   ✅   |                                Support for MongoDB                                 |
-|   ⏳   |                                  More middleware                                   |
+|   ⏳   |                                command:salvo run                                   |
 |   ⏳   |                                  Support for docker                                |
-|   ⏳   | More integrations with good crates (validation, embedding, permissions or others?) |
+|   ⏳   | More integrations with good crates (validation, permissions or others?)            |
 |   ⏳   | Split into multiple crates for clearer code organization                           |
 
 ## License
