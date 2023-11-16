@@ -17,6 +17,7 @@ pub struct Configs {
 pub struct Server {
     pub name: String,
     pub address: String,
+    pub cors_allow_origin: Vec<String>,
     pub ssl: bool,
 }
 {{#if need_db_conn}}

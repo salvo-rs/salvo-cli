@@ -1,6 +1,9 @@
 use rust_embed::RustEmbed;
+{{#if need_db_conn}}
 use salvo::{Router, serve_static::static_embed, endpoint, Response, http::ResBody, hyper::body::Bytes};
-
+{{else}}
+use salvo::{Router, endpoint, Response, http::ResBody, hyper::body::Bytes};
+{{/if}}
 #[derive(RustEmbed)]
 #[folder = "assets"]
 struct Assets;

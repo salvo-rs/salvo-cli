@@ -2,6 +2,7 @@
 name = "{{project_name}}"
 address = "0.0.0.0:5800"
 ssl = false
+cors_allow_origin=["https://salvo.rs"]
 {{#if need_db_conn}}
 [database]
 {{#if is_sea_orm_or_sqlx}}
