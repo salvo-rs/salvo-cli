@@ -15,6 +15,7 @@ use self::{
 };
 pub mod demo;
 pub mod user;
+mod static_routers;
 
 pub fn router() -> Router {
     let mut no_auth_routers = vec![
@@ -33,6 +34,8 @@ pub fn router() -> Router {
                 .delete(delete_user),
         ),
     ];
+    let static_routers = static_routers::create_static_routers();
+    no_auth_routers.extend(static_routers);
     let router = Router::new()
         .hoop(Logger::new())
         .hoop(CatchPanic::new())
@@ -78,6 +81,8 @@ pub fn router() -> Router {
                 .delete(delete_user),
         ),
     ];
+    let static_routers = static_routers::create_static_routers();
+    no_auth_routers.extend(static_routers);
     let router = Router::new()
         .hoop(Logger::new())
         .hoop(CatchPanic::new())
