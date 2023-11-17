@@ -12,10 +12,10 @@ mod tests {
 
     #[test]
     fn test_write_project_all_combinations() {
-        let template_types = vec![TemplateType::SalvoWebSite, TemplateType::SalvoWebApi];
-        //let db_types = vec![DbType::Sqlite, DbType::Mysql, DbType::Postgres, DbType::Mssql];
-        let db_types = vec![DbType::Sqlite];
-        let db_conn_types = vec![
+        let template_types = [TemplateType::SalvoWebSite, TemplateType::SalvoWebApi];
+        //let db_types = [DbType::Sqlite, DbType::Mysql, DbType::Postgres, DbType::Mssql];
+        let db_types = [DbType::Sqlite];
+        let db_conn_types = [
             DbConnectionType::Sqlx,
             DbConnectionType::SeaOrm,
             DbConnectionType::Diesel,
@@ -35,15 +35,10 @@ mod tests {
         // Test each combination
         for (template_type, db_type, db_conn_type) in combinations {
             // Generate a unique project name for each combination
-            let project_name = format!(
-                "test_{}_{}_{}",
-                format!("{:?}", template_type),
-                format!("{:?}", db_type),
-                format!("{:?}", db_conn_type)
-            );
+            let project_name = format!("test_{:?}_{:?}_{:?}", template_type, db_type, db_conn_type);
 
             let path_str = format!("target/{}", project_name);
-            std::fs::remove_dir_all(&path_str).unwrap_or_else(|_| {});
+            std::fs::remove_dir_all(&path_str).unwrap_or(());
             let path = Path::new(&path_str);
 
             let user_selected = UserSelected {
@@ -68,7 +63,7 @@ mod tests {
                             template_type, db_type, db_conn_type
                         );
                         eprintln!("Output: {:?}", output);
-                        assert!(false);
+                        panic!();
                     }
                 }
                 Err(e) => {
@@ -77,10 +72,10 @@ mod tests {
                         template_type, db_type, db_conn_type
                     );
                     eprintln!("Error: {:?}", e);
-                    assert!(false);
+                    panic!();
                 }
             }
-            std::fs::remove_dir_all(&path_str).unwrap_or_else(|_| {});
+            std::fs::remove_dir_all(&path_str).unwrap_or(());
         }
     }
 }
