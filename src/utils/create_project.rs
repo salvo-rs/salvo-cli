@@ -97,7 +97,7 @@ fn after_print_info(project_name: &String, config: UserSelected) {
     }
 }
 
-fn write_project_file(
+pub fn write_project_file(
     project_path: &Path,
     user_selected: UserSelected,
     project: Project,
