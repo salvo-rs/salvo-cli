@@ -184,7 +184,6 @@ fn write_project_file(
 
     let (src_path, router_path) = create_basic_file(project_path, &handlebars, &data)?;
 
-
     if is_web_site {
         //templates
         let template_path = project_path.join("templates");
@@ -204,7 +203,6 @@ fn write_project_file(
         //assets
         let assets_path = project_path.join("assets");
         std::fs::create_dir_all(&assets_path)?;
-
 
         //assets/favicon.ico
         let favicon_bytes = include_bytes!("../template/assets/favicon.ico");
@@ -267,8 +265,10 @@ fn write_project_file(
         router_user_file.write_all(router_user_rendered.as_bytes())?;
 
         //src/router/static_routers.rs
-        let router_static_routers_template = include_str!("../template/src/routers/static_routers.hbs");
-        let router_static_routers_rendered = handlebars.render_template(router_static_routers_template, &data)?;
+        let router_static_routers_template =
+            include_str!("../template/src/routers/static_routers.hbs");
+        let router_static_routers_rendered =
+            handlebars.render_template(router_static_routers_template, &data)?;
         let mut router_static_routers_file = File::create(router_path.join("static_routers.rs"))?;
         router_static_routers_file.write_all(router_static_routers_rendered.as_bytes())?;
 
@@ -285,7 +285,7 @@ fn write_project_file(
         let services_user_rendered = handlebars.render_template(services_user_template, &data)?;
         let mut services_user_file = File::create(services_path.join("user.rs"))?;
         services_user_file.write_all(services_user_rendered.as_bytes())?;
-        
+
         //src/utils
         let utils_path = src_path.join("utils");
         std::fs::create_dir_all(&utils_path)?;
