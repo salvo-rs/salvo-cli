@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>404 {{page_not_found}}</title>
+{{#if need_db_conn}}
   <script src="assets/js/tailwindcss.js"></script>
+{{else}}
+  <script src="https://cdn.tailwindcss.com"></script>
+{{/if}}
   </head>
   <body
     class="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8"
