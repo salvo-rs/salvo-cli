@@ -124,11 +124,12 @@ pub fn write_project_file(
             "once_cell": "1.18.0",
             "salvo": {
                 "version": "0.58",
-                "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "rustls", "catch-panic","cookie"]
+                "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "rustls", "catch-panic","cookie","serve-static"]
             },
             "serde": "1.0.188",
             "thiserror": "1.0.48",
             "time": "0.3.28",
+            "rust-embed":"8.0.0",
             "tokio": {
                 "version": "1",
                 "features": ["full"]
@@ -175,7 +176,6 @@ pub fn write_project_file(
     let mut dependencies = data["dependencies"].clone();
     handle_dependencies(
         &mut dependencies,
-        is_web_site,
         need_db_conn,
         user_selected.db_type,
         user_selected.db_conn_type,
@@ -183,6 +183,13 @@ pub fn write_project_file(
     data["dependencies"] = dependencies;
 
     let (src_path, router_path) = create_basic_file(project_path, &handlebars, &data)?;
+    //assets
+    let assets_path = project_path.join("assets");
+    std::fs::create_dir_all(&assets_path)?;
+    //assets/favicon.ico
+    let favicon_bytes = include_bytes!("../template/assets/favicon.ico");
+    let mut favicon_file = File::create(assets_path.join("favicon.ico"))?;
+    favicon_file.write_all(favicon_bytes)?;
 
     if is_web_site {
         //templates
@@ -627,6 +634,10 @@ fn create_basic_file(
     let handle404_rendered = handlebars.render_template(handle404_template, &data)?;
     let mut handle404_file = File::create(middleware_path.join("handle_404.rs"))?;
     handle404_file.write_all(handle404_rendered.as_bytes())?;
+    //src/middleware/cors.rs
+    let cors_bytes = include_bytes!("../template/src/middleware/cors.rs");
+    let mut cors_file = File::create(middleware_path.join("cors.rs"))?;
+    cors_file.write_all(cors_bytes)?;
 
     //config
     let config_path = project_path.join("config");
@@ -661,6 +672,11 @@ fn create_basic_file(
     let router_demo_rendered = handlebars.render_template(router_demo_template, &data)?;
     let mut router_demo_file = File::create(router_path.join("demo.rs"))?;
     router_demo_file.write_all(router_demo_rendered.as_bytes())?;
+    //src/router/static_routers.rs
+    let router_static_template = include_str!("../template/src/routers/static_routers.hbs");
+    let router_static_rendered = handlebars.render_template(router_static_template, &data)?;
+    let mut router_static_file = File::create(router_path.join("static_routers.rs"))?;
+    router_static_file.write_all(router_static_rendered.as_bytes())?;
 
     //src/router/static_routers.rs
     // let router_static_routers_template = include_str!("../template/src/routers/static_routers.hbs");
@@ -673,21 +689,10 @@ fn create_basic_file(
 
 fn handle_dependencies(
     dependencies: &mut serde_json::Value,
-    is_website: bool,
     need_db_conn: bool,
     db_type: DbType,
     conn_type: DbConnectionType,
 ) {
-    if is_website {
-        dependencies["rust-embed"] = json!({
-            "version": "8.0.0",
-        });
-        if let Some(salvo) = dependencies["salvo"].as_object_mut() {
-            if let Some(features) = salvo["features"].as_array_mut() {
-                features.push(serde_json::json!("serve-static"));
-            }
-        }
-    }
     if need_db_conn {
         match (conn_type, db_type) {
             (DbConnectionType::Sqlx, DbType::Mysql) => {

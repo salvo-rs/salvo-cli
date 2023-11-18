@@ -1,6 +1,6 @@
 {{#if need_db_conn}}
     {{#if is_web_site}}
-use crate::middleware::jwt::jwt_hoop;
+use crate::middleware::{cors::cors_middleware, jwt::jwt_middleware};
 use salvo::{
     prelude::{CatchPanic, Logger, OpenApi, SwaggerUi},
     Router,
@@ -23,6 +23,8 @@ pub fn router() -> Router {
         Router::with_path("/api/login").post(post_login),
     ];
 
+    let _cors_handler = cors_middleware();
+
     let mut need_auth_routers = vec![
         Router::with_path("users")
             .get(user_list_page),
@@ -37,6 +39,7 @@ pub fn router() -> Router {
     let static_routers = static_routers::create_static_routers();
     no_auth_routers.extend(static_routers);
     let router = Router::new()
+        //.hoop(_cors_handler)
         .hoop(Logger::new())
         .hoop(CatchPanic::new())
         .get(hello)
@@ -44,7 +47,7 @@ pub fn router() -> Router {
         .push(
             Router::new()
                 .append(&mut need_auth_routers)
-                .hoop(jwt_hoop()),
+                .hoop(jwt_middleware()),
         );
     let doc = OpenApi::new("salvo web api", "0.0.1").merge_router(&router);
     router
@@ -52,7 +55,7 @@ pub fn router() -> Router {
         .push(SwaggerUi::new("/api-doc/openapi.json").into_router("swagger-ui"))
 }
     {{else}}
-use crate::middleware::jwt::jwt_hoop;
+use crate::middleware::{cors::cors_middleware, jwt::jwt_middleware};
 use salvo::{
     prelude::{CatchPanic, Logger, OpenApi, SwaggerUi},
     Router,
@@ -66,11 +69,14 @@ use self::{
 };
 pub mod demo;
 pub mod user;
+mod static_routers;
 
 pub fn router() -> Router {
     let mut no_auth_routers = vec![
         Router::with_path("/api/login").post(post_login),
     ];
+
+    let _cors_handler = cors_middleware();
 
     let mut need_auth_routers = vec![
         Router::with_path("/api/users").get(get_users)
@@ -83,6 +89,7 @@ pub fn router() -> Router {
     ];
 
     let router = Router::new()
+        //.hoop(_cors_handler)
         .hoop(Logger::new())
         .hoop(CatchPanic::new())
         .get(hello)
@@ -90,7 +97,7 @@ pub fn router() -> Router {
         .push(
             Router::new()
                 .append(&mut need_auth_routers)
-                .hoop(jwt_hoop()),
+                .hoop(jwt_middleware()),
         );
     let doc = OpenApi::new("salvo web api", "0.0.1").merge_router(&router);
     router
@@ -104,13 +111,20 @@ use salvo::{
     prelude::{CatchPanic, Logger, OpenApi, SwaggerUi},
     Router,
 };
+use crate::middleware::cors::cors_middleware;
 use self::demo::hello;
 pub mod demo;
+mod static_routers;
+
 pub fn router() -> Router {
+    let _cors_handler = cors_middleware();
+    let mut static_routers = static_routers::create_static_routers();
     let router = Router::new()
+        //.hoop(_cors_handler)
         .hoop(Logger::new())
         .hoop(CatchPanic::new())
-        .get(hello);
+        .get(hello)
+        .append(&mut static_routers);
     let doc = OpenApi::new("salvo web api", "0.0.1").merge_router(&router);
     router
         .push(doc.into_router("/api-doc/openapi.json"))
@@ -121,13 +135,20 @@ use salvo::{
     prelude::{CatchPanic, Logger, OpenApi, SwaggerUi},
     Router,
 };
+use crate::middleware::cors::cors_middleware;
 use self::demo::hello;
 pub mod demo;
+mod static_routers;
+
 pub fn router() -> Router {
+    let _cors_handler = cors_middleware();
+    let mut static_routers = static_routers::create_static_routers();
     let router = Router::new()
+        //.hoop(_cors_handler)
         .hoop(Logger::new())
         .hoop(CatchPanic::new())
-        .get(hello);
+        .get(hello)
+        .append(&mut static_routers);
     let doc = OpenApi::new("salvo web api", "0.0.1").merge_router(&router);
     router
         .push(doc.into_router("/api-doc/openapi.json"))
