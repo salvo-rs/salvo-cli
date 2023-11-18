@@ -30,58 +30,58 @@ To create a new Salvo project, use the new command followed by the name of your 
 
 ```bash
 //use the local language
-salvo-cli new project_name
+salvo new project_name
 
 // Use English
-salvo-cli new project_name --lang=en
+salvo new project_name --lang=en
 
 // 使用简体中文
-salvo-cli new project_name --lang=zh
+salvo new project_name --lang=zh
 
 // 使用繁體中文
-salvo-cli new project_name --lang=zh_TW
+salvo new project_name --lang=zh_TW
 
 // Utilisez le français
-salvo-cli new project_name --lang=fr
+salvo new project_name --lang=fr
 
 // 日本語を使用する
-salvo-cli new project_name --lang=ja
+salvo new project_name --lang=ja
 
 // Usa el español
-salvo-cli new project_name --lang=es
+salvo new project_name --lang=es
 
 // Verwenden Sie Deutsch
-salvo-cli new project_name --lang=de
+salvo new project_name --lang=de
 
 // Используйте русский
-salvo-cli new project_name --lang=ru
+salvo new project_name --lang=ru
 
 // Usa l `italiano
-salvo-cli new project_name --lang=it
+salvo new project_name --lang=it
 
 // Use o português
-salvo-cli new project_name --lang=pt
+salvo new project_name --lang=pt
 
 // 한국어를 사용하십시오
-salvo-cli new project_name --lang=ko
+salvo new project_name --lang=ko
 
 // Bruk norsk
-salvo-cli new project_name --lang=no
+salvo new project_name --lang=no
 
 // Notaðu íslensku
-salvo-cli new project_name --lang=is
+salvo new project_name --lang=is
 
 // Використовуйте українську
-salvo-cli new project_name --lang=uk
+salvo new project_name --lang=uk
 
 // ใช้ภาษาไทย
-salvo-cli new project_name --lang=th
+salvo new project_name --lang=th
 
 // Χρησιμοποιήστε την ελληνική
-salvo-cli new project_name --lang=el
+salvo new project_name --lang=el
 
 // Brug dansk
-salvo-cli new project_name --lang=da
+salvo new project_name --lang=da
 ```
 
 ## Update
@@ -97,11 +97,11 @@ cargo install --force salvo-cli
 |   ✅   |                                  web api template                                  |
 |   ✅   |                                 web site template                                  |
 |   ✅   | Template with SQLx, SeaORM, Diesel, Rbatis (support for SQLite, PostgreSQL, MySQL) |
-|   ✅   |                                  Basic middleware                                  |
+|   ✅   |                                jwt,cors... middleware                              |
 |   ✅   |                                Support for MongoDB                                 |
-|   ⏳   |                                  More middleware                                   |
+|   ⏳   |                                command:salvo run                                   |
 |   ⏳   |                                  Support for docker                                |
-|   ⏳   | More integrations with good crates (validation, embedding, permissions or others?) |
+|   ⏳   | More integrations with good crates (validation, permissions or others?)            |
 |   ⏳   | Split into multiple crates for clearer code organization                           |
 
 ## License

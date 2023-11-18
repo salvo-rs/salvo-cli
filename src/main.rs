@@ -1,12 +1,12 @@
 use anyhow::Result;
 use clap::Parser;
-
+mod test;
 mod utils;
 use i18n::set_locale;
 mod i18n;
 rust_i18n::i18n!("locales", fallback = "en");
 #[derive(Parser, Debug)]
-#[clap(version = "0.1.20", author = "Fankai liu <liufankai137@outlook.com>")]
+#[clap(version = "0.1.23", author = "Fankai liu <liufankai137@outlook.com>")]
 struct Opts {
     #[clap(subcommand)]
     subcmd: SubCommand,

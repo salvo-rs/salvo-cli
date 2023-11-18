@@ -466,6 +466,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "itertools"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "25db6b064527c5d482d0423354fcd07a89a2dfe07b67892e62411946db7f07b0"
+dependencies = [
+ "either",
+]
+
+[[package]]
 name = "itoa"
 version = "1.0.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -711,7 +720,7 @@ dependencies = [
  "anyhow",
  "clap 2.34.0",
  "globwalk",
- "itertools",
+ "itertools 0.10.5",
  "once_cell",
  "quote",
  "regex",
@@ -798,7 +807,7 @@ checksum = "1ad4cc8da4ef723ed60bced201181d83791ad433213d8c24efffda1eec85d741"
 
 [[package]]
 name = "salvo-cli"
-version = "0.1.20"
+version = "0.1.23"
 dependencies = [
  "ansi_term",
  "anyhow",
@@ -806,6 +815,7 @@ dependencies = [
  "dialoguer",
  "git2",
  "handlebars",
+ "itertools 0.12.0",
  "rust-i18n",
  "serde",
  "serde_json",

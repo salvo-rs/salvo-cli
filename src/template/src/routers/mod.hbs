@@ -87,8 +87,7 @@ pub fn router() -> Router {
                 .delete(delete_user),
         ),
     ];
-    let static_routers = static_routers::create_static_routers();
-    no_auth_routers.extend(static_routers);
+
     let router = Router::new()
         //.hoop(_cors_handler)
         .hoop(Logger::new())
