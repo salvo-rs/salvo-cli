@@ -52,6 +52,10 @@ pub enum AppError {
     #[error("mongodb::bson::oid::Error`{0}`")]
     MongoBsonOidError(#[from] MongoBsonOidError),
     {{/if}}
+    {{#if need_db_conn}}
+    #[error("ValidationError:`{0}`")]
+    ValidationError(#[from] validator::ValidationErrors),
+    {{/if}}
 }
 
 pub type AppResult<T> = Result<T, AppError>;
