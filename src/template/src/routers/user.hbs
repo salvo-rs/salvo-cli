@@ -1,8 +1,9 @@
 {{#if is_web_site}}
 use crate::{
-    app_error::AppResult,
-    app_response::{ErrRes, Res},
-    dtos::user::{UserAddRequest, UserLoginRequest, UserLoginResponse, UserUpdateRequest},
+    app_response::{AppResponse, AppResult, ErrRes},
+    dtos::user::{
+        UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse, UserUpdateRequest,
+    },
     middleware::jwt::decode_token,
     services::user,
 };
@@ -19,7 +20,7 @@ use salvo::{
 #[template(path = "login.html")]
 struct LoginTemplate {}
 
-#[endpoint( tags("comm"),)]
+#[endpoint(tags("comm"))]
 pub async fn login_page(res: &mut Response) -> AppResult<()> {
     let cookies = res.cookies();
     let cookie = cookies.get("jwt_token");
@@ -34,61 +35,6 @@ pub async fn login_page(res: &mut Response) -> AppResult<()> {
     let hello_tmpl = LoginTemplate {};
     res.render(Text::Html(hello_tmpl.render().unwrap()));
     Ok(())
-}
-#[endpoint( tags("comm"),)]
-pub async fn post_login(req: JsonBody<UserLoginRequest>, res: &mut Response) {
-    let result: AppResult<UserLoginResponse> = user::login(req.0).await;
-    match result {
-        Ok(data) => {
-            let jwt_token = data.token.clone();
-            let cookie = Cookie::build(("jwt_token", jwt_token))
-                .path("/")
-                .http_only(true)
-                .build();
-            res.add_cookie(cookie);
-        }
-        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
-    }
-}
-
-#[endpoint( tags("users"))]
-pub async fn post_add_user(req: JsonBody<UserAddRequest>, res: &mut Response) {
-    let result = user::add_user(req.0).await;
-    match result {
-        Ok(data) => Res::with_data(data).into_response(res),
-        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
-    }
-}
-
-#[endpoint(  tags("users"),
-parameters(
-    ("id", description = "user id"),
-))]
-pub async fn put_update_user(req: &mut Request, res: &mut Response) {
-    let req: UserUpdateRequest = req.extract().await.unwrap();
-    let result = user::update_user(req).await;
-    match result {
-        Ok(data) => Res::with_data(data).into_response(res),
-        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
-    }
-}
-
-#[endpoint( tags("users"),)]
-pub async fn delete_user(id: PathParam<String>, res: &mut Response) {
-    let result = user::delete_user(id.0).await;
-    match result {
-        Ok(_) => Res::with_data(()).into_response(res),
-        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
-    }
-}
-
-#[endpoint( tags("users"),)]
-pub async fn get_users(res: &mut Response) {
-    let result = user::users().await;
-    match result {
-        Ok(data) => Res::with_data(data).into_response(res),
-        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
-    }
 }
 
 #[derive(Template)]
@@ -114,6 +60,50 @@ pub async fn user_list_page(req: &mut Request, res: &mut Response) -> AppResult<
     }
     Ok(())
 }
+#[endpoint(tags("comm"))]
+pub async fn post_login(req: JsonBody<UserLoginRequest>, res: &mut Response) {
+    let result: AppResult<UserLoginResponse> = user::login(req.0).await;
+    match result {
+        Ok(data) => {
+            let jwt_token = data.token.clone();
+            let cookie = Cookie::build(("jwt_token", jwt_token))
+                .path("/")
+                .http_only(true)
+                .build();
+            res.add_cookie(cookie);
+        }
+        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
+    }
+}
+
+#[endpoint(tags("users"))]
+pub async fn post_add_user(new_user: JsonBody<UserAddRequest>) -> AppResponse<UserResponse> {
+    let result = user::add_user(new_user.0).await;
+    AppResponse(result)
+}
+
+#[endpoint(  tags("users"),
+parameters(
+    ("id", description = "user id"),
+))]
+pub async fn put_update_user(req: &mut Request) -> AppResult<AppResponse<UserResponse>> {
+    let req: UserUpdateRequest = req.extract().await?;
+    let result = user::update_user(req).await;
+    Ok(AppResponse(result))
+}
+
+#[endpoint(tags("users"))]
+pub async fn delete_user(id: PathParam<String>) -> AppResponse<()> {
+    let result = user::delete_user(id.0).await;
+    AppResponse(result)
+}
+
+#[endpoint(tags("users"))]
+pub async fn get_users() -> AppResponse<Vec<UserResponse>> {
+    let result = user::users().await;
+    AppResponse(result)
+}
+
 {{else}}
 use crate::{
     app_error::AppResult,

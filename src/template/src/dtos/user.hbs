@@ -1,8 +1,10 @@
 use salvo::prelude::{ToSchema, Extractible};
 use serde::{Deserialize, Serialize};
+use validator::Validate;
 
-#[derive(Deserialize, Debug, ToSchema, Default)]
+#[derive(Deserialize, Debug, Validate, ToSchema, Default)]
 pub struct UserAddRequest {
+    #[validate(length(min = 5, message = "username length must be greater than 5"))]
     pub username: String,
     pub password: String,
 }

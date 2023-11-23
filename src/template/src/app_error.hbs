@@ -57,24 +57,3 @@ pub enum AppError {
     ValidationError(#[from] validator::ValidationErrors),
     {{/if}}
 }
-
-pub type AppResult<T> = Result<T, AppError>;
-
-#[async_trait]
-impl Writer for AppError {
-    async fn write(mut self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
-        {{#if is_web_site}}
-        res.stuff(StatusCode::INTERNAL_SERVER_ERROR, Json(self.to_string()));
-        {{else}}
-        res.render(Json(self.to_string()));
-        {{/if}}
-    }
-}
-
-impl EndpointOutRegister for AppError {
-    fn register(_components: &mut salvo::oapi::Components, operation: &mut salvo::oapi::Operation) {
-        operation
-            .responses
-            .insert("500".to_string(), salvo::oapi::Response::new("error"));
-    }
-}
