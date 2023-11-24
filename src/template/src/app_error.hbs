@@ -1,20 +1,4 @@
-{{#if is_web_site}}
-use salvo::{
-    async_trait,
-    http::ParseError,
-    prelude::{EndpointOutRegister, StatusCode},
-    writing::Json,
-    Depot, Request, Response, Writer,
-};
-{{else}}
-use salvo::{
-    async_trait,
-    http::ParseError,
-    prelude::EndpointOutRegister,
-    writing::Json,
-    Depot, Request, Response, Writer,
-};
-{{/if}}
+use salvo::http::ParseError;
 {{#if is_mongodb}}
 use mongodb::bson::document::ValueAccessError as MongoBsonAccessError;
 use mongodb::bson::oid::Error as MongoBsonOidError;

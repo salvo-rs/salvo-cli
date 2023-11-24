@@ -106,7 +106,7 @@ pub async fn get_users() -> AppResponse<Vec<UserResponse>> {
 
 {{else}}
 use crate::{
-    app_error::AppResult,
+    app_response::AppResult,
     app_response::{ErrRes, Res},
     dtos::user::{UserAddRequest, UserLoginRequest, UserLoginResponse, UserUpdateRequest},
     services::user,

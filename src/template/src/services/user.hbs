@@ -1,7 +1,7 @@
 {{#if is_sea_orm_or_sqlx}}
 {{#if is_sqlx}}
 use crate::{
-    app_error::AppResult,
+    app_response::AppResult,
     db::DB,
     dtos::user::{
         UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse,
@@ -14,7 +14,7 @@ use crate::{
 {{/if}}
 {{#if is_sea_orm}}
 use crate::{
-    app_error::AppResult,
+    app_response::AppResult,
     db::DB,
     dtos::user::{
         UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse,
@@ -223,7 +223,7 @@ use uuid::Uuid;
 
 use crate::schema::users::dsl::users as diesel_users;
 use crate::{
-    app_error::AppResult,
+    app_response::AppResult,
     db::establish_connection,
     dtos::user::{
         UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse, UserUpdateRequest,
@@ -355,7 +355,7 @@ pub async fn users() -> AppResult<Vec<UserResponse>> {
 use uuid::Uuid;
 
 use crate::{
-    app_error::AppResult,
+    app_response::AppResult,
     dtos::user::{
         UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse, UserUpdateRequest,
     },
