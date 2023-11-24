@@ -1,20 +1,4 @@
-{{#if is_web_site}}
-use salvo::{
-    async_trait,
-    http::ParseError,
-    prelude::{EndpointOutRegister, StatusCode},
-    writing::Json,
-    Depot, Request, Response, Writer,
-};
-{{else}}
-use salvo::{
-    async_trait,
-    http::ParseError,
-    prelude::EndpointOutRegister,
-    writing::Json,
-    Depot, Request, Response, Writer,
-};
-{{/if}}
+use salvo::http::ParseError;
 {{#if is_mongodb}}
 use mongodb::bson::document::ValueAccessError as MongoBsonAccessError;
 use mongodb::bson::oid::Error as MongoBsonOidError;
@@ -52,25 +36,8 @@ pub enum AppError {
     #[error("mongodb::bson::oid::Error`{0}`")]
     MongoBsonOidError(#[from] MongoBsonOidError),
     {{/if}}
-}
-
-pub type AppResult<T> = Result<T, AppError>;
-
-#[async_trait]
-impl Writer for AppError {
-    async fn write(mut self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
-        {{#if is_web_site}}
-        res.stuff(StatusCode::INTERNAL_SERVER_ERROR, Json(self.to_string()));
-        {{else}}
-        res.render(Json(self.to_string()));
-        {{/if}}
-    }
-}
-
-impl EndpointOutRegister for AppError {
-    fn register(_components: &mut salvo::oapi::Components, operation: &mut salvo::oapi::Operation) {
-        operation
-            .responses
-            .insert("500".to_string(), salvo::oapi::Response::new("error"));
-    }
+    {{#if need_db_conn}}
+    #[error("ValidationError:`{0}`")]
+    ValidationError(#[from] validator::ValidationErrors),
+    {{/if}}
 }

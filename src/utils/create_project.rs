@@ -694,6 +694,10 @@ fn handle_dependencies(
     conn_type: DbConnectionType,
 ) {
     if need_db_conn {
+        dependencies["validator"] = json!({
+            "version": "0.16",
+            "features": ["derive"]
+        });
         match (conn_type, db_type) {
             (DbConnectionType::Sqlx, DbType::Mysql) => {
                 dependencies["sqlx"] = json!({

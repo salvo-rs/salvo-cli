@@ -1,7 +1,7 @@
 {{#if is_sea_orm_or_sqlx}}
 {{#if is_sqlx}}
 use crate::{
-    app_error::AppResult,
+    app_response::AppResult,
     db::DB,
     dtos::user::{
         UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse,
@@ -14,7 +14,7 @@ use crate::{
 {{/if}}
 {{#if is_sea_orm}}
 use crate::{
-    app_error::AppResult,
+    app_response::AppResult,
     db::DB,
     dtos::user::{
         UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse,
@@ -223,7 +223,7 @@ use uuid::Uuid;
 
 use crate::schema::users::dsl::users as diesel_users;
 use crate::{
-    app_error::AppResult,
+    app_response::AppResult,
     db::establish_connection,
     dtos::user::{
         UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse, UserUpdateRequest,
@@ -355,7 +355,7 @@ pub async fn users() -> AppResult<Vec<UserResponse>> {
 use uuid::Uuid;
 
 use crate::{
-    app_error::AppResult,
+    app_response::AppResult,
     dtos::user::{
         UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse, UserUpdateRequest,
     },
@@ -436,14 +436,8 @@ pub async fn users() -> AppResult<Vec<UserResponse>> {
 }
 {{/if}}
 {{#if is_mongodb}}
-use std::str::FromStr;
-use futures_util::StreamExt;
-use mongodb::{
-    bson::{doc, oid::ObjectId, Document},
-    Collection,
-};
 use crate::{
-    app_error::AppResult,
+    app_response::AppResult,
     db::{COLL_NAME, DB_NAME, MONGODB_CLIENT},
     dtos::user::{
         UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse, UserUpdateRequest,
@@ -451,11 +445,19 @@ use crate::{
     middleware::jwt::get_token,
     utils::rand_utils,
 };
+use futures_util::StreamExt;
+use mongodb::{
+    bson::{doc, oid::ObjectId, Document},
+    Collection,
+};
+use std::str::FromStr;
+use validator::Validate;
 
 pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
+    req.validate()?;
     let db = MONGODB_CLIENT
         .get()
-        .ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
+        .ok_or(anyhow::anyhow!("数据库连接失败"))?;
     let coll_users = db.database(DB_NAME).collection::<Document>(COLL_NAME);
 
     let user = doc! {
@@ -466,7 +468,7 @@ pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
     let user = coll_users
         .find_one(user, None)
         .await?
-        .ok_or(anyhow::anyhow!("{{user_does_not_exist}}"))?;
+        .ok_or(anyhow::anyhow!("用户不存在"))?;
     Ok(UserResponse {
         id: user.get_object_id("_id")?.to_string(),
         username: user.get_str("username")?.to_string(),
