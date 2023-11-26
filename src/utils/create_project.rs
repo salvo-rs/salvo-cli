@@ -1,5 +1,5 @@
 use anyhow::{Context, Result};
-use handlebars::Handlebars;
+use handlebars::{template, Handlebars};
 use rust_i18n::t;
 use serde_json::json;
 use std::{
@@ -190,19 +190,22 @@ pub fn write_project_file(
     let favicon_bytes = include_bytes!("../template/assets/favicon.ico");
     let mut favicon_file = File::create(assets_path.join("favicon.ico"))?;
     favicon_file.write_all(favicon_bytes)?;
-    let mut templates = vec![];
+    let mut templates: Vec<(&str, &str)> = vec![];
     if is_web_site {
         //templates
         let template_path = project_path.join("templates");
         std::fs::create_dir_all(&template_path)?;
-        templates.push((
-            "templates/hello.html",
-            include_str!("../template/src/cargo_template.hbs"),
-        ));
-        templates.push((
-            "templates/handle_404.html",
-            include_str!("../template/templates/404.hbs"),
-        ));
+        let mut web_comm_templates = vec![
+            (
+                "templates/hello.html",
+                include_str!("../template/src/cargo_template.hbs"),
+            ),
+            (
+                "templates/handle_404.html",
+                include_str!("../template/templates/404.hbs"),
+            ),
+        ];
+        templates.append(&mut web_comm_templates);
         //assets
         let assets_path = project_path.join("assets");
         std::fs::create_dir_all(&assets_path)?;
@@ -213,45 +216,33 @@ pub fn write_project_file(
 
         favicon_file.write_all(favicon_bytes)?;
         if need_db_conn {
-            //assets/js
-            let js_path = assets_path.join("js");
-            std::fs::create_dir_all(&js_path)?;
-            //assets/js/alpinejs.js
-            let alpinejs_bytes = include_bytes!("../template/assets/js/alpinejs.js");
-            let mut alpinejs_file = File::create(js_path.join("alpinejs.js"))?;
-            alpinejs_file.write_all(alpinejs_bytes)?;
-            //assets/js/sweetalert2.js
-            let sweetalert2_bytes = include_bytes!("../template/assets/js/sweetalert2.js");
-            let mut sweetalert2_file = File::create(js_path.join("sweetalert2.js"))?;
-            sweetalert2_file.write_all(sweetalert2_bytes)?;
-            //assets/js/tailwindcss.js
-            let tailwindcss_bytes = include_bytes!("../template/assets/js/tailwindcss.js");
-            let mut tailwindcss_file = File::create(js_path.join("tailwindcss.js"))?;
-            tailwindcss_file.write_all(tailwindcss_bytes)?;
-            //template/login.html
-            let login_template = include_str!("../template/templates/login.hbs");
-            let login_template_rendered = handlebars.render_template(login_template, &data)?;
-            let mut login_file = File::create(template_path.join("login.html"))?;
-            login_file.write_all(login_template_rendered.as_bytes())?;
-
-            //template/user_list.html
-            let user_list_template = include_str!("../template/templates/user_list.hbs");
-            let user_list_template_rendered =
-                handlebars.render_template(user_list_template, &data)?;
-            let mut user_list_file = File::create(template_path.join("user_list.html"))?;
-            user_list_file.write_all(
-                user_list_template_rendered
-                    .replace("[[", "{{")
-                    .replace("]]", "}}")
-                    .as_bytes(),
-            )?;
-
-            //template/user_list_page.html
-            let user_list_page_template = include_str!("../template/templates/user_list_page.hbs");
-            let user_list_page_template_rendered =
-                handlebars.render_template(user_list_page_template, &data)?;
-            let mut user_list_page_file = File::create(template_path.join("user_list_page.html"))?;
-            user_list_page_file.write_all(user_list_page_template_rendered.as_bytes())?;
+            let mut web_db_templates = vec![
+                (
+                    "assets/js/alpinejs.js",
+                    include_str!("../template/assets/js/alpinejs.js"),
+                ),
+                (
+                    "assets/js/sweetalert2.js",
+                    include_str!("../template/assets/js/sweetalert2.js"),
+                ),
+                (
+                    "assets/js/tailwindcss.js",
+                    include_str!("../template/assets/js/tailwindcss.js"),
+                ),
+                (
+                    "templates/login.html",
+                    include_str!("../template/templates/login.hbs"),
+                ),
+                (
+                    "templates/user_list.html",
+                    include_str!("../template/templates/user_list.hbs"),
+                ),
+                (
+                    "templates/user_list_page.html",
+                    include_str!("../template/templates/user_list_page.hbs"),
+                ),
+            ];
+            templates.append(&mut web_db_templates);
         }
     }
     if need_db_conn {
