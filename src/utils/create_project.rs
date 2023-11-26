@@ -1,7 +1,5 @@
-use crate::Project;
 use anyhow::{Context, Result};
 use handlebars::Handlebars;
-use print_util::success;
 use rust_i18n::t;
 use serde_json::json;
 use std::{
@@ -17,6 +15,8 @@ use super::{
     get_selection::{get_user_selected, DbConnectionType, DbType, TemplateType, UserSelected},
     print_util, restricted_names, warning,
 };
+use crate::Project;
+use print_util::success;
 
 pub fn create_project(project: Project) -> Result<()> {
     check_name(&project.project_name)?;
@@ -190,23 +190,19 @@ pub fn write_project_file(
     let favicon_bytes = include_bytes!("../template/assets/favicon.ico");
     let mut favicon_file = File::create(assets_path.join("favicon.ico"))?;
     favicon_file.write_all(favicon_bytes)?;
-
+    let mut templates = vec![];
     if is_web_site {
         //templates
         let template_path = project_path.join("templates");
         std::fs::create_dir_all(&template_path)?;
-
-        //template/hello.html
-        let hello_template = include_str!("../template/templates/hello.hbs");
-        let mut hello_file = File::create(template_path.join("hello.html"))?;
-        hello_file.write_all(hello_template.as_bytes())?;
-
-        //template/handle_404.html
-        let handle_404_template = include_str!("../template/templates/404.hbs");
-        let handle_404_template_rendered =
-            handlebars.render_template(handle_404_template, &data)?;
-        let mut handle_404_file = File::create(template_path.join("handle_404.html"))?;
-        handle_404_file.write_all(handle_404_template_rendered.as_bytes())?;
+        templates.push((
+            "templates/hello.html",
+            include_str!("../template/src/cargo_template.hbs"),
+        ));
+        templates.push((
+            "templates/handle_404.html",
+            include_str!("../template/templates/404.hbs"),
+        ));
         //assets
         let assets_path = project_path.join("assets");
         std::fs::create_dir_all(&assets_path)?;
@@ -584,6 +580,9 @@ pub fn write_project_file(
             let mut users_json_file = File::create(data_path.join("users.json"))?;
             users_json_file.write_all(users_json_bytes)?;
         }
+    }
+    for (file_name, template) in &templates {
+        render_and_write_to_file(&handlebars, template, &data, project_path.join(file_name))?;
     }
     Ok(())
 }
