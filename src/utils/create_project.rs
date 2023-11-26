@@ -182,7 +182,7 @@ pub fn write_project_file(
     );
     data["dependencies"] = dependencies;
 
-    let (src_path, router_path) = create_basic_file(project_path, &handlebars, &data)?;
+    let src_path = create_basic_file(project_path, &handlebars, &data)?;
     //assets
     let assets_path = project_path.join("assets");
     std::fs::create_dir_all(&assets_path)?;
@@ -246,70 +246,41 @@ pub fn write_project_file(
         }
     }
     if need_db_conn {
-        //src/db.rs
-        let db_template = include_str!("../template/src/db.hbs");
-        let db_rendered = handlebars.render_template(db_template, &data)?;
-        let mut db_file = File::create(src_path.join("db.rs"))?;
-        db_file.write_all(db_rendered.as_bytes())?;
-
-        //src/router/user.rs
-        let router_user_template = include_str!("../template/src/routers/user.hbs");
-        let router_user_rendered = handlebars.render_template(router_user_template, &data)?;
-        let mut router_user_file = File::create(router_path.join("user.rs"))?;
-        router_user_file.write_all(router_user_rendered.as_bytes())?;
-
-        //src/router/static_routers.rs
-        let router_static_routers_template =
-            include_str!("../template/src/routers/static_routers.hbs");
-        render_and_write_to_file(
-            &handlebars,
-            router_static_routers_template,
-            &data,
-            router_path.join("static_routers.rs"),
-        )?;
-        //src/services
-        let services_path = src_path.join("services");
-        std::fs::create_dir_all(&services_path)?;
-        //src/services/mod.rs
-        let services_mod_template = include_str!("../template/src/services/mod.hbs");
-        let services_mod_rendered = handlebars.render_template(services_mod_template, &data)?;
-        let mut services_mod_file = File::create(services_path.join("mod.rs"))?;
-        services_mod_file.write_all(services_mod_rendered.as_bytes())?;
-        //src/services/user.rs
-        let services_user_template = include_str!("../template/src/services/user.hbs");
-        let services_user_rendered = handlebars.render_template(services_user_template, &data)?;
-        let mut services_user_file = File::create(services_path.join("user.rs"))?;
-        services_user_file.write_all(services_user_rendered.as_bytes())?;
-
-        //src/utils
-        let utils_path = src_path.join("utils");
-        std::fs::create_dir_all(&utils_path)?;
-        //src/utils/mod.rs
-        let utils_mod_template = include_str!("../template/src/utils/mod.hbs");
-        let utils_mod_rendered = handlebars.render_template(utils_mod_template, &data)?;
-        let mut utils_mod_file = File::create(utils_path.join("mod.rs"))?;
-        utils_mod_file.write_all(utils_mod_rendered.as_bytes())?;
-
-        //src/utils/rand_utils.rs
-        let rand_utils_template = include_str!("../template/src/utils/rand_utils.hbs");
-        let rand_utils_rendered = handlebars.render_template(rand_utils_template, &data)?;
-        let mut rand_utils_file = File::create(utils_path.join("rand_utils.rs"))?;
-        rand_utils_file.write_all(rand_utils_rendered.as_bytes())?;
-
-        //src/dtos
-        let dtos_path = src_path.join("dtos");
-        std::fs::create_dir_all(&dtos_path)?;
-        //src/dtos/mod.rs
-        let dtos_mod_template = include_str!("../template/src/dtos/mod.hbs");
-        let dtos_mod_rendered = handlebars.render_template(dtos_mod_template, &data)?;
-        let mut dtos_mod_file = File::create(dtos_path.join("mod.rs"))?;
-        dtos_mod_file.write_all(dtos_mod_rendered.as_bytes())?;
-
-        //src/dtos/user.rs
-        let dtos_user_template = include_str!("../template/src/dtos/user.hbs");
-        let dtos_user_rendered = handlebars.render_template(dtos_user_template, &data)?;
-        let mut dtos_user_file = File::create(dtos_path.join("user.rs"))?;
-        dtos_user_file.write_all(dtos_user_rendered.as_bytes())?;
+        let mut db_templates = vec![
+            ("src/db.rs", include_str!("../template/src/db.hbs")),
+            (
+                "src/router/user.rs",
+                include_str!("../template/src/routers/user.hbs"),
+            ),
+            (
+                "src/router/static_routers.rs",
+                include_str!("../template/src/routers/static_routers.hbs"),
+            ),
+            (
+                "src/services/mod.rs",
+                include_str!("../template/src/services/mod.hbs"),
+            ),
+            (
+                "src/services/user.rs",
+                include_str!("../template/src/services/user.hbs"),
+            ),
+            (
+                "src/utils/mod.rs",
+                include_str!("../template/src/utils/mod.hbs"),
+            ),
+            (
+                "src/utils/rand_utils.rs",
+                include_str!("../template/src/utils/rand_utils.hbs"),
+            ),
+            (
+                "src/dtos/mod.rs",
+                include_str!("../template/src/dtos/mod.hbs"),
+            ),
+            (
+                "src/dtos/user.rs",
+                include_str!("../template/src/dtos/user.hbs"),
+            ),
+        ];
         if is_sea_orm || is_sqlx {
             //src/entities
             let entities_path = src_path.join("entities");
@@ -570,6 +541,7 @@ pub fn write_project_file(
             let users_json_bytes = include_bytes!("../template/data/users.json");
             let mut users_json_file = File::create(data_path.join("users.json"))?;
             users_json_file.write_all(users_json_bytes)?;
+            templates.append(&mut db_templates);
         }
     }
     for (file_name, template) in &templates {
@@ -582,7 +554,7 @@ fn create_basic_file(
     project_path: &Path,
     handlebars: &Handlebars<'_>,
     data: &serde_json::Value,
-) -> Result<(PathBuf, PathBuf)> {
+) -> Result<PathBuf> {
     std::fs::create_dir_all(project_path)?;
     let src_path = project_path.join("src");
     std::fs::create_dir_all(&src_path)?;
@@ -683,7 +655,7 @@ fn create_basic_file(
     }
     let router_path = src_path.join("routers");
     std::fs::create_dir_all(&router_path)?;
-    Ok((src_path, router_path))
+    Ok((src_path))
 }
 
 fn handle_dependencies(
