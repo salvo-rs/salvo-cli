@@ -36,7 +36,7 @@ mod tests {
         for (template_type, db_type, db_conn_type) in combinations {
             // Generate a unique project name for each combination
             let project_name = format!("test_{:?}_{:?}_{:?}", template_type, db_type, db_conn_type);
-
+            println!("Testing combination: {:?}", project_name);
             let path_str = format!("target/{}", project_name);
             std::fs::remove_dir_all(&path_str).unwrap_or(());
             let path = Path::new(&path_str);

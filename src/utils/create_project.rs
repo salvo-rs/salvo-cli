@@ -598,14 +598,14 @@ fn create_basic_file(
     std::fs::create_dir_all(&src_path)?;
 
     let templates = [
+        (
+            "Cargo.toml",
+            include_str!("../template/src/cargo_template.hbs"),
+        ),
         //src
         (
             "src/main.rs",
             include_str!("../template/src/main_template.hbs"),
-        ),
-        (
-            "src/Cargo.toml",
-            include_str!("../template/src/cargo_template.hbs"),
         ),
         (
             "src/config.rs",
