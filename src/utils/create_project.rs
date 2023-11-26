@@ -598,6 +598,7 @@ fn create_basic_file(
     std::fs::create_dir_all(&src_path)?;
 
     let templates = [
+        //src
         (
             "src/main.rs",
             include_str!("../template/src/main_template.hbs"),
@@ -618,71 +619,80 @@ fn create_basic_file(
             "src/app_response.rs",
             include_str!("../template/src/app_response.hbs"),
         ),
+        //src/middleware
+        (
+            "src/middleware/jwt.rs",
+            include_str!("../template/src/middleware/jwt.hbs"),
+        ),
+        (
+            "src/middleware/mod.rs",
+            include_str!("../template/src/middleware/mod.hbs"),
+        ),
+        (
+            "src/middleware/handle_404.rs",
+            include_str!("../template/src/middleware/handle_404.hbs"),
+        ),
+        (
+            "src/middleware/cors.rs",
+            include_str!("../template/src/middleware/cors.hbs"),
+        ),
+        //config
+        (
+            "config/config.toml",
+            include_str!("../template/config/config.hbs"),
+        ),
+        (
+            "config/certs/cert.pem",
+            include_str!("../template/config/certs/cert.pem"),
+        ),
+        (
+            "config/certs/key.pem",
+            include_str!("../template/config/certs/key.pem"),
+        ),
+        //src/routers
+        (
+            "src/routers/mod.rs",
+            include_str!("../template/src/routers/mod.hbs"),
+        ),
+        (
+            "src/routers/demo.rs",
+            include_str!("../template/src/routers/demo.hbs"),
+        ),
+        (
+            "src/routers/static_routers.rs",
+            include_str!("../template/src/routers/static_routers.hbs"),
+        ),
+        (
+            "src/services/mod.rs",
+            include_str!("../template/src/services/mod.hbs"),
+        ),
+        (
+            "src/services/user.rs",
+            include_str!("../template/src/services/user.hbs"),
+        ),
+        (
+            "src/utils/mod.rs",
+            include_str!("../template/src/utils/mod.hbs"),
+        ),
+        (
+            "src/utils/rand_utils.rs",
+            include_str!("../template/src/utils/rand_utils.hbs"),
+        ),
+        (
+            "src/dtos/mod.rs",
+            include_str!("../template/src/dtos/mod.hbs"),
+        ),
+        (
+            "src/dtos/user.rs",
+            include_str!("../template/src/dtos/user.hbs"),
+        ),
     ];
 
     for (file_name, template) in &templates {
         render_and_write_to_file(handlebars, template, &data, project_path.join(file_name))?;
     }
-
-    //src/middleware
-    let middleware_path = src_path.join("middleware");
-    std::fs::create_dir_all(&middleware_path)?;
-    let jwt_bytes = include_bytes!("../template/src/middleware/jwt.rs");
-    let mut jwt_file = File::create(middleware_path.join("jwt.rs"))?;
-    jwt_file.write_all(jwt_bytes)?;
-    //src/middleware/mod.rs
-    let mod_bytes = include_bytes!("../template/src/middleware/mod.rs");
-    let mut mod_file = File::create(middleware_path.join("mod.rs"))?;
-    mod_file.write_all(mod_bytes)?;
-    //src/middleware/handle404.rs
-    let handle404_template = include_str!("../template/src/middleware/handle_404.hbs");
-    let handle404_rendered = handlebars.render_template(handle404_template, &data)?;
-    let mut handle404_file = File::create(middleware_path.join("handle_404.rs"))?;
-    handle404_file.write_all(handle404_rendered.as_bytes())?;
-    //src/middleware/cors.rs
-    let cors_bytes = include_bytes!("../template/src/middleware/cors.rs");
-    let mut cors_file = File::create(middleware_path.join("cors.rs"))?;
-    cors_file.write_all(cors_bytes)?;
-
-    //config
-    let config_path = project_path.join("config");
-    std::fs::create_dir_all(&config_path)?;
-    //config/config.toml
-    let config_template = include_str!("../template/config/config.hbs");
-    let config_toml_rendered = handlebars.render_template(config_template, &data)?;
-    let mut config_file = File::create(config_path.join("config.toml"))?;
-    config_file.write_all(config_toml_rendered.as_bytes())?;
-    //config/certs
-    let cert_path = config_path.join("certs");
-    std::fs::create_dir_all(&cert_path)?;
-    //config/certs/cert.pem
-    let cert_template = include_str!("../template/config/certs/cert.pem");
-    let mut cert_file = File::create(cert_path.join("cert.pem"))?;
-    cert_file.write_all(cert_template.as_bytes())?;
-    //config/certs/key.pem
-    let key_path = cert_path.join("key.pem");
-    let key_template = include_str!("../template/config/certs/key.pem");
-    let mut key_file = File::create(key_path)?;
-    key_file.write_all(key_template.as_bytes())?;
-    //src/router
     let router_path = src_path.join("routers");
     std::fs::create_dir_all(&router_path)?;
-    //src/router/mod.rs
-    let router_mod_template = include_str!("../template/src/routers/mod.hbs");
-    let router_mod_rendered = handlebars.render_template(router_mod_template, &data)?;
-    let mut router_mod_file = File::create(router_path.join("mod.rs"))?;
-    router_mod_file.write_all(router_mod_rendered.as_bytes())?;
-    //src/router/demo.rs
-    let router_demo_template = include_str!("../template/src/routers/demo.hbs");
-    let router_demo_rendered = handlebars.render_template(router_demo_template, &data)?;
-    let mut router_demo_file = File::create(router_path.join("demo.rs"))?;
-    router_demo_file.write_all(router_demo_rendered.as_bytes())?;
-    //src/router/static_routers.rs
-    let router_static_template = include_str!("../template/src/routers/static_routers.hbs");
-    let router_static_rendered = handlebars.render_template(router_static_template, &data)?;
-    let mut router_static_file = File::create(router_path.join("static_routers.rs"))?;
-    router_static_file.write_all(router_static_rendered.as_bytes())?;
-
     Ok((src_path, router_path))
 }
 
