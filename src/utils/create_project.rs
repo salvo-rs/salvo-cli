@@ -272,8 +272,14 @@ pub fn write_project_file(
         router_user_file.write_all(router_user_rendered.as_bytes())?;
 
         //src/router/static_routers.rs
-        let router_static_routers_template = include_str!("../template/src/routers/static_routers.hbs");
-        render_and_write_to_file(&handlebars, router_static_routers_template, &data, router_path.join("static_routers.rs"))?;
+        let router_static_routers_template =
+            include_str!("../template/src/routers/static_routers.hbs");
+        render_and_write_to_file(
+            &handlebars,
+            router_static_routers_template,
+            &data,
+            router_path.join("static_routers.rs"),
+        )?;
         //src/services
         let services_path = src_path.join("services");
         std::fs::create_dir_all(&services_path)?;
@@ -592,13 +598,28 @@ fn create_basic_file(
     std::fs::create_dir_all(&src_path)?;
 
     let templates = [
-        ("/src/main.rs", include_str!("../template/src/main_template.hbs")),
-        ("/src/Cargo.toml", include_str!("../template/src/cargo_template.hbs")),
-        ("/src/config.rs", include_str!("../template/src/config_template.hbs")),
-        ("/src/app_error.rs", include_str!("../template/src/app_error.hbs")),
-        ("/src/app_response.rs", include_str!("../template/src/app_response.hbs")),
+        (
+            "/src/main.rs",
+            include_str!("../template/src/main_template.hbs"),
+        ),
+        (
+            "/src/Cargo.toml",
+            include_str!("../template/src/cargo_template.hbs"),
+        ),
+        (
+            "/src/config.rs",
+            include_str!("../template/src/config_template.hbs"),
+        ),
+        (
+            "/src/app_error.rs",
+            include_str!("../template/src/app_error.hbs"),
+        ),
+        (
+            "/src/app_response.rs",
+            include_str!("../template/src/app_response.hbs"),
+        ),
     ];
-    
+
     for (file_name, template) in &templates {
         render_and_write_to_file(&handlebars, template, &data, project_path.join(file_name))?;
     }
@@ -796,27 +817,26 @@ fn handle_dependencies(
 }
 
 fn render_and_write_to_file<T: AsRef<Path>>(
-    handlebars: &Handlebars, 
-    template: &str, 
-    data: &impl serde::Serialize, 
-    file_path: T
+    handlebars: &Handlebars,
+    template: &str,
+    data: &impl serde::Serialize,
+    file_path: T,
 ) -> Result<()> {
     // Render the template
     let rendered = handlebars.render_template(template, data)?;
-    
+
     // Get the parent directory of the file
     if let Some(parent) = file_path.as_ref().parent() {
         // Create the parent directory if it doesn't exist
         fs::create_dir_all(parent)?;
     }
-    
+
     // Create the file and write the rendered template to it
     let mut file = fs::File::create(file_path)?;
     file.write_all(rendered.as_bytes())?;
-    
+
     Ok(())
 }
-
 
 fn check_name(name: &str) -> Result<()> {
     restricted_names::validate_package_name(name, "package name")?;
