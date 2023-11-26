@@ -272,13 +272,8 @@ pub fn write_project_file(
         router_user_file.write_all(router_user_rendered.as_bytes())?;
 
         //src/router/static_routers.rs
-        let router_static_routers_template =
-            include_str!("../template/src/routers/static_routers.hbs");
-        let router_static_routers_rendered =
-            handlebars.render_template(router_static_routers_template, &data)?;
-        let mut router_static_routers_file = File::create(router_path.join("static_routers.rs"))?;
-        router_static_routers_file.write_all(router_static_routers_rendered.as_bytes())?;
-
+        let router_static_routers_template = include_str!("../template/src/routers/static_routers.hbs");
+        render_and_write_to_file(&handlebars, router_static_routers_template, &data, router_path.join("static_routers.rs"))?;
         //src/services
         let services_path = src_path.join("services");
         std::fs::create_dir_all(&services_path)?;
@@ -595,29 +590,18 @@ fn create_basic_file(
     std::fs::create_dir_all(project_path)?;
     let src_path = project_path.join("src");
     std::fs::create_dir_all(&src_path)?;
-    let main_file_path = src_path.join("main.rs");
-    let main_template = include_str!("../template/src/main_template.hbs");
-    let main_rendered = handlebars.render_template(main_template, data)?;
-    let mut main_file = File::create(main_file_path)?;
-    main_file.write_all(main_rendered.as_bytes())?;
-    let cargo_file_path = project_path.join("Cargo.toml");
-    let cargo_template = include_str!("../template/src/cargo_template.hbs");
-    let cargo_rendered = handlebars.render_template(cargo_template, data)?;
-    let mut cargo_file = File::create(cargo_file_path)?;
-    cargo_file.write_all(cargo_rendered.as_bytes())?;
-    let config_template = include_str!("../template/src/config_template.hbs");
-    let config_rendered = handlebars.render_template(config_template, data)?;
-    let mut config_file = File::create(src_path.join("config.rs"))?;
-    config_file.write_all(config_rendered.as_bytes())?;
-    let app_error_template = include_str!("../template/src/app_error.hbs");
-    let app_error_rendered = handlebars.render_template(app_error_template, data)?;
-    let mut app_error_file = File::create(src_path.join("app_error.rs"))?;
-    app_error_file.write_all(app_error_rendered.as_bytes())?;
-    //src/app_response.rs
-    let app_response_template = include_str!("../template/src/app_response.hbs");
-    let app_response_rendered = handlebars.render_template(app_response_template, &data)?;
-    let mut app_response_file = File::create(src_path.join("app_response.rs"))?;
-    app_response_file.write_all(app_response_rendered.as_bytes())?;
+
+    let templates = [
+        ("/src/main.rs", include_str!("../template/src/main_template.hbs")),
+        ("/src/Cargo.toml", include_str!("../template/src/cargo_template.hbs")),
+        ("/src/config.rs", include_str!("../template/src/config_template.hbs")),
+        ("/src/app_error.rs", include_str!("../template/src/app_error.hbs")),
+        ("/src/app_response.rs", include_str!("../template/src/app_response.hbs")),
+    ];
+    
+    for (file_name, template) in &templates {
+        render_and_write_to_file(&handlebars, template, &data, project_path.join(file_name))?;
+    }
 
     //src/middleware
     let middleware_path = src_path.join("middleware");
@@ -677,12 +661,6 @@ fn create_basic_file(
     let router_static_rendered = handlebars.render_template(router_static_template, &data)?;
     let mut router_static_file = File::create(router_path.join("static_routers.rs"))?;
     router_static_file.write_all(router_static_rendered.as_bytes())?;
-
-    //src/router/static_routers.rs
-    // let router_static_routers_template = include_str!("../template/src/routers/static_routers.hbs");
-    // let router_static_routers_rendered = handlebars.render_template(router_static_routers_template, &data)?;
-    // let mut router_static_routers_file = File::create(router_path.join("static_routers.rs"))?;
-    // router_static_routers_file.write_all(router_static_routers_rendered.as_bytes())?;
 
     Ok((src_path, router_path))
 }
@@ -816,6 +794,29 @@ fn handle_dependencies(
         });
     }
 }
+
+fn render_and_write_to_file<T: AsRef<Path>>(
+    handlebars: &Handlebars, 
+    template: &str, 
+    data: &impl serde::Serialize, 
+    file_path: T
+) -> Result<()> {
+    // Render the template
+    let rendered = handlebars.render_template(template, data)?;
+    
+    // Get the parent directory of the file
+    if let Some(parent) = file_path.as_ref().parent() {
+        // Create the parent directory if it doesn't exist
+        fs::create_dir_all(parent)?;
+    }
+    
+    // Create the file and write the rendered template to it
+    let mut file = fs::File::create(file_path)?;
+    file.write_all(rendered.as_bytes())?;
+    
+    Ok(())
+}
+
 
 fn check_name(name: &str) -> Result<()> {
     restricted_names::validate_package_name(name, "package name")?;
