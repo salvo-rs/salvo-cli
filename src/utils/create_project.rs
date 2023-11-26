@@ -182,6 +182,10 @@ pub fn write_project_file(
     );
     data["dependencies"] = dependencies;
     create_basic_file(project_path, &handlebars, &data)?;
+    copy_binary_file(
+        include_bytes!("../template/assets/favicon.ico"),
+        project_path.join("template/assets/favicon.ico"),
+    )?;
     let mut templates: Vec<(&str, &str)> = vec![];
     if is_web_site {
         //templates
@@ -276,6 +280,7 @@ pub fn write_project_file(
                         "src/entities/user.rs",
                         include_str!("../template/src/entities/user.hbs"),
                     ),
+                    (".env", include_str!("../template/.env.hbs")),
                 ]
                 .as_mut(),
             );
@@ -304,10 +309,6 @@ pub fn write_project_file(
                     include_bytes!("../template/migrations/20231001143156_users.sql"),
                     project_path.join("migrations/2021-10-20-000000_create_users_table/up.sql"),
                 )?;
-                copy_binary_file(
-                    include_bytes!("../template/.env.hbs"),
-                    project_path.join(".env"),
-                )?;
             }
             if is_sea_orm {
                 copy_binary_file(
@@ -327,13 +328,10 @@ pub fn write_project_file(
                     project_path.join("migration/README.md"),
                 )?;
                 db_templates.append(
-                    vec![
-                        (
-                            "migration/Cargo.toml",
-                            include_str!("../template/migration/Cargo.toml.hbs"),
-                        ),
-                        (".env", include_str!("../template/.env.hbs")),
-                    ]
+                    vec![(
+                        "migration/Cargo.toml",
+                        include_str!("../template/migration/Cargo.toml.hbs"),
+                    )]
                     .as_mut(),
                 );
                 if is_sqlite {
