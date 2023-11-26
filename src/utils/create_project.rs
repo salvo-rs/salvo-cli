@@ -599,23 +599,23 @@ fn create_basic_file(
 
     let templates = [
         (
-            "/src/main.rs",
+            "src/main.rs",
             include_str!("../template/src/main_template.hbs"),
         ),
         (
-            "/src/Cargo.toml",
+            "src/Cargo.toml",
             include_str!("../template/src/cargo_template.hbs"),
         ),
         (
-            "/src/config.rs",
+            "src/config.rs",
             include_str!("../template/src/config_template.hbs"),
         ),
         (
-            "/src/app_error.rs",
+            "src/app_error.rs",
             include_str!("../template/src/app_error.hbs"),
         ),
         (
-            "/src/app_response.rs",
+            "src/app_response.rs",
             include_str!("../template/src/app_response.hbs"),
         ),
     ];
@@ -827,7 +827,6 @@ fn render_and_write_to_file<T: AsRef<Path>>(
 
     // Get the parent directory of the file
     if let Some(parent) = file_path.as_ref().parent() {
-        // Create the parent directory if it doesn't exist
         fs::create_dir_all(parent)?;
     }
 
