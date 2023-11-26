@@ -194,7 +194,7 @@ pub fn write_project_file(
     if is_web_site {
         //templates
         let template_path = project_path.join("templates");
-        std::fs::create_dir_all(&template_path)?;
+        std::fs::create_dir_all(template_path)?;
         let mut web_comm_templates = vec![
             (
                 "templates/hello.html",
