@@ -288,7 +288,7 @@ pub fn write_project_file(
             if is_sqlx {
                 //data
                 let data_path = project_path.join("data");
-                std::fs::create_dir_all(&data_path)?;
+                std::fs::create_dir_all(data_path)?;
                 if is_sqlite {
                     copy_binary_file(include_bytes!("../template/data/demo.db"), "data/demo.db")?;
                 } else {
@@ -467,7 +467,7 @@ fn create_basic_file(
 ) -> Result<()> {
     std::fs::create_dir_all(project_path)?;
     let src_path = project_path.join("src");
-    std::fs::create_dir_all(&src_path)?;
+    std::fs::create_dir_all(src_path)?;
 
     let templates = [
         (
