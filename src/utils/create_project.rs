@@ -621,7 +621,7 @@ fn create_basic_file(
     ];
 
     for (file_name, template) in &templates {
-        render_and_write_to_file(&handlebars, template, &data, project_path.join(file_name))?;
+        render_and_write_to_file(handlebars, template, &data, project_path.join(file_name))?;
     }
 
     //src/middleware
