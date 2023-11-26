@@ -653,9 +653,7 @@ fn create_basic_file(
     for (file_name, template) in &templates {
         render_and_write_to_file(handlebars, template, &data, project_path.join(file_name))?;
     }
-    let router_path = src_path.join("routers");
-    std::fs::create_dir_all(&router_path)?;
-    Ok((src_path))
+    Ok(src_path)
 }
 
 fn handle_dependencies(
