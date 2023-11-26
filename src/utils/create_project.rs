@@ -184,7 +184,7 @@ pub fn write_project_file(
     create_basic_file(project_path, &handlebars, &data)?;
     copy_binary_file(
         include_bytes!("../template/assets/favicon.ico"),
-        project_path.join("template/assets/favicon.ico"),
+        project_path.join("assets/favicon.ico"),
     )?;
     let mut templates: Vec<(&str, &str)> = vec![];
     if is_web_site {
