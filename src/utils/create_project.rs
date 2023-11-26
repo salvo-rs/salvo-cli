@@ -1,5 +1,5 @@
 use anyhow::{Context, Result};
-use handlebars::{template, Handlebars};
+use handlebars::Handlebars;
 use rust_i18n::t;
 use serde_json::json;
 use std::{
