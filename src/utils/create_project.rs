@@ -7,7 +7,7 @@ use std::{
     ffi::{OsStr, OsString},
     fs::{self, File},
     io::Write,
-    path::{Path, PathBuf},
+    path::Path,
     slice,
 };
 
@@ -181,15 +181,7 @@ pub fn write_project_file(
         user_selected.db_conn_type,
     );
     data["dependencies"] = dependencies;
-
-    let src_path = create_basic_file(project_path, &handlebars, &data)?;
-    //assets
-    let assets_path = project_path.join("assets");
-    std::fs::create_dir_all(&assets_path)?;
-    //assets/favicon.ico
-    let favicon_bytes = include_bytes!("../template/assets/favicon.ico");
-    let mut favicon_file = File::create(assets_path.join("favicon.ico"))?;
-    favicon_file.write_all(favicon_bytes)?;
+    create_basic_file(project_path, &handlebars, &data)?;
     let mut templates: Vec<(&str, &str)> = vec![];
     if is_web_site {
         //templates
@@ -206,15 +198,7 @@ pub fn write_project_file(
             ),
         ];
         templates.append(&mut web_comm_templates);
-        //assets
-        let assets_path = project_path.join("assets");
-        std::fs::create_dir_all(&assets_path)?;
 
-        //assets/favicon.ico
-        let favicon_bytes = include_bytes!("../template/assets/favicon.ico");
-        let mut favicon_file = File::create(assets_path.join("favicon.ico"))?;
-
-        favicon_file.write_all(favicon_bytes)?;
         if need_db_conn {
             copy_binary_file(
                 include_bytes!("../template/assets/js/alpinejs.js"),
@@ -282,265 +266,191 @@ pub fn write_project_file(
             ),
         ];
         if is_sea_orm || is_sqlx {
-            //src/entities
-            let entities_path = src_path.join("entities");
-            std::fs::create_dir_all(&entities_path)?;
-            //src/entities/mod.rs
-            let entities_mod_template = include_str!("../template/src/entities/mod.hbs");
-            let entities_mod_rendered = handlebars.render_template(entities_mod_template, &data)?;
-            let mut entities_mod_file = File::create(entities_path.join("mod.rs"))?;
-            entities_mod_file.write_all(entities_mod_rendered.as_bytes())?;
-
-            //src/entities/user.rs
-            let entities_user_template = include_str!("../template/src/entities/user.hbs");
-            let entities_user_rendered =
-                handlebars.render_template(entities_user_template, &data)?;
-            let mut entities_user_file = File::create(entities_path.join("user.rs"))?;
-            entities_user_file.write_all(entities_user_rendered.as_bytes())?;
+            db_templates.append(
+                vec![
+                    (
+                        "src/entities/mod.rs",
+                        include_str!("../template/src/entities/mod.hbs"),
+                    ),
+                    (
+                        "src/entities/user.rs",
+                        include_str!("../template/src/entities/user.hbs"),
+                    ),
+                ]
+                .as_mut(),
+            );
             if is_sea_orm {
-                //src/entities/prelude.rs
-                let entities_prelude_template =
-                    include_str!("../template/src/entities/prelude.hbs");
-                let entities_prelude_rendered =
-                    handlebars.render_template(entities_prelude_template, &data)?;
-                let mut entities_prelude_file = File::create(entities_path.join("prelude.rs"))?;
-                entities_prelude_file.write_all(entities_prelude_rendered.as_bytes())?;
+                db_templates.push((
+                    "src/entities/prelude.rs",
+                    include_str!("../template/src/entities/prelude.hbs"),
+                ));
             }
             if is_sqlx {
                 //data
                 let data_path = project_path.join("data");
                 std::fs::create_dir_all(&data_path)?;
                 if is_sqlite {
-                    //data/demo.db
-                    let demo_db_bytes = include_bytes!("../template/data/demo.db");
-                    let mut demo_db_file = File::create(data_path.join("demo.db"))?;
-                    demo_db_file.write_all(demo_db_bytes)?;
+                    copy_binary_file(include_bytes!("../template/data/demo.db"), "data/demo.db")?;
                 } else {
-                    //data/init_sql.sql
-                    let init_sql_templte = include_str!("../template/data/init_sql_sql.hbs");
-                    let init_sql_rendered = handlebars.render_template(init_sql_templte, &data)?;
-                    let mut init_sql_file = File::create(data_path.join("init_sql.sql"))?;
-                    init_sql_file.write_all(init_sql_rendered.as_bytes())?;
+                    db_templates.push((
+                        "data/init_sql.sql",
+                        include_str!("../template/data/init_sql_sql.hbs"),
+                    ));
                 }
-                //migrations
-                let migrations_path: std::path::PathBuf = project_path.join("migrations");
-                std::fs::create_dir_all(&migrations_path)?;
-                //migrations/2021-10-20-000000_create_users_table/up.sql
-                let up_sql_bytes =
-                    include_bytes!("../template/migrations/20231001143156_users.sql");
-                let mut up_sql_file =
-                    File::create(migrations_path.join("20231001143156_users.sql"))?;
-                up_sql_file.write_all(up_sql_bytes)?;
-                //.env
-                let env_template = include_str!("../template/.env.hbs");
-                let env_rendered = handlebars.render_template(env_template, &data)?;
-                let mut env_file = File::create(project_path.join(".env"))?;
-                env_file.write_all(env_rendered.as_bytes())?;
+                copy_binary_file(
+                    include_bytes!("../template/migrations/20231001143156_users.sql"),
+                    "migrations/2021-10-20-000000_create_users_table/up.sql",
+                )?;
+                copy_binary_file(include_bytes!("../template/.env.hbs"), ".env")?;
             }
             if is_sea_orm {
-                //migration
-                let migration_path = project_path.join("migration");
-                std::fs::create_dir_all(&migration_path)?;
-                //migration/src
-                let migration_src_path = migration_path.join("src");
-                std::fs::create_dir_all(&migration_src_path)?;
-                //migration/src/main.rs
-                let migration_main_byetes = include_bytes!("../template/migration/src/main.rs");
-                let mut migration_main_file = File::create(migration_src_path.join("main.rs"))?;
-                migration_main_file.write_all(migration_main_byetes)?;
-                //migration/src/lib.rs
-                let migration_lib_byetes = include_bytes!("../template/migration/src/lib.rs");
-                let mut migration_lib_file = File::create(migration_src_path.join("lib.rs"))?;
-                migration_lib_file.write_all(migration_lib_byetes)?;
-                //migration/src/m20220101_000001_create_table.rs
-                let migration_create_table_byetes =
-                    include_bytes!("../template/migration/src/m20220101_000001_create_table.rs");
-                let mut migration_create_table_file =
-                    File::create(migration_src_path.join("m20220101_000001_create_table.rs"))?;
-                migration_create_table_file.write_all(migration_create_table_byetes)?;
-                //migration/Cargo.toml
-                let migration_cargo_template = include_str!("../template/migration/Cargo.toml.hbs");
-                let migration_cargo_rendered =
-                    handlebars.render_template(migration_cargo_template, &data)?;
-                let mut migration_cargo_file = File::create(migration_path.join("Cargo.toml"))?;
-                migration_cargo_file.write_all(migration_cargo_rendered.as_bytes())?;
-                //migration/README.md
-                let migration_readme_bytes = include_bytes!("../template/migration/README.md");
-                let mut migration_readme_file = File::create(migration_path.join("README.md"))?;
-                migration_readme_file.write_all(migration_readme_bytes)?;
-
+                copy_binary_file(
+                    include_bytes!("../template/migration/src/main.rs"),
+                    "migration/src/main.rs",
+                )?;
+                copy_binary_file(
+                    include_bytes!("../template/migration/src/lib.rs"),
+                    "migration/src/lib.rs",
+                )?;
+                copy_binary_file(
+                    include_bytes!("../template/migration/src/m20220101_000001_create_table.rs"),
+                    "migration/src/m20220101_000001_create_table.rs",
+                )?;
+                copy_binary_file(
+                    include_bytes!("../template/migration/README.md"),
+                    "migration/README.md",
+                )?;
+                db_templates.append(
+                    vec![
+                        (
+                            "migration/Cargo.toml",
+                            include_str!("../template/migration/Cargo.toml.hbs"),
+                        ),
+                        (".env", include_str!("../template/.env.hbs")),
+                    ]
+                    .as_mut(),
+                );
                 if is_sqlite {
-                    //data
-                    let data_path = project_path.join("data");
-                    std::fs::create_dir_all(&data_path)?;
-                    //data/demo.db
-                    let demo_db_bytes = include_bytes!("../template/data/demo_sea_orm.db");
-                    let mut demo_db_file = File::create(data_path.join("demo.db"))?;
-                    demo_db_file.write_all(demo_db_bytes)?;
+                    copy_binary_file(
+                        include_bytes!("../template/data/demo_sea_orm.db"),
+                        "data/demo.db",
+                    )?;
                 } else {
-                    let data_path = project_path.join("data");
-                    std::fs::create_dir_all(&data_path)?;
-                    //data/init_sql.sql
-                    let init_sql_templte = include_str!("../template/data/init_sql_sql.hbs");
-                    let init_sql_rendered = handlebars.render_template(init_sql_templte, &data)?;
-                    let mut init_sql_file = File::create(data_path.join("init_sql.sql"))?;
-                    init_sql_file.write_all(init_sql_rendered.as_bytes())?;
+                    db_templates.push((
+                        "data/init_sql.sql",
+                        include_str!("../template/data/init_sql_sql.hbs"),
+                    ));
                 }
-                //.env
-                let env_template = include_str!("../template/.env.hbs");
-                let env_rendered = handlebars.render_template(env_template, &data)?;
-                let mut env_file = File::create(project_path.join(".env"))?;
-                env_file.write_all(env_rendered.as_bytes())?;
             }
         }
         if is_diesel {
-            //src/schema.rs
-            let schema_template = include_str!("../template/src/schema.hbs");
-            let schema_rendered = handlebars.render_template(schema_template, &data)?;
-            let mut schema_file = File::create(src_path.join("schema.rs"))?;
-            schema_file.write_all(schema_rendered.as_bytes())?;
-            //src/models
-            let models_path = src_path.join("models");
-            std::fs::create_dir_all(&models_path)?;
-            //src/models/mod.rs
-            let models_mod_template = include_str!("../template/src/models/mod.hbs");
-            let models_mod_rendered = handlebars.render_template(models_mod_template, &data)?;
-            let mut models_mod_file = File::create(models_path.join("mod.rs"))?;
-            models_mod_file.write_all(models_mod_rendered.as_bytes())?;
-            //src/models/user.rs
-            let models_user_template = include_str!("../template/src/models/user.hbs");
-            let models_user_rendered = handlebars.render_template(models_user_template, &data)?;
-            let mut models_user_file = File::create(models_path.join("user.rs"))?;
-            models_user_file.write_all(models_user_rendered.as_bytes())?;
-            //migrations
-            let migrations_path: std::path::PathBuf = project_path.join("migrations");
-            std::fs::create_dir_all(&migrations_path)?;
-            //migrations/2023-10-21-084227_create_users_table
-            let migrations_create_users_table_path =
-                migrations_path.join("2023-10-21-084227_create_users_table");
-            std::fs::create_dir_all(&migrations_create_users_table_path)?;
-            //migrations/2023-10-21-084227_create_users_table/up.sql
-            let up_sql_bytes = include_bytes!(
-                "../template/diesel_migrations/2023-10-21-084227_create_users_table/up.sql"
-            );
-            let mut up_sql_file = File::create(migrations_create_users_table_path.join("up.sql"))?;
-            up_sql_file.write_all(up_sql_bytes)?;
-            //migrations/2023-10-21-084227_create_users_table/down.sql
-            let down_sql_bytes = include_bytes!(
-                "../template/diesel_migrations/2023-10-21-084227_create_users_table/down.sql"
-            );
-            let mut down_sql_file: File =
-                File::create(migrations_create_users_table_path.join("down.sql"))?;
-            down_sql_file.write_all(down_sql_bytes)?;
-            //migrations/.keep
-            let gitkeep_bytes: [u8; 0] = [];
-            let mut gitkeep_file = File::create(migrations_path.join(".keep"))?;
-            gitkeep_file.write_all(&gitkeep_bytes)?;
-            //migrations/README.md
-            let migration_readme_bytes = include_bytes!("../template/diesel_migrations/README.md");
-            let mut migration_readme_file = File::create(migrations_path.join("README.md"))?;
-            migration_readme_file.write_all(migration_readme_bytes)?;
-
-            //.env
-            let env_template = include_str!("../template/.env.hbs");
-            let env_rendered = handlebars.render_template(env_template, &data)?;
-            let mut env_file = File::create(project_path.join(".env"))?;
-            env_file.write_all(env_rendered.as_bytes())?;
-
-            //template//diesel.toml
-            let diesel_template = include_str!("../template/diesel.hbs");
-            let diesel_rendered = handlebars.render_template(diesel_template, &data)?;
-            let mut diesel_file = File::create(project_path.join("diesel.toml"))?;
-            diesel_file.write_all(diesel_rendered.as_bytes())?;
-
-            //data
-            let data_path = project_path.join("data");
-            std::fs::create_dir_all(&data_path)?;
-            //data/init_sql.sql
-            let init_sql_templte = include_str!("../template/data/init_sql_sql.hbs");
-            let init_sql_rendered = handlebars.render_template(init_sql_templte, &data)?;
-            let mut init_sql_file = File::create(data_path.join("init_sql.sql"))?;
-            init_sql_file.write_all(init_sql_rendered.as_bytes())?;
+            db_templates.append(vec![
+                (
+                    "src/schema.rs",
+                    include_str!("../template/src/schema.hbs"),
+                ),
+                (
+                    "src/models/mod.rs",
+                    include_str!("../template/src/models/mod.hbs"),
+                ),
+                (
+                    "src/models/user.rs",
+                    include_str!("../template/src/models/user.hbs"),
+                ),
+                (
+                    "migrations/2023-10-21-084227_create_users_table/up.sql",
+                    include_str!(
+                        "../template/diesel_migrations/2023-10-21-084227_create_users_table/up.sql"
+                    ),
+                ),
+                ("migrations/.keep","",),
+                (
+                    "migrations/2023-10-21-084227_create_users_table/down.sql",
+                    include_str!(
+                        "../template/diesel_migrations/2023-10-21-084227_create_users_table/down.sql"
+                    ),
+                ),
+                (
+                    "migrations/README.md",
+                    include_str!("../template/diesel_migrations/README.md"),
+                ),
+                (".env", include_str!("../template/.env.hbs")),
+                (
+                    "template//diesel.toml",
+                    include_str!("../template/diesel.hbs"),
+                ),
+                (
+                    "data/init_sql.sql",
+                    include_str!("../template/data/init_sql_sql.hbs"),
+                ),
+            ].as_mut());
             if is_sqlite {
-                //data/test.db
-                let demo_db_bytes = include_bytes!("../template/data/diesel_test.db");
-                let mut test_db_file = File::create(data_path.join("test.db"))?;
-                test_db_file.write_all(demo_db_bytes)?;
+                copy_binary_file(
+                    include_bytes!("../template/data/diesel_test.db"),
+                    "data/test.db",
+                )?;
             }
         }
         if is_rbatis {
-            //src/entities
-            let entities_path = src_path.join("entities");
-            std::fs::create_dir_all(&entities_path)?;
-            //src/entities/mod.rs
-            let entities_mod_template = include_str!("../template/src/entities/mod.hbs");
-            let entities_mod_rendered = handlebars.render_template(entities_mod_template, &data)?;
-            let mut entities_mod_file = File::create(entities_path.join("mod.rs"))?;
-            entities_mod_file.write_all(entities_mod_rendered.as_bytes())?;
+            db_templates.append(
+                vec![
+                    (
+                        "src/entities/mod.rs",
+                        include_str!("../template/src/entities/mod.hbs"),
+                    ),
+                    (
+                        "src/entities/user.rs",
+                        include_str!("../template/src/entities/user.hbs"),
+                    ),
+                ]
+                .as_mut(),
+            );
 
-            //src/entities/user.rs
-            let entities_user_template = include_str!("../template/src/entities/user.hbs");
-            let entities_user_rendered =
-                handlebars.render_template(entities_user_template, &data)?;
-            let mut entities_user_file = File::create(entities_path.join("user.rs"))?;
-            entities_user_file.write_all(entities_user_rendered.as_bytes())?;
-
-            //data
-            let data_path = project_path.join("data");
-            std::fs::create_dir_all(&data_path)?;
             match user_selected.db_type {
                 DbType::Sqlite => {
-                    //data/table_sqlite.sql
-                    let table_sqlite_template = include_bytes!("../template/data/table_sqlite.sql");
-                    let mut table_sqlite_file = File::create(data_path.join("table_sqlite.sql"))?;
-                    table_sqlite_file.write_all(table_sqlite_template)?;
+                    copy_binary_file(
+                        include_bytes!("../template/data/table_sqlite.sql"),
+                        "data/table_sqlite.sql",
+                    )?;
                 }
                 DbType::Mysql => {
-                    //data/table_mysql.sql
-                    let table_mysql_template = include_bytes!("../template/data/table_mysql.sql");
-                    let mut table_mysql_file = File::create(data_path.join("table_mysql.sql"))?;
-                    table_mysql_file.write_all(table_mysql_template)?;
+                    copy_binary_file(
+                        include_bytes!("../template/data/table_mysql.sql"),
+                        "data/table_mysql.sql",
+                    )?;
                 }
                 DbType::Postgres => {
-                    //data/table_postgres.sql
-                    let table_postgres_template =
-                        include_bytes!("../template/data/table_postgres.sql");
-                    let mut table_postgres_file =
-                        File::create(data_path.join("table_postgres.sql"))?;
-                    table_postgres_file.write_all(table_postgres_template)?;
+                    copy_binary_file(
+                        include_bytes!("../template/data/table_postgres.sql"),
+                        "data/table_postgres.sql",
+                    )?;
                 }
                 DbType::Mssql => {
-                    //data/table_mssql.sql
-                    let table_mssql_template = include_bytes!("../template/data/table_mssql.sql");
-                    let mut table_mssql_file = File::create(data_path.join("table_mssql.sql"))?;
-                    table_mssql_file.write_all(table_mssql_template)?;
+                    copy_binary_file(
+                        include_bytes!("../template/data/table_mssql.sql"),
+                        "data/table_mssql.sql",
+                    )?;
                 }
             }
         }
         if is_mongodb {
-            //src/entities
-            let entities_path = src_path.join("entities");
-            std::fs::create_dir_all(&entities_path)?;
-            //src/entities/mod.rs
-            let entities_mod_template = include_str!("../template/src/entities/mod.hbs");
-            let entities_mod_rendered = handlebars.render_template(entities_mod_template, &data)?;
-            let mut entities_mod_file = File::create(entities_path.join("mod.rs"))?;
-            entities_mod_file.write_all(entities_mod_rendered.as_bytes())?;
-
-            //src/entities/user.rs
-            let entities_user_template = include_str!("../template/src/entities/user.hbs");
-            let entities_user_rendered =
-                handlebars.render_template(entities_user_template, &data)?;
-            let mut entities_user_file = File::create(entities_path.join("user.rs"))?;
-            entities_user_file.write_all(entities_user_rendered.as_bytes())?;
-
-            //data
-            let data_path = project_path.join("data");
-            std::fs::create_dir_all(&data_path)?;
-            //data/users.json
-            let users_json_bytes = include_bytes!("../template/data/users.json");
-            let mut users_json_file = File::create(data_path.join("users.json"))?;
-            users_json_file.write_all(users_json_bytes)?;
+            db_templates.append(
+                vec![
+                    (
+                        "src/entities/mod.rs",
+                        include_str!("../template/src/entities/mod.hbs"),
+                    ),
+                    (
+                        "src/entities/user.rs",
+                        include_str!("../template/src/entities/user.hbs"),
+                    ),
+                ]
+                .as_mut(),
+            );
+            copy_binary_file(
+                include_bytes!("../template/data/users.json"),
+                "data/users.json",
+            )?;
         }
         templates.append(&mut db_templates);
     }
@@ -554,7 +464,7 @@ fn create_basic_file(
     project_path: &Path,
     handlebars: &Handlebars<'_>,
     data: &serde_json::Value,
-) -> Result<PathBuf> {
+) -> Result<()> {
     std::fs::create_dir_all(project_path)?;
     let src_path = project_path.join("src");
     std::fs::create_dir_all(&src_path)?;
@@ -653,7 +563,7 @@ fn create_basic_file(
     for (file_name, template) in &templates {
         render_and_write_to_file(handlebars, template, &data, project_path.join(file_name))?;
     }
-    Ok(src_path)
+    Ok(())
 }
 
 fn handle_dependencies(
