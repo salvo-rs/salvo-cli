@@ -202,15 +202,15 @@ pub fn write_project_file(
         if need_db_conn {
             copy_binary_file(
                 include_bytes!("../template/assets/js/alpinejs.js"),
-                "assets/js/alpinejs.js",
+                project_path.join("assets/js/alpinejs.js"),
             )?;
             copy_binary_file(
                 include_bytes!("../template/assets/js/sweetalert2.js"),
-                "assets/js/sweetalert2.js",
+                project_path.join("assets/js/sweetalert2.js"),
             )?;
             copy_binary_file(
                 include_bytes!("../template/assets/js/tailwindcss.js"),
-                "assets/js/tailwindcss.js",
+                project_path.join("assets/js/tailwindcss.js"),
             )?;
             let mut web_db_templates = vec![
                 (
@@ -290,7 +290,10 @@ pub fn write_project_file(
                 let data_path = project_path.join("data");
                 std::fs::create_dir_all(data_path)?;
                 if is_sqlite {
-                    copy_binary_file(include_bytes!("../template/data/demo.db"), "data/demo.db")?;
+                    copy_binary_file(
+                        include_bytes!("../template/data/demo.db"),
+                        project_path.join("data/demo.db"),
+                    )?;
                 } else {
                     db_templates.push((
                         "data/init_sql.sql",
@@ -299,26 +302,29 @@ pub fn write_project_file(
                 }
                 copy_binary_file(
                     include_bytes!("../template/migrations/20231001143156_users.sql"),
-                    "migrations/2021-10-20-000000_create_users_table/up.sql",
+                    project_path.join("migrations/2021-10-20-000000_create_users_table/up.sql"),
                 )?;
-                copy_binary_file(include_bytes!("../template/.env.hbs"), ".env")?;
+                copy_binary_file(
+                    include_bytes!("../template/.env.hbs"),
+                    project_path.join(".env"),
+                )?;
             }
             if is_sea_orm {
                 copy_binary_file(
                     include_bytes!("../template/migration/src/main.rs"),
-                    "migration/src/main.rs",
+                    project_path.join("migration/src/main.rs"),
                 )?;
                 copy_binary_file(
                     include_bytes!("../template/migration/src/lib.rs"),
-                    "migration/src/lib.rs",
+                    project_path.join("migration/src/lib.rs"),
                 )?;
                 copy_binary_file(
                     include_bytes!("../template/migration/src/m20220101_000001_create_table.rs"),
-                    "migration/src/m20220101_000001_create_table.rs",
+                    project_path.join("migration/src/m20220101_000001_create_table.rs"),
                 )?;
                 copy_binary_file(
                     include_bytes!("../template/migration/README.md"),
-                    "migration/README.md",
+                    project_path.join("migration/README.md"),
                 )?;
                 db_templates.append(
                     vec![
@@ -333,7 +339,7 @@ pub fn write_project_file(
                 if is_sqlite {
                     copy_binary_file(
                         include_bytes!("../template/data/demo_sea_orm.db"),
-                        "data/demo.db",
+                        project_path.join("data/demo.db"),
                     )?;
                 } else {
                     db_templates.push((
@@ -387,7 +393,7 @@ pub fn write_project_file(
             if is_sqlite {
                 copy_binary_file(
                     include_bytes!("../template/data/diesel_test.db"),
-                    "data/test.db",
+                    project_path.join("data/test.db"),
                 )?;
             }
         }
@@ -410,25 +416,25 @@ pub fn write_project_file(
                 DbType::Sqlite => {
                     copy_binary_file(
                         include_bytes!("../template/data/table_sqlite.sql"),
-                        "data/table_sqlite.sql",
+                        project_path.join("data/table_sqlite.sql"),
                     )?;
                 }
                 DbType::Mysql => {
                     copy_binary_file(
                         include_bytes!("../template/data/table_mysql.sql"),
-                        "data/table_mysql.sql",
+                        project_path.join("data/table_mysql.sql"),
                     )?;
                 }
                 DbType::Postgres => {
                     copy_binary_file(
                         include_bytes!("../template/data/table_postgres.sql"),
-                        "data/table_postgres.sql",
+                        project_path.join("data/table_postgres.sql"),
                     )?;
                 }
                 DbType::Mssql => {
                     copy_binary_file(
                         include_bytes!("../template/data/table_mssql.sql"),
-                        "data/table_mssql.sql",
+                        project_path.join("data/table_mssql.sql"),
                     )?;
                 }
             }
@@ -449,7 +455,7 @@ pub fn write_project_file(
             );
             copy_binary_file(
                 include_bytes!("../template/data/users.json"),
-                "data/users.json",
+                project_path.join("data/users.json"),
             )?;
         }
         templates.append(&mut db_templates);
