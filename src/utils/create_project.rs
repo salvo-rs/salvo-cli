@@ -216,19 +216,19 @@ pub fn write_project_file(
 
         favicon_file.write_all(favicon_bytes)?;
         if need_db_conn {
+            copy_binary_file(
+                include_bytes!("../template/assets/js/alpinejs.js"),
+                "assets/js/alpinejs.js",
+            )?;
+            copy_binary_file(
+                include_bytes!("../template/assets/js/sweetalert2.js"),
+                "assets/js/sweetalert2.js",
+            )?;
+            copy_binary_file(
+                include_bytes!("../template/assets/js/tailwindcss.js"),
+                "assets/js/tailwindcss.js",
+            )?;
             let mut web_db_templates = vec![
-                (
-                    "assets/js/alpinejs.js",
-                    include_str!("../template/assets/js/alpinejs.js"),
-                ),
-                (
-                    "assets/js/sweetalert2.js",
-                    include_str!("../template/assets/js/sweetalert2.js"),
-                ),
-                (
-                    "assets/js/tailwindcss.js",
-                    include_str!("../template/assets/js/tailwindcss.js"),
-                ),
                 (
                     "templates/login.html",
                     include_str!("../template/templates/login.hbs"),
@@ -545,6 +545,7 @@ pub fn write_project_file(
         }
     }
     for (file_name, template) in &templates {
+        dbg!(&project_path.join(file_name));
         render_and_write_to_file(&handlebars, template, &data, project_path.join(file_name))?;
     }
     Ok(())
@@ -805,6 +806,17 @@ fn render_and_write_to_file<T: AsRef<Path>>(
     file.write_all(rendered.as_bytes())?;
 
     Ok(())
+}
+
+fn copy_binary_file<T: AsRef<Path>>(file_bytes: &[u8], target_path: T) -> std::io::Result<()> {
+    // Ensure the target directory exists
+    if let Some(parent) = target_path.as_ref().parent() {
+        fs::create_dir_all(parent)?;
+    }
+
+    // Create the target file and write the source file bytes into it
+    let mut target_file = File::create(target_path)?;
+    target_file.write_all(file_bytes)
 }
 
 fn check_name(name: &str) -> Result<()> {
