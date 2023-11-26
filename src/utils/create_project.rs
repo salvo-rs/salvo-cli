@@ -249,11 +249,11 @@ pub fn write_project_file(
         let mut db_templates = vec![
             ("src/db.rs", include_str!("../template/src/db.hbs")),
             (
-                "src/router/user.rs",
+                "src/routers/user.rs",
                 include_str!("../template/src/routers/user.hbs"),
             ),
             (
-                "src/router/static_routers.rs",
+                "src/routers/static_routers.rs",
                 include_str!("../template/src/routers/static_routers.hbs"),
             ),
             (
@@ -541,11 +541,10 @@ pub fn write_project_file(
             let users_json_bytes = include_bytes!("../template/data/users.json");
             let mut users_json_file = File::create(data_path.join("users.json"))?;
             users_json_file.write_all(users_json_bytes)?;
-            templates.append(&mut db_templates);
         }
+        templates.append(&mut db_templates);
     }
     for (file_name, template) in &templates {
-        dbg!(&project_path.join(file_name));
         render_and_write_to_file(&handlebars, template, &data, project_path.join(file_name))?;
     }
     Ok(())
