@@ -190,7 +190,7 @@ pub fn write_project_file(
     if is_web_site {
         //templates
         let template_path = project_path.join("templates");
-        std::fs::create_dir_all(template_path)?;
+        create_dir_all(template_path)?;
         let mut web_comm_templates = vec![
             (
                 "templates/hello.html",
@@ -293,7 +293,7 @@ pub fn write_project_file(
             if is_sqlx {
                 //data
                 let data_path = project_path.join("data");
-                std::fs::create_dir_all(data_path)?;
+                create_dir_all(data_path)?;
                 if is_sqlite {
                     copy_binary_file(
                         include_bytes!("../template/data/demo.db"),
@@ -469,9 +469,9 @@ fn create_basic_file(
     handlebars: &Handlebars<'_>,
     data: &serde_json::Value,
 ) -> Result<()> {
-    std::fs::create_dir_all(project_path)?;
+    create_dir_all(project_path)?;
     let src_path = project_path.join("src");
-    std::fs::create_dir_all(src_path)?;
+    create_dir_all(src_path)?;
 
     let templates = [
         (
@@ -798,7 +798,7 @@ fn write_ignore_file(project_path: &Path) -> Result<()> {
     Ok(())
 }
 
-/// Equivalent to [`std::fs::create_dir_all`] with better error messages.
+/// Equivalent to [`create_dir_all`] with better error messages.
 pub fn create_dir_all(p: impl AsRef<Path>) -> Result<()> {
     _create_dir_all(p.as_ref())
 }
