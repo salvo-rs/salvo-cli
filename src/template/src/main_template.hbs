@@ -60,18 +60,18 @@ async fn main() {
     let router = router();
     let service: Service = router.into();
     let service = service.catcher(Catcher::default().hoop(handle_404));
-    println!("💨 {} is staring ", &CFG.server.name);
-    println!(" listen on {}", &CFG.server.address);
+    println!("🌪️ {} {{is_starting}} ", &CFG.server.name);
+    println!("🔄 {{listen_on}} {}", &CFG.server.address);
 
     match CFG.server.ssl {
         true => {
             println!(
-                "swagger-ui: https://{}/swagger-ui",
+                "📖 {{swagger_api_page}}: https://{}/swagger-ui",
                 &CFG.server.address.replace("0.0.0.0", "127.0.0.1")
             );
             {{#if is_web_site}}
             {{#if need_db_conn}}
-            println!("login page: https://{}/login", &CFG.server.address.replace("0.0.0.0", "127.0.0.1"));
+            println!("🔑 {{login_page}}: https://{}/login", &CFG.server.address.replace("0.0.0.0", "127.0.0.1"));
             {{/if}}
             {{/if}}
             let config = RustlsConfig::new(
@@ -94,12 +94,12 @@ async fn main() {
         }
         false => {
             println!(
-                "swagger-ui: http://{}/swagger-ui",
+                "📖 {{swagger_api_page}}: http://{}/swagger-ui",
                 &CFG.server.address.replace("0.0.0.0", "127.0.0.1")
             );
             {{#if is_web_site}}
             {{#if need_db_conn}}
-            println!("login page: http://{}/login", &CFG.server.address.replace("0.0.0.0", "127.0.0.1"));
+            println!("🔑 {{login_page}}: http://{}/login", &CFG.server.address.replace("0.0.0.0", "127.0.0.1"));
             {{/if}}
             {{/if}}
             let acceptor = TcpListener::new(&CFG.server.address).bind().await;

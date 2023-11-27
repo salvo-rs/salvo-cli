@@ -2,15 +2,15 @@
   <div class="px-4 sm:px-6 lg:px-8">
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
-        <h1 class="text-base font-semibold leading-6 text-gray-900">Users</h1>
-        <p class="mt-2 text-sm text-gray-700">A list of all the users</p>
+        <h1 class="text-base font-semibold leading-6 text-gray-900">{{user}}</h1>
+        <p class="mt-2 text-sm text-gray-700">{{user_list}}</p>
       </div>
       <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
         <button
           @click="addUser()"
           class="block rounded-md bg-sky-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
         >
-          Add user
+          {{add_user}}
         </button>
       </div>
     </div>
@@ -24,13 +24,13 @@
                   scope="col"
                   class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
                 >
-                  Name
+                  {{username}}
                 </th>
                 <th
                   scope="col"
                   class="relative py-3.5 pl-3 pr-4 text-right sm:pr-0"
                 >
-                  Delete
+                  {{delete}}
                 </th>
               </tr>
             </thead>
@@ -48,7 +48,7 @@
                       href="#"
                       class="text-sky-600 hover:text-sky-900"
                       @click.prevent="deleteUser(user.id)"
-                      >delete<span class="sr-only">delete</span></a
+                      >{{delete}}<span class="sr-only">{{delete}}</span></a
                     >
                   </td>
                 </tr>

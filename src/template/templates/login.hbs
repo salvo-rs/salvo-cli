@@ -17,32 +17,32 @@
               <h2
                 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900"
               >
-                login
+                {{login}}
               </h2>
             </div>
             <form class="mt-8 space-y-6" @submit.prevent="submit">
               <input type="hidden" name="remember" value="true" />
               <div class="-space-y-px rounded-md shadow-sm">
                 <div>
-                  <label for="username" class="sr-only">账号</label>
+                  <label for="username" class="sr-only">{{username}}</label>
                   <input
                     x-model="username"
                     type="text"
                     autocomplete="username"
                     required
                     class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
-                    placeholder="username"
+                    placeholder="{{username}}"
                   />
                 </div>
                 <div>
-                  <label for="password" class="sr-only">密码</label>
+                  <label for="password" class="sr-only">{{password}}</label>
                   <input
                     x-model="password"
                     type="password"
                     autocomplete="current-password"
                     required
                     class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
-                    placeholder="Password"
+                    placeholder="{{password}}"
                   />
                 </div>
               </div>
@@ -68,7 +68,7 @@
                       />
                     </svg>
                   </span>
-                  Sign in
+                    {{login}}
                 </button>
               </div>
             </form>

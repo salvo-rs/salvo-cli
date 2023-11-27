@@ -35,8 +35,12 @@ pub fn create_project(project: Project) -> Result<()> {
         Some(config) => {
             write_project_file(project_path, config, project.clone())?;
 
-            init_git(project_path)?;
-
+            match init_git(project_path) {
+                Ok(_) => {}
+                Err(e) => {
+                    warning(t!("warning_init_git", error = e).replace(r"\n", "\n"));
+                }
+            }
             after_print_info(project_name, config);
         }
         None => anyhow::bail!("cli quit!"),
@@ -159,6 +163,8 @@ pub fn write_project_file(
         "password":t!("password"),
         "incorrect_password":t!("incorrect_password"),
         "login":t!("login"),
+        "user":t!("user"),
+        "add_user":t!("add_user"),
         "user_list":t!("user_list"),
         "are_you_sure_you_want_to_delete":t!("are_you_sure_you_want_to_delete"),
         "page_not_found":t!("page_not_found"),
@@ -167,12 +173,16 @@ pub fn write_project_file(
         "delete":t!("delete"),
         "yes":t!("yes"),
         "cancel":t!("cancel"),
+        "swagger_api_page":t!("swagger_api_page"),
+        "login_page":t!("login_page"),
         "operation":t!("operation"),
         "create_success_sea_orm__mysql_or_pgsql_install_sea_orm":t!("create_success_sea_orm__mysql_or_pgsql_install_sea_orm"),
         "create_success_mysql_or_pgsql_fist_use":t!("create_success_mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
         "create_success_sea_orm__mysql_or_pgsql_fist_use":t!("create_success_sea_orm__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
         "create_success_diesel__mysql_or_pgsql_fist_use":t!("create_success_diesel__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
     });
+    data["is_starting"] = handlebars::JsonValue::String(t!("is_starting"));
+    data["listen_on"] = handlebars::JsonValue::String(t!("listen_on"));
     let mut dependencies = data["dependencies"].clone();
     handle_dependencies(
         &mut dependencies,
@@ -191,18 +201,15 @@ pub fn write_project_file(
         //templates
         let template_path = project_path.join("templates");
         create_dir_all(template_path)?;
-        let mut web_comm_templates = vec![
-            (
-                "templates/hello.html",
-                include_str!("../template/src/cargo_template.hbs"),
-            ),
-            (
-                "templates/handle_404.html",
-                include_str!("../template/templates/404.hbs"),
-            ),
-        ];
+        copy_binary_file(
+            include_bytes!("../template/templates/hello.hbs"),
+            project_path.join("templates/hello.html"),
+        )?;
+        let mut web_comm_templates = vec![(
+            "templates/handle_404.html",
+            include_str!("../template/templates/404.hbs"),
+        )];
         templates.append(&mut web_comm_templates);
-
         if need_db_conn {
             copy_binary_file(
                 include_bytes!("../template/assets/js/alpinejs.js"),

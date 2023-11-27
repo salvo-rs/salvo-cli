@@ -1,82 +1,4 @@
 _version: 2
-hello:
-  en: Hello world
-  zh_CN: 你好世界
-messages.hello:
-  en: Hello, %{name}
-  zh_CN: 你好，%{name}
-welcome_message:
-  en: Welcome to use salvo cli, please choose a template type\n   space bar to confirm
-  zh_CN: 欢迎使用 salvo cli，请选择一个模板类型\n   空格键确认
-  zh_TW: 歡迎使用 salvo cli，請選擇一個模板類型\n   空格鍵確認
-  fr: Bienvenue à utiliser salvo cli, veuillez choisir un type de modèle\n   barre d'espace pour confirmer
-  ja: salvo cliを使用していただきありがとうございます。テンプレートタイプを選択してください\n   スペースバーを押して確認してください
-  es: Bienvenido a usar salvo cli, por favor elija un tipo de plantilla\n   barra espaciadora para confirmar
-  de: Willkommen bei der Verwendung von salvo cli, bitte wählen Sie einen Vorlagentyp\n   Leertaste zur Bestätigung
-  ru: Добро пожаловать в salvo cli, пожалуйста, выберите тип шаблона\n   пробел для подтверждения
-  it: Benvenuti a usare salvo cli, per favore scegli un tipo di modello\n   spazio per confermare
-  pt: Bem-vindo a usar salvo cli, por favor escolha um tipo de modelo\n   barra de espaço para confirmar
-  ko: salvo cli를 사용하신 것을 환영합니다. 템플릿 유형을 선택하십시오\n   스페이스 바를 눌러 확인하십시오
-  no: Velkommen til å bruke salvo cli, vennligst velg en maltype\n   mellomrom for å bekrefte
-  is: Velkomin til að nota salvo cli, vinsamlegast veldu tegund sniðmáls\n   bil til að staðfesta
-  uk: Ласкаво просимо до використання salvo cli, будь ласка, виберіть тип шаблону\n   пробіл для підтвердження
-  th: ยินดีต้อนรับสู่การใช้ salvo cli โปรดเลือกประเภทเทมเพลต\n   ช่องว่างเพื่อยืนยัน
-  el: Καλώς ήλθατε στη χρήση του salvo cli, παρακαλώ επιλέξτε έναν τύπο προτύπου\n   διάστημα για επιβεβαίωση
-  da: Velkommen til at bruge salvo cli, vælg venligst en skabelon type\n   mellemrum for at bekræfte
-salvo_web_api:
-  en: salvo_web_api (Default web api template)
-  zh_CN: salvo_web_api (默认 web api 模板)
-  zh_TW: salvo_web_api (默認 web api 模板)
-  fr: salvo_web_api (Modèle web api par défaut)
-  ja: salvo_web_api (デフォルトのWeb APIテンプレート)
-  es: salvo_web_api (Plantilla web api predeterminada)
-  de: salvo_web_api (Standard-Web-API-Vorlage)
-  ru: salvo_web_api (Шаблон веб-интерфейса по умолчанию)
-  it: salvo_web_api (Modello web api predefinito)
-  pt: salvo_web_api (Modelo web api padrão)
-  ko: salvo_web_api (기본 웹 API 템플릿)
-  no: salvo_web_api (Standard web api mal)
-  is: salvo_web_api (Sjálfgefið vef api sniðmát)
-  uk: salvo_web_api (Шаблон веб-інтерфейсу за замовчуванням)
-  th: salvo_web_api (เทมเพลตเว็บ api ตั้งต้น)
-  el: salvo_web_api (Προεπιλεγμένο πρότυπο διαδικτύου api)
-  da: salvo_web_api (Standard web api skabelon)
-salvo_web_site:
-  en: salvo_web_site (Default web site template)
-  zh_CN: salvo_web_site (默认 web site 模板)
-  zh_TW: salvo_web_site (默認 web site 模板)
-  fr: salvo_web_site (Modèle de site Web par défaut)
-  ja: salvo_web_site (デフォルトのWebサイトテンプレート)
-  es: salvo_web_site (Plantilla de sitio web predeterminada)
-  de: salvo_web_site (Standard-Website-Vorlage)
-  ru: salvo_web_site (Шаблон веб-сайта по умолчанию)
-  it: salvo_web_site (Modello di sito web predefinito)
-  pt: salvo_web_site (Modelo de site padrão)
-  ko: salvo_web_site (기본 웹 사이트 템플릿)
-  no: salvo_web_site (Standard web site mal)
-  is: salvo_web_site (Sjálfgefið vefsvæði sniðmát)
-  uk: salvo_web_site (Шаблон веб-сайту за замовчуванням)
-  th: salvo_web_site (เทมเพลตเว็บไซต์ตั้งต้น)
-  el: salvo_web_site (Προεπιλεγμένο πρότυπο ιστότοπου)
-  da: salvo_web_site (Standard websted skabelon)
-create_success:
-  en: 🎉 Project successfully created!\n🚀 You can now navigate into your project directory and start running and testing your project\n1️⃣  use the command `cd %{project_name}`\n✨ To run your project, use the command `cargo run`.\n🎊 To test your project, use the command `cargo test`.
-  zh_CN: 🎉 项目创建成功！\n🚀 您现在可以移动到项目目录并开始运行和测试项目\n1️⃣  使用命令 `cd %{project_name}`\n✨ 运行项目，请使用命令 `cargo run`。\n🎊 测试项目，请使用命令 `cargo test`。
-  zh_TW: 🎉 專案建立成功！\n🚀 您現在可以移動到專案目錄並開始執行和測試專案\n1️⃣  使用命令 `cd %{project_name}`\n✨ 執行專案，請使用命令 `cargo run`。\n🎊 測試專案，請使用命令 `cargo test`。
-  fr: 🎉 Projet créé avec succès!\n🚀 Vous pouvez maintenant naviguer dans votre répertoire de projet et commencer à exécuter et tester votre projet\n1️⃣  utilisez la commande `cd %{project_name}`\n✨ Pour exécuter votre projet, utilisez la commande `cargo run`.\n🎊 Pour tester votre projet, utilisez la commande `cargo test`.
-  ja: 🎉 プロジェクトが正常に作成されました！\n🚀 プロジェクトディレクトリに移動してプロジェクトを実行およびテストを開始できます\n1️⃣  コマンド `cd %{project_name}` を使用します\n✨ プロジェクトを実行するには、コマンド `cargo run` を使用します。\n🎊 プロジェクトをテストするには、コマンド `cargo test` を使用します。
-  es: 🎉 ¡Proyecto creado con éxito!\n🚀 Ahora puede navegar al directorio de su proyecto y comenzar a ejecutar y probar su proyecto\n1️⃣  use el comando `cd %{project_name}`\n✨ Para ejecutar su proyecto, use el comando `cargo run`.\n🎊 Para probar su proyecto, use el comando `cargo test`.
-  de: 🎉 Projekt erfolgreich erstellt!\n🚀 Sie können nun in Ihr Projektverzeichnis wechseln und Ihr Projekt ausführen und testen\n1️⃣  verwenden Sie den Befehl `cd %{project_name}`\n✨ Um Ihr Projekt auszuführen, verwenden Sie den Befehl `cargo run`.\n🎊 Um Ihr Projekt zu testen, verwenden Sie den Befehl `cargo test`.
-  ru: 🎉 Проект успешно создан!\n🚀 Теперь вы можете перейти в каталог своего проекта и начать запускать и тестировать свой проект\n1️⃣  используйте команду `cd %{project_name}`\n✨ Чтобы запустить свой проект, используйте команду `cargo run`.\n🎊 Чтобы протестировать свой проект, используйте команду `cargo test`.
-  it: 🎉 Progetto creato con successo!\n🚀 Ora puoi navigare nella directory del tuo progetto e iniziare a eseguire e testare il tuo progetto\n1️⃣  usa il comando `cd %{project_name}`\n✨ Per eseguire il tuo progetto, usa il comando `cargo run`.\n🎊 Per testare il tuo progetto, usa il comando `cargo test`.
-  pt: 🎉 Projeto criado com sucesso!\n🚀 Agora você pode navegar no diretório do seu projeto e começar a executar e testar seu projeto\n1️⃣  use o comando `cd %{project_name}`\n✨ Para executar seu projeto, use o comando `cargo run`.\n🎊 Para testar seu projeto, use o comando `cargo test`.
-  ko: 🎉 프로젝트가 성공적으로 생성되었습니다!\n🚀 이제 프로젝트 디렉토리로 이동하여 프로젝트를 실행하고 테스트를 시작할 수 있습니다.\n1️⃣  명령 `cd %{project_name}`을 사용하십시오.\n✨ 프로젝트를 실행하려면 명령 `cargo run`을 사용하십시오.\n🎊 프로젝트를 테스트하려면 명령 `cargo test`을 사용하십시오.
-  no: 🎉 Prosjekt opprettet!\n🚀 Du kan nå navigere til prosjektmappen og begynne å kjøre og teste prosjektet ditt\n1️⃣  bruk kommandoen `cd %{project_name}`\n✨ For å kjøre prosjektet ditt, bruk kommandoen `cargo run`.\n🎊 For å teste prosjektet ditt, bruk kommandoen `cargo test`.
-  is: 🎉 Verkefnið var búið til!\n🚀 Þú getur nú farið inn í verkefnis möppuna þína og byrjað að keyra og prófa verkefnið þitt\n1️⃣  notaðu skipunina `cd %{project_name}`\n✨ Til að keyra verkefnið þitt, notaðu skipunina `cargo run`.\n🎊 Til að prófa verkefnið þitt, notaðu skipunina `cargo test`.
-  uk: 🎉 Проект успішно створено!\n🚀 Тепер ви можете перейти до каталогу свого проекту та почати запускати та тестувати свій проект\n1️⃣  використовуйте команду `cd %{project_name}`\n✨ Щоб запустити свій проект, використовуйте команду `cargo run`.\n🎊 Щоб протестувати свій проект, використовуйте команду `cargo test`.
-  th: 🎉 สร้างโปรเจคสำเร็จแล้ว!\n🚀 ตอนนี้คุณสามารถนำทางไปยังไดเรกทอรีโปรเจกต์ของคุณและเริ่มการทดสอบโปรเจกต์ของคุณ\n1️⃣  ใช้คำสั่ง `cd %{project_name}`\n✨ เพื่อเรียกใช้โปรเจกต์ของคุณใช้คำสั่ง `cargo run`.\n🎊 เพื่อทดสอบโปรเจกต์ของคุณใช้คำสั่ง `cargo test`.
-  el: 🎉 Το έργο δημιουργήθηκε με επιτυχία!\n🚀 Τώρα μπορείτε να πλοηγηθείτε στον κατάλογο του έργου σας και να ξεκινήσετε την εκτέλεση και τη δοκιμή του έργου σας\n1️⃣  χρησιμοποιήστε την εντολή `cd %{project_name}`\n✨ Για να εκτελέσετε το έργο σας, χρησιμοποιήστε την εντολή `cargo run`.\n🎊 Για να δοκιμάσετε το έργο σας, χρησιμοποιήστε την εντολή `cargo test`.
-  da: 🎉 Projektet blev oprettet!\n🚀 Du kan nu navigere til din projektmappe og begynde at køre og teste dit projekt\n1️⃣  brug kommandoen `cd %{project_name}`\n✨ For at køre dit projekt skal du bruge kommandoen `cargo run`.\n🎊 For at teste dit projekt skal du bruge kommandoen `cargo test`.
 error_is_keyword:
   en: "the name `%{name}` cannot be used as a project name, it is a Rust keyword"
   zh_CN: "名称 `%{name}` 不能作为项目名称，它是 Rust 关键字"
@@ -257,165 +179,21 @@ error_project_path_exist:
   th: ปลายทาง `%{path}` มีอยู่แล้ว
   el: ο προορισμός `%{path}` υπάρχει ήδη
   da: destination `%{path}` findes allerede
-select_db_conn_type:
-  en: select database connection type
-  zh_CN: 选择数据库连接类型
-  zh_TW: 選擇資料庫連接類型
-  fr: sélectionnez le type de connexion à la base de données
-  ja: データベース接続タイプを選択
-  es: seleccione el tipo de conexión a la base de datos
-  de: wählen Sie den Datenbankverbindungstyp aus
-  ru: выберите тип подключения к базе данных
-  it: seleziona il tipo di connessione al database
-  pt: selecione o tipo de conexão ao banco de dados
-  ko: 데이터베이스 연결 유형을 선택하십시오
-  no: velg databaseforbindelsestype
-  is: veldu gagnagrunns tengingar tegund
-  uk: виберіть тип підключення до бази даних
-  th: เลือกประเภทการเชื่อมต่อฐานข้อมูล
-  el: επιλέξτε τύπο σύνδεσης βάσης δεδομένων
-  da: vælg databaseforbindelsestype
-db_conn_types_sqlx:
-  en: SQLx is an async, pure Rust† SQL crate featuring compile-time checked queries without a DSL. 10K⭐
-  zh_CN: SQLx 是一个异步、纯 Rust† 的 SQL 库，具有无 DSL 的编译时检查查询。10K⭐
-  zh_TW: SQLx 是一個非同步、純 Rust† 的 SQL 函式庫，具有無 DSL 的編譯時檢查查詢。10K⭐
-  fr: SQLx est une caisse SQL asynchrone et pure Rust† avec des requêtes vérifiées au moment de la compilation sans DSL. 10K⭐
-  ja: SQLx は、DSL なしでコンパイル時にクエリをチェックする、非同期で純粋な Rust† SQL クレートです。10K⭐
-  es: SQLx es una caja SQL asíncrona y pura Rust† con consultas verificadas en tiempo de compilación sin DSL. 10K⭐
-  de: SQLx ist eine asynchrone, reine Rust† SQL-Kiste mit kompilierten Abfragen ohne DSL. 10K⭐
-  ru: SQLx - это асинхронный, чистый Rust† SQL ящик с проверкой запросов во время компиляции без DSL. 10K⭐
-  it: SQLx è una cassa SQL asincrona e pura Rust† con query verificate in fase di compilazione senza DSL. 10K⭐
-  pt: SQLx é uma caixa SQL assíncrona e pura Rust† com consultas verificadas no momento da compilação sem DSL. 10K⭐
-  ko: SQLx는 DSL 없이 컴파일 시간에 쿼리를 확인하는 비동기, 순수 Rust† SQL 크레이트입니다. 10K⭐
-  no: SQLx er en asynkron, ren Rust† SQL-kasse med kompilerte spørringer uten DSL. 10K⭐
-  is: SQLx er asynkron, hrein Rust† SQL kassa með samþjöppuð fyrirspurnir án DSL. 10K⭐
-  uk: SQLx - це асинхронний, чистий Rust† SQL ящик з перевіреними на етапі компіляції запитами без DSL. 10K⭐
-  th: SQLx เป็น SQL crate แบบ async, pure Rust† ที่มีการตรวจสอบคิวรีในเวลาคอมไพล์โดยไม่มี DSL. 10K⭐
-  el: το SQLx είναι ένα ασύγχρονο, καθαρό Rust† SQL κιβώτιο με ερωτήματα ελεγμένα κατά τη σύνταξη χωρίς DSL. 10K⭐
-  da: SQLx er en asynkron, ren Rust† SQL-kasse med kompilerede forespørgsler uden DSL. 10K⭐
-db_conn_types_diesel:
-  en: diesel:A safe, extensible ORM and Query Builder for Rust 11K⭐
-  zh_CN: diesel:Rust 的安全、可扩展的 ORM 和查询生成器 11K⭐
-  zh_TW: diesel:Rust 的安全、可擴展的 ORM 和查詢生成器 11K⭐
-  fr: diesel:ORM et générateur de requêtes extensible et sûr pour Rust 11K⭐
-  ja: diesel:Rust の安全で拡張可能な ORM とクエリビルダー 11K⭐
-  es: diesel:ORM y generador de consultas seguro y extensible para Rust 11K⭐
-  de: diesel:Eine sichere, erweiterbare ORM und Abfragegenerator für Rust 11K⭐
-  ru: diesel:ORM и генератор запросов безопасны и расширяемы для Rust 11K⭐
-  it: diesel:ORM e generatore di query sicuro ed estensibile per Rust 11K⭐
-  pt: diesel:ORM e gerador de consultas seguro e extensível para Rust 11K⭐
-  ko: diesel:Rust의 안전하고 확장 가능한 ORM 및 쿼리 빌더 11K⭐
-  no: diesel:En sikker, utvidbar ORM og spørringsbygger for Rust 11K⭐
-  is: diesel:Öruggt, útvíkkandi ORM og fyrirspurnarbyggir fyrir Rust 11K⭐
-  uk: diesel:ORM та генератор запитів безпечні та розширювані для Rust 11K⭐
-  th: diesel:ORM และ Query Builder ที่ปลอดภัยและสามารถขยายได้สำหรับ Rust 11K⭐
-  el: diesel:ένα ασφαλές, επεκτάσιμο ORM και Query Builder για Rust 11K⭐
-  da: diesel:En sikker, udvidelig ORM og Query Builder til Rust 11K⭐
-db_conn_types_sea_orm:
-  en: sea-orm:🐚 An async & dynamic ORM for Rust (I like it)
-  zh_CN: sea-orm:🐚 Rust 的异步和动态 ORM（我喜欢它）
-  zh_TW: sea-orm:🐚 Rust 的非同步和動態 ORM（我喜歡它）
-  fr: sea-orm:🐚 Un ORM asynchrone et dynamique pour Rust (je l'aime)
-  ja: sea-orm:🐚 Rust の非同期 & 動的 ORM（気に入っています）
-  es: sea-orm:🐚 Un ORM asíncrono y dinámico para Rust (me gusta)
-  de: sea-orm:🐚 Ein asynchrones und dynamisches ORM für Rust (ich mag es)
-  ru: sea-orm:🐚 Асинхронный и динамический ORM для Rust (мне нравится)
-  it: sea-orm:🐚 Un ORM asincrono e dinamico per Rust (mi piace)
-  pt: sea-orm:🐚 Um ORM assíncrono e dinâmico para Rust (eu gosto)
-  ko: sea-orm:🐚 Rust의 비동기 및 동적 ORM (나는 좋아)
-  no: sea-orm:🐚 En asynkron og dynamisk ORM for Rust (jeg liker det)
-  is: sea-orm:🐚 Asynkron og hreyfanleg ORM fyrir Rust (mér líkar það)
-  uk: sea-orm:🐚 Асинхронний та динамічний ORM для Rust (мені подобається)
-  th: sea-orm:🐚 ORM แบบ async และ dynamic สำหรับ Rust (ฉันชอบมัน)
-  el: sea-orm:🐚 ένα ασύγχρονο και δυναμικό ORM για Rust (μου αρέσει)
-  da: sea-orm:🐚 En asynkron og dynamisk ORM til Rust (jeg kan lide det)
-db_conn_types_rbatis:
-  en: rbatis:A similar Mybatis (java) asynchronous ORM framework
-  zh_CN: rbatis:类似 Mybatis (java) 的异步 ORM 框架
-  zh_TW: rbatis:類似 Mybatis (java) 的非同步 ORM 框架
-  fr: rbatis:Un cadre ORM asynchrone similaire à Mybatis (java)
-  ja: rbatis:Mybatis (java) に似た非同期 ORM フレームワーク
-  es: rbatis:Un marco ORM asíncrono similar a Mybatis (java)
-  de: rbatis:Ein ähnliches Mybatis (java) asynchrones ORM-Framework
-  ru: rbatis:Асинхронный ORM-фреймворк, похожий на Mybatis (java)
-  it: rbatis:Un framework ORM asincrono simile a Mybatis (java)
-  pt: rbatis:Um framework ORM assíncrono semelhante ao Mybatis (java)
-  ko: rbatis:Mybatis (java)와 유사한 비동기 ORM 프레임 워크
-  no: rbatis:Et lignende Mybatis (java) asynkront ORM-rammeverk
-  is: rbatis:Asynkron ORM kerfi sem líkist Mybatis (java)
-  uk: rbatis:Асинхронний ORM-фреймворк, схожий на Mybatis (java)
-  th: rbatis:เฟรมเวิร์ก ORM แบบ async ที่คล้ายกับ Mybatis (java)
-  el: rbatis:ένα παρόμοιο Mybatis (java) ασύγχρονο πλαίσιο ORM
-  da: rbatis:Et lignende Mybatis (java) asynkront ORM-rammeverk
-db_conn_types_mongodb:
-  en: The official MongoDB driver for Rust
-  zh_CN: Rust 的官方 MongoDB 驱动程序
-  zh_TW: Rust 的官方 MongoDB 驱動程式
-  fr: Le pilote MongoDB officiel pour Rust
-  ja: Rust の公式 MongoDB ドライバー
-  es: El controlador MongoDB oficial para Rust
-  de: Der offizielle MongoDB-Treiber für Rust
-  ru: Официальный драйвер MongoDB для Rust
-  it: Il driver MongoDB ufficiale per Rust
-  pt: O driver oficial do MongoDB para Rust
-  ko: Rust의 공식 MongoDB 드라이버
-  no: Den offisielle MongoDB-driveren for Rust
-  is: Opinber MongoDB keyrir fyrir Rust
-  uk: Офіційний драйвер MongoDB для Rust
-  th: ไดร์เวอร์ MongoDB อย่างเป็นทางการสำหรับ Rust
-  el: Ο επίσημος οδηγός MongoDB για Rust
-  da: Den officielle MongoDB-driver for Rust
-db_conn_types_nothing:
-  en: unnecessary
-  zh_CN: 不需要
-  zh_TW: 不需要
-  fr: inutile
-  ja: 不要
-  es: innecesario
-  de: unnötig
-  ru: ненужный
-  it: inutile
-  pt: desnecessário
-  ko: 불필요한
-  no: unødvendig
-  is: óþarfi
-  uk: непотрібний
-  th: ไม่จำเป็น
-  el: περιττός
-  da: unødvendig
-select_db_type:
-  en: select database type
-  zh_CN: 选择数据库类型
-  zh_TW: 選擇資料庫類型
-  fr: sélectionnez le type de base de données
-  ja: データベースタイプを選択
-  es: seleccione el tipo de base de datos
-  de: wählen Sie den Datenbanktyp aus
-  ru: выберите тип базы данных
-  it: seleziona il tipo di database
-  pt: selecione o tipo de banco de dados
-  ko: 데이터베이스 유형을 선택하십시오
-  no: velg databasetype
-  is: veldu gagnagrunnstegund
-  uk: виберіть тип бази даних
-  th: เลือกประเภทฐานข้อมูล
-  el: επιλέξτε τύπο βάσης δεδομένων
-  da: vælg databasetype
-access_instructions:
-  en: After running it, you can access /login with the default username:zhangsan and password:123
-  zh_CN: 运行之后，您可以使用默认用户名:zhangsan和密码:123访问/login
-  zh_TW: 運行之後，您可以使用預設的使用者名稱:zhangsan和密碼:123來訪問/login
-  fr: Après l'avoir exécuté, vous pouvez accéder à /login avec le nom d'utilisateur par défaut:zhangsan et le mot de passe:123
-  ja: 実行した後、デフォルトのユーザー名:zhangsanとパスワード:123で/loginにアクセスできます
-  es: Después de ejecutarlo, puedes acceder a /login con el nombre de usuario predeterminado:zhangsan y la contraseña:123
-  de: Nach dem Ausführen können Sie sich mit dem Standard-Benutzernamen:zhangsan und Passwort:123 bei /login anmelden
-  ru: После запуска вы можете войти в /login с использованием стандартного имени пользователя:zhangsan и пароля:123
-  it: Dopo averlo eseguito, è possibile accedere a /login con il nome utente predefinito:zhangsan e la password:123
-  pt: Depois de executá-lo, você pode acessar /login com o nome de usuário padrão:zhangsan e a senha:123
-  ko: 실행한 후 기본 사용자 이름:zhangsan 및 비밀번호:123으로 /login에 접속할 수 있습니다
-  no: Etter at du har kjørt det, kan du få tilgang til /login med standard brukernavn:zhangsan og passord:123
-  is: Eftir að hafa keyrt það, getur þú notað /login með sjálfgefna notendanafnið:zhangsan og lykilorðið:123
-  uk: Після його запуску Ви можете отримати доступ до /login за допомогою стандартного імені користувача:zhangsan та пароля:123
-  th: หลังจากทำการรันแล้ว คุณสามารถเข้าถึง /login ด้วยชื่อผู้ใช้งานเริ่มต้น:zhangsan และรหัสผ่าน:123
-  el: Αφού το τρέξετε, μπορείτε να προσπελάσετε το /login με το προεπιλεγμένο όνομα χρήστη:zhangsan και τον κωδικό πρόσβασης:123
-  da: Efter du har kørt det, kan du få adgang til /login med standard brugernavn:zhangsan og adgangskode:123
+warning_init_git:
+  en: git initialization failed:`%{error}`
+  zh_CN: Git初始化失败:`%{error}`
+  zh_TW: Git初始化失敗:`%{error}`
+  fr: échec de l'initialisation de git:`%{error}`
+  ja: gitの初期化に失敗しました:`%{error}`
+  es: falló la inicialización de git:`%{error}`
+  de: Git-Initialisierung fehlgeschlagen:`%{error}`
+  ru: инициализация git не удалась:`%{error}`
+  it: inizializzazione di git fallita:`%{error}`
+  pt: falha na inicialização do git:`%{error}`
+  ko: git 초기화 실패:`%{error}`
+  no: git-initialisering mislyktes:`%{error}`
+  is: git upphafsstilling mistókst:`%{error}`
+  uk: ініціалізація git не вдалася:`%{error}`
+  th: การเริ่มต้น git ล้มเหลว:`%{error}`
+  el: απέτυχε η αρχικοποίηση του git:`%{error}`
+  da: git-initialisering mislykkedes:`%{error}`
