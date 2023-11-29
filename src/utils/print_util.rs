@@ -1,3 +1,4 @@
+use ansi_term::Colour;
 use ansi_term::Colour::{Blue, Green, Red, Yellow};
 
 pub fn print_logo() {
@@ -25,4 +26,10 @@ pub fn error<S: AsRef<str>>(msg: S) {
 }
 pub fn success<S: AsRef<str>>(msg: S) {
     println!("{}", Blue.paint(msg.as_ref()));
+}
+pub fn orange<S: AsRef<str>>(msg: S) {
+    println!("{}", Colour::RGB(255, 165, 0).paint(msg.as_ref()));
+}
+pub fn green<S: AsRef<str>>(msg: S) {
+    println!("{}", Green.paint(msg.as_ref()));
 }
