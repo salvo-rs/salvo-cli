@@ -1,0 +1,127 @@
+_version: 2
+checking_for_updates:
+  en: Checking for updates...
+  zh_CN: 正在检查更新...
+  zh_TW: 正在檢查更新...
+  fr: Vérification des mises à jour...
+  ja: 更新を確認しています...
+  es: Comprobando actualizaciones...
+  de: Suche nach Updates...
+  ru: Проверка обновлений...
+  it: Verifica degli aggiornamenti...
+  pt: Verificando atualizações...
+  ko: 업데이트를 확인하는 중...
+  no: Sjekker for oppdateringer...
+  is: Athuga með uppfærslur...
+  uk: Перевірка оновлень...
+  th: กำลังตรวจสอบการอัปเดต...
+  el: Έλεγχος για ενημερώσεις...
+  da: Kontrollerer for opdateringer...
+new_version_available:
+  en: A new version of salvo-cli is available `%{latest_version}`
+  zh_CN: 可用新版本的salvo-cli `%{latest_version}`
+  zh_TW: 可用新版本的salvo-cli `%{latest_version}`
+  fr: Une nouvelle version de salvo-cli est disponible `%{latest_version}`
+  ja: salvo-cliの新しいバージョンが利用可能です `%{latest_version}`
+  es: Está disponible una nueva versión de salvo-cli `%{latest_version}`
+  de: Eine neue Version von salvo-cli ist verfügbar `%{latest_version}`
+  ru: Доступна новая версия salvo-cli `%{latest_version}`
+  it: È disponibile una nuova versione di salvo-cli `%{latest_version}`
+  pt: Uma nova versão do salvo-cli está disponível `%{latest_version}`
+  ko: salvo-cli의 새 버전을 사용할 수 있습니다 `%{latest_version}`
+  no: En ny versjon av salvo-cli er tilgjengelig `%{latest_version}`
+  is: Ný útgáfa af salvo-cli er tiltæk `%{latest_version}`
+  uk: Доступна нова версія salvo-cli `%{latest_version}`
+  th: มีรุ่นใหม่ของ salvo-cli ที่ใช้ได้ `%{latest_version}`
+  el: Μια νέα έκδοση του salvo-cli είναι διαθέσιμη `%{latest_version}`
+  da: En ny version af salvo-cli er tilgængelig `%{latest_version}`
+currently_using_version:
+  en: You are currently using version `%{current_version}`
+  zh_CN: 您当前正在使用版本 `%{current_version}`
+  zh_TW: 您目前正在使用版本 `%{current_version}`
+  fr: Vous utilisez actuellement la version `%{current_version}`
+  ja: 現在使用しているバージョンは `%{current_version}`
+  es: Actualmente estás usando la versión `%{current_version}`
+  de: Sie verwenden derzeit die Version `%{current_version}`
+  ru: В настоящее время вы используете версию `%{current_version}`
+  it: Stai attualmente utilizzando la versione `%{current_version}`
+  pt: Você está atualmente usando a versão `%{current_version}`
+  ko: 현재 사용 중인 버전은 `%{current_version}`
+  no: Du bruker for øyeblikket versjon `%{current_version}`
+  is: Þú ert núna að nota útgáfu `%{current_version}`
+  uk: Ви використовуєте версію `%{current_version}`
+  th: คุณกำลังใช้เวอร์ชัน `%{current_version}`
+  el: Χρησιμοποιείτε την έκδοση `%{current_version}`
+  da: Du bruger i øjeblikket version `%{current_version}`
+consider_updating:
+  en: Consider updating by running:cargo install --force salvo-cli
+  zh_CN: 考虑运行以下命令进行更新：cargo install --force salvo-cli
+  zh_TW: 考慮執行以下指令進行更新：cargo install --force salvo-cli
+  fr: Envisagez de mettre à jour en exécutant :cargo install --force salvo-cli
+  ja: 更新を検討してください：cargo install --force salvo-cliを実行
+  es: Considera la actualización ejecutando:cargo install --force salvo-cli
+  de: Überlegen Sie, ein Update durchzuführen:cargo install --force salvo-cli
+  ru: Рассмотрите возможность обновления, выполнив:cargo install --force salvo-cli
+  it: Considera di aggiornare eseguendo:cargo install --force salvo-cli
+  pt: Considere atualizar executando:cargo install --force salvo-cli
+  ko: 다음을 실행하여 업데이트를 고려하십시오:cargo install --force salvo-cli
+  no: Vurder å oppdatere ved å kjøre:cargo install --force salvo-cli
+  is: Íhugaðu að uppfæra með því að keyra:cargo install --force salvo-cli
+  uk: Розгляньте можливість оновлення, запустивши:cargo install --force salvo-cli
+  th: พิจารณาการอัปเดตโดยการเรียกใช้:cargo install --force salvo-cli
+  el: Σκεφτείτε να ενημερώσετε εκτελώντας:cargo install --force salvo-cli
+  da: Overvej at opdatere ved at køre:cargo install --force salvo-cli
+unable_to_verify_updates:
+  en: Unable to verify updates at this moment
+  zh_CN: 当前无法验证更新
+  zh_TW: 目前無法驗證更新
+  fr: Impossible de vérifier les mises à jour pour le moment
+  ja: 現在、更新を確認できません
+  es: No se pueden verificar las actualizaciones en este momento
+  de: Derzeit können keine Updates überprüft werden
+  ru: Невозможно проверить обновления в данный момент
+  it: Impossibile verificare gli aggiornamenti al momento
+  pt: Não é possível verificar atualizações neste momento
+  ko: 현재 업데이트를 확인할 수 없습니다
+  no: Kan ikke bekrefte oppdateringer for øyeblikket
+  is: Ekki hægt að staðfesta uppfærslur í augnablikinu
+  uk: Неможливо перевірити оновлення на даний момент
+  th: ไม่สามารถตรวจสอบการอัปเดตในขณะนี้
+  el: Αδυναμία επαλήθευσης των ενημερώσεων αυτή τη στιγμή
+  da: Kan ikke bekræfte opdateringer i øjeblikket
+update_verification_took_long:
+  en: The update verification process took longer than expected
+  zh_CN: 更新验证过程用时超过预期
+  zh_TW: 更新驗證過程所花時間超過預期
+  fr: Le processus de vérification des mises à jour a pris plus de temps que prévu
+  ja: アップデートの確認プロセスが予想以上に時間がかかりました
+  es: El proceso de verificación de actualizaciones tardó más de lo esperado
+  de: Der Aktualisierungsüberprüfungsprozess dauerte länger als erwartet
+  ru: Процесс проверки обновлений занял больше времени, чем ожидалось
+  it: Il processo di verifica dell'aggiornamento ha richiesto più tempo del previsto
+  pt: O processo de verificação de atualizações demorou mais do que o esperado
+  ko: 업데이트 확인 과정이 예상보다 오래 걸렸습니다
+  no: Oppdateringsverifikasjonsprosessen tok lenger tid enn forventet
+  is: Uppflettitferlinn tók lengri tíma en gera mátti ráð fyrir
+  uk: Процес перевірки оновлень зайняв більше часу, ніж очікувалося
+  th: กระบวนการตรวจสอบการอัปเดตใช้เวลานานกว่าที่คาดหวัง
+  el: Η διαδικασία επαλήθευσης των ενημερώσεων πήρε περισσότερο χρόνο από ό,τι αναμενόταν
+  da: Opdateringsbekræftelsesprocessen tog længere tid end forventet
+current_version_up_to_date:
+  en: The current version is up to date
+  zh_CN: 当前已经是最新版本
+  zh_TW: 目前已經是最新版本
+  fr: La version actuelle est à jour
+  ja: 現在のバージョンは最新です
+  es: La versión actual está actualizada
+  de: Die aktuelle Version ist auf dem neuesten Stand
+  ru: Текущая версия обновлена
+  it: La versione corrente è aggiornata
+  pt: A versão atual está atualizada
+  ko: 현재 버전이 최신입니다
+  no: Den nåværende versjonen er oppdatert
+  is: Núverandi útgáfa er uppfærð
+  uk: Поточна версія оновлена
+  th: รุ่นปัจจุบันเป็นรุ่นล่าสุด
+  el: Η τρέχουσα έκδοση είναι ενημερωμένη
+  da: Den nuværende version er opdateret

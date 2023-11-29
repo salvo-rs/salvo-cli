@@ -3,10 +3,11 @@ use clap::Parser;
 mod test;
 mod utils;
 use i18n::set_locale;
+use utils::check_for_updates;
 mod i18n;
 rust_i18n::i18n!("locales", fallback = "en");
 #[derive(Parser, Debug)]
-#[clap(version = "0.1.26", author = "Fankai liu <liufankai137@outlook.com>")]
+#[clap(version = env!("CARGO_PKG_VERSION"), author = "Fankai liu <liufankai137@outlook.com>")]
 struct Opts {
     #[clap(subcommand)]
     subcmd: SubCommand,
@@ -22,12 +23,14 @@ pub struct Project {
     #[clap(short, long)]
     lang: Option<String>,
 }
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     utils::print_logo();
     let opts: Opts = Opts::parse();
     match opts.subcmd {
         SubCommand::New(project) => {
             set_locale(&project.lang);
+            check_for_updates().await;
             match utils::create_project(project) {
                 Ok(_) => (),
                 Err(e) => utils::error(e.to_string()),
