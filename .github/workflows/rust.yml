@@ -1,12 +1,8 @@
-name: build
+name: build_and_test
 
 on:
   push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
 
 jobs:
   build-rust:

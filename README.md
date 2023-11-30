@@ -16,8 +16,9 @@
 
 ## Introduction
 
-Salvo CLI is a command-line interface tool for the [Salvo](https://github.com/salvo-rs/salvo) web framework. It helps streamline the process of setting up a new Salvo project by generating a template structure.
+Salvo CLI, a tool for the [Salvo](https://github.com/salvo-rs/salvo) web framework, creates clean, easy-to-read code, saving you time for the more enjoyable aspects of life.
 
+If you've got a knack for making  CLI even better, or if you've noticed a few quirks that could use some attention, don't be shy! Drop us an issue, we welcome your insights. 
 ## Installation
 
 ```bash
