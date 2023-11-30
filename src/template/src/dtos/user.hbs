@@ -16,7 +16,7 @@ pub struct UserLoginRequest {
 }
 
 #[derive(Debug, Deserialize,Extractible,ToSchema, Default)]
-#[salvo(extract(default_source(from = "body", format = "json")))]
+#[salvo(extract(default_source(from = "body", parse = "json")))]
 pub struct UserUpdateRequest {
     #[salvo(extract(source(from = "param")))]
     pub id: String,
