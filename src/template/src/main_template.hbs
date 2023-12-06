@@ -13,7 +13,6 @@ use config::{CERT_KEY, CFG};
 use salvo::catcher::Catcher;
 use salvo::conn::rustls::{Keycert, RustlsConfig};
 use salvo::prelude::*;
-use tokio::sync::oneshot;
 mod app_error;
 {{#if need_db_conn}}
 {{else}}
@@ -56,7 +55,6 @@ async fn main() {
     {{#if is_mongodb}}
     init_db_conn().await;
     {{/if}}
-    let (tx, rx) = oneshot::channel();
     let router = router();
     let service: Service = router.into();
     let service = service.catcher(Catcher::default().hoop(handle_404));
@@ -83,14 +81,11 @@ async fn main() {
                 .rustls(config)
                 .bind()
                 .await;
-            let server = Server::new(acceptor).serve_with_graceful_shutdown(
-                service,
-                async {
-                    rx.await.ok();
-                },
-                None,
-            );
-            tokio::task::spawn(server);
+            let server = Server::new(acceptor);
+            let handle = server.handle();
+            server.serve(service).await;
+            handle.stop_graceful(std::time::Duration::from_secs(5));
+
         }
         false => {
             println!(
@@ -103,20 +98,11 @@ async fn main() {
             {{/if}}
             {{/if}}
             let acceptor = TcpListener::new(&CFG.server.address).bind().await;
-            let server = Server::new(acceptor).serve_with_graceful_shutdown(
-                service,
-                async {
-                    rx.await.ok();
-                },
-                None,
-            );
-            tokio::task::spawn(server);
-        }
+            let server = Server::new(acceptor);
+            let handle = server.handle();
+            server.serve(service).await;
+            handle.stop_graceful(std::time::Duration::from_secs(5));        }
     };
-    // Wait for Ctrl-C
-    tokio::signal::ctrl_c().await.unwrap();
-    // Then, start the shutdown...
-    let _ = tx.send(());
 }
 
 fn init_log() {
