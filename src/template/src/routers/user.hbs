@@ -1,6 +1,6 @@
 {{#if is_web_site}}
 use crate::{
-    app_response::{AppResponse, AppResult, ErrRes},
+    app_response::{AppResponse, AppResult, ErrorResponseBuilder},
     dtos::user::{
         UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse, UserUpdateRequest,
     },
@@ -72,7 +72,7 @@ pub async fn post_login(req: JsonBody<UserLoginRequest>, res: &mut Response) {
                 .build();
             res.add_cookie(cookie);
         }
-        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
+        Err(e) => ErrorResponseBuilder::with_err(e).into_response(res),
     }
 }
 
@@ -106,9 +106,11 @@ pub async fn get_users() -> AppResponse<Vec<UserResponse>> {
 
 {{else}}
 use crate::{
-    app_response::AppResult,
-    app_response::{ErrRes, Res},
-    dtos::user::{UserAddRequest, UserLoginRequest, UserLoginResponse, UserUpdateRequest},
+    app_response::ErrorResponseBuilder,
+    app_response::{AppResponse, AppResult},
+    dtos::user::{
+        UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse, UserUpdateRequest,
+    },
     services::user,
 };
 use salvo::{
@@ -130,47 +132,35 @@ pub async fn post_login(req: JsonBody<UserLoginRequest>, res: &mut Response) {
                 .build();
             res.add_cookie(cookie);
         }
-        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
+        Err(e) => ErrorResponseBuilder::with_err(e).into_response(res),
     }
 }
 
-#[endpoint( tags("users"))]
-pub async fn post_add_user(req: JsonBody<UserAddRequest>, res: &mut Response) {
-    let result = user::add_user(req.0).await;
-    match result {
-        Ok(data) => Res::with_data(data).into_response(res),
-        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
-    }
+#[endpoint(tags("users"))]
+pub async fn post_add_user(new_user: JsonBody<UserAddRequest>) -> AppResponse<UserResponse> {
+    let result = user::add_user(new_user.0).await;
+    AppResponse(result)
 }
 
 #[endpoint(  tags("users"),
 parameters(
     ("id", description = "user id"),
 ))]
-pub async fn put_update_user(req: &mut Request, res: &mut Response) {
-    let req: UserUpdateRequest = req.extract().await.unwrap();
+pub async fn put_update_user(req: &mut Request) -> AppResult<AppResponse<UserResponse>> {
+    let req: UserUpdateRequest = req.extract().await?;
     let result = user::update_user(req).await;
-    match result {
-        Ok(data) => Res::with_data(data).into_response(res),
-        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
-    }
+    Ok(AppResponse(result))
 }
 
-#[endpoint( tags("users"),)]
-pub async fn delete_user(id: PathParam<String>, res: &mut Response) {
+#[endpoint(tags("users"))]
+pub async fn delete_user(id: PathParam<String>) -> AppResponse<()> {
     let result = user::delete_user(id.0).await;
-    match result {
-        Ok(_) => Res::with_data(()).into_response(res),
-        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
-    }
+    AppResponse(result)
 }
 
-#[endpoint( tags("users"),)]
-pub async fn get_users(res: &mut Response) {
+#[endpoint(tags("users"))]
+pub async fn get_users() -> AppResponse<Vec<UserResponse>> {
     let result = user::users().await;
-    match result {
-        Ok(data) => Res::with_data(data).into_response(res),
-        Err(e) => ErrRes::with_err(&e.to_string()).into_response(res),
-    }
+    AppResponse(result)
 }
 {{/if}}
