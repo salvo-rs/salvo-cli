@@ -287,8 +287,8 @@ pub fn write_project_file(
                         include_str!("../template/src/entities/mod.hbs"),
                     ),
                     (
-                        "src/entities/user.rs",
-                        include_str!("../template/src/entities/user.hbs"),
+                        "src/entities/users.rs",
+                        include_str!("../template/src/entities/users.hbs"),
                     ),
                     (".env", include_str!("../template/.env.hbs")),
                 ]
@@ -414,7 +414,7 @@ pub fn write_project_file(
                     ),
                     (
                         "src/entities/user.rs",
-                        include_str!("../template/src/entities/user.hbs"),
+                        include_str!("../template/src/entities/users.hbs"),
                     ),
                 ]
                 .as_mut(),
@@ -456,7 +456,7 @@ pub fn write_project_file(
                     ),
                     (
                         "src/entities/user.rs",
-                        include_str!("../template/src/entities/user.hbs"),
+                        include_str!("../template/src/entities/users.hbs"),
                     ),
                 ]
                 .as_mut(),

@@ -21,7 +21,7 @@ use crate::{
         UserUpdateRequest,
     },
     middleware::jwt::get_token,
-    entities::{prelude::User,user},
+    entities::{prelude::Users,users},
     utils::rand_utils,
 };
 use sea_orm::{EntityTrait, Set, ActiveModelTrait, QueryFilter, ColumnTrait};
@@ -142,12 +142,12 @@ pub async fn users() -> AppResult<Vec<UserResponse>> {
 {{#if is_sea_orm}}
 pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
     let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
-    let model =user::ActiveModel {
+    let model =users::ActiveModel {
         id: Set(Uuid::new_v4().to_string()),
         username: Set(req.username.clone()),
         password: Set(rand_utils::hash_password(req.password).await?),
     };
-    let user = User::insert(model).exec(db).await?;
+    let user = Users::insert(model).exec(db).await?;
     Ok(UserResponse {
         id: user.last_insert_id,
         username: req.username,
@@ -156,7 +156,7 @@ pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
 
 pub async fn login(req: UserLoginRequest) -> AppResult<UserLoginResponse> {
     let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
-    let user = User::find().filter(user::Column::Username.eq(req.username)).one(db).await?;
+    let user = Users::find().filter(users::Column::Username.eq(req.username)).one(db).await?;
     if user.is_none() {
         return Err(anyhow::anyhow!("{{user_does_not_exist}}").into());
     }
@@ -180,16 +180,16 @@ pub async fn login(req: UserLoginRequest) -> AppResult<UserLoginResponse> {
 pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
     let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
 
-    let user = User::find_by_id(req.id).one(db).await?;
+    let user = Users::find_by_id(req.id).one(db).await?;
     if user.is_none() {
         return Err(anyhow::anyhow!("{{user_does_not_exist}}").into());
     }
-    let mut user: user::ActiveModel = user.unwrap().into();
+    let mut user: users::ActiveModel = user.unwrap().into();
 
     user.username = Set(req.username.to_owned());
     user.password = Set(rand_utils::hash_password(req.password).await?);
 
-    let user: user::Model = user.update(db).await?;
+    let user: users::Model = user.update(db).await?;
 
     Ok(UserResponse {
         id: user.id,
@@ -199,13 +199,13 @@ pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
 
 pub async fn delete_user(id: String) -> AppResult<()> {
     let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
-    User::delete_by_id(id).exec(db).await?;
+    Users::delete_by_id(id).exec(db).await?;
     Ok(())
 }
 
 pub async fn users() -> AppResult<Vec<UserResponse>> {
     let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
-    let users = User::find().all(db).await?;
+    let users = Users::find().all(db).await?;
     let res = users
         .into_iter()
         .map(|user| UserResponse {
