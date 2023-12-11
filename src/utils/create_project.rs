@@ -183,6 +183,9 @@ pub fn write_project_file(
     });
     data["is_starting"] = handlebars::JsonValue::String(t!("is_starting"));
     data["listen_on"] = handlebars::JsonValue::String(t!("listen_on"));
+    data["database_connection_failed"] =
+        handlebars::JsonValue::String(t!("database_connection_failed"));
+    data["user_does_not_exist"] = handlebars::JsonValue::String(t!("user_does_not_exist"));
     let mut dependencies = data["dependencies"].clone();
     handle_dependencies(
         &mut dependencies,
