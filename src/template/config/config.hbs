@@ -7,7 +7,7 @@ cors_allow_origin=["https://salvo.rs"]
 [database]
 {{#if is_sea_orm_or_sqlx}}
 {{#if is_postgres}}
-database_url=postgresql://liufankai:1@localhost/salvo_demo
+database_url="postgresql://liufankai:1@localhost/salvo_demo"
 {{/if}}
 {{#if is_sqlite}}
 database_url="sqlite:data/demo.db"
