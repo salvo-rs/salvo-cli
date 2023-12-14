@@ -9,7 +9,7 @@ use crate::{
 };
 use askama::Template;
 use salvo::{
-    endpoint,
+    oapi::endpoint,
     http::cookie::Cookie,
     oapi::extract::{JsonBody, PathParam},
     writing::{Redirect, Text},
@@ -114,7 +114,7 @@ use crate::{
     services::user,
 };
 use salvo::{
-    endpoint,
+    oapi::endpoint,
     http::cookie::Cookie,
     oapi::extract::{JsonBody, PathParam},
     Request, Response,

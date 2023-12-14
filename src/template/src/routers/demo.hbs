@@ -2,9 +2,9 @@
 use askama::Template;
 {{/if}}
 {{#if is_web_site}}
-use salvo::{endpoint, writing::Text, Request, Response};
+use salvo::{oapi::endpoint, writing::Text, Request, Response};
 {{else}}
-use salvo::endpoint;
+use salvo::oapi::endpoint;
 {{/if}}
 use crate::app_response::AppResult;
 {{#if is_web_site}}

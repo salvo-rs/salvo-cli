@@ -7,9 +7,12 @@ use crate::db::init_db_conn;
 {{#if is_mongodb}}
 use crate::db::init_db_conn;
 {{/if}}
+use tokio::signal;
+use tracing::info;
 use crate::middleware::handle_404::handle_404;
 use crate::routers::router;
 use config::{CERT_KEY, CFG};
+use salvo::server::ServerHandle;
 use salvo::catcher::Catcher;
 use salvo::conn::rustls::{Keycert, RustlsConfig};
 use salvo::prelude::*;
@@ -83,10 +86,9 @@ async fn main() {
                 .await;
             let server = Server::new(acceptor);
             let handle = server.handle();
+            tokio::spawn(shutdown_signal(handle));
             server.serve(service).await;
-            handle.stop_graceful(std::time::Duration::from_secs(5));
-
-        }
+         }
         false => {
             println!(
                 "📖 {{swagger_api_page}}: http://{}/swagger-ui",
@@ -100,9 +102,10 @@ async fn main() {
             let acceptor = TcpListener::new(&CFG.server.address).bind().await;
             let server = Server::new(acceptor);
             let handle = server.handle();
+            tokio::spawn(shutdown_signal(handle));
             server.serve(service).await;
-            handle.stop_graceful(std::time::Duration::from_secs(5));        }
-    };
+            }
+    }
 }
 
 fn init_log() {
@@ -116,6 +119,32 @@ fn init_log() {
         .init();
     tracing::info!("log level: {}", &CFG.log.filter_level);
 }
+
+async fn shutdown_signal(handle: ServerHandle) {
+    let ctrl_c = async {
+        signal::ctrl_c()
+            .await
+            .expect("failed to install Ctrl+C handler");
+    };
+
+    #[cfg(unix)]
+    let terminate = async {
+        signal::unix::signal(signal::unix::SignalKind::terminate())
+            .expect("failed to install signal handler")
+            .recv()
+            .await;
+    };
+
+    #[cfg(not(unix))]
+    let terminate = std::future::pending::<()>();
+
+    tokio::select! {
+        _ = ctrl_c => info!("ctrl_c signal received"),
+        _ = terminate => info!("terminate signal received"),
+    }
+    handle.stop_graceful(std::time::Duration::from_secs(60));
+}
+
 #[cfg(test)]
 mod tests {
     use salvo::prelude::*;
