@@ -48,7 +48,16 @@ mod routers;
 #[tokio::main]
 async fn main() {
     //{{main_log_message}}
-    init_log();
+    let _guard = clia_tracing_config::build()
+        .filter_level(&CFG.log.filter_level)
+        .with_ansi(CFG.log.with_ansi)
+        .to_stdout(CFG.log.to_stdout)
+        .directory(&CFG.log.directory)
+        .file_name(&CFG.log.file_name)
+        .rolling(&CFG.log.rolling)
+        .init();
+    tracing::info!("log level: {}", &CFG.log.filter_level);
+
     {{#if is_sea_orm_or_sqlx}}
     init_db_conn().await;
     {{/if}}
@@ -106,18 +115,6 @@ async fn main() {
             server.serve(service).await;
             }
     }
-}
-
-fn init_log() {
-    let _guard = clia_tracing_config::build()
-        .filter_level(&CFG.log.filter_level)
-        .with_ansi(CFG.log.with_ansi)
-        .to_stdout(CFG.log.to_stdout)
-        .directory(&CFG.log.directory)
-        .file_name(&CFG.log.file_name)
-        .rolling(&CFG.log.rolling)
-        .init();
-    tracing::info!("log level: {}", &CFG.log.filter_level);
 }
 
 async fn shutdown_signal(handle: ServerHandle) {
