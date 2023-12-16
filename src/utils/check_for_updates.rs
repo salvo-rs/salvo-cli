@@ -11,7 +11,7 @@ async fn get_latest_version(crate_name: &str) -> Result<String, Box<dyn std::err
     let client = reqwest::Client::builder()
         .user_agent("salvo-cli update checker")
         .build()?;
-    
+
     let resp = client.get(&url).send().await?;
     let body: String = resp.text().await?;
     let crate_response: Value = serde_json::from_str(&body)?;
