@@ -1253,6 +1253,7 @@ dependencies = [
  "serde_json",
  "tokio",
  "unicode-xid",
+ "walkdir",
 ]
 
 [[package]]

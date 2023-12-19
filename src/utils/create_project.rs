@@ -12,6 +12,7 @@ use std::{
 };
 
 use super::{
+    directory2md::write_directory_contents_to_markdown,
     get_selection::{get_user_selected, DbConnectionType, DbType, TemplateType, UserSelected},
     print_util, restricted_names, warning,
 };
@@ -471,6 +472,7 @@ pub fn write_project_file(
     for (file_name, template) in &templates {
         render_and_write_to_file(&handlebars, template, &data, project_path.join(file_name))?;
     }
+    write_directory_contents_to_markdown(&project_path.join("README.md"))?;
     Ok(())
 }
 
