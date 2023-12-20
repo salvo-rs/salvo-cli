@@ -1,3 +1,4 @@
+use rust_i18n::t;
 use std::fs::{self, File};
 use std::io::{Result, Write};
 use std::path::Path;
@@ -5,7 +6,13 @@ use walkdir::WalkDir;
 
 pub fn write_directory_contents_to_markdown(output_file: &Path) -> Result<()> {
     let mut file = File::create(output_file)?;
-    writeln!(file, "# Directory Contents\n")?;
+    let project_name = output_file
+        .parent()
+        .unwrap()
+        .file_name()
+        .unwrap_or_default()
+        .to_string_lossy();
+    writeln!(file, "# {}", project_name)?;
     for entry in WalkDir::new(output_file.parent().unwrap())
         .into_iter()
         .filter_map(|e| e.ok())
@@ -21,10 +28,10 @@ pub fn write_directory_contents_to_markdown(output_file: &Path) -> Result<()> {
             let file_name = file_name.to_string_lossy();
             if metadata.is_dir() {
                 // Use `**Dir:**` to denote directories
-                writeln!(file, "{}- **Dir:** {}", indent, file_name)?;
+                writeln!(file, "{}- **{}:** {}", indent, t!("dir"), file_name)?;
             } else {
                 // Use `*File:*` to denote files
-                writeln!(file, "{}- *File:* {}", indent, file_name)?;
+                writeln!(file, "{}- *{}:* {}", indent, t!("file"), file_name)?;
             }
         }
     }

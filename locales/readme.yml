@@ -1,0 +1,37 @@
+_version: 2
+dir:
+  en: Dir
+  zh_CN: 目录
+  zh_TW: 目錄
+  fr: Rép
+  ja: ディレクトリ
+  es: Dir
+  de: Verz
+  ru: Дир
+  it: Dir
+  pt: Dir
+  ko: 디렉토리
+  no: Mappe
+  is: Mappa
+  uk: Тека
+  th: ไดเรกทอรี
+  el: Φάκελος
+  da: Bibliotek
+file:
+  en: File
+  zh_CN: 文件
+  zh_TW: 檔案
+  fr: Fichier
+  ja: ファイル
+  es: Archivo
+  de: Datei
+  ru: Файл
+  it: File
+  pt: Arquivo
+  ko: 파일
+  no: Fil
+  is: Skrá
+  uk: Файл
+  th: ไฟล์
+  el: Αρχείο
+  da: Fil
