@@ -35,3 +35,363 @@ file:
   th: ไฟล์
   el: Αρχείο
   da: Fil
+cargo_toml:
+  en: Rust project dependency and configuration info
+  zh_CN: Rust项目的依赖和配置信息
+  zh_TW: Rust專案的依賴和配置資訊
+  fr: Informations de dépendance et de configuration du projet Rust
+  ja: Rustプロジェクトの依存関係と設定情報
+  es: Información de dependencia y configuración del proyecto Rust
+  de: Abhängigkeiten und Konfigurationsinformationen für Rust-Projekt
+  ru: Информация о зависимостях и конфигурации проекта Rust
+  it: Informazioni di dipendenza e configurazione per progetto Rust
+  pt: Informações de dependência e configuração do projeto Rust
+  ko: 러스트 프로젝트의 종속성 및 설정 정보
+  no: Avhengighets- og konfigurasjonsinformasjon for Rust-prosjekt
+  is: Upplýsingar um háður og stillingar Rust verkefnis
+  uk: Інформація про залежності та конфігурацію проекту Rust
+  th: ข้อมูลการติดตั้งและการกําหนดค่าของโปรเจกต์ Rust
+  el: Πληροφορίες εξάρτησης και ρύθμισης έργου Rust
+  da: Rust projektafhængigheds- og konfigurationsinformation
+dot_env:
+  en: Database connection string config file
+  zh_CN: 存储数据库连接串的配置文件
+  zh_TW: 儲存資料庫連接字串的設定檔
+  fr: Fichier de configuration contenant la chaîne de connexion à la base de données
+  ja: データベース接続文字列の設定ファイル
+  es: Archivo de configuración de cadena de conexión a base de datos
+  de: Konfigurationsdatei mit Datenbank-Verbindungszeichenfolge
+  ru: Конфигурационный файл со строкой подключения к базе данных
+  it: File di configurazione della stringa di connessione al database
+  pt: Arquivo de configuração da string de conexão do banco de dados
+  ko: 데이터베이스 연결 문자열 설정 파일
+  no: Konfigurasjonsfil for databasetilkoblingsstreng
+  is: Stillingaskrá fyrir tengistreng gagnagrunns
+  uk: Файл конфігурації рядка підключення до бази даних
+  th: ไฟล์กําหนดค่าสําหรับสตริงการเชื่อมต่อฐานข้อมูล
+  el: Αρχείο ρυθμίσεων με το STRING σύνδεσης βάσης δεδομένων
+  da: Konfigurationsfil for databaseforbindelsesstreng
+config_config_toml:
+  en: Application configuration file
+  zh_CN: 应用程序的配置文件
+  zh_TW: 應用程式的配置檔案
+  fr: Fichier de configuration de l'application
+  ja: アプリケーションの設定ファイル
+  es: Archivo de configuración de la aplicación
+  de: Anwendungskonfigurationsdatei
+  ru: Конфигурационный файл приложения
+  it: File di configurazione dell'applicazione
+  pt: Arquivo de configuração do aplicativo
+  ko: 애플리케이션 설정 파일
+  no: Programkonfigurasjonsfil
+  is: Stillingaskrá forrits
+  uk: Файл конфігурації програми
+  th: ไฟล์กําหนดค่าของแอปพลิเคชัน
+  el: Αρχείο ρυθμίσεων εφαρμογής
+  da: Programkonfigurationsfil
+migrations:
+  en: Database migration script storage location
+  zh_CN: 数据库迁移脚本的存放位置
+  zh_TW: 資料庫移轉腳本的存放位置
+  fr: Emplacement de stockage du script de migration de base de données
+  ja: データベース移行スクリプトの格納場所
+  es: Ubicación de almacenamiento de scripts de migración de base de datos
+  de: Speicherort für Datenbank-Migrationsskripts
+  ru: Место хранения скриптов миграции базы данных
+  it: Percorso di salvataggio degli script di migrazione del database
+  pt: Local de armazenamento do script de migração de banco de dados
+  ko: 데이터베이스 마이그레이션 스크립트 저장 위치
+  no: Lagringsplassering for database migrasjonskript
+  is: Geymslustaður gagnagrunnsflutningsskrifta
+  uk: Місце зберігання скриптів міграції бази даних
+  th: ตําแหน่งที่เก็บสคริปต์ไลบรารี่ในการโยกย้ายฐานข้อมูล
+  el: Τοποθεσία αποθήκευσης σεναρίων μετάβασης βάσης δεδομένων
+  da: Lagringsplacering for database migrationsscript
+config:
+  en: Folder containing all configuration files
+  zh_CN: 包含所有配置文件的文件夹
+  zh_TW: 包含所有設定檔的資料夾
+  fr: Dossier contenant tous les fichiers de configuration
+  ja: すべての設定ファイルが含まれるフォルダ
+  es: Carpeta que contiene todos los archivos de configuración
+  de: Ordner mit allen Konfigurationsdateien
+  ru: Папка, содержащая все конфигурационные файлы
+  it: Cartella contenente tutti i file di configurazione
+  pt: Pasta contendo todos os arquivos de configuração
+  ko: 모든 설정 파일이 들어있는 폴더
+  no: Mappe som inneholder alle konfigurasjonsfiler
+  is: Mappa með öll stillingaskrár
+  uk: Тека, що містить усі файли конфігурації
+  th: โฟลเดอร์ที่มีไฟล์กําหนดค่าทั้งหมด
+  el: Φάκελος που περιέχει όλα τα αρχεία ρυθμίσεων
+  da: Mappe indeholdende alle konfigurationsfiler
+config_certs:
+  en: Directory for storing certificate files
+  zh_CN: 存放证书文件的目录
+  zh_TW: 存放憑證檔案的目錄
+  fr: Répertoire de stockage des fichiers de certificat
+  ja: 証明書ファイルの保存ディレクトリ
+  es: Directorio para almacenar archivos de certificado
+  de: Verzeichnis zur Speicherung von Zertifikatdateien
+  ru: Каталог для хранения файлов сертификатов
+  it: Directory per l'archiviazione dei file di certificato
+  pt: Diretório para armazenar arquivos de certificado
+  ko: 인증서 파일을 저장하는 디렉토리
+  no: Katalog for lagring av sertifikatfiler
+  is: Mappa til að geyma skilríkja-skrár
+  uk: Каталог для зберігання файлів сертифікатів
+  th: ไดเรกทอรี่สําหรับเก็บไฟล์ใบรับรอง
+  el: Κατάλογος για αποθήκευση αρχείων πιστοποιητικών
+  da: Bibliotek til lagring af certifikatfiler
+templates:
+  en: Folder for storing web template files
+  zh_CN: 存放网页模板文件的文件夹
+  zh_TW: 存放網頁模板檔案的資料夾
+  fr: Dossier de stockage des fichiers de modèles web
+  ja: ウェブテンプレートファイルを保存するフォルダー
+  es: Carpeta para almacenar archivos de plantillas web
+  de: Ordner zur Speicherung von Web-Vorlagendateien
+  ru: Папка для хранения файлов веб-шаблонов
+  it: Cartella per l'archiviazione dei file di modelli web
+  pt: Pasta para armazenar arquivos de modelos da web
+  ko: 웹 템플릿 파일을 저장하는 폴더
+  no: Mappe for lagring av nettmalfiler
+  is: Mappa til að vista skrár vefsniða
+  uk: Тека для зберігання файлів веб-шаблонів
+  th: โฟลเดอร์สําหรับเก็บไฟล์เทมเพลตเว็บไซต์
+  el: Φάκελος για αποθήκευση αρχείων προτύπων ιστοσελίδας
+  da: Mappe til lagring af webskabelonfiler
+data:
+  en: Directory containing database files or initialization data sql files
+  zh_CN: 包含数据库文件或初始化数据sql文件的目录
+  zh_TW: 包含資料庫檔案或初始化資料sql檔案的目錄
+  fr: Répertoire contenant les fichiers de base de données ou les fichiers SQL de données d'initialisation
+  ja: データベースファイルまたは初期化データSQLファイルが含まれるディレクトリ
+  es: Directorio que contiene archivos de base de datos o archivos SQL de datos de inicialización
+  de: Verzeichnis mit Datenbankdateien oder Initialisierungs-SQL-Datendateien
+  ru: Каталог, содержащий файлы базы данных или инициализационные SQL-файлы данных
+  it: Directory contenente file di database o file SQL di dati di inizializzazione
+  pt: Diretório contendo arquivos de banco de dados ou arquivos SQL de dados de inicialização
+  ko: 데이터베이스 파일 또는 초기화 데이터 SQL 파일이 있는 디렉토리
+  no: Katalog som inneholder databasefiler eller initialiserings-SQL-datafiler
+  is: Mappa með gagnagrunnsskrár eða upphaflegum gögnum í SQL skrám
+  uk: Каталог, що містить файли бази даних або ініціалізаційні SQL-файли даних
+  th: ไดเร็กทอรี่ที่มีไฟล์ฐานข้อมูลหรือไฟล์ sql ข้อมูลเริ่มต้น
+  el: Κατάλογος που περιέχει αρχεία βάσης δεδομένων ή αρχεία SQL αρχικοποίησης δεδομένων
+  da: Bibliotek indeholdende databasefiler eller initialiseringsdata SQL-filer
+assets:
+  en: Static resources such as images, JavaScript scripts and CSS style sheets
+  zh_CN: 静态资源如图片、JavaScript脚本和CSS样式表
+  zh_TW: 靜態資源如圖片、JavaScript腳本和CSS樣式表
+  fr: Ressources statiques telles que images, scripts JavaScript et feuilles de style CSS
+  ja: 画像、JavaScriptスクリプト、CSSスタイルシートなどの静的リソース
+  es: Recursos estáticos como imágenes, scripts de JavaScript y hojas de estilo CSS
+  de: Statische Ressourcen wie Bilder, JavaScript-Skripte und CSS-Stylesheets
+  ru: Статические ресурсы, такие как изображения, скрипты JavaScript и таблицы стилей CSS
+  it: Risorse statiche come immagini, script JavaScript e fogli di stile CSS
+  pt: Recursos estáticos como imagens, scripts JavaScript e folhas de estilo CSS
+  ko: 이미지, 자바스크립트 스크립트, CSS 스타일 시트와 같은 정적 리소스
+  no: Statiske ressurser som bilder, JavaScript-skript og CSS stilark
+  is: Kyrrðir tilföng eins og myndir, JavaScript skriftur og CSS stílsíður
+  uk: Статичні ресурси, такі як зображення, скрипти JavaScript та таблиці стилів CSS
+  th: ทรัพยากรนิ่ง เช่น รูปภาพ สคริปต์เจวาสคริปต์ และสไตล์ชีท CSS
+  el: Στατικοί πόροι όπως εικόνες, σενάρια JavaScript και φύλλα τύπων CSS
+  da: Statiske ressourcer såsom billeder, JavaScript-scripts og CSS-stylesheets
+src:
+  en: Source code directory
+  zh_CN: 源代码目录
+  zh_TW: 原始碼目錄
+  fr: Répertoire de code source
+  ja: ソースコードディレクトリ
+  es: Directorio de código fuente
+  de: Quellcodeverzeichnis
+  ru: Каталог исходного кода
+  it: Directory codice sorgente
+  pt: Diretório de código fonte
+  ko: 소스 코드 디렉토리
+  no: Kildekodekatalog
+  is: Upprunakóða-mappa
+  uk: Каталог вихідного коду
+  th: ไดเร็กทอรี่ซอร์สโค้ด
+  el: Κατάλογος πηγαίου κώδικα
+  da: Kildekodebibliotek
+src_routers:
+  en: Module containing route handling functions
+  zh_CN: 包含路由处理函数的模块
+  zh_TW: 包含路由處理函數的模組
+  fr: Module contenant les fonctions de gestion de routes
+  ja: ルート処理関数を含むモジュール
+  es: Módulo que contiene funciones de gestión de rutas
+  de: Modul mit Routen-Handler-Funktionen
+  ru: Модуль, содержащий функции обработки маршрутов
+  it: Modulo contenente funzioni di gestione delle route
+  pt: Módulo contendo funções de manipulação de rotas
+  ko: 라우팅 처리 함수를 포함하는 모듈
+  no: Modul som inneholder rutehåndteringsfunksjoner
+  is: Eining með routing vinnslufalla
+  uk: Модуль, що містить функції обробки маршрутів
+  th: โมดูลที่มีฟังก์ชันจัดการเส้นทาง
+  el: Λειτουργική μονάδα που περιέχει συναρτήσεις διαχείρισης διαδρομών
+  da: Modul indeholdende rutehåndteringsfunktioner
+src_middleware:
+  en: Module containing middleware
+  zh_CN: 包含中间件模块
+  zh_TW: 包含中介軟體模組
+  fr: Module contenant des intergiciels
+  ja: ミドルウェアを含むモジュール
+  es: Módulo que contiene middleware
+  de: Modul mit Middleware
+  ru: Модуль, содержащий промежуточное ПО
+  it: Modulo contenente middleware
+  pt: Módulo contendo middleware
+  ko: 미들웨어를 포함하는 모듈
+  no: Modul som inneholder mellomvare
+  is: Eining með milliskólahugbúnaði
+  uk: Модуль, що містить проміжне програмне забезпечення
+  th: โมดูลที่มีมิดเดิลแวร์
+  el: Λειτουργική μονάδα που περιέχει μεσολαβητές (middleware)
+  da: Modul indeholdende mellemprogrammel
+src_utils:
+  en: Module containing utility functions
+  zh_CN: 包含工具函数的模块
+  zh_TW: 包含工具函數的模組
+  fr: Module contenant des fonctions utilitaires
+  ja: ユーティリティ機能を含むモジュール
+  es: Módulo que contiene funciones de utilidad
+  de: Modul mit Hilfsfunktionen
+  ru: Модуль, содержащий вспомогательные функции
+  it: Modulo contenente funzioni di utilità
+  pt: Módulo contendo funções utilitárias
+  ko: 유틸리티 함수를 포함하는 모듈
+  no: Modul som inneholder verktøyfunksjoner
+  is: Eining með hjálparföllum
+  uk: Модуль з допоміжними функціями
+  th: โมดูลที่มีฟังก์ชันยูทิลิตี
+  el: Λειτουργική μονάδα που περιέχει βοηθητικές συναρτήσεις
+  da: Modul indeholdende hjælpefunktioner
+src_dtos:
+  en: Module defining Data Transfer Objects (DTOs) for encapsulating and transporting data
+  zh_CN: 定义数据传输对象(DTOs)的模块,用于封装和传输数据
+  zh_TW: 定義資料傳輸物件(DTOs)的模組,用於封裝和傳輸數據
+  fr: Module définissant des objets de transfert de données (DTO) pour encapsuler et transporter des données
+  ja: データをカプセル化および転送するためのデータ転送オブジェクト(DTO)を定義するモジュール
+  es: Módulo que define Objatos de Transferencia de Datos (DTO) para encapsular y transportar datos
+  de: Modul zur Definition von Data Transfer Objects (DTOs) zur Kapselung und Übertragung von Daten
+  ru: Модуль, определяющий объекты передачи данных (DTO) для инкапсуляции и передачи данных
+  it: Modulo che definisce Data Transfer Object (DTO) per incapsulare e trasportare dati
+  pt: Módulo definindo Objetos de Transferência de Dados (DTOs) para encapsular e transportar dados
+  ko: 데이터를 캡슐화하고 전송하기 위한 데이터 전송 개체(DTO)를 정의하는 모듈
+  no: Modul som definerer Data Transfer Objects (DTOer) for å kapselere og transportere data
+  is: Eining sem skilgreinir hugtök fyrir sendingar gagna sem hylja og flytja gögn
+  uk: Модуль, що визначає об'єкти передачі даних (DTO) для інкапсуляції та передачі даних
+  th: โมดูลที่กําหนดวัตถุการส่งผ่านข้อมูล (DTOs) เพื่อ encapsulate และขนส่งข้อมูล
+  el: Λειτουργική μονάδα που ορίζει Αντικείμενα Μεταφοράς Δεδομένων (DTO) για καψούλιασμα και μεταφορά δεδομένων
+  da: Modul der definerer Data Transfer Objects (DTO'er) til indpakning og transport af data
+src_entities:
+  en: Module defining entities and interacting with database
+  zh_CN: 定义实体和与数据库交互的模块
+  zh_TW: 定義實體和與資料庫互動的模組
+  fr: Module définissant des entités et interagissant avec la base de données
+  ja: エンティティを定義し、データベースと対話するモジュール
+  es: Módulo que define entidades e interactúa con la base de datos
+  de: Modul zur Definition von Entitäten und Interaktion mit der Datenbank
+  ru: Модуль, определяющий сущности и взаимодействующий с базой данных
+  it: Modulo che definisce le entità e interagisce con il database
+  pt: Módulo definindo entidades e interagindo com banco de dados
+  ko: 엔티티를 정의하고 데이터베이스를 상호 작용하는 모듈
+  no: Modul som definerer enheter og samhandler med database
+  is: Eining sem skilgreinir hluti og vinnur með gagnagrunn
+  uk: Модуль, що визначає сутності та взаємодіє з базою даних
+  th: โมดูลกําหนดเอนทิตีและมีปฏิสัมพันธ์กับฐานข้อมูล
+  el: Λειτουργική μονάδα που ορίζει οντότητες και αλληλεπιδρά με τη βάση δεδομένων
+  da: Modul der definerer enheder og interagerer med databasen
+src_services:
+  en: Module containing business logic services
+  zh_CN: 包含业务逻辑服务的模块
+  zh_TW: 包含業務邏輯服務的模組
+  fr: Module contenant les services de logique métier
+  ja: ビジネスロジックサービスを含むモジュール
+  es: Módulo que contiene servicios de lógica de negocios
+  de: Modul mit Business Logic Services
+  ru: Модуль, содержащий сервисы бизнес-логики
+  it: Modulo contenente servizi di business logic
+  pt: Módulo contendo serviços de lógica de negócios
+  ko: 비즈니스 로직 서비스를 포함하는 모듈
+  no: Modul som inneholder forretningslogikk-tjenester
+  is: Eining með viðskiptarökfræðiþjónustu
+  uk: Модуль з сервісами бізнес-логіки
+  th: โมดูลที่มีบริการธุรกิจโลจิก
+  el: Λειτουργική μονάδα που περιέχει υπηρεσίες επιχειρησιακής λογικής
+  da: Modul indeholdende forretningslogikservices
+src_config_rs:
+  en: Module for reading and processing application configuration
+  zh_CN: 读取和处理应用配置的模块
+  zh_TW: 讀取和處理應用配置的模塊
+  fr: Module de lecture et de traitement de la configuration de l'application
+  ja: アプリケーション設定の読み込みと処理を行うモジュール
+  es: Módulo para leer y procesar la configuración de la aplicación
+  de: Modul zum Lesen und Verarbeiten der Anwendungskonfiguration
+  ru: Модуль для чтения и обработки конфигурации приложения
+  it: Modulo per la lettura e l'elaborazione della configurazione dell'applicazione
+  pt: Módulo para ler e processar a configuração do aplicativo
+  ko: 애플리케이션 설정을 읽고 처리하는 모듈
+  no: Modul for å lese og behandle applikasjonskonfigurasjon
+  is: Eining til að lesa og vinna með stillingar forrits
+  uk: Модуль для зчитування та обробки конфігурації додатка
+  th: โมดูลสําหรับอ่านและประมวลผลการกําหนดค่าแอปพลิเคชัน
+  el: Λειτουργική μονάδα για ανάγνωση και επεξεργασία της διαμόρφωσης της εφαρμογής
+  da: Modul til at læse og behandle programkonfiguration
+src_app_error_rs:
+  en: Provides unified error handling functionality
+  zh_CN: 提供统一错误处理的功能
+  zh_TW: 提供統一的錯誤處理功能
+  fr: Fournit une fonctionnalité de gestion unifiée des erreurs
+  ja: 統一エラー処理機能を提供します
+  es: Proporciona funcionalidad de manejo de errores unificada
+  de: Bietet einheitliche Fehlerbehandlungsfunktion
+  ru: Обеспечивает единообразную обработку ошибок
+  it: Fornisce funzionalità di gestione errori unificata
+  pt: Fornece funcionalidade de tratamento de erro unificado
+  ko: 통합된 오류 처리 기능을 제공
+  no: Gir enhetlig feilhåndteringsfunksjonalitet
+  is: Býður upp á samræmda villumeðhöndlun
+  uk: Надає функціональність єдиної обробки помилок
+  th: มีฟังก์ชันการจัดการข้อผิดพลาดแบบรวม
+  el: Παρέχει ενιαία λειτουργικότητα χειρισμού σφαλμάτων
+  da: Giver ensartet fejlhandlingsfunktionalitet
+src_main_rs:
+  en: Entry point of application, sets up and starts services
+  zh_CN: 程序的入口点,设置和启动服务
+  zh_TW: 程式的入口點,設置並啟動服務
+  fr: Point d'entrée de l'application, configure et démarre les services
+  ja: アプリケーションのエントリポイント。サービスのセットアップと起動を行う
+  es: Punto de entrada de la aplicación, configura e inicia los servicios
+  de: Einstiegspunkt der Anwendung, richtet Dienste ein und startet sie
+  ru: Точка входа приложения, настраивает и запускает сервисы
+  it: Punto di ingresso dell'applicazione, imposta e avvia i servizi
+  pt: Ponto de entrada do aplicativo, configura e inicia serviços
+  ko: 애플리케이션의 진입점, 서비스 설정 및 시작
+  no: Applikasjonens inngangspunkt, setter opp og starter tjenester
+  is: Innsláttarstaður forrits, setur upp og ræsir þjónustur
+  uk: Точка входу програми, налаштовує та запускає сервіси
+  th: จุดเริ่มต้นของแอปพลิเคชัน ตั้งค่าและเริ่มต้นบริการ
+  el: Σημείο εισόδου της εφαρμογής, ρυθμίζει και εκκινεί τις υπηρεσίες
+  da: Programmets indgangspunkt, opsætter og starter tjenester
+src_app_response_rs:
+  en: Standardize response
+  zh_CN: 规范化返回请求
+  zh_TW: 規範化返回請求
+  fr: Standardiser la réponse
+  ja: レスポンスを標準化する
+  es: Estandarizar respuesta
+  de: Antwort standardisieren
+  ru: Стандартизировать ответ
+  it: Standardizza risposta
+  pt: Padronizar resposta
+  ko: 응답 표준화
+  no: Standardiser svar
+  is: Staðlaður svörun
+  uk: Стандартизувати відповідь
+  th: มาตรฐานตอบกลับ
+  el: Τυποποίηση απόκρισης
+  da: Standardiser svar
