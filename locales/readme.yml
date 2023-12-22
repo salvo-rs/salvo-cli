@@ -395,3 +395,21 @@ src_app_response_rs:
   th: มาตรฐานตอบกลับ
   el: Τυποποίηση απόκρισης
   da: Standardiser svar
+project_dir_description:
+  en: Project directory description
+  zh_CN: 项目目录说明
+  zh_TW: 項目目錄說明
+  fr: Description du répertoire du projet
+  ja: プロジェクトディレクトリの説明
+  es: Descripción del directorio del proyecto
+  de: Projektverzeichnisbeschreibung
+  ru: Описание каталога проекта
+  it: Descrizione della directory di progetto
+  pt: Descrição do diretório do projeto
+  ko: 프로젝트 디렉토리 설명
+  no: Prosjektkatalogbeskrivelse
+  is: Lýsing verkefnamöppu
+  uk: Опис каталогу проекту
+  th: คําอธิบายไดเร็กทอรี่โปรเจ็กต์
+  el: Περιγραφή καταλόγου έργου
+  da: Projektbiblioteksbeskrivelse

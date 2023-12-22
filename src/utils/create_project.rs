@@ -187,6 +187,7 @@ pub fn write_project_file(
     data["database_connection_failed"] =
         handlebars::JsonValue::String(t!("database_connection_failed"));
     data["user_does_not_exist"] = handlebars::JsonValue::String(t!("user_does_not_exist"));
+
     let mut dependencies = data["dependencies"].clone();
     handle_dependencies(
         &mut dependencies,
@@ -469,10 +470,13 @@ pub fn write_project_file(
         }
         templates.append(&mut db_templates);
     }
+    templates.append(vec![("src/README.md", include_str!("../template/README.md"))].as_mut());
+
+    let directory_contents = write_directory_contents_to_markdown(&project_path.join("README.md"))?;
+    data["directory_contents"] = handlebars::JsonValue::String(directory_contents);
     for (file_name, template) in &templates {
         render_and_write_to_file(&handlebars, template, &data, project_path.join(file_name))?;
     }
-    write_directory_contents_to_markdown(&project_path.join("README.md"))?;
     Ok(())
 }
 

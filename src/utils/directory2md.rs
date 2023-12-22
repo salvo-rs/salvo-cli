@@ -1,8 +1,10 @@
+use anyhow::anyhow;
+use anyhow::Result;
 use once_cell::sync::Lazy;
 use rust_i18n::t;
 use std::collections::HashMap;
-use std::fs::{self, File};
-use std::io::{Result, Write};
+use std::fmt::Write;
+use std::fs::{self};
 use std::path::Path;
 use walkdir::WalkDir;
 
@@ -36,20 +38,25 @@ static PATH_DESCRIPTIONS: Lazy<HashMap<String, String>> = Lazy::new(|| {
     m
 });
 
-pub fn write_directory_contents_to_markdown(output_file: &Path) -> Result<()> {
-    let mut file = File::create(output_file)?;
+pub fn write_directory_contents_to_markdown(output_file: &Path) -> Result<String> {
+    let mut output = String::new();
     let project_name = output_file
         .parent()
-        .unwrap()
+        .ok_or(anyhow!("Parent directory not found."))?
         .file_name()
-        .unwrap_or_default()
+        .ok_or(anyhow!("Project name not found."))?
         .to_string_lossy();
-    writeln!(file, "# {}", project_name)?;
 
-    for entry in WalkDir::new(output_file.parent().unwrap())
-        .into_iter()
-        .filter_map(|e| e.ok())
-        .filter(|e| e.file_name().to_string_lossy() != "README.md")
+    writeln!(output, "# {}", project_name)?;
+
+    for entry in WalkDir::new(
+        output_file
+            .parent()
+            .ok_or(anyhow!("Parent directory not found."))?,
+    )
+    .into_iter()
+    .filter_map(|e| e.ok())
+    .filter(|e| e.file_name().to_string_lossy() != "README.md")
     {
         let depth = entry.depth();
         let indent = "    ".repeat(depth.saturating_sub(1));
@@ -57,33 +64,33 @@ pub fn write_directory_contents_to_markdown(output_file: &Path) -> Result<()> {
         let metadata = fs::metadata(path)?;
         if let Some(file_name) = path.file_name() {
             let file_name_str = file_name.to_string_lossy();
-            let full_path = path.to_string_lossy().into_owned();
-            let full_path = full_path.trim_start_matches(&*project_name);
+            let full_path = path
+                .strip_prefix(
+                    output_file
+                        .parent()
+                        .ok_or(anyhow!("Parent directory not found."))?,
+                )?
+                .to_string_lossy()
+                .into_owned();
             dbg!(&full_path);
-            let description = PATH_DESCRIPTIONS.get(full_path);
+            let description = PATH_DESCRIPTIONS.get(&*full_path);
             let description = description
                 .map(|s| format!("        ({})", s))
                 .unwrap_or_default();
             if metadata.is_dir() {
                 writeln!(
-                    file,
+                    output,
                     "{}- **{}:** {} {}",
-                    indent,
-                    t!("dir"),
-                    file_name_str,
-                    description
+                    indent, "dir", file_name_str, description
                 )?;
             } else {
                 writeln!(
-                    file,
+                    output,
                     "{}- *{}:* {} {}",
-                    indent,
-                    t!("file"),
-                    file_name_str,
-                    description
+                    indent, "file", file_name_str, description
                 )?;
             }
         }
     }
-    Ok(())
+    Ok(output)
 }
