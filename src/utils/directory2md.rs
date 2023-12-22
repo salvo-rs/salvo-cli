@@ -8,33 +8,32 @@ use std::fs::{self};
 use std::path::Path;
 use walkdir::WalkDir;
 
-// 使用 once_cell 创建静态的 HashMap，存储全路径和描述
 static PATH_DESCRIPTIONS: Lazy<HashMap<String, String>> = Lazy::new(|| {
     let mut m = HashMap::new();
-    m.insert("/Cargo.toml".to_string(), t!("cargo_toml"));
-    m.insert("/.env".to_string(), t!("dot_env"));
-    m.insert("/config/config.toml".to_string(), t!("config_config_toml"));
+    m.insert("Cargo.toml".to_string(), t!("cargo_toml"));
+    m.insert(".env".to_string(), t!("dot_env"));
+    m.insert("config/config.toml".to_string(), t!("config_config_toml"));
 
-    m.insert("/migrations".to_string(), t!("migrations"));
-    m.insert("/config".to_string(), t!("config"));
-    m.insert("/config/certs".to_string(), t!("config_certs"));
-    m.insert("/templates".to_string(), t!("templates"));
-    m.insert("/data".to_string(), t!("data"));
-    m.insert("/assets".to_string(), t!("assets"));
-    m.insert("/src".to_string(), t!("src"));
+    m.insert("migrations".to_string(), t!("migrations"));
+    m.insert("config".to_string(), t!("config"));
+    m.insert("config/certs".to_string(), t!("config_certs"));
+    m.insert("templates".to_string(), t!("templates"));
+    m.insert("data".to_string(), t!("data"));
+    m.insert("assets".to_string(), t!("assets"));
+    m.insert("src".to_string(), t!("src"));
     m.insert(
-        "/src/app_response.rs".to_string(),
+        "src/app_response.rs".to_string(),
         t!("src_app_response_rs"),
     );
-    m.insert("/src/routers".to_string(), t!("src_routers"));
-    m.insert("/src/middleware".to_string(), t!("src_middleware"));
-    m.insert("/src/utils".to_string(), t!("src_utils"));
-    m.insert("/src/dtos".to_string(), t!("src_dtos"));
-    m.insert("/src/entities".to_string(), t!("src_entities"));
-    m.insert("/src/services".to_string(), t!("src_services"));
-    m.insert("/src/config.rs".to_string(), t!("src_config_rs"));
-    m.insert("/src/app_error.rs".to_string(), t!("src_app_error_rs"));
-    m.insert("/src/main.rs".to_string(), t!("src_main_rs"));
+    m.insert("src/routers".to_string(), t!("src_routers"));
+    m.insert("src/middleware".to_string(), t!("src_middleware"));
+    m.insert("src/utils".to_string(), t!("src_utils"));
+    m.insert("src/dtos".to_string(), t!("src_dtos"));
+    m.insert("src/entities".to_string(), t!("src_entities"));
+    m.insert("src/services".to_string(), t!("src_services"));
+    m.insert("src/config.rs".to_string(), t!("src_config_rs"));
+    m.insert("src/app_error.rs".to_string(), t!("src_app_error_rs"));
+    m.insert("src/main.rs".to_string(), t!("src_main_rs"));
     m
 });
 
@@ -72,7 +71,6 @@ pub fn write_directory_contents_to_markdown(output_file: &Path) -> Result<String
                 )?
                 .to_string_lossy()
                 .into_owned();
-            dbg!(&full_path);
             let description = PATH_DESCRIPTIONS.get(&*full_path);
             let description = description
                 .map(|s| format!("        ({})", s))
@@ -81,13 +79,13 @@ pub fn write_directory_contents_to_markdown(output_file: &Path) -> Result<String
                 writeln!(
                     output,
                     "{}- **{}:** {} {}",
-                    indent, "dir", file_name_str, description
+                    indent, t!("dir"), file_name_str, description
                 )?;
             } else {
                 writeln!(
                     output,
                     "{}- *{}:* {} {}",
-                    indent, "file", file_name_str, description
+                    indent, t!("file"), file_name_str, description
                 )?;
             }
         }

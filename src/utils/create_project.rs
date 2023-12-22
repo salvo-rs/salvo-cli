@@ -470,7 +470,7 @@ pub fn write_project_file(
         }
         templates.append(&mut db_templates);
     }
-    templates.append(vec![("src/README.md", include_str!("../template/README.md"))].as_mut());
+    templates.append(vec![("README.md", include_str!("../template/README.md"))].as_mut());
 
     let directory_contents = write_directory_contents_to_markdown(&project_path.join("README.md"))?;
     data["directory_contents"] = handlebars::JsonValue::String(directory_contents);
