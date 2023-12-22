@@ -42,64 +42,19 @@ pub fn create_project(project: Project) -> Result<()> {
                     warning(t!("warning_init_git", error = e).replace(r"\n", "\n"));
                 }
             }
-            after_print_info(project_name, config);
+            after_print_info(project_name);
         }
         None => anyhow::bail!("cli quit!"),
     }
     Ok(())
 }
 
-fn after_print_info(project_name: &String, config: UserSelected) {
+fn after_print_info(project_name: &String) {
     println!(); // a new line
-
     // print success info
-    success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
-
+    success(t!("create_info", project_name = project_name).replace(r"\n", "\n"));
+    success(t!("create_success").replace(r"\n", "\n"));
     println!(); // a new line
-
-    match config.db_conn_type {
-        DbConnectionType::Sqlx => {
-            success(t!("create_success_sqlx").replace(r"\n", "\n"));
-            match config.db_type {
-                DbType::Sqlite => {
-                    success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
-                }
-                _ => {
-                    success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
-                }
-            }
-        }
-        DbConnectionType::SeaOrm => {
-            success(t!("create_success_sea_orm").replace(r"\n", "\n"));
-            match config.db_type {
-                DbType::Sqlite => {
-                    success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
-                }
-                _ => {
-                    success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
-                }
-            }
-        }
-        DbConnectionType::Diesel => match config.db_type {
-            DbType::Sqlite => {
-                success(t!("create_success_sqlx_diesel").replace(r"\n", "\n"));
-            }
-            _ => {
-                success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
-            }
-        },
-        DbConnectionType::Rbatis => match config.db_type {
-            DbType::Mysql | DbType::Postgres | DbType::Mssql => {
-                success(t!("create_success_rbatis").replace(r"\n", "\n"));
-            }
-            _ => {}
-        },
-        DbConnectionType::Mongodb => {
-            success(t!("mongodb_usage_import_user_data").replace(r"\n", "\n"));
-            success(t!("access_instructions").replace(r"\n", "\n"));
-        }
-        _ => {}
-    }
 }
 
 pub fn write_project_file(
