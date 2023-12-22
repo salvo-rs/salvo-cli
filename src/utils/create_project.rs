@@ -128,7 +128,7 @@ pub fn write_project_file(
             "once_cell": "1.18.0",
             "salvo": {
                 "version": "0.63",
-                "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "rustls", "catch-panic","cookie","serve-static"]
+                "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "rustls", "catch-panic","cookie","serve-static","test"]
             },
             "serde": "1.0.188",
             "thiserror": "1.0.48",

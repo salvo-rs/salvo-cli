@@ -1238,7 +1238,7 @@ checksum = "1ad4cc8da4ef723ed60bced201181d83791ad433213d8c24efffda1eec85d741"
 
 [[package]]
 name = "salvo-cli"
-version = "0.1.34"
+version = "0.1.35"
 dependencies = [
  "ansi_term",
  "anyhow",
