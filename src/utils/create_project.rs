@@ -51,7 +51,7 @@ pub fn create_project(project: Project) -> Result<()> {
 
 fn after_print_info(project_name: &String) {
     println!(); // a new line
-    // print success info
+                // print success info
     success(t!("create_info", project_name = project_name).replace(r"\n", "\n"));
     success(t!("create_success").replace(r"\n", "\n"));
     println!(); // a new line
@@ -429,9 +429,15 @@ pub fn write_project_file(
 
     let directory_contents = write_directory_contents_to_markdown(&project_path.join("README.md"))?;
     data["directory_contents"] = handlebars::JsonValue::String(directory_contents);
-    data["project_dir_description"]=handlebars::JsonValue::String(t!("project_dir_description"));
-    data["introduction"]=handlebars::JsonValue::String(t!("introduction"));
-    data["introduction_text"]=handlebars::JsonValue::String(t!("introduction_text"));
+    data["project_dir_description"] = handlebars::JsonValue::String(t!("project_dir_description"));
+    data["introduction"] = handlebars::JsonValue::String(t!("introduction"));
+    data["introduction_text"] = handlebars::JsonValue::String(t!("introduction_text"));
+    data["seleted_sqlite"] = handlebars::JsonValue::String(t!("seleted_sqlite"));
+    data["run_the_project"]=handlebars::JsonValue::String(t!("run_the_project"));
+    data["run_the_tests"]=handlebars::JsonValue::String(t!("run_the_tests"));
+    data["sqlx_cli"]=handlebars::JsonValue::String(t!("sqlx_cli"));
+    data["about_salvo"]=handlebars::JsonValue::String(t!("about_salvo"));
+    data["about_salvo_text"]=handlebars::JsonValue::String(t!("about_salvo_text"));
     for (file_name, template) in &templates {
         render_and_write_to_file(&handlebars, template, &data, project_path.join(file_name))?;
     }
