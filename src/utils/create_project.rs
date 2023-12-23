@@ -429,6 +429,9 @@ pub fn write_project_file(
 
     let directory_contents = write_directory_contents_to_markdown(&project_path.join("README.md"))?;
     data["directory_contents"] = handlebars::JsonValue::String(directory_contents);
+    data["project_dir_description"]=handlebars::JsonValue::String(t!("project_dir_description"));
+    data["introduction"]=handlebars::JsonValue::String(t!("introduction"));
+    data["introduction_text"]=handlebars::JsonValue::String(t!("introduction_text"));
     for (file_name, template) in &templates {
         render_and_write_to_file(&handlebars, template, &data, project_path.join(file_name))?;
     }
