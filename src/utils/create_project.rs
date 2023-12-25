@@ -438,6 +438,12 @@ pub fn write_project_file(
     data["sqlx_cli"]=handlebars::JsonValue::String(t!("sqlx_cli"));
     data["about_salvo"]=handlebars::JsonValue::String(t!("about_salvo"));
     data["about_salvo_text"]=handlebars::JsonValue::String(t!("about_salvo_text"));
+    data["tip_title"]=handlebars::JsonValue::String(t!("tip_title"));
+    data["password_tip"]=handlebars::JsonValue::String(t!("password_tip"));
+    data["config_tip"]=handlebars::JsonValue::String(t!("config_tip"));
+    data["orm_title"]=handlebars::JsonValue::String(t!("orm_title"));
+    data["initialization"]=handlebars::JsonValue::String(t!("initialization"));
+    data["initialization_sqlx_cli_not_sqlite"]=handlebars::JsonValue::String(t!("initialization_sqlx_cli_not_sqlite").replace(r"\n", "\n"));
     for (file_name, template) in &templates {
         render_and_write_to_file(&handlebars, template, &data, project_path.join(file_name))?;
     }
