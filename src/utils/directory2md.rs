@@ -13,8 +13,8 @@ static PATH_DESCRIPTIONS: Lazy<HashMap<String, String>> = Lazy::new(|| {
     m.insert("Cargo.toml".to_string(), t!("cargo_toml"));
     m.insert(".env".to_string(), t!("dot_env"));
     m.insert("config/config.toml".to_string(), t!("config_config_toml"));
-
     m.insert("migrations".to_string(), t!("migrations"));
+    m.insert("migration".to_string(), t!("migrations"));
     m.insert("config".to_string(), t!("config"));
     m.insert("config/certs".to_string(), t!("config_certs"));
     m.insert("templates".to_string(), t!("templates"));
@@ -27,6 +27,7 @@ static PATH_DESCRIPTIONS: Lazy<HashMap<String, String>> = Lazy::new(|| {
     m.insert("src/utils".to_string(), t!("src_utils"));
     m.insert("src/dtos".to_string(), t!("src_dtos"));
     m.insert("src/entities".to_string(), t!("src_entities"));
+    m.insert("src/models".to_string(), t!("src_entities"));
     m.insert("src/services".to_string(), t!("src_services"));
     m.insert("src/config.rs".to_string(), t!("src_config_rs"));
     m.insert("src/app_error.rs".to_string(), t!("src_app_error_rs"));
