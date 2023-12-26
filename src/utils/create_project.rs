@@ -12,6 +12,7 @@ use std::{
 };
 
 use super::{
+    directory2md::write_directory_contents_to_markdown,
     get_selection::{get_user_selected, DbConnectionType, DbType, TemplateType, UserSelected},
     print_util, restricted_names, warning,
 };
@@ -41,64 +42,19 @@ pub fn create_project(project: Project) -> Result<()> {
                     warning(t!("warning_init_git", error = e).replace(r"\n", "\n"));
                 }
             }
-            after_print_info(project_name, config);
+            after_print_info(project_name);
         }
         None => anyhow::bail!("cli quit!"),
     }
     Ok(())
 }
 
-fn after_print_info(project_name: &String, config: UserSelected) {
+fn after_print_info(project_name: &String) {
     println!(); // a new line
-
-    // print success info
-    success(t!("create_success", project_name = project_name).replace(r"\n", "\n"));
-
+                // print success info
+    success(t!("create_info", project_name = project_name).replace(r"\n", "\n"));
+    success(t!("create_success").replace(r"\n", "\n"));
     println!(); // a new line
-
-    match config.db_conn_type {
-        DbConnectionType::Sqlx => {
-            success(t!("create_success_sqlx").replace(r"\n", "\n"));
-            match config.db_type {
-                DbType::Sqlite => {
-                    success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
-                }
-                _ => {
-                    success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
-                }
-            }
-        }
-        DbConnectionType::SeaOrm => {
-            success(t!("create_success_sea_orm").replace(r"\n", "\n"));
-            match config.db_type {
-                DbType::Sqlite => {
-                    success(t!("create_success_sqlx_sqlite").replace(r"\n", "\n"));
-                }
-                _ => {
-                    success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
-                }
-            }
-        }
-        DbConnectionType::Diesel => match config.db_type {
-            DbType::Sqlite => {
-                success(t!("create_success_sqlx_diesel").replace(r"\n", "\n"));
-            }
-            _ => {
-                success(t!("create_success_mysql_or_pgsql").replace(r"\n", "\n"));
-            }
-        },
-        DbConnectionType::Rbatis => match config.db_type {
-            DbType::Mysql | DbType::Postgres | DbType::Mssql => {
-                success(t!("create_success_rbatis").replace(r"\n", "\n"));
-            }
-            _ => {}
-        },
-        DbConnectionType::Mongodb => {
-            success(t!("mongodb_usage_import_user_data").replace(r"\n", "\n"));
-            success(t!("access_instructions").replace(r"\n", "\n"));
-        }
-        _ => {}
-    }
 }
 
 pub fn write_project_file(
@@ -186,6 +142,7 @@ pub fn write_project_file(
     data["database_connection_failed"] =
         handlebars::JsonValue::String(t!("database_connection_failed"));
     data["user_does_not_exist"] = handlebars::JsonValue::String(t!("user_does_not_exist"));
+
     let mut dependencies = data["dependencies"].clone();
     handle_dependencies(
         &mut dependencies,
@@ -471,6 +428,36 @@ pub fn write_project_file(
     for (file_name, template) in &templates {
         render_and_write_to_file(&handlebars, template, &data, project_path.join(file_name))?;
     }
+
+    let directory_contents = write_directory_contents_to_markdown(&project_path.join("README.md"))?;
+    data["directory_contents"] = handlebars::JsonValue::String(directory_contents);
+    data["project_dir_description"] = handlebars::JsonValue::String(t!("project_dir_description"));
+    data["introduction"] = handlebars::JsonValue::String(t!("introduction"));
+    data["introduction_text"] = handlebars::JsonValue::String(t!("introduction_text"));
+    data["seleted_sqlite"] = handlebars::JsonValue::String(t!("seleted_sqlite"));
+    data["run_the_project"]=handlebars::JsonValue::String(t!("run_the_project"));
+    data["run_the_tests"]=handlebars::JsonValue::String(t!("run_the_tests"));
+    data["sqlx_cli"]=handlebars::JsonValue::String(t!("sqlx_cli"));
+    data["about_salvo"]=handlebars::JsonValue::String(t!("about_salvo"));
+    data["about_salvo_text"]=handlebars::JsonValue::String(t!("about_salvo_text"));
+    data["tip_title"]=handlebars::JsonValue::String(t!("tip_title"));
+    data["password_tip"]=handlebars::JsonValue::String(t!("password_tip"));
+    data["config_tip"]=handlebars::JsonValue::String(t!("config_tip"));
+    data["orm_title"]=handlebars::JsonValue::String(t!("orm_title"));
+    data["sqlx_website"]=handlebars::JsonValue::String(t!("sqlx_website"));
+    data["sea_orm_website"]=handlebars::JsonValue::String(t!("sea_orm_website"));
+    data["diesel_website"]=handlebars::JsonValue::String(t!("diesel_website"));
+    data["rbatis_website"]=handlebars::JsonValue::String(t!("rbatis_website"));
+    data["mongodb_website"]=handlebars::JsonValue::String(t!("mongodb_website"));
+    data["initialization"]=handlebars::JsonValue::String(t!("initialization"));
+    data["initialization_sqlx_cli_not_sqlite"]=handlebars::JsonValue::String(t!("initialization_sqlx_cli_not_sqlite").replace(r"\n", "\n"));
+    data["initialization_seaorm_cli_not_sqlite"]=handlebars::JsonValue::String(t!("initialization_seaorm_cli_not_sqlite").replace(r"\n", "\n"));
+    data["initialization_diesel_cli_not_sqlite"]=handlebars::JsonValue::String(t!("initialization_diesel_cli_not_sqlite").replace(r"\n", "\n"));
+    data["initialization_rbatis_cli_not_sqlite"]=handlebars::JsonValue::String(t!("initialization_rbatis_cli_not_sqlite").replace(r"\n", "\n"));
+    data["sea_orm_cli_website"]=handlebars::JsonValue::String(t!("sea_orm_cli_website").replace(r"\n", "\n")); 
+    data["diesel_cli_website"]=handlebars::JsonValue::String(t!("diesel_cli_website").replace(r"\n", "\n")); 
+    data["mongodb_usage_import_user_data"]=handlebars::JsonValue::String(t!("mongodb_usage_import_user_data").replace(r"\n", "\n"));
+    render_and_write_to_file(&handlebars, include_str!("../template/README.md"), &data, project_path.join("README.md"))?;
     Ok(())
 }
 
