@@ -435,29 +435,45 @@ pub fn write_project_file(
     data["introduction"] = handlebars::JsonValue::String(t!("introduction"));
     data["introduction_text"] = handlebars::JsonValue::String(t!("introduction_text"));
     data["seleted_sqlite"] = handlebars::JsonValue::String(t!("seleted_sqlite"));
-    data["run_the_project"]=handlebars::JsonValue::String(t!("run_the_project"));
-    data["run_the_tests"]=handlebars::JsonValue::String(t!("run_the_tests"));
-    data["sqlx_cli"]=handlebars::JsonValue::String(t!("sqlx_cli"));
-    data["about_salvo"]=handlebars::JsonValue::String(t!("about_salvo"));
-    data["about_salvo_text"]=handlebars::JsonValue::String(t!("about_salvo_text"));
-    data["tip_title"]=handlebars::JsonValue::String(t!("tip_title"));
-    data["password_tip"]=handlebars::JsonValue::String(t!("password_tip"));
-    data["config_tip"]=handlebars::JsonValue::String(t!("config_tip"));
-    data["orm_title"]=handlebars::JsonValue::String(t!("orm_title"));
-    data["sqlx_website"]=handlebars::JsonValue::String(t!("sqlx_website"));
-    data["sea_orm_website"]=handlebars::JsonValue::String(t!("sea_orm_website"));
-    data["diesel_website"]=handlebars::JsonValue::String(t!("diesel_website"));
-    data["rbatis_website"]=handlebars::JsonValue::String(t!("rbatis_website"));
-    data["mongodb_website"]=handlebars::JsonValue::String(t!("mongodb_website"));
-    data["initialization"]=handlebars::JsonValue::String(t!("initialization"));
-    data["initialization_sqlx_cli_not_sqlite"]=handlebars::JsonValue::String(t!("initialization_sqlx_cli_not_sqlite").replace(r"\n", "\n"));
-    data["initialization_seaorm_cli_not_sqlite"]=handlebars::JsonValue::String(t!("initialization_seaorm_cli_not_sqlite").replace(r"\n", "\n"));
-    data["initialization_diesel_cli_not_sqlite"]=handlebars::JsonValue::String(t!("initialization_diesel_cli_not_sqlite").replace(r"\n", "\n"));
-    data["initialization_rbatis_cli_not_sqlite"]=handlebars::JsonValue::String(t!("initialization_rbatis_cli_not_sqlite").replace(r"\n", "\n"));
-    data["sea_orm_cli_website"]=handlebars::JsonValue::String(t!("sea_orm_cli_website").replace(r"\n", "\n")); 
-    data["diesel_cli_website"]=handlebars::JsonValue::String(t!("diesel_cli_website").replace(r"\n", "\n")); 
-    data["mongodb_usage_import_user_data"]=handlebars::JsonValue::String(t!("mongodb_usage_import_user_data").replace(r"\n", "\n"));
-    render_and_write_to_file(&handlebars, include_str!("../template/README.md"), &data, project_path.join("README.md"))?;
+    data["run_the_project"] = handlebars::JsonValue::String(t!("run_the_project"));
+    data["run_the_tests"] = handlebars::JsonValue::String(t!("run_the_tests"));
+    data["sqlx_cli"] = handlebars::JsonValue::String(t!("sqlx_cli"));
+    data["about_salvo"] = handlebars::JsonValue::String(t!("about_salvo"));
+    data["about_salvo_text"] = handlebars::JsonValue::String(t!("about_salvo_text"));
+    data["tip_title"] = handlebars::JsonValue::String(t!("tip_title"));
+    data["password_tip"] = handlebars::JsonValue::String(t!("password_tip"));
+    data["config_tip"] = handlebars::JsonValue::String(t!("config_tip"));
+    data["orm_title"] = handlebars::JsonValue::String(t!("orm_title"));
+    data["sqlx_website"] = handlebars::JsonValue::String(t!("sqlx_website"));
+    data["sea_orm_website"] = handlebars::JsonValue::String(t!("sea_orm_website"));
+    data["diesel_website"] = handlebars::JsonValue::String(t!("diesel_website"));
+    data["rbatis_website"] = handlebars::JsonValue::String(t!("rbatis_website"));
+    data["mongodb_website"] = handlebars::JsonValue::String(t!("mongodb_website"));
+    data["initialization"] = handlebars::JsonValue::String(t!("initialization"));
+    data["initialization_sqlx_cli_not_sqlite"] = handlebars::JsonValue::String(
+        t!("initialization_sqlx_cli_not_sqlite").replace(r"\n", "\n"),
+    );
+    data["initialization_seaorm_cli_not_sqlite"] = handlebars::JsonValue::String(
+        t!("initialization_seaorm_cli_not_sqlite").replace(r"\n", "\n"),
+    );
+    data["initialization_diesel_cli_not_sqlite"] = handlebars::JsonValue::String(
+        t!("initialization_diesel_cli_not_sqlite").replace(r"\n", "\n"),
+    );
+    data["initialization_rbatis_cli_not_sqlite"] = handlebars::JsonValue::String(
+        t!("initialization_rbatis_cli_not_sqlite").replace(r"\n", "\n"),
+    );
+    data["sea_orm_cli_website"] =
+        handlebars::JsonValue::String(t!("sea_orm_cli_website").replace(r"\n", "\n"));
+    data["diesel_cli_website"] =
+        handlebars::JsonValue::String(t!("diesel_cli_website").replace(r"\n", "\n"));
+    data["mongodb_usage_import_user_data"] =
+        handlebars::JsonValue::String(t!("mongodb_usage_import_user_data").replace(r"\n", "\n"));
+    render_and_write_to_file(
+        &handlebars,
+        include_str!("../template/README.md"),
+        &data,
+        project_path.join("README.md"),
+    )?;
     Ok(())
 }
 
