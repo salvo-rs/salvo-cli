@@ -129,7 +129,7 @@ pub fn write_project_file(
         "delete":t!("delete"),
         "yes":t!("yes"),
         "cancel":t!("cancel"),
-        "swagger_api_page":t!("swagger_api_page"),
+        "open_api_page":t!("open_api_page"),
         "login_page":t!("login_page"),
         "operation":t!("operation"),
         "create_success_sea_orm__mysql_or_pgsql_install_sea_orm":t!("create_success_sea_orm__mysql_or_pgsql_install_sea_orm"),

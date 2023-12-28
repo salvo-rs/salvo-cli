@@ -437,25 +437,24 @@ add_user:
   th: เพิ่มผู้ใช้
   el: Προσθήκη χρήστη
   da: Tilføj bruger
-swagger_api_page:
-  en: Swagger API Page
-  zh_CN: Swagger API页面
-  zh_TW: Swagger API頁面
-  fr: Page API Swagger
-  ja: Swagger APIページ
-  es: Página API de Swagger
-  de: Swagger-API-Seite
-  ru: Страница Swagger API
-  it: Pagina API Swagger
-  pt: Página API Swagger
-  ko: Swagger API 페이지
-  no: Swagger API-side
-  is: Swagger API síða
-  uk: Сторінка Swagger API
-  th: หน้า Swagger API
-  el: Σελίδα Swagger API
-  da: Swagger API-side
-
+open_api_page:
+  en: Open API Page
+  zh_CN: Open API页面
+  zh_TW: Open API頁面
+  fr: Page Open API
+  ja: Open APIページ
+  es: Página Open API
+  de: Open-API-Seite
+  ru: Страница Open API
+  it: Pagina Open API
+  pt: Página Open API
+  ko: Open API 페이지
+  no: Open API-side
+  is: Open API síða
+  uk: Сторінка Open API
+  th: หน้า Open API
+  el: Σελίδα Open API
+  da: Open API-side
 login_page:
   en: Login Page
   zh_CN: 登录页面
