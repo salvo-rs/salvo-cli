@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,48 +10,48 @@
     <div x-data="loginForm()">
       <template x-if="!isLoggedIn">
         <div
-          class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
-        >
-          <div
-            class="w-full max-w-md space-y-8 bg-white p-10 rounded-2xl shadow-xl"
-          >
-            <div>
-              <h2 class="text-center text-4xl font-extrabold text-gray-700">
-                {{login}}
-              </h2>
-            </div>
-            <form class="mt-8 space-y-6" @submit.prevent="submit">
-              <input type="hidden" name="remember" value="true" />
-              <div class="rounded-md shadow-sm -space-y-px">
-                <div>
-                  <label for="username" class="sr-only">Username</label>
-                  <input
-                    x-model="username"
-                    id="username"
-                    name="username"
-                    type="text"
-                    autocomplete="username"
-                    required
-                    class="relative block w-full appearance-none rounded-t-2xl border border-gray-300 px-4 py-3 mb-3 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
-                    placeholder="{{username}}"
-                  />
-                </div>
-                <div>
-                  <label for="password" class="sr-only">Password</label>
-                  <input
-                    x-model="password"
-                    id="password"
-                    name="password"
-                    type="password"
-                    autocomplete="current-password"
-                    required
-                    class="relative block w-full appearance-none rounded-b-2xl border border-gray-300 px-4 py-3 mb-3 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
-                    placeholder="{{password}}"
-                  />
-                </div>
-              </div>
+  class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8 "
+>
+  <div class="w-full max-w-md space-y-8 bg-white p-10 rounded-2xl shadow-xl">
+    <div>
+      <h2
+        class="text-center text-4xl font-extrabold text-gray-700"
+      >
+         {{login}}
+      </h2>
+    </div>
+    <form class="mt-8 space-y-6"  @submit.prevent="submit">
+      <input type="hidden" name="remember" value="true" />
+      <div class="rounded-md shadow-sm -space-y-px">
+        <div>
+          <label for="username" class="sr-only">Username</label>
+          <input
+            x-model="username"
+            id="username"
+            name="username"
+            type="text"
+            autocomplete="username"
+            required
+            class="relative block w-full appearance-none rounded-t-2xl border border-gray-300 px-4 py-3 mb-3 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
+            placeholder="{{username}}"
+          />
+        </div>
+        <div>
+          <label for="password" class="sr-only">Password</label>
+          <input
+            x-model="password"
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            class="relative block w-full appearance-none rounded-b-2xl border border-gray-300 px-4 py-3 mb-3 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
+            placeholder="{{password}}"
+          />
+        </div>
+      </div>
 
-              {{! <div class="flex items-center justify-between">
+      {{!-- <div class="flex items-center justify-between">
         <div class="flex items-center">
           <input
             id="remember-me"
@@ -68,19 +69,19 @@
             Forgot your password?
           </a>
         </div>
-      </div> }}
+      </div> --}}
 
-              <div>
-                <button
-                  type="submit"
-                  class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
-                >
-                  {{login}}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+      <div>
+        <button
+          type="submit"
+          class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
+        >
+          {{login}}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
       </template>
       <template x-if="isLoggedIn">
         <div x-html="userList"></div>
@@ -91,38 +92,127 @@
   <script src="assets/js/sweetalert2.js"></script>
   <script src="assets/js/alpinejs.js" defer></script>
   <script>
-    function loginForm() { return { username: "", password: "", isLoggedIn:
-    false, userList: "", async submit() { try { const response = await
-    fetch("/api/login", { method: "POST", headers: { "Content-Type":
-    "application/json", }, body: JSON.stringify({ username: this.username,
-    password: this.password, }), }); if (!response.ok) { const data = await
-    response.json(); throw new Error(`${data.msg}`); } this.isLoggedIn = true;
-    const userListResponse = await fetch("/users", { headers: {
-    "X-Fragment-Header": "true", }, }); this.userList = await
-    userListResponse.text(); history.pushState(null, '', '/users'); } catch
-    (error) { Swal.fire({ title: "Error!", text: error.message, icon: "error",
-    confirmButtonText: "OK", }); } }, }; } function userForm() { return { users:
-    [], fetchData() { fetch("/api/users") .then((response) => { if
-    (!response.ok) { throw new Error("Network response was not ok"); } return
-    response.json(); }) .then((data) => { this.users = data.data; })
-    .catch((error) => { console.error( "There has been a problem with your fetch
-    operation:", error ); }); }, addUser() { Swal.fire({ title: "Add User",
-    showCancelButton: true, html: ` <input id="swal-input1" class="swal2-input"
-    placeholder="username"> <input id="swal-input2" class="swal2-input"
-    placeholder="password"> `, preConfirm: () => { return fetch("/api/users", {
-    method: "POST", headers: { "Content-Type": "application/json", }, body:
-    JSON.stringify({ username: document.getElementById("swal-input1").value,
-    password: document.getElementById("swal-input2").value, }), })
-    .then((response) => { if (!response.ok) { throw new
-    Error(response.statusText); } this.fetchData(); return; }) .catch((error) =>
-    { Swal.showValidationMessage(`Request failed: ${error}`); }); },
-    allowOutsideClick: () => !Swal.isLoading(), }); }, deleteUser(id) {
-    Swal.fire({ title: "Are you sure?", text: "You won't be able to revert
-    this!", icon: "warning", showCancelButton: true, confirmButtonText: "Yes,
-    delete it!", preConfirm: () => { return fetch(`/api/users/${id}`, { method:
-    "DELETE", }) .then((response) => { if (!response.ok) { throw new
-    Error(response.statusText); } this.fetchData(); return; }) .catch((error) =>
-    { Swal.showValidationMessage(`Request failed: ${error}`); }); },
-    allowOutsideClick: () => !Swal.isLoading(), }).then((result) => {}); }, }; }
+    function loginForm() {
+      return {
+        username: "",
+        password: "",
+        isLoggedIn: false,
+        userList: "",
+        async submit() {
+          try {
+            const response = await fetch("/api/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                username: this.username,
+                password: this.password,
+              }),
+            });
+            if (!response.ok) {
+              const data = await response.json();
+              throw new Error(`${data.msg}`);
+            }
+            this.isLoggedIn = true;
+            const userListResponse = await fetch("/users", {
+              headers: {
+                "X-Fragment-Header": "true",
+              },
+            });
+            this.userList = await userListResponse.text();
+            history.pushState(null, '', '/users');
+          } catch (error) {
+            Swal.fire({
+              title: "Error!",
+              text: error.message,
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        },
+      };
+    }
+    function userForm() {
+    return {
+      users: [],
+      fetchData() {
+        fetch("/api/users")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            this.users = data.data;
+          })
+          .catch((error) => {
+            console.error(
+              "There has been a problem with your fetch operation:",
+              error
+            );
+          });
+      },
+      addUser() {
+        Swal.fire({
+          title: "Add User",
+          showCancelButton: true,
+          html: `
+    <input id="swal-input1" class="swal2-input" placeholder="username">
+    <input id="swal-input2" class="swal2-input" placeholder="password">
+    `,
+          preConfirm: () => {
+            return fetch("/api/users", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                username: document.getElementById("swal-input1").value,
+                password: document.getElementById("swal-input2").value,
+              }),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error(response.statusText);
+                }
+                this.fetchData();
+                return;
+              })
+              .catch((error) => {
+                Swal.showValidationMessage(`Request failed: ${error}`);
+              });
+          },
+          allowOutsideClick: () => !Swal.isLoading(),
+        });
+      },
+      deleteUser(id) {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+          preConfirm: () => {
+            return fetch(`/api/users/${id}`, {
+              method: "DELETE",
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error(response.statusText);
+                }
+                this.fetchData();
+                return;
+              })
+              .catch((error) => {
+                Swal.showValidationMessage(`Request failed: ${error}`);
+              });
+          },
+          allowOutsideClick: () => !Swal.isLoading(),
+        }).then((result) => {});
+      },
+    };
+  }
   </script>
 </html>

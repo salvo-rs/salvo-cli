@@ -33,3 +33,4 @@ pub fn orange<S: AsRef<str>>(msg: S) {
 pub fn green<S: AsRef<str>>(msg: S) {
     println!("{}", Green.paint(msg.as_ref()));
 }
+
