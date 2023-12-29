@@ -1,60 +1,65 @@
-[server]
-name = "{{project_name}}"
-address = "0.0.0.0:5800"
-ssl = false
-cors_allow_origin=["https://salvo.rs"]
+server:
+  name: "{{project_name}}"
+  address: "0.0.0.0:5800"
+  ssl: false
+  cors_allow_origin:
+    - "https://salvo.rs"
+
 {{#if need_db_conn}}
-[database]
-{{#if is_sea_orm_or_sqlx}}
-{{#if is_postgres}}
-database_url="postgresql://liufankai:1@localhost/salvo_demo"
-{{/if}}
-{{#if is_sqlite}}
-database_url="sqlite:data/demo.db"
-{{/if}}
-{{#if is_mysql}}
-database_url="mysql://root:981109@localhost/salvo_demo"
-{{/if}}
-{{/if}}
-{{#if is_diesel}}
-{{#if is_postgres}}
-database_url="postgres://liufankai:1@localhost/diesel_example"
-{{/if}}
-{{#if is_sqlite}}
-database_url="file:data/test.db"
-{{/if}}
-{{#if is_mysql}}
-database_url="mysql://root:123@127.0.0.1:3306/diesel_example"
-{{/if}}
-{{/if}}
-{{#if is_rbatis}}
-{{#if is_postgres}}
-database_url="postgres://liufankai:1@localhost/rbatis_example"
-{{/if}}
-{{#if is_sqlite}}
-database_url="data/rbatis_sqlite.db"
-{{/if}}
-{{#if is_mysql}}
-database_url="mysql://root:123@127.0.0.1:3306/rbatis_example"
-{{/if}}
-{{#if is_mssql}}
-database_url="mssql://SA:TestPass!123456@localhost:1433/rbatis_example"
-{{/if}}
-{{/if}}
+database:
+  {{#if is_sea_orm_or_sqlx}}
+  {{#if is_postgres}}
+  database_url: "postgresql://liufankai:1@localhost/salvo_demo"
+  {{/if}}
+  {{#if is_sqlite}}
+  database_url: "sqlite:data/demo.db"
+  {{/if}}
+  {{#if is_mysql}}
+  database_url: "mysql://root:981109@localhost/salvo_demo"
+  {{/if}}
+  {{/if}}
+  {{#if is_diesel}}
+  {{#if is_postgres}}
+  database_url: "postgres://liufankai:1@localhost/diesel_example"
+  {{/if}}
+  {{#if is_sqlite}}
+  database_url: "file:data/test.db"
+  {{/if}}
+  {{#if is_mysql}}
+  database_url: "mysql://root:123@127.0.0.1:3306/diesel_example"
+  {{/if}}
+  {{/if}}
+  {{#if is_rbatis}}
+  {{#if is_postgres}}
+  database_url: "postgres://liufankai:1@localhost/rbatis_example"
+  {{/if}}
+  {{#if is_sqlite}}
+  database_url: "data/rbatis_sqlite.db"
+  {{/if}}
+  {{#if is_mysql}}
+  database_url: "mysql://root:123@127.0.0.1:3306/rbatis_example"
+  {{/if}}
+  {{#if is_mssql}}
+  database_url: "mssql://SA:TestPass!123456@localhost:1433/rbatis_example"
+  {{/if}}
+  {{/if}}
 {{/if}}
 {{#if is_mongodb}}
-database_url="mongodb://localhost:27017"
+database_url: "mongodb://localhost:27017"
 {{/if}}
-[jwt]
-jwt_secret = "secret"
-jwt_exp = 6000
-[cert]
-cert = "config/certs/cert.pem"
-key = "config/certs/key.pem"
-[log]
-filter_level = "info"        # "debug" "info" "warn" "error"
-with_ansi = true
-to_stdout = true
-directory = "./logs"
-file_name = "my-service.log"
-rolling = "daily"            # "minutely" "hourly" "daily" "never"
+
+jwt:
+  jwt_secret: "secret"
+  jwt_exp: 6000
+
+cert:
+  cert: "config/certs/cert.pem"
+  key: "config/certs/key.pem"
+
+log:
+  filter_level: "info"        # Available options: "debug", "info", "warn", "error"
+  with_ansi: true
+  to_stdout: true
+  directory: "./logs"
+  file_name: "my-service.log"
+  rolling: "daily"            # Available options: "minutely", "hourly", "daily", "never"

@@ -51,7 +51,7 @@ pub struct Cert {
     pub key: String,
 }
 
-const CONFIG_FILE: &str = "config/config.toml";
+const CONFIG_FILE: &str = "config/config.yml";
 
 pub static CFG: Lazy<Configs> = Lazy::new(self::Configs::init);
 
@@ -69,7 +69,7 @@ impl Configs {
             Ok(s) => s,
             Err(e) => panic!("{{config_error_read}}", e),
         };
-        match toml::from_str(&cfg_contents){
+        match serde_yaml::from_str(&cfg_contents){
             Ok(c) => c,
             Err(e) => panic!("{{config_error_parse}}", e),
         }

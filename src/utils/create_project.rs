@@ -94,7 +94,7 @@ pub fn write_project_file(
                 "version": "1",
                 "features": ["full"]
             },
-            "toml": "0.8.0",
+            "serde_yaml": "0.8.26",
             "tracing": "0.1"
         },
         "is_web_site":is_web_site,
@@ -527,7 +527,7 @@ fn create_basic_file(
         ),
         //config
         (
-            "config/config.toml",
+            "config/config.yml",
             include_str!("../template/config/config.hbs"),
         ),
         (
