@@ -79,7 +79,7 @@ pub fn write_project_file(
         "project_name": project.project_name,
         "dependencies": {
             "anyhow": "1.0.75",
-            "clia-tracing-config": "0.2.5",
+            "clia-tracing-config": "0.2.7",
             "jsonwebtoken": "8.3.0",
             "once_cell": "1.18.0",
             "salvo": {
