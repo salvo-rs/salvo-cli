@@ -53,7 +53,7 @@ fn after_print_info(project_name: &String) {
     println!(); // a new line
     success(t!("create_info", project_name = project_name).replace(r"\n", "\n"));
     success(t!("create_success").replace(r"\n", "\n"));
-    success(t!("rust_version_tip").replace(r"`", "`"));
+    success(t!("rust_version_tip"));
     println!(); // a new line
 }
 
