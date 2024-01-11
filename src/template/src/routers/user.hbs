@@ -15,6 +15,7 @@ use salvo::{
     writing::{Redirect, Text},
     Request, Response,
 };
+use salvo::Writer;
 
 #[derive(Template)]
 #[template(path = "login.html")]
@@ -119,6 +120,7 @@ use salvo::{
     oapi::extract::{JsonBody, PathParam},
     Request, Response,
 };
+use salvo::Writer;
 
 #[endpoint( tags("comm"),)]
 pub async fn post_login(req: JsonBody<UserLoginRequest>, res: &mut Response) {

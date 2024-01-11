@@ -51,9 +51,9 @@ pub fn create_project(project: Project) -> Result<()> {
 
 fn after_print_info(project_name: &String) {
     println!(); // a new line
-                // print success info
     success(t!("create_info", project_name = project_name).replace(r"\n", "\n"));
     success(t!("create_success").replace(r"\n", "\n"));
+    success(t!("rust_version_tip").replace(r"`", "`"));
     println!(); // a new line
 }
 
@@ -83,7 +83,7 @@ pub fn write_project_file(
             "jsonwebtoken": "8.3.0",
             "once_cell": "1.18.0",
             "salvo": {
-                "version": "0.63",
+                "version": "0.64",
                 "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "rustls", "catch-panic","cookie","serve-static","test"]
             },
             "serde": "1.0.188",
@@ -142,7 +142,7 @@ pub fn write_project_file(
     data["database_connection_failed"] =
         handlebars::JsonValue::String(t!("database_connection_failed"));
     data["user_does_not_exist"] = handlebars::JsonValue::String(t!("user_does_not_exist"));
-
+    data["rust_version_tip"] = handlebars::JsonValue::String(t!("rust_version_tip"));
     let mut dependencies = data["dependencies"].clone();
     handle_dependencies(
         &mut dependencies,

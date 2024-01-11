@@ -1,6 +1,6 @@
 [package]
 name = "salvo-cli"
-version = "0.1.40"
+version = "0.1.41"
 edition = "2021"
 authors = ["Fankai Liu  liufankai137@outlook.com","mrxiaozhuox mrxzx.info@gmail.com"]
 keywords = ["salvo", "cli","template"]

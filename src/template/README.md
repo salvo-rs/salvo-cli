@@ -1,5 +1,6 @@
 # {{introduction}}
 {{introduction_text}}
+{{{rust_version_tip}}}
 {{#if is_sqlite}}
 {{/if}}
 ``` shell
