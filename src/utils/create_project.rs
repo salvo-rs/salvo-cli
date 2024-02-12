@@ -78,23 +78,23 @@ pub fn write_project_file(
     let mut data = json!({
         "project_name": project.project_name,
         "dependencies": {
-            "anyhow": "1.0.75",
+            "anyhow": "1.0.79",
             "clia-tracing-config": "0.2.7",
-            "jsonwebtoken": "8.3.0",
-            "once_cell": "1.18.0",
+            "jsonwebtoken": "9.2.0",
+            "once_cell": "1.19.0",
             "salvo": {
                 "version": "0.65",
                 "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "rustls", "catch-panic","cookie","serve-static","test"]
             },
-            "serde": "1.0.188",
-            "thiserror": "1.0.48",
+            "serde": "1.0.196",
+            "thiserror": "1.0.57",
             "time": "0.3.28",
             "rust-embed":"8.0.0",
             "tokio": {
                 "version": "1",
                 "features": ["full"]
             },
-            "serde_yaml": "0.8.26",
+            "serde_yaml": "0.9.31",
             "tracing": "0.1"
         },
         "is_web_site":is_web_site,
