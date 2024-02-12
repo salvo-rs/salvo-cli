@@ -699,7 +699,7 @@ fn handle_dependencies(
         }
         //add uuid dependency
         dependencies["uuid"] = json!({
-            "version": "1.7.1",
+            "version": "1.4.1",
             "features": ["v4", "fast-rng", "macro-diagnostics"]
         });
         //add rand dependency
