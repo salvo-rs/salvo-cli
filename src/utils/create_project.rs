@@ -83,7 +83,7 @@ pub fn write_project_file(
             "jsonwebtoken": "9.2.0",
             "once_cell": "1.19.0",
             "salvo": {
-                "version": "0.65",
+                "version": "0.66",
                 "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "rustls", "catch-panic","cookie","serve-static","test"]
             },
             "serde": "1.0.196",
