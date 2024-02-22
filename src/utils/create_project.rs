@@ -690,7 +690,7 @@ fn handle_dependencies(
                 });
             }
             (DbConnectionType::Mongodb, _) => {
-                dependencies["mongodb"] = json!({"version":"2.0"});
+                dependencies["mongodb"] = json!({"version":"2.8"});
                 dependencies["futures-util"] = json!({
                     "version": "0.3",
                 });
