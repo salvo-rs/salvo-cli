@@ -6,7 +6,7 @@ use salvo::{oapi::endpoint, writing::Text, Request, Response};
 {{else}}
 use salvo::oapi::endpoint;
 {{/if}}
-use crate::app_response::AppResult;
+use crate::app_writer::AppResult;
 {{#if is_web_site}}
 
 #[derive(Template)]

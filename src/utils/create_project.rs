@@ -505,8 +505,8 @@ fn create_basic_file(
             include_str!("../template/src/app_error.hbs"),
         ),
         (
-            "src/app_response.rs",
-            include_str!("../template/src/app_response.hbs"),
+            "src/app_writer.rs",
+            include_str!("../template/src/app_writer.hbs"),
         ),
         //src/middleware
         (

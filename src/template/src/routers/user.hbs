@@ -1,6 +1,6 @@
 {{#if is_web_site}}
 use crate::{
-    app_response::{AppResponse, AppResult, ErrorResponseBuilder},
+    app_writer::{AppWriter, AppResult, ErrorResponseBuilder},
     dtos::user::{
         UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse, UserUpdateRequest,
     },
@@ -78,37 +78,37 @@ pub async fn post_login(req: JsonBody<UserLoginRequest>, res: &mut Response) {
 }
 
 #[endpoint(tags("users"))]
-pub async fn post_add_user(new_user: JsonBody<UserAddRequest>) -> AppResponse<UserResponse> {
+pub async fn post_add_user(new_user: JsonBody<UserAddRequest>) -> AppWriter<UserResponse> {
     let result = user::add_user(new_user.0).await;
-    AppResponse(result)
+    AppWriter(result)
 }
 
 #[endpoint(  tags("users"),
 parameters(
     ("id", description = "user id"),
 ))]
-pub async fn put_update_user(req: &mut Request) -> AppResult<AppResponse<UserResponse>> {
+pub async fn put_update_user(req: &mut Request) -> AppResult<AppWriter<UserResponse>> {
     let req: UserUpdateRequest = req.extract().await?;
     let result = user::update_user(req).await;
-    Ok(AppResponse(result))
+    Ok(AppWriter(result))
 }
 
 #[endpoint(tags("users"))]
-pub async fn delete_user(id: PathParam<String>) -> AppResponse<()> {
+pub async fn delete_user(id: PathParam<String>) -> AppWriter<()> {
     let result = user::delete_user(id.0).await;
-    AppResponse(result)
+    AppWriter(result)
 }
 
 #[endpoint(tags("users"))]
-pub async fn get_users() -> AppResponse<Vec<UserResponse>> {
+pub async fn get_users() -> AppWriter<Vec<UserResponse>> {
     let result = user::users().await;
-    AppResponse(result)
+    AppWriter(result)
 }
 
 {{else}}
 use crate::{
-    app_response::ErrorResponseBuilder,
-    app_response::{AppResponse, AppResult},
+    app_writer::ErrorResponseBuilder,
+    app_writer::{AppWriter, AppResult},
     dtos::user::{
         UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse, UserUpdateRequest,
     },
@@ -139,30 +139,30 @@ pub async fn post_login(req: JsonBody<UserLoginRequest>, res: &mut Response) {
 }
 
 #[endpoint(tags("users"))]
-pub async fn post_add_user(new_user: JsonBody<UserAddRequest>) -> AppResponse<UserResponse> {
+pub async fn post_add_user(new_user: JsonBody<UserAddRequest>) -> AppWriter<UserResponse> {
     let result = user::add_user(new_user.0).await;
-    AppResponse(result)
+    AppWriter(result)
 }
 
 #[endpoint(  tags("users"),
 parameters(
     ("id", description = "user id"),
 ))]
-pub async fn put_update_user(req: &mut Request) -> AppResult<AppResponse<UserResponse>> {
+pub async fn put_update_user(req: &mut Request) -> AppResult<AppWriter<UserResponse>> {
     let req: UserUpdateRequest = req.extract().await?;
     let result = user::update_user(req).await;
-    Ok(AppResponse(result))
+    Ok(AppWriter(result))
 }
 
 #[endpoint(tags("users"))]
-pub async fn delete_user(id: PathParam<String>) -> AppResponse<()> {
+pub async fn delete_user(id: PathParam<String>) -> AppWriter<()> {
     let result = user::delete_user(id.0).await;
-    AppResponse(result)
+    AppWriter(result)
 }
 
 #[endpoint(tags("users"))]
-pub async fn get_users() -> AppResponse<Vec<UserResponse>> {
+pub async fn get_users() -> AppWriter<Vec<UserResponse>> {
     let result = user::users().await;
-    AppResponse(result)
+    AppWriter(result)
 }
 {{/if}}

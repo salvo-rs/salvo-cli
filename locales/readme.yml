@@ -377,7 +377,7 @@ src_main_rs:
   th: จุดเริ่มต้นของแอปพลิเคชัน ตั้งค่าและเริ่มต้นบริการ
   el: Σημείο εισόδου της εφαρμογής, ρυθμίζει και εκκινεί τις υπηρεσίες
   da: Programmets indgangspunkt, opsætter og starter tjenester
-src_app_response_rs:
+src_app_writer_rs:
   en: Standardize response
   zh_CN: 规范化返回请求
   zh_TW: 規範化返回請求

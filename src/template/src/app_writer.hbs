@@ -6,10 +6,10 @@ use serde::Serialize;
 
 use crate::app_error::AppError;
 
-pub struct AppResponse<T>(pub AppResult<T>);
+pub struct AppWriter<T>(pub AppResult<T>);
 
 #[async_trait]
-impl<T: Serialize + Default + Send> Writer for AppResponse<T> {
+impl<T: Serialize + Default + Send> Writer for AppWriter<T> {
     async fn write(self, req: &mut Request, depot: &mut Depot, res: &mut Response) {
         match self.0 {
             Ok(data) => ResponseBuilder::with_data(data).into_response(res),
@@ -18,7 +18,7 @@ impl<T: Serialize + Default + Send> Writer for AppResponse<T> {
     }
 }
 
-impl<T: Serialize + Default + Send> EndpointOutRegister for AppResponse<T> {
+impl<T: Serialize + Default + Send> EndpointOutRegister for AppWriter<T> {
     fn register(_components: &mut salvo::oapi::Components, operation: &mut salvo::oapi::Operation) {
         operation
             .responses
@@ -29,15 +29,15 @@ impl<T: Serialize + Default + Send> EndpointOutRegister for AppResponse<T> {
     }
 }
 
-impl<T> From<AppResult<T>> for AppResponse<T> {
+impl<T> From<AppResult<T>> for AppWriter<T> {
     fn from(result: AppResult<T>) -> Self {
-        AppResponse(result)
+        AppWriter(result)
     }
 }
 
-impl<T> From<AppError> for AppResponse<T> {
+impl<T> From<AppError> for AppWriter<T> {
     fn from(result: AppError) -> Self {
-        AppResponse(Err(result))
+        AppWriter(Err(result))
     }
 }
 

@@ -21,7 +21,7 @@ mod app_error;
 {{else}}
 #[allow(dead_code)]
 {{/if}}
-mod app_response;
+mod app_writer;
 mod config;
 {{#if need_db_conn}}
 mod db;

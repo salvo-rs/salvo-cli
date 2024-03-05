@@ -21,7 +21,7 @@ static PATH_DESCRIPTIONS: Lazy<HashMap<String, String>> = Lazy::new(|| {
     m.insert("data".to_string(), t!("data"));
     m.insert("assets".to_string(), t!("assets"));
     m.insert("src".to_string(), t!("src"));
-    m.insert("src/app_response.rs".to_string(), t!("src_app_response_rs"));
+    m.insert("src/app_writer.rs".to_string(), t!("src_app_writer_rs"));
     m.insert("src/routers".to_string(), t!("src_routers"));
     m.insert("src/middleware".to_string(), t!("src_middleware"));
     m.insert("src/utils".to_string(), t!("src_utils"));
