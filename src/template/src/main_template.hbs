@@ -9,7 +9,7 @@ use crate::db::init_db_conn;
 {{/if}}
 use tokio::signal;
 use tracing::info;
-use crate::middleware::handle_404::handle_404;
+use crate::middleware::{handle_404::handle_404,cors::cors_middleware};
 use crate::routers::router;
 use config::{CERT_KEY, CFG};
 use salvo::server::ServerHandle;
@@ -69,10 +69,10 @@ async fn main() {
     {{/if}}
     let router = router();
     let service: Service = router.into();
-    let service = service.catcher(Catcher::default().hoop(handle_404));
+    let service = service.catcher(Catcher::default().hoop(handle_404));//.hoop(_cors_handler).hoop(handle_404));
     println!("🌪️ {} {{is_starting}} ", &CFG.server.name);
     println!("🔄 {{listen_on}} {}", &CFG.server.address);
-
+    let _cors_handler = cors_middleware();
     match CFG.server.ssl {
         true => {
             println!(

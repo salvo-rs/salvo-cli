@@ -1,6 +1,6 @@
 {{#if need_db_conn}}
     {{#if is_web_site}}
-use crate::middleware::{cors::cors_middleware, jwt::jwt_middleware};
+use crate::middleware::jwt::jwt_middleware;
 use salvo::{
     prelude::{CatchPanic, Logger, OpenApi, SwaggerUi},
     Router,
@@ -23,8 +23,6 @@ pub fn router() -> Router {
         Router::with_path("/api/login").post(post_login),
     ];
 
-    let _cors_handler = cors_middleware();
-
     let mut need_auth_routers = vec![
         Router::with_path("users")
             .get(user_list_page),
@@ -39,7 +37,6 @@ pub fn router() -> Router {
     let static_routers = static_routers::create_static_routers();
     no_auth_routers.extend(static_routers);
     let router = Router::new()
-        //.hoop(_cors_handler)
         .hoop(Logger::new())
         .hoop(CatchPanic::new())
         .get(hello)
