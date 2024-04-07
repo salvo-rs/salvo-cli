@@ -591,7 +591,7 @@ fn handle_dependencies(
 ) {
     if need_db_conn {
         dependencies["validator"] = json!({
-            "version": "0.16",
+            "version": "0.18",
             "features": ["derive"]
         });
         match (conn_type, db_type) {
@@ -633,19 +633,19 @@ fn handle_dependencies(
             }
             (DbConnectionType::Diesel, DbType::Mysql) => {
                 dependencies["diesel"] = json!({
-                    "version": "2.1.0",
+                    "version": "2.1.5",
                     "features": ["mysql"]
                 });
             }
             (DbConnectionType::Diesel, DbType::Postgres) => {
                 dependencies["diesel"] = json!({
-                    "version": "2.1.0",
+                    "version": "2.1.5",
                     "features": ["postgres"]
                 });
             }
             (DbConnectionType::Diesel, DbType::Sqlite) => {
                 dependencies["diesel"] = json!({
-                    "version": "2.1.0",
+                    "version": "2.1.5",
                     "features": ["sqlite","returning_clauses_for_sqlite_3_35"]
                 });
             }
@@ -708,7 +708,7 @@ fn handle_dependencies(
         });
         //add argon2 dependency
         dependencies["argon2"] = json!({
-            "version": "0.5.2",
+            "version": "0.5.3",
         });
     }
 }
