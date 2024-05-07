@@ -156,6 +156,21 @@ pub fn write_project_file(
         include_bytes!("../template/assets/favicon.ico"),
         project_path.join("assets/favicon.ico"),
     )?;
+    //cliff.toml
+    copy_binary_file(
+        include_bytes!("../template/cliff.toml"),
+        project_path.join("cliff.toml"),
+    )?;
+    //deny.toml
+    copy_binary_file(
+        include_bytes!("../template/deny.toml"),
+        project_path.join("deny.toml"),
+    )?;
+    //.github/workflows/build.yml
+    copy_binary_file(
+        include_bytes!("../template/.github/workflows/build.yml"),
+        project_path.join(".github/workflows/build.yml"),
+    )?;
     let mut templates: Vec<(&str, &str)> = vec![];
     if is_web_site {
         //templates
