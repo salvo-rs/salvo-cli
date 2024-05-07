@@ -68,5 +68,9 @@ cargo test
 {{/if}}
 # {{project_dir_description}}
 {{directory_contents}}
+# cargo-deny
+``` shell
+cargo install --locked cargo-deny && cargo deny check
+```
 # {{about_salvo}}
 {{about_salvo_text}}

@@ -11,6 +11,8 @@ use walkdir::WalkDir;
 static PATH_DESCRIPTIONS: Lazy<HashMap<String, String>> = Lazy::new(|| {
     let mut m = HashMap::new();
     m.insert("Cargo.toml".to_string(), t!("cargo_toml"));
+    m.insert("cliff.toml".to_string(), t!("cliff_toml"));
+    m.insert("deny.toml".to_string(), t!("deny_toml"));
     m.insert(".env".to_string(), t!("dot_env"));
     m.insert("config/config.toml".to_string(), t!("config_config_toml"));
     m.insert("migrations".to_string(), t!("migrations"));
@@ -32,6 +34,10 @@ static PATH_DESCRIPTIONS: Lazy<HashMap<String, String>> = Lazy::new(|| {
     m.insert("src/config.rs".to_string(), t!("src_config_rs"));
     m.insert("src/app_error.rs".to_string(), t!("src_app_error_rs"));
     m.insert("src/main.rs".to_string(), t!("src_main_rs"));
+    m.insert(
+        ".github/workflows/build.yml".to_string(),
+        t!("build_yml_description"),
+    );
     m
 });
 

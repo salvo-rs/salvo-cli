@@ -897,3 +897,57 @@ rust_version_tip:
   th: "😄 เวอร์ชันล่าสุดของ Salvo ต้องการ Rust เวอร์ชัน 1.75 หากการคอมไพล์ล้มเหลว กรุณาลองอัพเดทด้วย `rustup update`"
   el: "😄 Η τελευταία έκδοση του Salvo απαιτεί την έκδοση 1.75 της Rust. Εάν η συνταξιοποίηση αποτύχει, δοκιμάστε να αναβαθμίσετε με `rustup update`."
   da: "😄 Den nyeste version af Salvo kræver Rust version 1.75. Hvis din kompilering fejler, prøv da at opgradere med `rustup update`."
+build_yml_description:
+  zh_CN: 此 YAML 文件配置了项目的持续集成 (CI) 管道。它定义了推送代码到仓库时自动执行的步骤。这包括构建软件、运行测试和在满足条件时部署应用程序等任务。
+  en: This YAML file configures the continuous integration (CI) pipeline for the project. It defines the steps that are executed automatically when code is pushed to the repository. This includes tasks like building the software, running tests, and deploying the application if conditions are met.
+  zh_TW: 此 YAML 檔案配置了項目的持續整合 (CI) 管道。它定義了推送代碼到倉庫時自動執行的步驟。這包括建構軟體、運行測試和在滿足條件時部署應用程式等任務。
+  fr: Ce fichier YAML configure le pipeline d'intégration continue (CI) du projet. Il définit les étapes qui sont exécutées automatiquement lorsque le code est poussé vers le dépôt. Cela inclut des tâches telles que la construction du logiciel, l'exécution des tests et le déploiement de l'application si les conditions sont remplies.
+  ja: この YAML ファイルはプロジェクトの継続的インテグレーション (CI) パイプラインを設定します。これは、コードがリポジトリにプッシュされたときに自動的に実行されるステップを定義します。これには、ソフトウェアのビルド、テストの実行、条件が満たされた場合のアプリケーションのデプロイなどのタスクが含まれます。
+  es: Este archivo YAML configura el pipeline de integración continua (CI) para el proyecto. Define los pasos que se ejecutan automáticamente cuando se sube código al repositorio. Esto incluye tareas como construir el software, ejecutar pruebas y desplegar la aplicación si se cumplen las condiciones.
+  de: Diese YAML-Datei konfiguriert die Continuous Integration (CI)-Pipeline für das Projekt. Sie definiert die Schritte, die automatisch ausgeführt werden, wenn Code in das Repository gepusht wird. Dazu gehören Aufgaben wie das Bauen der Software, das Ausführen von Tests und das Bereitstellen der Anwendung, wenn die Bedingungen erfüllt sind.
+  ru: Этот YAML-файл настраивает конвейер непрерывной интеграции (CI) для проекта. Он определяет шаги, которые автоматически выполняются при отправке кода в репозиторий. Это включает задачи, такие как сборка программного обеспечения, проведение тестов и развертывание приложения, если условия выполнены.
+  it: Questo file YAML configura il pipeline di integrazione continua (CI) per il progetto. Definisce i passaggi che vengono eseguiti automaticamente quando il codice viene inviato al repository. Questo include compiti come la costruzione del software, l'esecuzione dei test e il deployment dell'applicazione se le condizioni sono soddisfatte.
+  pt: Este arquivo YAML configura o pipeline de integração contínua (CI) para o projeto. Ele define os passos que são executados automaticamente quando o código é enviado para o repositório. Isso inclui tarefas como construir o software, executar testes e implantar o aplicativo se as condições forem atendidas.
+  ko: 이 YAML 파일은 프로젝트의 지속적 통합(CI) 파이프라인을 구성합니다. 코드가 저장소에 푸시될 때 자동으로 실행되는 단계를 정의합니다. 이에는 소프트웨어 빌드, 테스트 실행, 조건이 충족하면 애플리케이션 배포 등의 작업이 포함됩니다.
+  no: Denne YAML-filen konfigurerer kontinuerlig integrasjon (CI) pipeline for prosjektet. Den definerer trinnene som utføres automatisk når kode blir pushet til repositoriet. Dette inkluderer oppgaver som å bygge programvaren, kjøre tester, og distribuere applikasjonen hvis betingelsene er oppfylt.
+  is: Þessi YAML-skrá stillir upp samfelldum samþættingarslóð (CI) fyrir verkefnið. Hún skilgreinir þau skref sem eru sjálfkrafa framkvæmd þegar kóði er ýtt inn í geymsluna. Þetta felur í sér verkefni á borð við að byggja hugbúnaðinn, keyra prófanir og setja upp forritið ef skilyrði eru uppfyllt.
+  uk: Цей файл YAML налаштовує конвеєр безперервної інтеграції (CI) для проекту. Він визначає кроки, які автоматично виконуються, коли код відправляється до репозиторію. Це включає завдання, такі як побудова програмного забезпечення, проведення тестів та розгортання додатка, якщо умови виконані.
+  th: ไฟล์ YAML นี้กำหนดค่าไปป์ไลน์การรวมต่อเนื่อง (CI) สำหรับโปรเจกต์ มันกำหนดขั้นตอนที่จะดำเนินการโดยอัตโนมัติเมื่อมีการผลักดันโค้ดเข้าสู่ที่เก็บข้อมูล ซึ่งรวมถึงงานเช่นการสร้างซอฟต์แวร์ การทดสอบการทำงาน และการปรับใช้แอปพลิเคชันหากเงื่อนไขเป็นไปตามที่กำหนด
+  el: Αυτό το αρχείο YAML διαμορφώνει τη διαδικασία συνεχούς ένταξης (CI) για το έργο. Καθορίζει τα βήματα που εκτελούνται αυτόματα όταν κώδικας αναρτάται στο αποθετήριο. Αυτό περιλαμβάνει εργασίες όπως η δημιουργία του λογισμικού, η εκτέλεση δοκιμών και η ανάπτυξη της εφαρμογής εάν τα κριτήρια έχουν επιτευχθεί.
+  da: Denne YAML-fil konfigurerer det kontinuerlige integrationspipeline (CI) for projektet. Det definerer de trin, der udføres automatisk, når kode skubbes til repositoriet. Dette inkluderer opgaver som at bygge softwaren, køre tests, og udrulle applikationen, hvis betingelserne er opfyldt.
+cliff_toml:
+  zh_CN: 用于 git-cliff 生成变更日志
+  en: For generating changelogs with git-cliff
+  zh_TW: 用於 git-cliff 生成變更日誌
+  fr: Pour générer des journaux de modifications avec git-cliff
+  ja: git-cliff を使用して変更ログを生成するために
+  es: Para generar registros de cambios con git-cliff
+  de: Zum Generieren von Änderungsprotokollen mit git-cliff
+  ru: Для генерации журналов изменений с помощью git-cliff
+  it: Per generare changelog con git-cliff
+  pt: Para gerar changelogs com git-cliff
+  ko: git-cliff를 사용하여 변경 로그 생성용
+  no: For å generere endringslogger med git-cliff
+  is: Til að búa til breytingaskrár með git-cliff
+  uk: Для генерації журналів змін за допомогою git-cliff
+  th: สำหรับการสร้างบันทึกการเปลี่ยนแปลงด้วย git-cliff
+  el: Για τη δημιουργία καταγραφών αλλαγών με το git-cliff
+  da: Til at generere ændringslogfiler med git-cliff
+deny_toml:
+  zh_CN: 许可证检查用于验证您使用的每个板条箱都有您认为可以接受的许可证条款。
+  en: License checks are used to verify that each crate you use has license terms that you consider acceptable.
+  zh_TW: 許可證檢查用於驗證您使用的每個板條箱都有您認為可以接受的許可證條款。
+  fr: La vérification des licences sert à confirmer que chaque caisse que vous utilisez a des termes de licence que vous considérez comme acceptables.
+  ja: ライセンスチェックは、使用する各クレートが許容できると考えるライセンス条件を持っていることを確認するために使用されます。
+  es: La verificación de licencias se utiliza para asegurar que cada caja que utilizas tiene términos de licencia que consideras aceptables.
+  de: Lizenzprüfungen dienen dazu zu verifizieren, dass jede von Ihnen verwendete Kiste Lizenzbedingungen hat, die Sie für akzeptabel halten.
+  ru: Проверка лицензий используется для того, чтобы убедиться, что каждый используемый вами ящик имеет условия лицензии, которые вы считаете приемлемыми.
+  it: I controlli delle licenze sono utilizzati per verificare che ogni cassa che usi abbia termini di licenza che consideri accettabili.
+  pt: A verificação de licenças é usada para garantir que cada caixa que você usa tem termos de licença que você considera aceitáveis.
+  ko: 라이센스 검사는 사용하는 각 상자가 수용 가능하다고 여기는 라이센스 조건을 갖추고 있는지 확인하는 데 사용됩니다.
+  no: Lisenskontroller brukes til å verifisere at hver kasse du bruker har lisensvilkår som du anser som akseptable.
+  is: Leyfisathuganir eru notaðar til að staðfesta að hver kassi sem þú notar hafi leyfisskilmála sem þú telur viðunandi.
+  uk: Перевірка ліцензій використовується для того, щоб переконатися, що кожен ящик, який ви використовуєте, має умови ліцензії, які ви вважаєте прийнятними.
+  th: การตรวจสอบใบอนุญาตใช้เพื่อยืนยันว่าแต่ละกล่องที่คุณใช้มีเงื่อนไขใบอนุญาตที่คุณถือว่ายอมรับได้
+  el: Οι ελέγχοι αδειών χρησιμοποιούνται για να επαληθεύσουν ότι κάθε κιβώτιο που χρησιμοποιείτε έχει όρους άδειας που θεωρείτε αποδεκτούς.
+  da: Licenskontroller bruges til at verificere, at hver kasse du bruger har licensbetingelser, som du anser for at være acceptable.
