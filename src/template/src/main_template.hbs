@@ -76,7 +76,7 @@ async fn main() {
     match CFG.server.ssl {
         true => {
             println!(
-                "📖 {{open_api_page}}: https://{}/swagger-ui",
+                "📖 {{open_api_page}}: https://{}/scalar",
                 &CFG.server.address.replace("0.0.0.0", "127.0.0.1")
             );
             {{#if is_web_site}}
@@ -100,7 +100,7 @@ async fn main() {
          }
         false => {
             println!(
-                "📖 {{open_api_page}}: http://{}/swagger-ui",
+                "📖 {{open_api_page}}: http://{}/scalar",
                 &CFG.server.address.replace("0.0.0.0", "127.0.0.1")
             );
             {{#if is_web_site}}

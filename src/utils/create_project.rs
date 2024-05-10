@@ -143,6 +143,7 @@ pub fn write_project_file(
         handlebars::JsonValue::String(t!("database_connection_failed"));
     data["user_does_not_exist"] = handlebars::JsonValue::String(t!("user_does_not_exist"));
     data["rust_version_tip"] = handlebars::JsonValue::String(t!("rust_version_tip"));
+    data["git_cliff"] = handlebars::JsonValue::String(t!("git_cliff"));
     let mut dependencies = data["dependencies"].clone();
     handle_dependencies(
         &mut dependencies,

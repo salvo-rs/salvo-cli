@@ -915,6 +915,24 @@ build_yml_description:
   th: ไฟล์ YAML นี้กำหนดค่าไปป์ไลน์การรวมต่อเนื่อง (CI) สำหรับโปรเจกต์ มันกำหนดขั้นตอนที่จะดำเนินการโดยอัตโนมัติเมื่อมีการผลักดันโค้ดเข้าสู่ที่เก็บข้อมูล ซึ่งรวมถึงงานเช่นการสร้างซอฟต์แวร์ การทดสอบการทำงาน และการปรับใช้แอปพลิเคชันหากเงื่อนไขเป็นไปตามที่กำหนด
   el: Αυτό το αρχείο YAML διαμορφώνει τη διαδικασία συνεχούς ένταξης (CI) για το έργο. Καθορίζει τα βήματα που εκτελούνται αυτόματα όταν κώδικας αναρτάται στο αποθετήριο. Αυτό περιλαμβάνει εργασίες όπως η δημιουργία του λογισμικού, η εκτέλεση δοκιμών και η ανάπτυξη της εφαρμογής εάν τα κριτήρια έχουν επιτευχθεί.
   da: Denne YAML-fil konfigurerer det kontinuerlige integrationspipeline (CI) for projektet. Det definerer de trin, der udføres automatisk, når kode skubbes til repositoriet. Dette inkluderer opgaver som at bygge softwaren, køre tests, og udrulle applikationen, hvis betingelserne er opfyldt.
+git_cliff:
+  zh_CN: 请替换 cliff.toml 文件第 49 行的 url 为该仓库的 url，用来触发自动生成变更日志。
+  en: Please replace the url in line 49 of the cliff.toml file with the repository url to trigger the automatic generation of changelogs.
+  zh_TW: 請替換 cliff.toml 文件第 49 行的 url 為該倉庫的 url，用來觸發自動生成變更日誌。
+  fr: Veuillez remplacer l'url à la ligne 49 du fichier cliff.toml par l'url du dépôt pour déclencher la génération automatique des journaux de modifications.
+  ja: cliff.toml ファイルの 49 行目の url をリポジトリの url に置き換えて、変更ログの自動生成をトリガーしてください。
+  es: Por favor, reemplace la url en la línea 49 del archivo cliff.toml con la url del repositorio para activar la generación automática de registros de cambios.
+  de: Bitte ersetzen Sie die URL in Zeile 49 der Datei cliff.toml durch die URL des Repositories, um das automatische Erstellen von Änderungsprotokollen auszulösen.
+  ru: Пожалуйста, замените url в строке 49 файла cliff.toml на url репозитория, чтобы инициировать автоматическое создание журналов изменений.
+  it: Si prega di sostituire l'url nella linea 49 del file cliff.toml con l'url del repository per attivare la generazione automatica del changelog.
+  pt: Por favor, substitua o url na linha 49 do arquivo cliff.toml pelo url do repositório para acionar a geração automática de changelogs.
+  ko: cliff.toml 파일의 49번째 줄 url을 저장소 url로 바꿔서 변경 로그의 자동 생성을 트리거하세요.
+  no: Vennligst erstatt url-en i linje 49 i cliff.toml-filen med repositoriets url for å utløse automatisk generering av endringslogger.
+  is: Vinsamlegast skiptu út url í línu 49 í cliff.toml skránni með url geymslunnar til að virkja sjálfvirka myndun breytingaskráa.
+  uk: Будь ласка, замініть url у рядку 49 файла cliff.toml на url репозиторію, щоб ініціювати автоматичне створення журналів змін.
+  th: โปรดแทนที่ url ในบรรทัดที่ 49 ของไฟล์ cliff.toml ด้วย url ของที่เก็บข้อมูลเพื่อเรียกใช้การสร้างบันทึกการเปลี่ยนแปลงโดยอัตโนมัติ
+  el: Παρακαλώ αντικαταστήστε το url στη γραμμή 49 του αρχείου cliff.toml με το url του αποθετηρίου για να ενεργοποιήσετε την αυτόματη δημιουργία καταγραφών αλλαγών.
+  da: Erstat venligst url'en på linje 49 i cliff.toml-filen med url'et til repositoriet for at udløse automatisk generering af ændringslogfiler.
 cliff_toml:
   zh_CN: 用于 git-cliff 生成变更日志
   en: For generating changelogs with git-cliff

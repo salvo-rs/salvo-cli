@@ -72,5 +72,7 @@ cargo test
 ``` shell
 cargo install --locked cargo-deny && cargo deny check
 ```
+# git cliff
+{{git_cliff}}
 # {{about_salvo}}
 {{about_salvo_text}}
