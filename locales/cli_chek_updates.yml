@@ -19,16 +19,16 @@ checking_for_updates:
   da: Kontrollerer for opdateringer...
 new_version_available:
   en: A new version of salvo-cli is available `%{latest_version}`
-  zh_CN: 可用新版本的salvo-cli `%{latest_version}`
-  zh_TW: 可用新版本的salvo-cli `%{latest_version}`
+  zh_CN: 可用新版本的 salvo-cli `%{latest_version}`
+  zh_TW: 可用新版本的 salvo-cli `%{latest_version}`
   fr: Une nouvelle version de salvo-cli est disponible `%{latest_version}`
-  ja: salvo-cliの新しいバージョンが利用可能です `%{latest_version}`
+  ja: salvo-cli の新しいバージョンが利用可能です `%{latest_version}`
   es: Está disponible una nueva versión de salvo-cli `%{latest_version}`
   de: Eine neue Version von salvo-cli ist verfügbar `%{latest_version}`
   ru: Доступна новая версия salvo-cli `%{latest_version}`
   it: È disponibile una nuova versione di salvo-cli `%{latest_version}`
   pt: Uma nova versão do salvo-cli está disponível `%{latest_version}`
-  ko: salvo-cli의 새 버전을 사용할 수 있습니다 `%{latest_version}`
+  ko: salvo-cli 의 새 버전을 사용할 수 있습니다 `%{latest_version}`
   no: En ny versjon av salvo-cli er tilgjengelig `%{latest_version}`
   is: Ný útgáfa af salvo-cli er tiltæk `%{latest_version}`
   uk: Доступна нова версія salvo-cli `%{latest_version}`
@@ -58,7 +58,7 @@ consider_updating:
   zh_CN: 考虑运行以下命令进行更新：cargo install --force salvo-cli
   zh_TW: 考慮執行以下指令進行更新：cargo install --force salvo-cli
   fr: Envisagez de mettre à jour en exécutant :cargo install --force salvo-cli
-  ja: 更新を検討してください：cargo install --force salvo-cliを実行
+  ja: 更新を検討してください：cargo install --force salvo-cli を実行
   es: Considera la actualización ejecutando:cargo install --force salvo-cli
   de: Überlegen Sie, ein Update durchzuführen:cargo install --force salvo-cli
   ru: Рассмотрите возможность обновления, выполнив:cargo install --force salvo-cli

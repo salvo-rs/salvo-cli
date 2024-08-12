@@ -4,7 +4,7 @@ error_is_keyword:
   zh_CN: "名称 `%{name}` 不能作为项目名称，它是 Rust 关键字"
   zh_TW: "名稱 `%{name}` 不能作為專案名稱，它是 Rust 關鍵字"
   fr: "le nom `%{name}` ne peut pas être utilisé comme nom de projet, c'est un mot clé Rust"
-  ja: "名前 `%{name}` はプロジェクト名として使用できません。これはRustのキーワードです"
+  ja: "名前 `%{name}` はプロジェクト名として使用できません。これは Rust のキーワードです"
   es: "el nombre `%{name}` no se puede usar como nombre de proyecto, es una palabra clave de Rust"
   de: "der Name `%{name}` kann nicht als Projektname verwendet werden, es ist ein Rust-Schlüsselwort"
   ru: "имя `%{name}` нельзя использовать в качестве имени проекта, это ключевое слово Rust"
@@ -22,7 +22,7 @@ error_is_conflicting_artifact_name:
   zh_CN: 名称 `%{name}` 不支持二进制可执行文件，\n它与 cargo 的构建目录名称冲突
   zh_TW: 名稱 `%{name}` 不支援二進位可執行檔，\n它與 cargo 的建置目錄名稱衝突
   fr: le nom `%{name}` ne prendra pas en charge les exécutables binaires avec ce nom, \n il entre en conflit avec les noms de répertoire de construction de cargo
-  ja: 名前 `%{name}` はその名前のバイナリ実行可能ファイルをサポートしません、\n cargoのビルドディレクトリ名と競合します
+  ja: 名前 `%{name}` はその名前のバイナリ実行可能ファイルをサポートしません、\n cargo のビルドディレクトリ名と競合します
   es: el nombre `%{name}` no admitirá ejecutables binarios con ese nombre, \n entra en conflicto con los nombres de directorio de compilación de cargo
   de: der Name `%{name}` unterstützt keine ausführbaren Binärdateien mit diesem Namen, \n er steht im Konflikt mit den Build-Verzeichnisnamen von Cargo
   ru: имя `%{name}` не поддерживает двоичные исполняемые файлы с таким именем, \n оно конфликтует с именами каталогов сборки груза
@@ -40,13 +40,13 @@ error_equal_test:
   zh_CN: 名称 `test` 不能作为包名称，\n它与 Rust 内置的测试库冲突
   zh_TW: 名稱 `test` 不能作為套件名稱，\n它與 Rust 內建的測試函式庫衝突
   fr: le nom `test` ne peut pas être utilisé comme nom de package, \n il entre en conflit avec la bibliothèque de test intégrée de Rust
-  ja: 名前 `test` はパッケージ名として使用できません、\n Rustの組み込みテストライブラリと競合します
+  ja: 名前 `test` はパッケージ名として使用できません、\n Rust の組み込みテストライブラリと競合します
   es: el nombre `test` no se puede usar como nombre de paquete, \n entra en conflicto con la biblioteca de prueba incorporada de Rust
   de: der Name `test` kann nicht als Paketname verwendet werden, \n er steht im Konflikt mit der integrierten Testbibliothek von Rust
   ru: имя `test` нельзя использовать в качестве имени пакета, \n оно конфликтует с встроенной тестовой библиотекой Rust
   it: il nome `test` non può essere utilizzato come nome del pacchetto, \n entra in conflitto con la libreria di test integrata di Rust
   pt: o nome `test` não pode ser usado como nome do pacote, \n entra em conflito com a biblioteca de teste integrada do Rust
-  ko: error:`test` 이름은 패키지 이름으로 사용할 수 없습니다. \n Rust의 내장 테스트 라이브러리와 충돌합니다
+  ko: error:`test` 이름은 패키지 이름으로 사용할 수 없습니다. \n Rust 의 내장 테스트 라이브러리와 충돌합니다
   no: navnet `test` kan ikke brukes som pakkenavn, \n det er i konflikt med Rusts innebygde testbibliotek
   is: nafnið `test` má ekki nota sem nafn pakka, \n það er í árekstri við innbyggt prófunar safn Rust
   uk: ім'я `test` не може бути використано як ім'я пакета, \n воно конфліктує з вбудованою тестовою бібліотекою Rust
@@ -58,13 +58,13 @@ error_part_of_standard_library:
   zh_CN: 名称 `%{name}` 是 Rust 标准库的一部分\n建议使用其他名称以避免问题
   zh_TW: 名稱 `%{name}` 是 Rust 標準函式庫的一部分\n建議使用其他名稱以避免問題
   fr: le nom `%{name}` fait partie de la bibliothèque standard de Rust\n Il est recommandé d'utiliser un nom différent pour éviter les problèmes
-  ja: 名前 `%{name}` はRustの標準ライブラリの一部です\n 問題を避けるために別の名前を使用することをお勧めします
+  ja: 名前 `%{name}` は Rust の標準ライブラリの一部です\n 問題を避けるために別の名前を使用することをお勧めします
   es: el nombre `%{name}` es parte de la biblioteca estándar de Rust\n Se recomienda usar un nombre diferente para evitar problemas
   de: der Name `%{name}` ist Teil der Standardbibliothek von Rust\n Es wird empfohlen, einen anderen Namen zu verwenden, um Probleme zu vermeiden
   ru: имя `%{name}` является частью стандартной библиотеки Rust\n Рекомендуется использовать другое имя, чтобы избежать проблем
   it: il nome `%{name}` fa parte della libreria standard di Rust\n Si consiglia di utilizzare un nome diverso per evitare problemi
   pt: o nome `%{name}` faz parte da biblioteca padrão do Rust\n É recomendável usar um nome diferente para evitar problemas
-  ko: erroe:`%{name}` 이름은 Rust의 표준 라이브러리의 일부입니다\n 문제를 피하기 위해 다른 이름을 사용하는 것이 좋습니다
+  ko: erroe:`%{name}` 이름은 Rust 의 표준 라이브러리의 일부입니다\n 문제를 피하기 위해 다른 이름을 사용하는 것이 좋습니다
   no: navnet `%{name}` er en del av Rusts standardbibliotek\n Det anbefales å bruke et annet navn for å unngå problemer
   is: nafnið `%{name}` er hluti af innbyggðu safni Rust\n Það er mælt með að nota annað nafn til að forðast vandamál
   uk: ім'я `%{name}` є частиною стандартної бібліотеки Rust\n Рекомендується використовувати інше ім'я, щоб уникнути проблем
@@ -76,7 +76,7 @@ error_is_windows_reserved:
   zh_CN: 不能使用名称 `%{name}`，它是保留的 Windows 文件名
   zh_TW: 不能使用名稱 `%{name}`，它是保留的 Windows 檔案名稱
   fr: impossible d'utiliser le nom `%{name}`, c'est un nom de fichier Windows réservé
-  ja: 名前 `%{name}` は使用できません、それは予約済みのWindowsファイル名です
+  ja: 名前 `%{name}` は使用できません、それは予約済みの Windows ファイル名です
   es: no se puede usar el nombre `%{name}`, es un nombre de archivo de Windows reservado
   de: der Name `%{name}` kann nicht verwendet werden, es ist ein reservierter Windows-Dateiname
   ru: нельзя использовать имя `%{name}`, это зарезервированное имя файла Windows
@@ -94,7 +94,7 @@ warning_is_windows_reserved:
   zh_CN: 名称 `%{name}` 是保留的 Windows 文件名\n此包将无法在 Windows 平台上工作。
   zh_TW: 名稱 `%{name}` 是保留的 Windows 檔案名稱\n此套件將無法在 Windows 平台上工作。
   fr: le nom `%{name}` est un nom de fichier Windows réservé\n Ce package ne fonctionnera pas sur les plates-formes Windows.
-  ja: 名前 `%{name}` は予約済みのWindowsファイル名です\n このパッケージはWindowsプラットフォームでは動作しません。
+  ja: 名前 `%{name}` は予約済みの Windows ファイル名です\n このパッケージは Windows プラットフォームでは動作しません。
   es: el nombre `%{name}` es un nombre de archivo de Windows reservado\n Este paquete no funcionará en plataformas Windows.
   de: der Name `%{name}` ist ein reservierter Windows-Dateiname\n Dieses Paket funktioniert nicht auf Windows-Plattformen.
   ru: имя `%{name}` является зарезервированным именем файла Windows\n Этот пакет не будет работать на платформах Windows.
@@ -112,13 +112,13 @@ warning_is_non_ascii_name:
   zh_CN: 名称 `%{name}` 包含非 ASCII 字符\nRust 不支持非 ASCII 的包名称。
   zh_TW: 名稱 `%{name}` 包含非 ASCII 字元\nRust 不支援非 ASCII 的套件名稱。
   fr: le nom `%{name}` contient des caractères non-ASCII\n Les noms de caisses non-ASCII ne sont pas pris en charge par Rust.
-  ja: 名前 `%{name}` にはASCII以外の文字が含まれています\n ASCII以外のクレート名はRustではサポートされていません。
+  ja: 名前 `%{name}` には ASCII 以外の文字が含まれています\n ASCII 以外のクレート名は Rust ではサポートされていません。
   es: el nombre `%{name}` contiene caracteres no ASCII\n Los nombres de cajas no ASCII no son compatibles con Rust.
   de: der Name `%{name}` enthält nicht-ASCII-Zeichen\n Nicht-ASCII-Kistenamen werden von Rust nicht unterstützt.
   ru: имя `%{name}` содержит символы не ASCII\n Имена ящиков не ASCII не поддерживаются Rust.
   it: il nome `%{name}` contiene caratteri non ASCII\n I nomi delle casse non ASCII non sono supportati da Rust.
   pt: o nome `%{name}` contém caracteres não ASCII\n Nomes de caixas não ASCII não são suportados pelo Rust.
-  ko: error:`%{name}` 이름에는 ASCII가 아닌 문자가 포함되어 있습니다\n ASCII가 아닌 크레이트 이름은 Rust에서 지원되지 않습니다.
+  ko: error:`%{name}` 이름에는 ASCII 가 아닌 문자가 포함되어 있습니다\n ASCII 가 아닌 크레이트 이름은 Rust 에서 지원되지 않습니다.
   no: navnet `%{name}` inneholder ikke-ASCII-tegn\n Ikke-ASCII-kasse navn støttes ikke av Rust.
   is: nafnið `%{name}` inniheldur ekki ASCII stafi\n Ekki ASCII kassa nöfn eru ekki studd af Rust.
   uk: ім'я `%{name}` містить символи не ASCII\n Імена ящиків не ASCII не підтримуються Rust.
@@ -172,7 +172,7 @@ error_project_path_exist:
   ru: пункт назначения `%{path}` уже существует
   it: la destinazione `%{path}` esiste già
   pt: o destino `%{path}` já existe
-  ko: 목적지 `%{path}`이 이미 존재합니다
+  ko: 목적지 `%{path}` 이 이미 존재합니다
   no: destinasjon `%{path}` finnes allerede
   is: áfangastaður `%{path}` er þegar til
   uk: призначення `%{path}` вже існує
@@ -181,10 +181,10 @@ error_project_path_exist:
   da: destination `%{path}` findes allerede
 warning_init_git:
   en: git initialization failed:`%{error}`
-  zh_CN: Git初始化失败:`%{error}`
-  zh_TW: Git初始化失敗:`%{error}`
+  zh_CN: Git 初始化失败:`%{error}`
+  zh_TW: Git 初始化失敗:`%{error}`
   fr: échec de l'initialisation de git:`%{error}`
-  ja: gitの初期化に失敗しました:`%{error}`
+  ja: git の初期化に失敗しました:`%{error}`
   es: falló la inicialización de git:`%{error}`
   de: Git-Initialisierung fehlgeschlagen:`%{error}`
   ru: инициализация git не удалась:`%{error}`
