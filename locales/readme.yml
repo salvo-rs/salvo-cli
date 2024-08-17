@@ -37,10 +37,10 @@ file:
   da: Fil
 cargo_toml:
   en: Rust project dependency and configuration info
-  zh_CN: Rust项目的依赖和配置信息
-  zh_TW: Rust專案的依賴和配置資訊
+  zh_CN: Rust 项目的依赖和配置信息
+  zh_TW: Rust 專案的依賴和配置資訊
   fr: Informations de dépendance et de configuration du projet Rust
-  ja: Rustプロジェクトの依存関係と設定情報
+  ja: Rust プロジェクトの依存関係と設定情報
   es: Información de dependencia y configuración del proyecto Rust
   de: Abhängigkeiten und Konfigurationsinformationen für Rust-Projekt
   ru: Информация о зависимостях и конфигурации проекта Rust
@@ -163,10 +163,10 @@ templates:
   da: Mappe til lagring af webskabelonfiler
 data:
   en: Directory containing database files or initialization data sql files
-  zh_CN: 包含数据库文件或初始化数据sql文件的目录
-  zh_TW: 包含資料庫檔案或初始化資料sql檔案的目錄
+  zh_CN: 包含数据库文件或初始化数据 sql 文件的目录
+  zh_TW: 包含資料庫檔案或初始化資料 sql 檔案的目錄
   fr: Répertoire contenant les fichiers de base de données ou les fichiers SQL de données d'initialisation
-  ja: データベースファイルまたは初期化データSQLファイルが含まれるディレクトリ
+  ja: データベースファイルまたは初期化データ SQL ファイルが含まれるディレクトリ
   es: Directorio que contiene archivos de base de datos o archivos SQL de datos de inicialización
   de: Verzeichnis mit Datenbankdateien oder Initialisierungs-SQL-Datendateien
   ru: Каталог, содержащий файлы базы данных или инициализационные SQL-файлы данных
@@ -181,10 +181,10 @@ data:
   da: Bibliotek indeholdende databasefiler eller initialiseringsdata SQL-filer
 assets:
   en: Static resources such as images, JavaScript scripts and CSS style sheets
-  zh_CN: 静态资源如图片、JavaScript脚本和CSS样式表
-  zh_TW: 靜態資源如圖片、JavaScript腳本和CSS樣式表
+  zh_CN: 静态资源如图片、JavaScript 脚本和 CSS 样式表
+  zh_TW: 靜態資源如圖片、JavaScript 腳本和 CSS 樣式表
   fr: Ressources statiques telles que images, scripts JavaScript et feuilles de style CSS
-  ja: 画像、JavaScriptスクリプト、CSSスタイルシートなどの静的リソース
+  ja: 画像、JavaScript スクリプト、CSS スタイルシートなどの静的リソース
   es: Recursos estáticos como imágenes, scripts de JavaScript y hojas de estilo CSS
   de: Statische Ressourcen wie Bilder, JavaScript-Skripte und CSS-Stylesheets
   ru: Статические ресурсы, такие как изображения, скрипты JavaScript и таблицы стилей CSS
@@ -271,16 +271,16 @@ src_utils:
   da: Modul indeholdende hjælpefunktioner
 src_dtos:
   en: Module defining Data Transfer Objects (DTOs) for encapsulating and transporting data
-  zh_CN: 定义数据传输对象(DTOs)的模块,用于封装和传输数据
-  zh_TW: 定義資料傳輸物件(DTOs)的模組,用於封裝和傳輸數據
+  zh_CN: 定义数据传输对象 (DTOs) 的模块，用于封装和传输数据
+  zh_TW: 定義資料傳輸物件 (DTOs) 的模組，用於封裝和傳輸數據
   fr: Module définissant des objets de transfert de données (DTO) pour encapsuler et transporter des données
-  ja: データをカプセル化および転送するためのデータ転送オブジェクト(DTO)を定義するモジュール
+  ja: データをカプセル化および転送するためのデータ転送オブジェクト (DTO) を定義するモジュール
   es: Módulo que define Objatos de Transferencia de Datos (DTO) para encapsular y transportar datos
   de: Modul zur Definition von Data Transfer Objects (DTOs) zur Kapselung und Übertragung von Daten
   ru: Модуль, определяющий объекты передачи данных (DTO) для инкапсуляции и передачи данных
   it: Modulo che definisce Data Transfer Object (DTO) per incapsulare e trasportare dati
   pt: Módulo definindo Objetos de Transferência de Dados (DTOs) para encapsular e transportar dados
-  ko: 데이터를 캡슐화하고 전송하기 위한 데이터 전송 개체(DTO)를 정의하는 모듈
+  ko: 데이터를 캡슐화하고 전송하기 위한 데이터 전송 개체 (DTO) 를 정의하는 모듈
   no: Modul som definerer Data Transfer Objects (DTOer) for å kapselere og transportere data
   is: Eining sem skilgreinir hugtök fyrir sendingar gagna sem hylja og flytja gögn
   uk: Модуль, що визначає об'єкти передачі даних (DTO) для інкапсуляції та передачі даних
@@ -361,8 +361,8 @@ src_app_error_rs:
   da: Giver ensartet fejlhandlingsfunktionalitet
 src_main_rs:
   en: Entry point of application, sets up and starts services
-  zh_CN: 程序的入口点,设置和启动服务
-  zh_TW: 程式的入口點,設置並啟動服務
+  zh_CN: 程序的入口点，设置和启动服务
+  zh_TW: 程式的入口點，設置並啟動服務
   fr: Point d'entrée de l'application, configure et démarre les services
   ja: アプリケーションのエントリポイント。サービスのセットアップと起動を行う
   es: Punto de entrada de la aplicación, configura e inicia los servicios
@@ -432,17 +432,17 @@ introduction:
   el: Εισαγωγή
   da: Introduktion
 introduction_text:
-  zh_CN: 这是一个由 [salvo-cli](https://github.com/salvo-rs/salvo-cli) 生成的项目,你可以按照以下命令来运行程序以及测试(非sqlite数据库的请先按照教程修改数据库连接串,完成数据的初始工作)。
+  zh_CN: 这是一个由 [salvo-cli](https://github.com/salvo-rs/salvo-cli) 生成的项目，你可以按照以下命令来运行程序以及测试 (非 sqlite 数据库的请先按照教程修改数据库连接串，完成数据的初始工作)。
   en: This is a project generated by [salvo-cli](https://github.com/salvo-rs/salvo-cli). You can run the program and test according to the following commands (for non-sqlite databases, please modify the database connection string first according to the tutorial, and complete the initial work of the data).
-  zh_TW: 這是一個由 [salvo-cli](https://github.com/salvo-rs/salvo-cli) 生成的項目,你可以按照以下命令來運行程序以及測試(非sqlite資料庫的請先按照教程修改資料庫連接串,完成資料的初始工作)。
+  zh_TW: 這是一個由 [salvo-cli](https://github.com/salvo-rs/salvo-cli) 生成的項目，你可以按照以下命令來運行程序以及測試 (非 sqlite 資料庫的請先按照教程修改資料庫連接串，完成資料的初始工作)。
   fr: Il s'agit d'un projet généré par [salvo-cli] (https://github.com/salvo-rs/salvo-cli). Vous pouvez exécuter le programme et tester selon les commandes suivantes (pour les bases de données autres que sqlite, veuillez d'abord modifier la chaîne de connexion de la base de données selon le didacticiel, et effectuer le travail initial des données).
-  ja: これは、 [salvo-cli](https://github.com/salvo-rs/salvo-cli)によって生成されたプロジェクトです。以下のコマンドに従って、プログラムの実行とテストができます(sqliteデータベース以外は、まずチュートリアルに従ってデータベース接続文字列を変更し、データの初期化を完了させてください)。
+  ja: これは、 [salvo-cli](https://github.com/salvo-rs/salvo-cli) によって生成されたプロジェクトです。以下のコマンドに従って、プログラムの実行とテストができます (sqlite データベース以外は、まずチュートリアルに従ってデータベース接続文字列を変更し、データの初期化を完了させてください)。
   es: Este es un proyecto generado por [salvo-cli](https://github.com/salvo-rs/salvo-cli). Puede ejecutar el programa y probarlo de acuerdo con los siguientes comandos (para bases de datos distintas de sqlite, modifique primero la cadena de conexión de base de datos de acuerdo con el tutorial y complete el trabajo inicial de los datos).
   de: Dies ist ein von [salvo-cli](https://github.com/salvo-rs/salvo-cli) generiertes Projekt. Sie können das Programm und die Tests gemäß den folgenden Befehlen ausführen (für Nicht-SQLite-Datenbanken ändern Sie zuerst die Datenbankverbindungszeichenfolge gemäß dem Tutorial und führen Sie die anfängliche Datenarbeit durch).
   ru: Это проект, сгенерированный [salvo-cli](https://github.com/salvo-rs/salvo-cli). Вы можете запустить программу и протестировать её следуя следующим командам (для не sqlite баз данных, пожалуйста, сначала измените строку подключения к базе данных согласно инструкции и завершите начальную работу с данными).
   it: Questo è un progetto generato da [salvo-cli](https://github.com/salvo-rs/salvo-cli). È possibile eseguire il programma e testarlo in base ai seguenti comandi (per database diversi da sqlite, modificare prima la stringa di connessione al database in base al tutorial e completare il lavoro iniziale sui dati).
   pt: Este é um projeto gerado pelo [salvo-cli] (https://github.com/salvo-rs/salvo-cli). Você pode executar o programa e testar de acordo com os seguintes comandos (para bancos de dados não sqlite, modifique primeiro a string de conexão do banco de dados de acordo com o tutorial e conclua o trabalho inicial dos dados).
-  ko: 이 프로젝트는 [salvo-cli](https://github.com/salvo-rs/salvo-cli)로 생성되었습니다. 다음 명령을 따라 프로그램을 실행하고 테스트할 수 있습니다(sqlite가 아닌 데이터베이스의 경우, 먼저 튜토리얼에 따라 데이터베이스 연결 문자열을 수정하고 데이터의 초기 작업을 완료하세요).
+  ko: 이 프로젝트는 [salvo-cli](https://github.com/salvo-rs/salvo-cli) 로 생성되었습니다. 다음 명령을 따라 프로그램을 실행하고 테스트할 수 있습니다 (sqlite 가 아닌 데이터베이스의 경우, 먼저 튜토리얼에 따라 데이터베이스 연결 문자열을 수정하고 데이터의 초기 작업을 완료하세요).
   no: Dette er et prosjekt generert av [salvo-cli] (https://github.com/salvo-rs/salvo-cli). Du kan kjøre programmet og teste det i henhold til følgende kommandoer (for ikke-sqlite-databaser, vennligst endre databasetilkoblingsstrengen først i henhold til opplæringen, og fullfør det innledende dataarbeidet).
   is: Þetta er verkefni búið til af [salvo-cli](https://github.com/salvo-rs/salvo-cli). Þú getur keyrt forritið og prófað það samkvæmt eftirfarandi skipunum (fyrir gagnagrunna sem eru ekki sqlite, breytið tengistreng gagnagrunnsins fyrst samkvæmt leiðbeiningunum og ljúkið uppsetningu upphaflegu gagnanna).
   uk: Це проект, згенерований [salvo-cli](https://github.com/salvo-rs/salvo-cli). Ви можете запустити програму та протестувати її, дотримуючись наступних команд (для баз даних, відмінних від sqlite, спочатку змініть рядок підключення до бази даних відповідно до інструкції та завершіть початкову роботу з даними).
@@ -487,10 +487,10 @@ run_the_tests:
   da: Kør tests
 seleted_sqlite:
   en: You have chosen sqlite database, the database has been initialized in the data folder.
-  zh_CN: 你选择的是sqlite数据库,数据库已初始化完毕,在data文件夹下。
-  zh_TW: 你選擇的是sqlite資料庫,資料庫已初始化完畢,在data資料夾下。
+  zh_CN: 你选择的是 sqlite 数据库，数据库已初始化完毕，在 data 文件夹下。
+  zh_TW: 你選擇的是 sqlite 資料庫，資料庫已初始化完畢，在 data 資料夾下。
   fr: Vous avez choisi la base de données sqlite, la base de données a été initialisée dans le dossier data.
-  ja: sqliteデータベースが選択されました。データベースはdataフォルダの下に初期化されています。
+  ja: sqlite データベースが選択されました。データベースは data フォルダの下に初期化されています。
   es: Has elegido la base de datos sqlite, la base de datos se ha inicializado en la carpeta data.
   de: Sie haben die sqlite-Datenbank ausgewählt, die Datenbank wurde im data-Ordner initialisiert.
   ru: Вы выбрали sqlite базу данных, база данных инициализирована в папке data.
@@ -505,16 +505,16 @@ seleted_sqlite:
   da: Du har valgt sqlite databasen, databasen er blevet initialiseret i data-mappen.
 sqlx_website:
   en: 🎯 You have chosen sqlx, documentation can be viewed here:https://github.com/launchbadge/sqlx
-  zh_CN: 🎯 您选择了sqlx，文档可以在这里查看:https://github.com/launchbadge/sqlx
-  zh_TW: 🎯 您選擇了sqlx，文檔可以在這裡查看:https://github.com/launchbadge/sqlx
+  zh_CN: 🎯 您选择了 sqlx，文档可以在这里查看:https://github.com/launchbadge/sqlx
+  zh_TW: 🎯 您選擇了 sqlx，文檔可以在這裡查看:https://github.com/launchbadge/sqlx
   fr: 🎯 Vous avez choisi sqlx, la documentation peut être consultée ici:https://github.com/launchbadge/sqlx
-  ja: 🎯 sqlxを選択しました。ドキュメントはこちらからご覧ください:https://github.com/launchbadge/sqlx
+  ja: 🎯 sqlx を選択しました。ドキュメントはこちらからご覧ください:https://github.com/launchbadge/sqlx
   es: 🎯 Ha elegido sqlx, la documentación se puede ver aquí:https://github.com/launchbadge/sqlx
   de: 🎯 Sie haben sqlx gewählt, die Dokumentation kann hier eingesehen werden:https://github.com/launchbadge/sqlx
   ru: 🎯 Вы выбрали sqlx, документацию можно посмотреть здесь:https://github.com/launchbadge/sqlx
   it: 🎯 Hai scelto sqlx, la documentazione può essere visualizzata qui:https://github.com/launchbadge/sqlx
   pt: 🎯 Você escolheu sqlx, a documentação pode ser visualizada aqui:https://github.com/launchbadge/sqlx
-  ko: 🎯 sqlx를 선택했습니다. 여기에서 문서를 볼 수 있습니다:https://github.com/launchbadge/sqlx
+  ko: 🎯 sqlx 를 선택했습니다. 여기에서 문서를 볼 수 있습니다:https://github.com/launchbadge/sqlx
   no: 🎯 Du har valgt sqlx, dokumentasjonen kan ses her:https://github.com/launchbadge/sqlx
   is: 🎯 Þú hefur valið sqlx, hægt er að skoða kennslu hér:https://github.com/launchbadge/sqlx
   uk: 🎯 Ви вибрали sqlx, документацію можна переглянути тут:https://github.com/launchbadge/sqlx
@@ -523,10 +523,10 @@ sqlx_website:
   da: 🎯 Du har valgt sqlx, dokumentationen kan ses her:https://github.com/launchbadge/sqlx
 sqlx_cli:
   en: SQLx's associated command-line utility for managing databases, migrations, and enabling "offline" mode with sqlx::query!() and friends.
-  zh_CN: SQLx的相关命令行实用程序,用于管理数据库、迁移以及使用sqlx::query!()等启用“脱机”模式。
-  zh_TW: SQLx的相關命令行實用程序,用於管理資料庫、遷移以及使用 sqlx::query!() 等啟用“離線”模式。
+  zh_CN: SQLx 的相关命令行实用程序，用于管理数据库、迁移以及使用 sqlx::query!() 等启用“脱机”模式。
+  zh_TW: SQLx 的相關命令行實用程序，用於管理資料庫、遷移以及使用 sqlx::query!() 等啟用“離線”模式。
   fr: L'utilitaire de ligne de commande associé à SQLx pour gérer les bases de données, les migrations et activer le mode "hors ligne" avec sqlx::query!() et ses amis.
-  ja: データベース、マイグレーションの管理や、sqlx::query!() などを使用した「オフライン」モードの有効化に使用できる、SQLxの関連コマンドラインユーティリティ。
+  ja: データベース、マイグレーションの管理や、sqlx::query!() などを使用した「オフライン」モードの有効化に使用できる、SQLx の関連コマンドラインユーティリティ。
   es: La utilidad de línea de comandos asociada de SQLx para administrar bases de datos, migraciones y habilitar el modo "offline" con sqlx::query!() y amigos.
   de: Das mit SQLx verknüpfte Befehlszeilen-Tool zum Verwalten von Datenbanken, Migrationen und zum Aktivieren des "Offline"-Modus mit sqlx::query!() und Freunden.
   ru: Связанная с SQLx утилита командной строки для управления базами данных, миграциями и включения режима "офлайн" с помощью sqlx::query!() и т.д.
@@ -541,16 +541,16 @@ sqlx_cli:
   da: SQLx's tilknyttede kommandolinjeværktøj til at administrere databaser, migrationer og aktivere "offline"-tilstand med sqlx::query!() og venner.
 about_salvo:
   en: About Salvo
-  zh_CN: 关于赛风(salvo)
-  zh_TW: 關於賽風(salvo)
+  zh_CN: 关于赛风 (salvo)
+  zh_TW: 關於賽風 (salvo)
   fr: À propos de Salvo
-  ja: Salvoについて
+  ja: Salvo について
   es: Acerca de Salvo
   de: Über Salvo
   ru: О Salvo
   it: Informazioni su Salvo
   pt: Sobre o Salvo
-  ko: Salvo에 대하여
+  ko: Salvo 에 대하여
   no: Om Salvo
   is: Um Salvo
   uk: Про Salvo
@@ -559,16 +559,16 @@ about_salvo:
   da: Om Salvo
 about_salvo_text:
   en: You can view the salvo documentation and more examples at https://salvo.rs/ 📖. If our tools have helped you, please star [salvo](https://github.com/salvo-rs/salvo) and [salvo-cli](https://github.com/salvo-rs/salvo-cli), which will greatly encourage us. ❤️
-  zh_CN: 你可以在 https://salvo.rs/ 📖查看salvo的文档以及更多例子,如果我们的工具帮到你,欢迎start [salvo](https://github.com/salvo-rs/salvo) 和 [salvo-cli](https://github.com/salvo-rs/salvo-cli),这将给我们很大激励。❤️
-  zh_TW: 您可以在 https://salvo.rs/ 📖 查看 salvo 的文件以及更多範例,如果我們的工具對您有幫助,歡迎給 [salvo](https://github.com/salvo-rs/salvo) 和 [salvo-cli](https://github.com/salvo-rs/salvo-cli) 加星,這將給我們很大鼓勵。❤️
+  zh_CN: 你可以在 https://salvo.rs/ 📖查看 salvo 的文档以及更多例子，如果我们的工具帮到你，欢迎 start [salvo](https://github.com/salvo-rs/salvo) 和 [salvo-cli](https://github.com/salvo-rs/salvo-cli),这将给我们很大激励。❤️️
+  zh_TW: 您可以在 https://salvo.rs/ 📖 查看 salvo 的文件以及更多範例，如果我們的工具對您有幫助，歡迎給 [salvo](https://github.com/salvo-rs/salvo) 和 [salvo-cli](https://github.com/salvo-rs/salvo-cli) 加星，這將給我們很大鼓勵。❤️
   fr: Vous pouvez consulter la documentation de salvo et plus d'exemples sur https://salvo.rs/ 📖. Si nos outils vous ont aidé, merci de mettre une étoile sur [salvo](https://github.com/salvo-rs/salvo) et [salvo-cli](https://github.com/salvo-rs/salvo-cli), ce qui nous encouragera beaucoup. ❤️
-  ja: https://salvo.rs/ 📖でsalvoのドキュメントやその他の例をご覧いただけます。もし当方のツールが役に立ったのでしたら、[salvo](https://github.com/salvo-rs/salvo)と[salvo-cli](https://github.com/salvo-rs/salvo-cli)にスターをつけていただけると幸いです。これが当方の大きな励みとなります。❤️
+  ja: https://salvo.rs/ 📖で salvo のドキュメントやその他の例をご覧いただけます。もし当方のツールが役に立ったのでしたら、[salvo](https://github.com/salvo-rs/salvo) と [salvo-cli](https://github.com/salvo-rs/salvo-cli) にスターをつけていただけると幸いです。これが当方の大きな励みとなります。❤️
   es: Puede ver la documentación de salvo y más ejemplos en https://salvo.rs/ 📖. Si nuestras herramientas le han ayudado, por favor dé una estrella a [salvo](https://github.com/salvo-rs/salvo) y [salvo-cli](https://github.com/salvo-rs/salvo-cli), lo cual nos animará mucho. ❤️
   de: Sie können die salvo-Dokumentation und weitere Beispiele unter https://salvo.rs/ 📖 einsehen. Wenn Ihnen unsere Tools geholfen haben, hinterlassen Sie bitte einen Stern bei [salvo](https://github.com/salvo-rs/salvo) und [salvo-cli](https://github.com/salvo-rs/salvo-cli). Das würde uns sehr ermutigen. ❤️
   ru: Вы можете посмотреть документацию salvo и другие примеры на https://salvo.rs/ 📖. Если наши инструменты помогли Вам, пожалуйста, поставьте звезду на [salvo](https://github.com/salvo-rs/salvo) и [salvo-cli](https://github.com/salvo-rs/salvo-cli)- это очень нас вдохновит. ❤️
   it: Puoi consultare la documentazione di salvo e altri esempi su https://salvo.rs/ 📖. Se i nostri strumenti ti sono stati d'aiuto, per favore lascia una stella a [salvo](https://github.com/salvo-rs/salvo) e [salvo-cli](https://github.com/salvo-rs/salvo-cli), ciò ci incoraggerà molto. ❤️
   pt: Você pode ver a documentação do salvo e mais exemplos em https://salvo.rs/ 📖. Se nossas ferramentas foram úteis, favoritar [salvo](https://github.com/salvo-rs/salvo) e [salvo-cli](https://github.com/salvo-rs/salvo-cli), o que muito nos incentivará. ❤️
-  ko: https://salvo.rs/ 📖에서 salvo 문서와 더 많은 예제를 볼 수 있습니다. 저희 도구가 도움이 되었다면, [salvo](https://github.com/salvo-rs/salvo)와 [salvo-cli](https://github.com/salvo-rs/salvo-cli)에 star를 남겨주세요. 이는 저희에게 큰 동기부여가 될 것입니다. ❤️
+  ko: https://salvo.rs/ 📖에서 salvo 문서와 더 많은 예제를 볼 수 있습니다. 저희 도구가 도움이 되었다면, [salvo](https://github.com/salvo-rs/salvo) 와 [salvo-cli](https://github.com/salvo-rs/salvo-cli) 에 star 를 남겨주세요. 이는 저희에게 큰 동기부여가 될 것입니다. ❤️
   no: Du kan se salvo-dokumentasjonen og flere eksempler på https://salvo.rs/ 📖. Hvis verktøyene våre har hjulpet deg, vennligst stjerne [salvo](https://github.com/salvo-rs/salvo) og [salvo-cli](https://github.com/salvo-rs/salvo-cli), noe som vil oppmuntre oss mye. ❤️
   is: Þú getur skoðað salvo skjölin og fleiri dæmi á https://salvo.rs/ 📖. Ef tólin okkar hafa hjálpað þér væri frábært ef þú gæfir [salvo](https://github.com/salvo-rs/salvo) og [salvo-cli](https://github.com/salvo-rs/salvo-cli) stjörnu, það hvetur okkur mikið áfram. ❤️
   uk: Ви можете переглянути документацію salvo та більше прикладів на https://salvo.rs/ 📖. Якщо наші інструменти Вам допомогли, будь ласка, поставте зірку на [salvo](https://github.com/salvo-rs/salvo) та [salvo-cli](https://github.com/salvo-rs/salvo-cli)- це дуже нас надихне. ❤️
@@ -595,16 +595,16 @@ tip_title:
   da: Tip
 config_tip:
   en: The database connection string is in config/config.toml, but if you use sqlx or seaorm, the library itself reads the configuration from .env file to generate entities, run migrations, and validate. So when you modify the database connection string, you need to change two places at the same time.
-  zh_CN: 程序数据库连接串在config/config.toml里,但是如果你使用的是sqlx或者seaorm,库本身读取.env文件的配置来生成实体,运行迁移,验证。所以当你修改数据库连接串时,需要同时修改两个地方。
-  zh_TW: 程式資料庫連接字串在 config/config.toml 裡,但是如果你使用的是 sqlx 或者 seaorm,庫本身讀取 .env 檔案的配置來生成實體、運行遷移、驗證。所以當你修改資料庫連接字串時,需要同時修改兩個地方。
+  zh_CN: 程序数据库连接串在 config/config.toml 里，但是如果你使用的是 sqlx 或者 seaorm，库本身读取 .env 文件的配置来生成实体，运行迁移，验证。所以当你修改数据库连接串时，需要同时修改两个地方。
+  zh_TW: 程式資料庫連接字串在 config/config.toml 裡，但是如果你使用的是 sqlx 或者 seaorm，庫本身讀取 .env 檔案的配置來生成實體、運行遷移、驗證。所以當你修改資料庫連接字串時，需要同時修改兩個地方。
   fr: La chaîne de connexion de la base de données se trouve dans config/config.toml, mais si vous utilisez sqlx ou seaorm, la bibliothèque elle-même lit la configuration du fichier .env pour générer des entités, exécuter des migrations et valider. Donc, lorsque vous modifiez la chaîne de connexion de la base de données, vous devez modifier les deux endroits en même temps.
-  ja: データベースの接続文字列はconfig/config.tomlにありますが、sqlxやseaormを使用している場合、ライブラリ自体が.envファイルの設定を読み取ってエンティティを生成したり、マイグレーションを実行したり、検証したりします。したがって、データベースの接続文字列を変更する場合は、同時に2か所を変更する必要があります。
+  ja: データベースの接続文字列は config/config.toml にありますが、sqlx や seaorm を使用している場合、ライブラリ自体が.env ファイルの設定を読み取ってエンティティを生成したり、マイグレーションを実行したり、検証したりします。したがって、データベースの接続文字列を変更する場合は、同時に 2 か所を変更する必要があります。
   es: La cadena de conexión a la base de datos está en config/config.toml, pero si utiliza sqlx o seaorm, la biblioteca en sí lee la configuración del archivo .env para generar entidades, ejecutar migraciones y validar. Por lo tanto, cuando modifique la cadena de conexión a la base de datos, debe cambiar ambos lugares al mismo tiempo.
   de: Die Datenbankverbindungszeichenfolge befindet sich in config/config.toml, aber wenn Sie sqlx oder seaorm verwenden, liest die Bibliothek selbst die Konfiguration aus der .env-Datei, um Entitäten zu generieren, Migrationen auszuführen und zu validieren. Wenn Sie daher die Datenbankverbindungszeichenfolge ändern, müssen Sie beide Stellen gleichzeitig ändern.
   ru: Строка подключения к базе данных находится в config/config.toml, но если вы используете sqlx или seaorm, сама библиотека читает конфигурацию из .env файла, чтобы сгенерировать сущности, выполнить миграции и проверить. Поэтому, при изменении строки подключения к базе данных, вам нужно изменить оба места одновременно.
   it: La stringa di connessione al database è in config/config.toml, ma se usi sqlx o seaorm, la libreria stessa legge la configurazione dal file .env per generare entità, eseguire migrazioni e convalidare. Quindi, quando modifichi la stringa di connessione al database, devi modificare contemporaneamente entrambi i posti.
   pt: A string de conexão com o banco de dados está em config/config.toml, mas se você usar sqlx ou seaorm, a própria biblioteca lê as configurações do arquivo .env para gerar entidades, executar migrações e validar. Portanto, ao modificar a string de conexão com o banco de dados, é necessário alterar os dois locais ao mesmo tempo.
-  ko: 데이터베이스 연결 문자열은 config/config.toml에 있지만, sqlx 또는 seaorm을 사용하는 경우 라이브러리 자체가 .env 파일의 설정을 읽어 엔티티를 생성하고, 마이그레이션을 실행하고, 검증합니다. 따라서 데이터베이스 연결 문자열을 수정할 때는 두 곳을 동시에 수정해야 합니다.
+  ko: 데이터베이스 연결 문자열은 config/config.toml에 있지만, sqlx 또는 seaorm 을 사용하는 경우 라이브러리 자체가 .env 파일의 설정을 읽어 엔티티를 생성하고, 마이그레이션을 실행하고, 검증합니다. 따라서 데이터베이스 연결 문자열을 수정할 때는 두 곳을 동시에 수정해야 합니다.
   no: Databasetilkoblingsstrengen er i config/config.toml, men hvis du bruker sqlx eller seaorm, leser biblioteket selv konfigurasjonen fra .env-filen for å generere enheter, kjøre migreringer og validere. Så når du endrer databasetilkoblingsstrengen, må du endre begge stedene samtidig.
   is: Tengingarstrengur gagnagrunnsins er í config/config.toml en ef þú notar sqlx eða seaorm les bókasafnið sjálft stillingarnar úr .env skránni til að búa til einingar, keyra flutninga og sannreyna. Þannig þegar þú breytir tengingarstreng gagnagrunnsins þarftu að breyta báðum stöðunum í einu.
   uk: Рядок підключення до бази даних знаходиться в config/config.toml, але якщо ви використовуєте sqlx або seaorm, сама бібліотека зчитує конфігурацію з файлу .env, щоб згенерувати сутності, виконати міграції та перевірку. Тому, при зміні рядка підключення до бази даних, вам потрібно змінити обидва місця одночасно.
@@ -613,16 +613,16 @@ config_tip:
   da: Databaseforbindelsesstrengen er i config/config.toml, men hvis du bruger sqlx eller seaorm, læser biblioteket selv konfigurationen fra .env-filen for at generere enheder, køre migrationer og validere. Så når du ændrer databaseforbindelsesstrengen, skal du ændre begge steder på samme tid.
 password_tip:
   en: If you choose sqlite or have initialized the data in the users table, please use the account zhangsan with password 123 to login.
-  zh_CN: 如果你选择的sqlite或者已经初始化了users表的数据,请使用账号 zhangsan 密码123 来登录。
-  zh_TW: 如果你選擇的 sqlite 或者已經初始化了 users 表的資料,請使用帳號 zhangsan 密碼 123 來登錄。
+  zh_CN: 如果你选择的 sqlite 或者已经初始化了 users 表的数据，请使用账号 zhangsan 密码 123 来登录。
+  zh_TW: 如果你選擇的 sqlite 或者已經初始化了 users 表的資料，請使用帳號 zhangsan 密碼 123 來登錄。
   fr: Si vous choisissez sqlite ou avez déjà initialisé les données de la table utilisateurs, veuillez utiliser le compte zhangsan avec le mot de passe 123 pour vous connecter.
-  ja: sqliteかusersテーブルのデータを初期化済みの場合は、アカウントzhangsan、パスワード123でログインしてください。
+  ja: sqlite か users テーブルのデータを初期化済みの場合は、アカウント zhangsan、パスワード 123 でログインしてください。
   es: Si elige sqlite o ya ha inicializado los datos de la tabla de usuarios, utilice la cuenta zhangsan con la contraseña 123 para iniciar sesión.
   de: Wenn Sie SQLite ausgewählt oder die Daten in der Benutzertabelle bereits initialisiert haben, melden Sie sich bitte mit dem Konto zhangsan und dem Passwort 123 an.
   ru: Если вы выбрали sqlite или уже инициализировали данные в таблице пользователей, пожалуйста, используйте учетную запись zhangsan с паролем 123 для входа.
   it: Se scegli sqlite o hai già inizializzato i dati nella tabella utenti, utilizza l'account zhangsan con la password 123 per accedere.
   pt: Se você escolheu o sqlite ou já inicializou os dados na tabela de usuários, use a conta zhangsan com a senha 123 para fazer login.
-  ko: sqlite을 선택하거나 users 테이블의 데이터를 이미 초기화한 경우, 계정 zhangsan와 비밀번호 123을 사용하여 로그인하세요.
+  ko: sqlite 을 선택하거나 users 테이블의 데이터를 이미 초기화한 경우, 계정 zhangsan 와 비밀번호 123 을 사용하여 로그인하세요.
   no: Hvis du velger sqlite eller allerede har initialisert data i brukertabellen, bruk kontoen zhangsan med passord 123 for å logge inn.
   is: Ef þú velur sqlite eða hefur þegar frumstillt gögn í notandatöfluna, notaðu aðganginn zhangsan með lykilorðinu 123 til að skrá þig inn.
   uk: Якщо ви вибрали sqlite або вже ініціалізували дані в таблиці користувачів, будь ласка, скористайтеся обліковим записом zhangsan з паролем 123 для входу.
@@ -634,7 +634,7 @@ orm_title:
   zh_CN: orm 的文档或主页链接
   zh_TW: orm 的文檔或主頁連結
   fr: lien vers la documentation ou la page d'accueil de orm
-  ja: ORMのドキュメントまたはホームページリンク
+  ja: ORM のドキュメントまたはホームページリンク
   es: enlace a la documentación o página de inicio de orm
   de: Link zur orm-Dokumentation oder-Homepage
   ru: Ссылка на документацию или домашнюю страницу orm
@@ -684,29 +684,29 @@ initialization:
   el: Αρχικοποίηση δεδομένων
   da: Datainitialisering
 initialization_sqlx_cli_not_sqlite:
-  zh_CN: 安装 cargo install sqlx-cli \n- 修改.env和config/config.toml中的数据库连接字符串 \n- 然后执行sqlx database create 创建数据库 \n- 执行sqlx migrate run 还原数据库\n- 执行 data/init_sql.sql文件 添加初始数据
+  zh_CN: 安装 cargo install sqlx-cli \n- 修改.env 和 config/config.toml 中的数据库连接字符串 \n- 然后执行 sqlx database create 创建数据库 \n- 执行 sqlx migrate run 还原数据库\n- 执行 data/init_sql.sql文件 添加初始数据
   en: Install cargo install sqlx-cli \n- Modify the database connection string in .env and config/config.toml \n- Then execute sqlx database create to create the database \n- Execute sqlx migrate run to restore the database\n- Execute the data/init_sql.sql file to add initial data
-  zh_TW:  安裝 cargo install sqlx-cli \n- 修改.env和config/config.toml中的資料庫連接字串\n- 然後執行sqlx database create創建資料庫\n- 執行sqlx migrate run還原資料庫\n- 執行data/init_sql.sql文件添加初始數據
-  fr:  Installer cargo install sqlx-cli \n- Modifier la chaîne de connexion de base de données dans .env et config/config.toml \n- Exécuter ensuite sqlx database create pour créer la base de données \n- Exécuter sqlx migrate run pour restaurer la base de données\n- Exécuter le fichier data/init_sql.sql pour ajouter les données initiales
-  ja:  cargo install sqlx-cliをインストール\n- .envとconfig/config.toml内のデータベース接続文字列を変更\n- 次にsqlx database createを実行してデータベースを作成\n- sqlx migrate runを実行してデータベースを復元\n- data/init_sql.sqlファイルを実行して初期データを追加
-  es:  Instalar cargo install sqlx-cli \n- Modificar el string de conexión a la base de datos en .env y config/config.toml \n- Luego ejecutar sqlx database create para crear la base de datos \n- Ejecutar sqlx migrate run para restaurar la base de datos\n- Ejecutar el archivo data/init_sql.sql para agregar los datos iniciales
-  de:  Installieren Sie cargo install sqlx-cli \n- Ändern Sie die Datenbankverbindungszeichenfolge in .env und config/config.toml \n- Führen Sie dann sqlx database create aus, um die Datenbank zu erstellen \n- Führen Sie sqlx migrate run aus, um die Datenbank wiederherzustellen\n- Führen Sie die Datei data/init_sql.sql aus, um anfängliche Daten hinzuzufügen
-  ru:  Установить cargo install sqlx-cli \n- Изменить строку подключения к базе данных в .env и config/config.toml \n- Затем выполнить sqlx database create чтобы создать базу данных \n- Выполнить sqlx migrate run чтобы восстановить базу данных\n- Выполнить файл data/init_sql.sql чтобы добавить начальные данные
-  it:  Installare cargo install sqlx-cli \n- Modificare la stringa di connessione al database in .env e config/config.toml \n- Quindi eseguire sqlx database create per creare il database \n- Eseguire sqlx migrate run per ripristinare il database\n- Eseguire il file data/init_sql.sql per aggiungere i dati iniziali
-  pt:  Instalar cargo install sqlx-cli \n- Modificar a string de conexão com o banco de dados em .env e config/config.toml \n- Depois, executar sqlx database create para criar o banco de dados \n- Executar sqlx migrate run para restaurar o banco de dados\n- Executar o arquivo data/init_sql.sql para adicionar os dados iniciais
-  ko:  cargo install sqlx-cli 설치\n- .env와 config/config.toml의 데이터베이스 연결 문자열 수정\n- sqlx database create 실행하여 데이터베이스 생성\n- sqlx migrate run 실행하여 데이터베이스 복원\n- data/init_sql.sql 파일 실행하여 초기 데이터 추가
+  zh_TW: 安裝 cargo install sqlx-cli \n- 修改.env 和 config/config.toml 中的資料庫連接字串\n- 然後執行 sqlx database create 創建資料庫\n- 執行 sqlx migrate run 還原資料庫\n- 執行 data/init_sql.sql 文件添加初始數據
+  fr: Installer cargo install sqlx-cli \n- Modifier la chaîne de connexion de base de données dans .env et config/config.toml \n- Exécuter ensuite sqlx database create pour créer la base de données \n- Exécuter sqlx migrate run pour restaurer la base de données\n- Exécuter le fichier data/init_sql.sql pour ajouter les données initiales
+  ja: cargo install sqlx-cli をインストール\n- .env と config/config.toml 内のデータベース接続文字列を変更\n- 次に sqlx database create を実行してデータベースを作成\n- sqlx migrate run を実行してデータベースを復元\n- data/init_sql.sqlファイルを実行して初期データを追加
+  es: Instalar cargo install sqlx-cli \n- Modificar el string de conexión a la base de datos en .env y config/config.toml \n- Luego ejecutar sqlx database create para crear la base de datos \n- Ejecutar sqlx migrate run para restaurar la base de datos\n- Ejecutar el archivo data/init_sql.sql para agregar los datos iniciales
+  de: Installieren Sie cargo install sqlx-cli \n- Ändern Sie die Datenbankverbindungszeichenfolge in .env und config/config.toml \n- Führen Sie dann sqlx database create aus, um die Datenbank zu erstellen \n- Führen Sie sqlx migrate run aus, um die Datenbank wiederherzustellen\n- Führen Sie die Datei data/init_sql.sql aus, um anfängliche Daten hinzuzufügen
+  ru: Установить cargo install sqlx-cli \n- Изменить строку подключения к базе данных в .env и config/config.toml \n- Затем выполнить sqlx database create чтобы создать базу данных \n- Выполнить sqlx migrate run чтобы восстановить базу данных\n- Выполнить файл data/init_sql.sql чтобы добавить начальные данные
+  it: Installare cargo install sqlx-cli \n- Modificare la stringa di connessione al database in .env e config/config.toml \n- Quindi eseguire sqlx database create per creare il database \n- Eseguire sqlx migrate run per ripristinare il database\n- Eseguire il file data/init_sql.sql per aggiungere i dati iniziali
+  pt: Instalar cargo install sqlx-cli \n- Modificar a string de conexão com o banco de dados em .env e config/config.toml \n- Depois, executar sqlx database create para criar o banco de dados \n- Executar sqlx migrate run para restaurar o banco de dados\n- Executar o arquivo data/init_sql.sql para adicionar os dados iniciais
+  ko: cargo install sqlx-cli 설치\n- .env 와 config/config.toml의 데이터베이스 연결 문자열 수정\n- sqlx database create 실행하여 데이터베이스 생성\n- sqlx migrate run 실행하여 데이터베이스 복원\n- data/init_sql.sql 파일 실행하여 초기 데이터 추가
 sea_orm_website:
   en: 🐚 You have chosen sea-orm, documentation can be viewed here:https://www.sea-ql.org/SeaORM/docs/index/
-  zh_CN: 🐚 您选择了sea-orm，文档可以在这里查看:https://www.sea-ql.org/SeaORM/docs/index/
-  zh_TW: 🐚 您選擇了sea-orm，文檔可以在這裡查看:https://www.sea-ql.org/SeaORM/docs/index/
+  zh_CN: 🐚 您选择了 sea-orm，文档可以在这里查看:https://www.sea-ql.org/SeaORM/docs/index/
+  zh_TW: 🐚 您選擇了 sea-orm，文檔可以在這裡查看:https://www.sea-ql.org/SeaORM/docs/index/
   fr: 🐚 Vous avez choisi sea-orm, la documentation peut être consultée ici:https://www.sea-ql.org/SeaORM/docs/index/
-  ja: 🐚 sea-ormを選択しました。ドキュメントはこちらからご覧ください:https://www.sea-ql.org/SeaORM/docs/index/
+  ja: 🐚 sea-orm を選択しました。ドキュメントはこちらからご覧ください:https://www.sea-ql.org/SeaORM/docs/index/
   es: 🐚 Ha elegido sea-orm, la documentación se puede ver aquí:https://www.sea-ql.org/SeaORM/docs/index/
   de: 🐚 Sie haben sea-orm gewählt, die Dokumentation kann hier eingesehen werden:https://www.sea-ql.org/SeaORM/docs/index/
   ru: 🐚 Вы выбрали sea-orm, документацию можно посмотреть здесь:https://www.sea-ql.org/SeaORM/docs/index/
   it: 🐚 Hai scelto sea-orm, la documentazione può essere visualizzata qui:https://www.sea-ql.org/SeaORM/docs/index/
   pt: 🐚 Você escolheu sea-orm, a documentação pode ser visualizada aqui:https://www.sea-ql.org/SeaORM/docs/index/
-  ko: 🐚 sea-orm을 선택했습니다. 여기에서 문서를 볼 수 있습니다:https://www.sea-ql.org/SeaORM/docs/index/
+  ko: 🐚 sea-orm 을 선택했습니다. 여기에서 문서를 볼 수 있습니다:https://www.sea-ql.org/SeaORM/docs/index/
   no: 🐚 Du har valgt sea-orm, dokumentasjonen kan ses her:https://www.sea-ql.org/SeaORM/docs/index/
   is: 🐚 Þú hefur valið sea-orm, hægt er að skoða kennslu hér:https://www.sea-ql.org/SeaORM/docs/index/
   uk: 🐚 Ви вибрали sea-orm, документацію можна переглянути тут:https://www.sea-ql.org/SeaORM/docs/index/
@@ -714,19 +714,19 @@ sea_orm_website:
   el: 🐚 Επιλέξατε sea-orm, η τεκμηρίωση μπορεί να προβληθεί εδώ:https://www.sea-ql.org/SeaORM/docs/index/
   da: 🐚 Du har valgt sea-orm, dokumentationen kan ses her:https://www.sea-ql.org/SeaORM/docs/index/
 initialization_seaorm_cli_not_sqlite:
-  en:  Please modify the database connection string in .env and config/config.toml first \n- Make sure the database exists, then run sea-orm migration to restore the database, and run the following SQL in the database to add the default data. \n- After running, you can use the default username:zhangsan and password:123 to access /login. \n- For more sea-orm-cli functionality, please check /migration/README.md.
-  zh_CN: 请先修改.env和config/config.toml中的数据库连接字符串 \n- 确保数据库存在，然后运行sea-orm migration还原数据库， 在数据库中运行/data文件中的sql文件以添加默认数据。 \n- 运行后，您可以使用默认用户名:zhangsan和密码:123访问/login。 \n- 更多sea-orm-cli功能，请查看/migration/README.md。
-  zh_TW: 請先修改.env和config/config.toml中的數據庫連接字符串 \n- 確保數據庫存在，然後運行sea-orm migration還原數據庫，在數據庫中運行/data文件中的sql文件以添加預設數據。 \n- 運行後，您可以使用預設用戶名:zhangsan和密碼:123訪問/login。 \n- 更多sea-orm-cli功能，請查看/migration/README.md。
-  ja: .envおよびconfig/config.tomlのデータベース接続文字列を先に変更してください \n- データベースが存在することを確認し、sea-orm migrationを実行してデータベースを復元した後、/dataファイル内のsqlファイルを実行してデフォルトデータをデータベースに追加してください。 \n- 実行後、デフォルトユーザー名:zhangsanとパスワード:123を使用して/loginにアクセスできます。 \n- sea-orm-cliのさらなる機能については、/migration/README.mdをご覧ください。
-  ko: .env 및 config/config.toml의 데이터베이스 연결 문자열을 먼저 수정하십시오 \n- 데이터베이스가 존재하는지 확인한 후 sea-orm migration을 실행하여 데이터베이스를 복원하고, /data 파일에 있는 sql 파일을 실행하여 데이터베이스에 기본 데이터를 추가하십시오. \n- 실행 후 기본 사용자 이름:zhangsan과 비밀번호:123을 사용하여 /login에 접속할 수 있습니다. \n- sea-orm-cli의 추가 기능에 대해서는 /migration/README.md를 확인하십시오。
+  en: Please modify the database connection string in .env and config/config.toml first \n- Make sure the database exists, then run sea-orm migration to restore the database, and run the following SQL in the database to add the default data. \n- After running, you can use the default username:zhangsan and password:123 to access /login. \n- For more sea-orm-cli functionality, please check /migration/README.md.
+  zh_CN: 请先修改.env 和 config/config.toml 中的数据库连接字符串 \n- 确保数据库存在，然后运行 sea-orm migration 还原数据库，在数据库中运行/data 文件中的 sql 文件以添加默认数据。 \n- 运行后，您可以使用默认用户名:zhangsan 和密码:123 访问/login。 \n- 更多 sea-orm-cli 功能，请查看/migration/README.md。
+  zh_TW: 請先修改.env 和 config/config.toml 中的數據庫連接字符串 \n- 確保數據庫存在，然後運行 sea-orm migration 還原數據庫，在數據庫中運行/data 文件中的 sql 文件以添加預設數據。 \n- 運行後，您可以使用預設用戶名:zhangsan 和密碼:123 訪問/login。 \n- 更多 sea-orm-cli 功能，請查看/migration/README.md。
+  ja: .env および config/config.toml のデータベース接続文字列を先に変更してください \n- データベースが存在することを確認し、sea-orm migration を実行してデータベースを復元した後、/data ファイル内の sql ファイルを実行してデフォルトデータをデータベースに追加してください。 \n- 実行後、デフォルトユーザー名:zhangsan とパスワード:123 を使用して/login にアクセスできます。 \n- sea-orm-cli のさらなる機能については、/migration/README.md をご覧ください。
+  ko: .env 및 config/config.toml의 데이터베이스 연결 문자열을 먼저 수정하십시오 \n- 데이터베이스가 존재하는지 확인한 후 sea-orm migration 을 실행하여 데이터베이스를 복원하고, /data 파일에 있는 sql 파일을 실행하여 데이터베이스에 기본 데이터를 추가하십시오. \n- 실행 후 기본 사용자 이름:zhangsan 과 비밀번호:123 을 사용하여 /login 에 접속할 수 있습니다. \n- sea-orm-cli 의 추가 기능에 대해서는 /migration/README.md를 확인하십시오。
   fr: Veuillez d'abord modifier la chaîne de connexion à la base de données dans .env et config/config.toml \n- Assurez-vous que la base de données existe, puis exécutez sea-orm migration pour restaurer la base de données, et exécutez le fichier sql dans le dossier /data pour ajouter les données par défaut dans la base de données. \n- Après l'exécution, vous pouvez accéder à /login en utilisant le nom d'utilisateur par défaut:zhangsan et le mot de passe:123. \n- Pour plus de fonctionnalités de sea-orm-cli, veuillez consulter /migration/README.md.
   es: Por favor, modifique primero la cadena de conexión a la base de datos en .env y config/config.toml \n- Asegúrese de que la base de datos exista y luego ejecute sea-orm migration para restaurar la base de datos, y ejecute el archivo sql en la carpeta /data para agregar los datos predeterminados a la base de datos. \n- Después de la ejecución, puede acceder a /login utilizando el nombre de usuario predeterminado:zhangsan y la contraseña:123. \n- Para más funciones de sea-orm-cli, consulte /migration/README.md.
   de: Bitte ändern Sie zuerst die Datenbankverbindungszeichenkette in .env und config/config.toml \n- Stellen Sie sicher, dass die Datenbank existiert und führen Sie dann sea-orm migration aus, um die Datenbank wiederherzustellen, und führen Sie die sql-Datei im /data Ordner aus, um die Standarddaten zur Datenbank hinzuzufügen. \n- Nach der Ausführung können Sie sich mit dem Standardbenutzernamen:zhangsan und dem Passwort:123 bei /login anmelden. \n```yml
-  zh_CN: 请先修改.env和config/config.toml中的数据库连接字符串 \n- 确保数据库存在，然后运行sea-orm migration还原数据库，在数据库中运行/data文件中的sql文件以添加默认数据。 \n- 运行后，您可以使用默认用户名:zhangsan和密码:123访问/login。 \n- 更多sea-orm-cli功能，请查看/migration/README.md。
-  zh_TW: 請先修改.env和config/config.toml中的數據庫連線字符串 \n- 確保數據庫存在後，執行sea-orm migration來還原數據庫，並在數據庫中執行/data檔案中的sql檔案以添加預設數據。 \n- 執行後，您可以使用預設使用者名稱:zhangsan和密碼:123來訪問/login。 \n- 想了解更多sea-orm-cli的功能，請查閱/migration/README.md。
+  zh_CN: 请先修改.env 和 config/config.toml 中的数据库连接字符串 \n- 确保数据库存在，然后运行 sea-orm migration 还原数据库，在数据库中运行/data 文件中的 sql 文件以添加默认数据。 \n- 运行后，您可以使用默认用户名:zhangsan 和密码:123 访问/login。 \n- 更多 sea-orm-cli 功能，请查看/migration/README.md。
+  zh_TW: 請先修改.env 和 config/config.toml 中的數據庫連線字符串 \n- 確保數據庫存在後，執行 sea-orm migration 來還原數據庫，並在數據庫中執行/data 檔案中的 sql 檔案以添加預設數據。 \n- 執行後，您可以使用預設使用者名稱:zhangsan 和密碼:123 來訪問/login。 \n- 想了解更多 sea-orm-cli 的功能，請查閱/migration/README.md。
   en: Please first modify the database connection string in .env and config/config.toml \n- Ensure the database exists and then run sea-orm migration to restore the database, and execute the sql file in the /data folder to add the default data to the database. \n- After running, you can access /login using the default username:zhangsan and password:123. \n- For more sea-orm-cli features, please check /migration/README.md.
   fr: Veuillez d'abord modifier la chaîne de connexion à la base de données dans .env et config/config.toml \n- Assurez-vous que la base de données existe, puis exécutez sea-orm migration pour restaurer la base de données, et exécutez le fichier sql dans le dossier /data pour ajouter les données par défaut. \n- Après l'exécution, vous pouvez accéder à /login avec le nom d'utilisateur par défaut :zhangsan et le mot de passe :123. \n- Pour en savoir plus sur les fonctionnalités de sea-orm-cli, consultez le fichier /migration/README.md.
-  ja: .envおよびconfig/config.tomlのデータベース接続文字列を先に変更してください \n- データベースが存在することを確認し、sea-orm migrationを実行してデータベースを復元し、/dataフォルダ内のsqlファイルを実行してデフォルトデータをデータベースに追加してください。 \n- 実行後、デフォルトユーザー名:zhangsanとパスワード:123を使用して/loginにアクセスできます。 \n- sea-orm-cliのさらなる機能については、/migration/README.mdをご覧ください。
+  ja: .env および config/config.toml のデータベース接続文字列を先に変更してください \n- データベースが存在することを確認し、sea-orm migration を実行してデータベースを復元し、/data フォルダ内の sql ファイルを実行してデフォルトデータをデータベースに追加してください。 \n- 実行後、デフォルトユーザー名:zhangsan とパスワード:123 を使用して/login にアクセスできます。 \n- sea-orm-cli のさらなる機能については、/migration/README.md をご覧ください。
   es: Por favor, modifique primero la cadena de conexión a la base de datos en .env y config/config.toml \n- Asegúrese de que la base de datos existe y luego ejecute sea-orm migration para restaurar la base de datos, y ejecute el archivo sql en la carpeta /data para añadir los datos predeterminados. \n- Después de ejecutar, puede acceder a /login utilizando el nombre de usuario predeterminado:zhangsan y la contraseña:123. \n- Para más funciones de sea-orm-cli, consulte /migration/README.md.
   de: Bitte ändern Sie zunächst den Datenbankverbindungsschlüssel in .env und config/config.toml \n- Stellen Sie sicher, dass die Datenbank vorhanden ist, führen Sie dann sea-orm migration zur Wiederherstellung der Datenbank aus und führen Sie die sql-Datei im /data-Ordner aus, um die Standarddaten zur Datenbank hinzuzufügen. \n- Nach der Ausführung können Sie auf /login mit dem Standardbenutzernamen:zhangsan und dem Passwort:123 zugreifen. \n- Für weitere Funktionen von sea-orm-cli siehe /migration/README.md.
   it: Modificare prima la stringa di connessione al database in .env e config/config.toml \n- Assicurarsi che il database esista e poi eseguire sea-orm migration per ripristinare il database; eseguire il file sql nella cartella /data per aggiungere i dati predefiniti al database. \n- Dopo aver eseguito, è possibile accedere a /login utilizzando il nome utente predefinito:zhangsan e la password:123. \n- Per ulteriori funzionalità di sea-orm-cli, si prega di consultare /migration/README.md.
@@ -734,19 +734,19 @@ initialization_seaorm_cli_not_sqlite:
   ru: Пожалуйста, сначала измените строку подключения к базе данных в файлах .env и config/config.toml \n- Убедитесь, что база данных существует, затем выполните sea-orm migration для восстановления базы данных, и выполните sql-файл в папке /data, чтобы добавить стандартные данные в базу данных. \n- После запуска вы можете использовать стандартное имя пользователя:zhangsan и пароль:123 для доступа к /login. \n- Для получения дополнительных функций sea-orm-cli, пожалуйста, смотрите /migration/README.md.
   no: Vennligst endre først databasetilkoblingsstrengen i .env og config/config.toml \n- Sørg for at databasen eksisterer, deretter kjør sea-orm migration for å gjenopprette databasen, og kjør sql-filen i /data-mappen for å legge til standarddata i databasen. \n- Etter kjøring, kan du logge inn på /login med standard brukernavn:zhangsan og passord:123. \n- For flere sea-orm-cli funksjoner, vennligst se /migration/README.md.
   is: Vinsamlegast breytið fyrst gagnagrunnstengistrengnum í .env og config/config.toml \n- Gangið úr skugga um að gagnagrunnurinn sé til, keyrið síðan sea-orm migration til að endurheimta gagnagrunninn, og keyrið sql skrána í /data möppunni til að bæta við sjálfgefnum gögnum í gagnagrunninn. \n- Eftir keyrslu, geturðu skráð þig inn á /login með sjálfgefna notendanafnið:zhangsan og lykilorðið:123. \n- Fyrir fleiri sea-orm-cli aðgerðir, vinsamlegast skoðið /migration/README.md.
-  uk: Будь ласка, спершу змініть рядок підключення до бази даних у файлах .env і config/config.toml \n- Переконайтеся, що база даних існує, а потім запустіть sea-orm migration для відновлення бази даних, і виконайте sql-файл в папці /data, щоб додати до бази даних стандартні дані. \n- Після запуску ви можете увійти в /login, використовуючи стандартне ім'я користувача:zhangsan та пароль:123. \n- Для отримання більш детальної інформації про можливості sea-orm您似乎在提供多语言的说明，但是您没有提供具体的上下文或者询问具体的问题。如果您需要帮助或者想要讨论某个话题，请提供更多的信息。
+  uk: Будь ласка, спершу змініть рядок підключення до бази даних у файлах .env і config/config.toml \n- Переконайтеся, що база даних існує, а потім запустіть sea-orm migration для відновлення бази даних, і виконайте sql-файл в папці /data, щоб додати до бази даних стандартні дані. \n- Після запуску ви можете увійти в /login, використовуючи стандартне ім'я користувача:zhangsan та пароль:123. \n- Для отримання більш детальної інформації про можливості sea-orm 您似乎在提供多语言的说明，但是您没有提供具体的上下文或者询问具体的问题。如果您需要帮助或者想要讨论某个话题，请提供更多的信息。
 sea_orm_cli_website:
-  zh_CN: SeaOrm-cli的相关数据库迁移,自动创建实体等命令请查看文档:https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
+  zh_CN: SeaOrm-cli 的相关数据库迁移，自动创建实体等命令请查看文档:https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
   en: For SeaOrm-cli related database migration, automatic entity creation and other commands, please check the documentation https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
-  zh_TW: SeaOrm-cli相關資料庫遷移、自動創建實體等命令請查看文檔:https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
+  zh_TW: SeaOrm-cli 相關資料庫遷移、自動創建實體等命令請查看文檔:https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
   fr: Pour les commandes liées à la migration de base de données de SeaOrm-cli, la création automatique d'entités, etc., veuillez consulter la documentation  https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
-  ja: SeaOrm-cliのデータベースマイグレーション、エンティティの自動作成などの関連コマンドはドキュメントをご確認ください  https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
+  ja: SeaOrm-cli のデータベースマイグレーション、エンティティの自動作成などの関連コマンドはドキュメントをご確認ください  https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
   es: Para los comandos relacionados con la migración de bases de datos de SeaOrm-cli, la creación automática de entidades, etc., consulte la documentación https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
   de: Für mit SeaOrm-cli verknüpfte Datenbankmigrations-, automatische Entity-Erstellungs- und andere Befehle siehe die Dokumentation https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
   ru: Для команд, связанных с миграцией базы данных SeaOrm-cli, автоматическим созданием сущностей и другими, смотрите документацию https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
   it: Per i comandi relativi alla migrazione del database di SeaOrm-cli, la creazione automatica di entità e altro, consultare la documentazione https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
   pt: Para comandos relacionados à migração de banco de dados do SeaOrm-cli, criação automática de entidades, etc, consulte a documentação:https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
-  ko: SeaOrm-cli의 데이터베이스 마이그레이션, 엔티티 자동 생성 등 관련 명령은 문서를 참고하세요:https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
+  ko: SeaOrm-cli 의 데이터베이스 마이그레이션, 엔티티 자동 생성 등 관련 명령은 문서를 참고하세요:https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
   no: For SeaOrm-cli-relaterte databasemigreringer, automatisk enhetsopprettelse og andre kommandoer, se dokumentasjonen:https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
   is: Fyrir tengdar skipanir SeaOrm-cli eins og gagnablaðsflutninga, sjálfvirka smíði eininga o.fl. skoðaðu skjölin:https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
   uk: Для пов'язаних з SeaOrm-cli команд міграції бази даних, автоматичного створення сутностей тощо, будь ласка, перегляньте документацію:https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
@@ -754,29 +754,29 @@ sea_orm_cli_website:
   el: Για σχετικές εντολές μετάβασης βάσης δεδομένων του SeaOrm-cli, αυτόματη δημιουργία οντοτήτων κ.λπ., δείτε τα έγγραφα:https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
   da: For SeaOrm-cli relateret databasemigration, automatisk oprettelse af enheder osv., se dokumentationen:https://www.sea-ql.org/SeaORM/docs/migration/running-migration/#command-line-interface-cli
 diesel_website:
-  zh_CN: 你选择了diesel,请在此处查看文档 https://diesel.rs/guides/
+  zh_CN: 你选择了 diesel，请在此处查看文档 https://diesel.rs/guides/
   en: You chose diesel, please check the documentation here https://diesel.rs/guides/
-  zh_TW: 你選擇了diesel,請在此處查看文檔 https://diesel.rs/guides/
+  zh_TW: 你選擇了 diesel，請在此處查看文檔 https://diesel.rs/guides/
   fr: Vous avez choisi diesel, veuillez consulter la documentation ici https://diesel.rs/guides/
-  ja: dieselを選択されました。こちらのドキュメントをご確認ください:https://diesel.rs/guides/
-  es: Elegiste diesel, por favor revisa la documentación aquí https://diesel.rs/guides/ 
+  ja: diesel を選択されました。こちらのドキュメントをご確認ください:https://diesel.rs/guides/
+  es: Elegiste diesel, por favor revisa la documentación aquí https://diesel.rs/guides/
   de: Sie haben Diesel ausgewählt, bitte sehen Sie sich hier die Dokumentation an https://diesel.rs/guides/
   ru: Вы выбрали diesel, пожалуйста, ознакомьтесь с документацией здесь https://diesel.rs/guides/
   it: Hai scelto diesel, controlla la documentazione qui https://diesel.rs/guides/
   pt: Você escolheu o diesel, verifique a documentação aqui https://diesel.rs/guides/
-  ko: diesel을 선택했습니다. 여기서 문서를 확인하세요. https://diesel.rs/guides/
+  ko: diesel 을 선택했습니다. 여기서 문서를 확인하세요. https://diesel.rs/guides/
   no: Du valgte diesel, vennligst se dokumentasjonen her https://diesel.rs/guides/
   is: Þú valdir diesel, skoðaðu skjölin hér https://diesel.rs/guides/
-  uk: Ви вибрали diesel, будь ласка, перегляньте документацію тут https://diesel.rs/guides/ 
+  uk: Ви вибрали diesel, будь ласка, перегляньте документацію тут https://diesel.rs/guides/
   th: คุณเลือก diesel โปรดดูเอกสารที่นี่ https://diesel.rs/guides/
   el: Επιλέξατε diesel, δείτε τα έγγραφα εδώ https://diesel.rs/guides/
   da: Du valgte diesel, se dokumentationen her https://diesel.rs/guides/
 diesel_cli_website:
-  zh_CN: diesel-cli相关的命令请查看 https://diesel.rs/guides/configuring-diesel-cli.html
+  zh_CN: diesel-cli 相关的命令请查看 https://diesel.rs/guides/configuring-diesel-cli.html
   en: For diesel-cli related commands, please check https://diesel.rs/guides/configuring-diesel-cli.html
-  zh_TW: diesel-cli相關的命令請查看 https://diesel.rs/guides/configuring-diesel-cli.html
+  zh_TW: diesel-cli 相關的命令請查看 https://diesel.rs/guides/configuring-diesel-cli.html
   fr: Pour les commandes liées à diesel-cli, veuillez consulter https://diesel.rs/guides/configuring-diesel-cli.html
-  ja: diesel-cliの関連コマンドは https://diesel.rs/guides/configuring-diesel-cli.html をご確認ください。
+  ja: diesel-cli の関連コマンドは https://diesel.rs/guides/configuring-diesel-cli.html をご確認ください。
   es: Para comandos relacionados con diesel-cli, consultar https://diesel.rs/guides/configuring-diesel-cli.html
   de: Für mit diesel-cli verwandte Befehle, bitte https://diesel.rs/guides/configuring-diesel-cli.html prüfen.
   ru: Для команд, связанных с diesel-cli, смотрите https://diesel.rs/guides/configuring-diesel-cli.html
@@ -790,17 +790,17 @@ diesel_cli_website:
   el: Για σχετικές εντολές με diesel-cli, δείτε https://diesel.rs/guides/configuring-diesel-cli.html
   da: For diesel-cli relaterede kommandoer, se https://diesel.rs/guides/configuring-diesel-cli.html
 initialization_diesel_cli_not_sqlite:
-  zh_CN: 请先修改.env和config/config.toml中的数据库连接字符串 \n- 确保数据库存在,然后运行diesel migration run还原数据库, 在数据库中运/data/init_sql.sql的SQL以添加默认数据。 \n- 运行后,您可以使用默认用户名:zhangsan和密码:123访问/login。 \n- 更多diesel-cli功能,请查看/migration/README.md。\n
+  zh_CN: 请先修改.env 和 config/config.toml 中的数据库连接字符串 \n- 确保数据库存在，然后运行 diesel migration run 还原数据库，在数据库中运/data/init_sql.sql 的 SQL 以添加默认数据。 \n- 运行后，您可以使用默认用户名:zhangsan 和密码:123 访问/login。 \n- 更多 diesel-cli 功能，请查看/migration/README.md。\n
   en: Please modify the database connection string in .env and config/config.toml first \n- Make sure the database exists, then run diesel migration run to restore the database, execute the SQL in /data/init_sql.sql in the database to add default data. \n- After running, you can log in with default username:zhangsan and password:123 at /login. \n- For more diesel-cli functions, please check /migration/README.md.\n
-  zh_TW: 請先修改 .env 和 config/config.toml 中的資料庫連接字串 \n- 確保資料庫存在,然後運行 diesel migration run 還原資料庫,在資料庫中運行 /data/init_sql.sql 的 SQL 以添加預設資料。\n- 運行後,您可以使用默認用戶名:zhangsan 和密碼:123 訪問 /login。\n- 更多 diesel-cli 功能,請查看 /migration/README.md。\n
+  zh_TW: 請先修改 .env 和 config/config.toml 中的資料庫連接字串 \n- 確保資料庫存在，然後運行 diesel migration run 還原資料庫，在資料庫中運行 /data/init_sql.sql 的 SQL 以添加預設資料。\n- 運行後，您可以使用默認用戶名:zhangsan 和密碼:123 訪問 /login。\n- 更多 diesel-cli 功能，請查看 /migration/README.md。\n
   fr: Veuillez d'abord modifier la chaîne de connexion de base de données dans .env et config/config.toml \n- Assurez-vous que la base de données existe, puis exécutez diesel migration run pour la restaurer, exécutez le SQL dans /data/init_sql.sql dans la base de données pour ajouter les données par défaut. \n- Après exécution, vous pouvez vous connecter avec le nom d'utilisateur par défaut :zhangsan et le mot de passe :123 à /login. \n- Pour plus de fonctionnalités diesel-cli, veuillez consulter /migration/README.md.\n
-  ja: まず.envとconfig/config.tomlのデータベース接続文字列を変更してください \n- データベースが存在することを確認し、diesel migration runを実行してデータベースを復元し、/data/init_sql.sqlのSQLを実行してデフォルトのデータを追加してください。\n- 実行後、/loginでデフォルトのユーザー名:zhangsan、パスワード:123でログインできます。\n- その他のdiesel-cliの機能は/migration/README.mdをご覧ください。\n
+  ja: まず.env と config/config.toml のデータベース接続文字列を変更してください \n- データベースが存在することを確認し、diesel migration run を実行してデータベースを復元し、/data/init_sql.sql の SQL を実行してデフォルトのデータを追加してください。\n- 実行後、/login でデフォルトのユーザー名:zhangsan、パスワード:123 でログインできます。\n- その他の diesel-cli の機能は/migration/README.md をご覧ください。\n
   es: Instalar cargo install sqlx-cli \n- Modificar el string de conexión a la base de datos en .env y config/config.toml \n- Luego ejecutar sqlx database create para crear la base de datos \n- Ejecutar sqlx migrate run para restaurar la base de datos\n- Ejecutar el archivo data/init_sql.sql para agregar los datos iniciales
   de: Installieren Sie cargo install sqlx-cli \n- Ändern Sie die Datenbankverbindungszeichenfolge in .env und config/config.toml \n- Führen Sie dann sqlx database create aus, um die Datenbank zu erstellen \n- Führen Sie sqlx migrate run aus, um die Datenbank wiederherzustellen\n- Führen Sie die Datei data/init_sql.sql aus, um anfängliche Daten hinzuzufügen
   ru: Установить cargo install sqlx-cli \n- Изменить строку подключения к базе данных в .env и config/config.toml \n- Затем выполнить sqlx database create чтобы создать базу данных \n- Выполнить sqlx migrate run чтобы восстановить базу данных\n- Выполнить файл data/init_sql.sql чтобы добавить начальные данные
   it: Installare cargo install sqlx-cli \n- Modificare la stringa di connessione al database in .env e config/config.toml \n- Quindi eseguire sqlx database create per creare il database \n- Eseguire sqlx migrate run per ripristinare il database\n- Eseguire il file data/init_sql.sql per aggiungere i dati iniziali
   pt: Instalar cargo install sqlx-cli \n- Modificar a string de conexão com o banco de dados em .env e config/config.toml \n- Depois, executar sqlx database create para criar o banco de dados \n- Executar sqlx migrate run para restaurar o banco de dados\n- Executar o arquivo data/init_sql.sql para adicionar os dados iniciais
-  ko: cargo install sqlx-cli 설치\n- .env와 config/config.toml의 데이터베이스 연결 문자열 수정\n- sqlx database create 실행하여 데이터베이스 생성\n- sqlx migrate run 실행하여 데이터베이스 복원\n- data/init_sql.sql 파일 실행하여 초기 데이터 추가
+  ko: cargo install sqlx-cli 설치\n- .env 와 config/config.toml의 데이터베이스 연결 문자열 수정\n- sqlx database create 실행하여 데이터베이스 생성\n- sqlx migrate run 실행하여 데이터베이스 복원\n- data/init_sql.sql 파일 실행하여 초기 데이터 추가
   no: Installer cargo install sqlx-cli \n- Endre databasetilkoblingsstrengen i .env og config/config.toml \n- Kjør så sqlx database create for å opprette databasen \n- Kjør sqlx migrate run for å gjenopprette databasen\n- Kjør data/init_sql.sql-filen for å legge til inicialiseringsdata
   is: Setja upp cargo install sqlx-cli \n- Breyta tengistreng gagnagrunns í .env og config/config.toml \n- Keyra svo sqlx database create til að búa til gagnagrunn \n- Keyra sqlx migrate run til að endurheimta gagnagrunn\n- Keyra skrána data/init_sql.sql til að bæta við upphaflegum gögnum
   uk: Встановити cargo install sqlx-cli \n- Змінити рядок підключення до бази даних в .env та config/config.toml \n- Потім виконати sqlx database create щоб створити базу даних \n- Виконати sqlx migrate run щоб відновити базу даних\n- Виконати файл data/init_sql.sql щоб додати початкові дані
@@ -808,17 +808,17 @@ initialization_diesel_cli_not_sqlite:
   el: Εγκαταστήστε το cargo install sqlx-cli \n- Τροποποιήστε το string σύνδεσης με τη βάση δεδομένων στο .env και στο config/config.toml \n- Στη συνέχεια εκτελέστε το sqlx database create για να δημιουργήσετε τη βάση δεδομένων \n- Εκτελέστε το sqlx migrate run για να επαναφέρετε τη βάση δεδομένων\n- Εκτελέστε το αρχείο data/init_sql.sql για να προσθέσετε τα αρχικά δεδομένα
   da: Installer cargo install sqlx-cli \n- Rediger databaseforbindelsesstrengen i .env og config/config.toml \n- Kør derefter sqlx database create for at oprette databasen \n- Kør sqlx migrate run for at gendanne databasen\n- Kør data/init_sql.sql-filen for at tilføje begyndelsesdata
 rbatis_website:
-  zh_CN: 你选择了rbatis 请在此处查看文档 https://rbatis.github.io/rbatis.io/#/v4/
+  zh_CN: 你选择了 rbatis 请在此处查看文档 https://rbatis.github.io/rbatis.io/#/v4/
   en: You chose rbatis, please check the documentation here https://rbatis.github.io/rbatis.io/#/v4/
-  zh_TW: 你選擇了rbatis,請在此處查看文檔 https://rbatis.github.io/rbatis.io/#/v4/
+  zh_TW: 你選擇了 rbatis，請在此處查看文檔 https://rbatis.github.io/rbatis.io/#/v4/
   fr: Vous avez choisi rbatis, veuillez consulter la documentation ici https://rbatis.github.io/rbatis.io/#/v4/
-  ja: rbatisを選択されました。こちらのドキュメントをご確認ください:https://rbatis.github.io/rbatis.io/#/v4/
+  ja: rbatis を選択されました。こちらのドキュメントをご確認ください:https://rbatis.github.io/rbatis.io/#/v4/
   es: Elegiste rbatis, por favor revisa la documentación aquí https://rbatis.github.io/rbatis.io/#/v4/
   de: Sie haben Rbatis ausgewählt, bitte sehen Sie sich hier die Dokumentation an https://rbatis.github.io/rbatis.io/#/v4/
   ru: Вы выбрали rbatis, пожалуйста, ознакомьтесь с документацией здесь https://rbatis.github.io/rbatis.io/#/v4/
   it: Hai scelto rbatis, controlla la documentazione qui https://rbatis.github.io/rbatis.io/#/v4/
   pt: Você escolheu o rbatis, verifique a documentação aqui https://rbatis.github.io/rbatis.io/#/v4/
-  ko: rbatis을 선택했습니다. 여기서 문서를 확인하세요. https://rbatis.github.io/rbatis.io/#/v4/
+  ko: rbatis 을 선택했습니다. 여기서 문서를 확인하세요. https://rbatis.github.io/rbatis.io/#/v4/
   no: Du valgte rbatis, vennligst se dokumentasjonen her https://rbatis.github.io/rbatis.io/#/v4/
   is: Þú valdir rbatis, skoðaðu skjölin hér https://rbatis.github.io/rbatis.io/#/v4/
   uk: Ви вибрали rbatis, будь ласка, перегляньте документацію тут https://rbatis.github.io/rbatis.io/#/v4/
@@ -826,11 +826,11 @@ rbatis_website:
   el: Επιλέξατε rbatis, δείτε τα έγγραφα εδώ https://rbatis.github.io/rbatis.io/#/v4/
   da: Du valgte rbatis, se dokumentationen her https://rbatis.github.io/rbatis.io/#/v4/
 initialization_rbatis_cli_not_sqlite:
-  zh_CN: 运行前请执行data文件夹下的sql文件来初始化数据
+  zh_CN: 运行前请执行 data 文件夹下的 sql 文件来初始化数据
   en: Please execute the sql files under the data folder to initialize the data before running
-  zh_TW: 運行前請執行data文件夾下的sql文件來初始化數據
+  zh_TW: 運行前請執行 data 文件夾下的 sql 文件來初始化數據
   fr: Veuillez exécuter les fichiers sql du dossier data pour initialiser les données avant l'exécution
-  ja: 実行前にdataフォルダ内のsqlファイルを実行してデータを初期化してください
+  ja: 実行前に data フォルダ内の sql ファイルを実行してデータを初期化してください
   es: Por favor ejecute los archivos sql en la carpeta data para inicializar los datos antes de ejecutar
   de: Bitte führen Sie die SQL-Dateien im Ordner data aus, um die Daten vor dem Ausführen zu initialisieren
   ru: Пожалуйста, выполните sql-файлы в папке data, чтобы инициализировать данные перед запуском
@@ -844,17 +844,17 @@ initialization_rbatis_cli_not_sqlite:
   el: Εκτελέστε τα αρχεία sql στον φάκελο data για αρχικοποίηση των δεδομένων πριν την εκτέλεση
   da: Kør venligst sql-filerne i data-mappen for at initialisere data, før du kører
 mongodb_website:
-  zh_CN: 你选择了mongodb,文档:https://www.mongodb.com/docs/drivers/rust/current/
+  zh_CN: 你选择了 mongodb，文档:https://www.mongodb.com/docs/drivers/rust/current/
   en: You chose MongoDB, documentation:https://www.mongodb.com/docs/drivers/rust/current/
-  zh_TW: 你選擇了mongodb,文檔:https://www.mongodb.com/docs/drivers/rust/current/
+  zh_TW: 你選擇了 mongodb，文檔:https://www.mongodb.com/docs/drivers/rust/current/
   fr: Vous avez choisi MongoDB, documentation :https://www.mongodb.com/docs/drivers/rust/current/
-  ja: mongodbを選択しました。ドキュメント:https://www.mongodb.com/docs/drivers/rust/current/
+  ja: mongodb を選択しました。ドキュメント:https://www.mongodb.com/docs/drivers/rust/current/
   es: Elegiste MongoDB, documentación:https://www.mongodb.com/docs/drivers/rust/current/
   de: Sie haben MongoDB ausgewählt, Dokumentation:https://www.mongodb.com/docs/drivers/rust/current/
   ru: Вы выбрали MongoDB, документация:https://www.mongodb.com/docs/drivers/rust/current/
   it: Hai scelto MongoDB, documentazione:https://www.mongodb.com/docs/drivers/rust/current/
   pt: Você escolheu o MongoDB, documentação:https://www.mongodb.com/docs/drivers/rust/current/
-  ko: MongoDB를 선택했습니다. 문서:https://www.mongodb.com/docs/drivers/rust/current/
+  ko: MongoDB 를 선택했습니다. 문서:https://www.mongodb.com/docs/drivers/rust/current/
   no: Du valgte MongoDB, dokumentasjon:https://www.mongodb.com/docs/drivers/rust/current/
   is: Þú valdir MongoDB, skjöl:https://www.mongodb.com/docs/drivers/rust/current/
   uk: Ви вибрали MongoDB, документація:https://www.mongodb.com/docs/drivers/rust/current/
@@ -862,29 +862,29 @@ mongodb_website:
   el: Επιλέξατε το MongoDB, τεκμηρίωση:https://www.mongodb.com/docs/drivers/rust/current/
   da: Du valgte MongoDB, dokumentation:https://www.mongodb.com/docs/drivers/rust/current/
 mongodb_usage_import_user_data:
-  en: 🎯 Please first run the program, then import data from data/user.json into the user table 
-  zh_CN: 🎯 请首先运行程序，然后将 data/user.json 中的数据导入到 user 表中 
-  zh_TW: 🎯 請先運行程序，然後將 data/user.json 中的數據導入到 user 表中 
-  fr: 🎯 Veuillez d'abord exécuter le programme, puis importer les données de data/user.json dans la table utilisateur 
-  ja: 🎯 プログラムを最初に実行し、その後、data/user.json からデータを user テーブルにインポートしてください 
-  es: 🎯 Por favor, primero ejecute el programa, luego importe los datos de data/user.json a la tabla de usuarios 
-  de: 🎯 Bitte führen Sie zuerst das Programm aus und importieren Sie dann die Daten aus data/user.json in die Benutzertabelle 
-  ru: 🎯 Пожалуйста, сначала запустите программу, затем импортируйте данные из data/user.json в таблицу пользователей 
-  it: 🎯 Si prega di eseguire prima il programma, poi importare i dati da data/user.json nella tabella degli utenti 
-  pt: 🎯 Por favor, primeiro execute o programa, depois importe os dados de data/user.json para a tabela de usuários 
-  ko: 🎯 먼저 프로그램을 실행한 다음, data/user.json의 데이터를 사용자 테이블에 가져와 주세요. 
-  no: 🎯 Vennligst kjør først programmet, deretter importer data fra data/user.json inn i brukertabellen 
-  is: 🎯 Vinsamlegast keyraðu fyrst forritið, síðan flytjaðu gögn úr data/user.json inn í notandatafluna 
-  uk: 🎯 Будь ласка, спочатку запустіть програму, а потім імпортуйте дані з data/user.json до таблиці користувачів 
-  th: 🎯 โปรดเรียกใช้โปรแกรมก่อน, จากนั้นนำเข้าข้อมูลจาก data/user.json ไปยังตารางผู้ใช้ 
-  el: 🎯 Παρακαλώ πρώτα τρέξτε το πρόγραμμα, στη συνέχεια εισάγετε τα δεδομένα από το data/user.json στον πίνακα χρήστη 
-  da: 🎯 Kør venligst først programmet, importér derefter data fra data/user.json ind i brugertabellen 
+  en: 🎯 Please first run the program, then import data from data/user.json into the user table
+  zh_CN: 🎯 请首先运行程序，然后将 data/user.json 中的数据导入到 user 表中
+  zh_TW: 🎯 請先運行程序，然後將 data/user.json 中的數據導入到 user 表中
+  fr: 🎯 Veuillez d'abord exécuter le programme, puis importer les données de data/user.json dans la table utilisateur
+  ja: 🎯 プログラムを最初に実行し、その後、data/user.json からデータを user テーブルにインポートしてください
+  es: 🎯 Por favor, primero ejecute el programa, luego importe los datos de data/user.json a la tabla de usuarios
+  de: 🎯 Bitte führen Sie zuerst das Programm aus und importieren Sie dann die Daten aus data/user.json in die Benutzertabelle
+  ru: 🎯 Пожалуйста, сначала запустите программу, затем импортируйте данные из data/user.json в таблицу пользователей
+  it: 🎯 Si prega di eseguire prima il programma, poi importare i dati da data/user.json nella tabella degli utenti
+  pt: 🎯 Por favor, primeiro execute o programa, depois importe os dados de data/user.json para a tabela de usuários
+  ko: 🎯 먼저 프로그램을 실행한 다음, data/user.json의 데이터를 사용자 테이블에 가져와 주세요.
+  no: 🎯 Vennligst kjør først programmet, deretter importer data fra data/user.json inn i brukertabellen
+  is: 🎯 Vinsamlegast keyraðu fyrst forritið, síðan flytjaðu gögn úr data/user.json inn í notandatafluna
+  uk: 🎯 Будь ласка, спочатку запустіть програму, а потім імпортуйте дані з data/user.json до таблиці користувачів
+  th: 🎯 โปรดเรียกใช้โปรแกรมก่อน, จากนั้นนำเข้าข้อมูลจาก data/user.json ไปยังตารางผู้ใช้
+  el: 🎯 Παρακαλώ πρώτα τρέξτε το πρόγραμμα, στη συνέχεια εισάγετε τα δεδομένα από το data/user.json στον πίνακα χρήστη
+  da: 🎯 Kør venligst først programmet, importér derefter data fra data/user.json ind i brugertabellen
 rust_version_tip:
   en: "😄 The latest version of Salvo requires Rust version 1.75. If your compilation fails, please try upgrading with `rustup update`."
   zh_CN: "😄 最新版的 Salvo 依赖 Rust 版本 1.75。如果编译失败，请尝试使用 `rustup update` 来升级版本。"
   zh_TW: "😄 最新版的 Salvo 需要 Rust 版本 1.75。如果您的編譯失敗，請嘗試使用 `rustup update` 來升級版本。"
   fr: "😄 La dernière version de Salvo nécessite la version 1.75 de Rust. Si votre compilation échoue, veuillez essayer de mettre à niveau avec `rustup update`."
-  ja: "😄 最新のSalvoにはRustのバージョン1.75が必要です。コンパイルに失敗した場合は、`rustup update`でアップグレードしてみてください。"
+  ja: "😄 最新の Salvo には Rust のバージョン 1.75 が必要です。コンパイルに失敗した場合は、`rustup update`でアップグレードしてみてください。"
   es: "😄 La última versión de Salvo requiere la versión 1.75 de Rust. Si la compilación falla, intenta actualizar con `rustup update`."
   de: "😄 Die neueste Version von Salvo erfordert die Rust-Version 1.75. Wenn die Kompilierung fehlschlägt, versuchen Sie bitte, mit `rustup update` zu aktualisieren."
   ru: "😄 Последняя версия Salvo требует версии Rust 1.75. Если компиляция не удаётся, пожалуйста, попробуйте обновиться с помощью `rustup update`."
@@ -908,7 +908,7 @@ build_yml_description:
   ru: Этот YAML-файл настраивает конвейер непрерывной интеграции (CI) для проекта. Он определяет шаги, которые автоматически выполняются при отправке кода в репозиторий. Это включает задачи, такие как сборка программного обеспечения, проведение тестов и развертывание приложения, если условия выполнены.
   it: Questo file YAML configura il pipeline di integrazione continua (CI) per il progetto. Definisce i passaggi che vengono eseguiti automaticamente quando il codice viene inviato al repository. Questo include compiti come la costruzione del software, l'esecuzione dei test e il deployment dell'applicazione se le condizioni sono soddisfatte.
   pt: Este arquivo YAML configura o pipeline de integração contínua (CI) para o projeto. Ele define os passos que são executados automaticamente quando o código é enviado para o repositório. Isso inclui tarefas como construir o software, executar testes e implantar o aplicativo se as condições forem atendidas.
-  ko: 이 YAML 파일은 프로젝트의 지속적 통합(CI) 파이프라인을 구성합니다. 코드가 저장소에 푸시될 때 자동으로 실행되는 단계를 정의합니다. 이에는 소프트웨어 빌드, 테스트 실행, 조건이 충족하면 애플리케이션 배포 등의 작업이 포함됩니다.
+  ko: 이 YAML 파일은 프로젝트의 지속적 통합 (CI) 파이프라인을 구성합니다. 코드가 저장소에 푸시될 때 자동으로 실행되는 단계를 정의합니다. 이에는 소프트웨어 빌드, 테스트 실행, 조건이 충족하면 애플리케이션 배포 등의 작업이 포함됩니다.
   no: Denne YAML-filen konfigurerer kontinuerlig integrasjon (CI) pipeline for prosjektet. Den definerer trinnene som utføres automatisk når kode blir pushet til repositoriet. Dette inkluderer oppgaver som å bygge programvaren, kjøre tester, og distribuere applikasjonen hvis betingelsene er oppfylt.
   is: Þessi YAML-skrá stillir upp samfelldum samþættingarslóð (CI) fyrir verkefnið. Hún skilgreinir þau skref sem eru sjálfkrafa framkvæmd þegar kóði er ýtt inn í geymsluna. Þetta felur í sér verkefni á borð við að byggja hugbúnaðinn, keyra prófanir og setja upp forritið ef skilyrði eru uppfyllt.
   uk: Цей файл YAML налаштовує конвеєр безперервної інтеграції (CI) для проекту. Він визначає кроки, які автоматично виконуються, коли код відправляється до репозиторію. Це включає завдання, такі як побудова програмного забезпечення, проведення тестів та розгортання додатка, якщо умови виконані.
@@ -926,7 +926,7 @@ git_cliff:
   ru: Пожалуйста, замените url в строке 49 файла cliff.toml на url репозитория, чтобы инициировать автоматическое создание журналов изменений.
   it: Si prega di sostituire l'url nella linea 49 del file cliff.toml con l'url del repository per attivare la generazione automatica del changelog.
   pt: Por favor, substitua o url na linha 49 do arquivo cliff.toml pelo url do repositório para acionar a geração automática de changelogs.
-  ko: cliff.toml 파일의 49번째 줄 url을 저장소 url로 바꿔서 변경 로그의 자동 생성을 트리거하세요.
+  ko: cliff.toml 파일의 49 번째 줄 url 을 저장소 url 로 바꿔서 변경 로그의 자동 생성을 트리거하세요.
   no: Vennligst erstatt url-en i linje 49 i cliff.toml-filen med repositoriets url for å utløse automatisk generering av endringslogger.
   is: Vinsamlegast skiptu út url í línu 49 í cliff.toml skránni með url geymslunnar til að virkja sjálfvirka myndun breytingaskráa.
   uk: Будь ласка, замініть url у рядку 49 файла cliff.toml на url репозиторію, щоб ініціювати автоматичне створення журналів змін.
@@ -944,7 +944,7 @@ cliff_toml:
   ru: Для генерации журналов изменений с помощью git-cliff
   it: Per generare changelog con git-cliff
   pt: Para gerar changelogs com git-cliff
-  ko: git-cliff를 사용하여 변경 로그 생성용
+  ko: git-cliff 를 사용하여 변경 로그 생성용
   no: For å generere endringslogger med git-cliff
   is: Til að búa til breytingaskrár með git-cliff
   uk: Для генерації журналів змін за допомогою git-cliff

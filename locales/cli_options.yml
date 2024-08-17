@@ -4,13 +4,13 @@ welcome_message:
   zh_CN: 欢迎使用 salvo cli，请选择一个模板类型\n   空格键确认
   zh_TW: 歡迎使用 salvo cli，請選擇一個模板類型\n   空格鍵確認
   fr: Bienvenue à utiliser salvo cli, veuillez choisir un type de modèle\n   barre d'espace pour confirmer
-  ja: salvo cliを使用していただきありがとうございます。テンプレートタイプを選択してください\n   スペースバーを押して確認してください
+  ja: salvo cli を使用していただきありがとうございます。テンプレートタイプを選択してください\n   スペースバーを押して確認してください
   es: Bienvenido a usar salvo cli, por favor elija un tipo de plantilla\n   barra espaciadora para confirmar
   de: Willkommen bei der Verwendung von salvo cli, bitte wählen Sie einen Vorlagentyp\n   Leertaste zur Bestätigung
   ru: Добро пожаловать в salvo cli, пожалуйста, выберите тип шаблона\n   пробел для подтверждения
   it: Benvenuti a usare salvo cli, per favore scegli un tipo di modello\n   spazio per confermare
   pt: Bem-vindo a usar salvo cli, por favor escolha um tipo de modelo\n   barra de espaço para confirmar
-  ko: salvo cli를 사용하신 것을 환영합니다. 템플릿 유형을 선택하십시오\n   스페이스 바를 눌러 확인하십시오
+  ko: salvo cli 를 사용하신 것을 환영합니다. 템플릿 유형을 선택하십시오\n   스페이스 바를 눌러 확인하십시오
   no: Velkommen til å bruke salvo cli, vennligst velg en maltype\n   mellomrom for å bekrefte
   is: Velkomin til að nota salvo cli, vinsamlegast veldu tegund sniðmáls\n   bil til að staðfesta
   uk: Ласкаво просимо до використання salvo cli, будь ласка, виберіть тип шаблону\n   пробіл для підтвердження
@@ -22,7 +22,7 @@ salvo_web_api:
   zh_CN: salvo_web_api (默认 web api 模板)
   zh_TW: salvo_web_api (默認 web api 模板)
   fr: salvo_web_api (Modèle web api par défaut)
-  ja: salvo_web_api (デフォルトのWeb APIテンプレート)
+  ja: salvo_web_api (デフォルトの Web API テンプレート)
   es: salvo_web_api (Plantilla web api predeterminada)
   de: salvo_web_api (Standard-Web-API-Vorlage)
   ru: salvo_web_api (Шаблон веб-интерфейса по умолчанию)
@@ -40,7 +40,7 @@ salvo_web_site:
   zh_CN: salvo_web_site (默认 web site 模板)
   zh_TW: salvo_web_site (默認 web site 模板)
   fr: salvo_web_site (Modèle de site Web par défaut)
-  ja: salvo_web_site (デフォルトのWebサイトテンプレート)
+  ja: salvo_web_site (デフォルトの Web サイトテンプレート)
   es: salvo_web_site (Plantilla de sitio web predeterminada)
   de: salvo_web_site (Standard-Website-Vorlage)
   ru: salvo_web_site (Шаблон веб-сайта по умолчанию)
@@ -82,7 +82,7 @@ db_conn_types_sqlx:
   ru: SQLx - это асинхронный, чистый Rust† SQL ящик с проверкой запросов во время компиляции без DSL. 10K⭐
   it: SQLx è una cassa SQL asincrona e pura Rust† con query verificate in fase di compilazione senza DSL. 10K⭐
   pt: SQLx é uma caixa SQL assíncrona e pura Rust† com consultas verificadas no momento da compilação sem DSL. 10K⭐
-  ko: SQLx는 DSL 없이 컴파일 시간에 쿼리를 확인하는 비동기, 순수 Rust† SQL 크레이트입니다. 10K⭐
+  ko: SQLx 는 DSL 없이 컴파일 시간에 쿼리를 확인하는 비동기, 순수 Rust† SQL 크레이트입니다. 10K⭐
   no: SQLx er en asynkron, ren Rust† SQL-kasse med kompilerte spørringer uten DSL. 10K⭐
   is: SQLx er asynkron, hrein Rust† SQL kassa með samþjöppuð fyrirspurnir án DSL. 10K⭐
   uk: SQLx - це асинхронний, чистий Rust† SQL ящик з перевіреними на етапі компіляції запитами без DSL. 10K⭐
@@ -100,7 +100,7 @@ db_conn_types_diesel:
   ru: diesel:ORM и генератор запросов безопасны и расширяемы для Rust 11K⭐
   it: diesel:ORM e generatore di query sicuro ed estensibile per Rust 11K⭐
   pt: diesel:ORM e gerador de consultas seguro e extensível para Rust 11K⭐
-  ko: diesel:Rust의 안전하고 확장 가능한 ORM 및 쿼리 빌더 11K⭐
+  ko: diesel:Rust 의 안전하고 확장 가능한 ORM 및 쿼리 빌더 11K⭐
   no: diesel:En sikker, utvidbar ORM og spørringsbygger for Rust 11K⭐
   is: diesel:Öruggt, útvíkkandi ORM og fyrirspurnarbyggir fyrir Rust 11K⭐
   uk: diesel:ORM та генератор запитів безпечні та розширювані для Rust 11K⭐
@@ -118,7 +118,7 @@ db_conn_types_sea_orm:
   ru: sea-orm:🐚 Асинхронный и динамический ORM для Rust (мне нравится)
   it: sea-orm:🐚 Un ORM asincrono e dinamico per Rust (mi piace)
   pt: sea-orm:🐚 Um ORM assíncrono e dinâmico para Rust (eu gosto)
-  ko: sea-orm:🐚 Rust의 비동기 및 동적 ORM (나는 좋아)
+  ko: sea-orm:🐚 Rust 의 비동기 및 동적 ORM (나는 좋아)
   no: sea-orm:🐚 En asynkron og dynamisk ORM for Rust (jeg liker det)
   is: sea-orm:🐚 Asynkron og hreyfanleg ORM fyrir Rust (mér líkar það)
   uk: sea-orm:🐚 Асинхронний та динамічний ORM для Rust (мені подобається)
@@ -136,7 +136,7 @@ db_conn_types_rbatis:
   ru: rbatis:Асинхронный ORM-фреймворк, похожий на Mybatis (java)
   it: rbatis:Un framework ORM asincrono simile a Mybatis (java)
   pt: rbatis:Um framework ORM assíncrono semelhante ao Mybatis (java)
-  ko: rbatis:Mybatis (java)와 유사한 비동기 ORM 프레임 워크
+  ko: rbatis:Mybatis (java) 와 유사한 비동기 ORM 프레임 워크
   no: rbatis:Et lignende Mybatis (java) asynkront ORM-rammeverk
   is: rbatis:Asynkron ORM kerfi sem líkist Mybatis (java)
   uk: rbatis:Асинхронний ORM-фреймворк, схожий на Mybatis (java)
@@ -154,7 +154,7 @@ db_conn_types_mongodb:
   ru: Официальный драйвер MongoDB для Rust
   it: Il driver MongoDB ufficiale per Rust
   pt: O driver oficial do MongoDB para Rust
-  ko: Rust의 공식 MongoDB 드라이버
+  ko: Rust 의 공식 MongoDB 드라이버
   no: Den offisielle MongoDB-driveren for Rust
   is: Opinber MongoDB keyrir fyrir Rust
   uk: Офіційний драйвер MongoDB для Rust

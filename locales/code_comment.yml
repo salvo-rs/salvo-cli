@@ -37,8 +37,8 @@ config_error_no_exits:
   da: Konfigurationsfilen findes ikke:{}, fejlmeddelelse:{}
 config_error_read:
   en: Failed to read configuration file, error message:{}
-  zh_CN: 读取配置文件失败,错误信息:{}
-  zh_TW: 讀取配置文件失敗,錯誤信息:{}
+  zh_CN: 读取配置文件失败，错误信息:{}
+  zh_TW: 讀取配置文件失敗，錯誤信息:{}
   fr: Échec de la lecture du fichier de configuration, message d'erreur:{}
   ja: 設定ファイルの読み取りに失敗しました。エラーメッセージ:{}
   es: Error al leer el archivo de configuración, mensaje de error:{}
@@ -55,8 +55,8 @@ config_error_read:
   da: Kunne ikke læse konfigurationsfilen, fejlmeddelelse:{}
 config_error_parse:
   en: Failed to parse configuration file, error message:{}
-  zh_CN: 解析配置文件失败,错误信息:{}
-  zh_TW: 解析配置文件失敗,錯誤信息:{}
+  zh_CN: 解析配置文件失败，错误信息:{}
+  zh_TW: 解析配置文件失敗，錯誤信息:{}
   fr: Échec de l'analyse du fichier de configuration, message d'erreur:{}
   ja: 設定ファイルの解析に失敗しました。エラーメッセージ:{}
   es: Error al analizar el archivo de configuración, mensaje de error:{}
@@ -439,10 +439,10 @@ add_user:
   da: Tilføj bruger
 open_api_page:
   en: Open API Page
-  zh_CN: Open API页面
-  zh_TW: Open API頁面
+  zh_CN: Open API 页面
+  zh_TW: Open API 頁面
   fr: Page Open API
-  ja: Open APIページ
+  ja: Open API ページ
   es: Página Open API
   de: Open-API-Seite
   ru: Страница Open API
