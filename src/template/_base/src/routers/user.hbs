@@ -18,27 +18,6 @@ use salvo::{
 use salvo::Writer;
 
 #[derive(Template)]
-#[template(path = "login.html")]
-struct LoginTemplate {}
-
-#[endpoint(tags("comm"))]
-pub async fn login_page(res: &mut Response) -> AppResult<()> {
-    let cookies = res.cookies();
-    let cookie = cookies.get("jwt_token");
-    if let Some(cookie) = cookie {
-        let token = cookie.value().to_string();
-        if decode_token(&token) {
-            res.render(Redirect::other("/users"));
-            return Ok(());
-        } else {
-        }
-    }
-    let hello_tmpl = LoginTemplate {};
-    res.render(Text::Html(hello_tmpl.render().unwrap()));
-    Ok(())
-}
-
-#[derive(Template)]
 #[template(path = "user_list_page.html")]
 pub struct UserListPageTemplate {}
 
@@ -61,20 +40,9 @@ pub async fn user_list_page(req: &mut Request, res: &mut Response) -> AppResult<
     }
     Ok(())
 }
-#[endpoint(tags("users"))]
-pub async fn post_login(req: JsonBody<UserLoginRequest>, res: &mut Response) -> JsonResult<()> {
-    let data: UserLoginResponse = user::login(req.0).await?;
-            let jwt_token = data.token.clone();
-    let cookie = Cookie::build(("jwt_token", jwt_token))
-        .path("/")
-        .http_only(true)
-        .build();
-    res.add_cookie(cookie);
-    json_empty()
-}
 
 #[endpoint(tags("users"))]
-pub async fn post_add_user(new_user: JsonBody<UserAddRequest>) -> JsonResult<UserResponse> {
+pub async fn post_add_user(new_user: JsonBody<UserAddRequest>) -> JsonResult<User> {
     let user = user::add_user(new_user.0).await?;
     json_ok(user)
 }
@@ -116,17 +84,6 @@ use salvo::{
     Request, Response,
 };
 
-#[endpoint( tags("comm"),)]
-pub async fn post_login(req: JsonBody<UserLoginRequest>, res: &mut Response) -> JsonResult<()> {
-    let data = user::login(req.0).await?;
-    let jwt_token = data.token.clone();
-    let cookie = Cookie::build(("jwt_token", jwt_token))
-        .path("/")
-        .http_only(true)
-        .build();
-    res.add_cookie(cookie);
-    json_empty()
-}
 
 #[endpoint(tags("users"))]
 pub async fn post_add_user(new_user: JsonBody<UserAddRequest>) -> JsonResult<UserResponse> {

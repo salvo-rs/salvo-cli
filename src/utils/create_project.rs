@@ -97,7 +97,7 @@ pub fn write_project_file(
             "serde_yaml": "0.9.31",
             "tracing": "0.1"
         },
-        "enable_openapi":enable_openapi,
+        "enable_oapi":enable_oapi,
         "need_db_conn":need_db_conn,
         "is_sqlx":is_sqlx,
         "is_mysql":is_mysql,
@@ -173,7 +173,7 @@ pub fn write_project_file(
         project_path.join(".github/workflows/build.yml"),
     )?;
     let mut views: Vec<(&str, &str)> = vec![];
-    if enable_openapi {
+    if enable_oapi {
         // views
         let template_path = project_path.join("views");
         create_dir_all(template_path)?;

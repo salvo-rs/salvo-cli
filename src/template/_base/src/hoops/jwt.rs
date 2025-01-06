@@ -5,7 +5,6 @@ use salvo::prelude::*;
 use serde::{Deserialize, Serialize};
 use time::{Duration, OffsetDateTime};
 
-use crate::config::CFG;
 #[derive(Debug, Serialize, Deserialize)]
 pub struct JwtClaims {
     username: String,
@@ -13,10 +12,9 @@ pub struct JwtClaims {
     exp: i64,
 }
 
-#[allow(dead_code)]
-pub fn jwt_middleware() -> JwtAuth<JwtClaims, ConstDecoder> {
+pub fn jwt_hoop(config: &Config) -> JwtAuth<JwtClaims, ConstDecoder> {
     let auth_handler: JwtAuth<JwtClaims, _> = JwtAuth::new(ConstDecoder::from_secret(
-        CFG.jwt.jwt_secret.to_owned().as_bytes(),
+        config.jwt.secret.to_owned().as_bytes(),
     ))
     .finders(vec![
         Box::new(HeaderFinder::new()),
@@ -27,9 +25,8 @@ pub fn jwt_middleware() -> JwtAuth<JwtClaims, ConstDecoder> {
     auth_handler
 }
 
-#[allow(dead_code)]
 pub fn get_token(username: String, user_id: String) -> Result<(String, i64)> {
-    let exp = OffsetDateTime::now_utc() + Duration::seconds(CFG.jwt.jwt_exp);
+    let exp = OffsetDateTime::now_utc() + Duration::seconds(config.jwt.exp);
     let claim = JwtClaims {
         username,
         user_id,

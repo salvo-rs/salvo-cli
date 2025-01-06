@@ -1,5 +1,5 @@
 {{#if need_db_conn}}
-    {{#if is_web_site}}
+    {{#if enable_oapi}}
 use crate::middleware::jwt::jwt_middleware;
 use salvo::{
     prelude::{CatchPanic, Logger, OpenApi, Scalar},
@@ -145,7 +145,8 @@ pub fn router() -> Router {
         .hoop(Logger::new())
         .hoop(CatchPanic::new())
         .get(hello)
-        .append(&mut static_routers);
+        .push(Router::with_path("favicon.ico").get(get_favicon))
+        .push(Router::with_path("assets/{**path}").get(static_embed::<Assets>()));
     let doc = OpenApi::new("salvo web api", "0.0.1").merge_router(&router);
     router
         .push(doc.into_router("/api-doc/openapi.json"))
@@ -153,3 +154,13 @@ pub fn router() -> Router {
 }
     {{/if}}
 {{/if}}
+
+#[derive(RustEmbed)]
+#[folder = "assets"]
+struct Assets;
+
+#[endpoint]
+pub async fn get_favicon(res: &mut Response) {
+    let icon = Assets::get("favicon.ico").unwrap();
+    res.body(ResBody::Once(Bytes::from(icon.data.to_vec())));
+}

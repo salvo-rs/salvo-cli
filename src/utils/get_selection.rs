@@ -4,7 +4,7 @@ use rust_i18n::t;
 
 #[derive(Debug, Clone, Copy)]
 pub struct UserSelected {
-    pub enable_openapi: bool,
+    pub enable_oapi: bool,
     pub db_type: DbType,
     pub db_lib: DbLib,
 }
@@ -27,7 +27,7 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         .default(0)
         .items(&selections[..])
         .interact()?;
-    let enable_openapi = selection == 1;
+    let enable_oapi = selection == 1;
     let db_libs = &[
         t!("db_lib_sqlx"),
         t!("db_lib_sea_orm"),
@@ -53,7 +53,7 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
     };
     if db_lib == DbLib::Nothing || db_lib == DbLib::Mongodb {
         return Ok(Some(UserSelected {
-            enable_openapi,
+            enable_oapi,
             db_type: DbType::Sqlite,
             db_lib,
         }));
@@ -76,7 +76,7 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
     };
 
     Ok(Some(UserSelected {
-        enable_openapi,
+        enable_oapi,
         db_type,
         db_lib,
     }))

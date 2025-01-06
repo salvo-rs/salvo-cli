@@ -1,0 +1,78 @@
+{{#if is_web_site}}
+use crate::{JsonResult, AppResult, json_ok, json_empty};
+use crate::{
+    dtos::user::{
+        UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse, UserUpdateRequest,
+    },
+    middleware::jwt::decode_token,
+    services::user,
+};
+use askama::Template;
+use salvo::{
+    oapi::endpoint,
+    http::cookie::Cookie,
+    oapi::extract::{JsonBody, PathParam},
+    writing::{Redirect, Text},
+    Request, Response,
+};
+use salvo::Writer;
+
+#[derive(Template)]
+#[template(path = "login.html")]
+struct LoginTemplate {}
+
+#[endpoint(tags("comm"))]
+pub async fn login_page(res: &mut Response) -> AppResult<()> {
+    let cookies = res.cookies();
+    let cookie = cookies.get("jwt_token");
+    if let Some(cookie) = cookie {
+        let token = cookie.value().to_string();
+        if decode_token(&token) {
+            res.render(Redirect::other("/users"));
+            return Ok(());
+        } else {
+        }
+    }
+    let hello_tmpl = LoginTemplate {};
+    res.render(Text::Html(hello_tmpl.render().unwrap()));
+    Ok(())
+}
+#[endpoint(tags("users"))]
+pub async fn post_login(req: JsonBody<UserLoginRequest>, res: &mut Response) -> JsonResult<()> {
+    let data: UserLoginResponse = user::login(req.0).await?;
+            let jwt_token = data.token.clone();
+    let cookie = Cookie::build(("jwt_token", jwt_token))
+        .path("/")
+        .http_only(true)
+        .build();
+    res.add_cookie(cookie);
+    json_empty()
+}
+{{else}}
+use crate::{
+    JsonResult, AppResult,
+    dtos::user::{
+        UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse, UserUpdateRequest,
+    },
+    services::user,
+};
+use salvo::{
+    oapi::endpoint,
+    http::cookie::Cookie,
+    oapi::extract::{JsonBody, PathParam},
+    Request, Response,
+};
+
+#[endpoint( tags("comm"),)]
+pub async fn post_login(req: JsonBody<UserLoginRequest>, res: &mut Response) -> JsonResult<()> {
+    let data = user::login(req.0).await?;
+    let jwt_token = data.token.clone();
+    let cookie = Cookie::build(("jwt_token", jwt_token))
+        .path("/")
+        .http_only(true)
+        .build();
+    res.add_cookie(cookie);
+    json_empty()
+}
+
+{{/if}}
