@@ -29,7 +29,7 @@ pub fn router() -> Router {
         Router::with_path("/api/users").get(get_users)
         .post(post_add_user)
         .push(
-            Router::with_path("<id>")
+            Router::with_path("{id}")
                 .put(put_update_user)
                 .delete(delete_user),
         ),

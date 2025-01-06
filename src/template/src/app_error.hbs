@@ -41,3 +41,20 @@ pub enum AppError {
     ValidationError(#[from] validator::ValidationErrors),
     {{/if}}
 }
+
+impl EndpointOutRegister for AppError {
+    fn register(_components: &mut salvo::oapi::Components, operation: &mut salvo::oapi::Operation) {
+        operation.responses.insert(
+            StatusCode::INTERNAL_SERVER_ERROR.as_str(),
+            oapi::Response::new("Internal server error").add_content("application/json", StatusError::to_schema(components)),
+        );
+        operation.responses.insert(
+            StatusCode::NOT_FOUND.as_str(),
+            oapi::Response::new("Not found").add_content("application/json", StatusError::to_schema(components)),
+        );
+        operation.responses.insert(
+            StatusCode::BAD_REQUEST.as_str(),
+            oapi::Response::new("Bad request").add_content("application/json", StatusError::to_schema(components)),
+        );
+    }
+}

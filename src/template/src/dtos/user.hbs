@@ -15,7 +15,7 @@ pub struct UserLoginRequest {
     pub password: String,
 }
 
-#[derive(Debug, Deserialize,Extractible,ToSchema, Default)]
+#[derive(Debug, Deserialize, Extractible, ToSchema, Default)]
 #[salvo(extract(default_source(from = "body", parse = "json")))]
 pub struct UserUpdateRequest {
     #[salvo(extract(source(from = "param")))]

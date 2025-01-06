@@ -1,7 +1,7 @@
 {{#if is_sea_orm_or_sqlx}}
 {{#if is_sqlx}}
 use crate::{
-    app_writer::AppResult,
+    AppResult,
     db::DB,
     dtos::user::{
         UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse,
@@ -14,7 +14,7 @@ use crate::{
 {{/if}}
 {{#if is_sea_orm}}
 use crate::{
-    app_writer::AppResult,
+    AppResult,
     db::DB,
     dtos::user::{
         UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse,
@@ -127,7 +127,6 @@ pub async fn delete_user(id: String) -> AppResult<()> {
             {{else}}
             WHERE id = $1
             {{/if}}
-            
             "#,
         id,
     )
