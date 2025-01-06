@@ -71,7 +71,7 @@ select_db_conn_type:
   th: เลือกประเภทการเชื่อมต่อฐานข้อมูล
   el: επιλέξτε τύπο σύνδεσης βάσης δεδομένων
   da: vælg databaseforbindelsestype
-db_conn_types_sqlx:
+db_lib_sqlx:
   en: SQLx is an async, pure Rust† SQL crate featuring compile-time checked queries without a DSL. 10K⭐
   zh_CN: SQLx 是一个异步、纯 Rust† 的 SQL 库，具有无 DSL 的编译时检查查询。10K⭐
   zh_TW: SQLx 是一個非同步、純 Rust† 的 SQL 函式庫，具有無 DSL 的編譯時檢查查詢。10K⭐
@@ -89,7 +89,7 @@ db_conn_types_sqlx:
   th: SQLx เป็น SQL crate แบบ async, pure Rust† ที่มีการตรวจสอบคิวรีในเวลาคอมไพล์โดยไม่มี DSL. 10K⭐
   el: το SQLx είναι ένα ασύγχρονο, καθαρό Rust† SQL κιβώτιο με ερωτήματα ελεγμένα κατά τη σύνταξη χωρίς DSL. 10K⭐
   da: SQLx er en asynkron, ren Rust† SQL-kasse med kompilerede forespørgsler uden DSL. 10K⭐
-db_conn_types_diesel:
+db_lib_diesel:
   en: diesel:A safe, extensible ORM and Query Builder for Rust 11K⭐
   zh_CN: diesel:Rust 的安全、可扩展的 ORM 和查询生成器 11K⭐
   zh_TW: diesel:Rust 的安全、可擴展的 ORM 和查詢生成器 11K⭐
@@ -107,7 +107,7 @@ db_conn_types_diesel:
   th: diesel:ORM และ Query Builder ที่ปลอดภัยและสามารถขยายได้สำหรับ Rust 11K⭐
   el: diesel:ένα ασφαλές, επεκτάσιμο ORM και Query Builder για Rust 11K⭐
   da: diesel:En sikker, udvidelig ORM og Query Builder til Rust 11K⭐
-db_conn_types_sea_orm:
+db_lib_sea_orm:
   en: sea-orm:🐚 An async & dynamic ORM for Rust (I like it)
   zh_CN: sea-orm:🐚 Rust 的异步和动态 ORM（我喜欢它）
   zh_TW: sea-orm:🐚 Rust 的非同步和動態 ORM（我喜歡它）
@@ -125,7 +125,7 @@ db_conn_types_sea_orm:
   th: sea-orm:🐚 ORM แบบ async และ dynamic สำหรับ Rust (ฉันชอบมัน)
   el: sea-orm:🐚 ένα ασύγχρονο και δυναμικό ORM για Rust (μου αρέσει)
   da: sea-orm:🐚 En asynkron og dynamisk ORM til Rust (jeg kan lide det)
-db_conn_types_rbatis:
+db_lib_rbatis:
   en: rbatis:A similar Mybatis (java) asynchronous ORM framework
   zh_CN: rbatis:类似 Mybatis (java) 的异步 ORM 框架
   zh_TW: rbatis:類似 Mybatis (java) 的非同步 ORM 框架
@@ -143,7 +143,7 @@ db_conn_types_rbatis:
   th: rbatis:เฟรมเวิร์ก ORM แบบ async ที่คล้ายกับ Mybatis (java)
   el: rbatis:ένα παρόμοιο Mybatis (java) ασύγχρονο πλαίσιο ORM
   da: rbatis:Et lignende Mybatis (java) asynkront ORM-rammeverk
-db_conn_types_mongodb:
+db_lib_mongodb:
   en: The official MongoDB driver for Rust
   zh_CN: Rust 的官方 MongoDB 驱动程序
   zh_TW: Rust 的官方 MongoDB 驱動程式
@@ -161,7 +161,7 @@ db_conn_types_mongodb:
   th: ไดร์เวอร์ MongoDB อย่างเป็นทางการสำหรับ Rust
   el: Ο επίσημος οδηγός MongoDB για Rust
   da: Den officielle MongoDB-driver for Rust
-db_conn_types_nothing:
+db_lib_nothing:
   en: unnecessary
   zh_CN: 不需要
   zh_TW: 不需要

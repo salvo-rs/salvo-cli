@@ -1,0 +1,159 @@
+use crate::config::CFG;
+{{#if is_sqlx}}
+{{#if is_mysql}}
+use sqlx::MySqlPool;
+{{/if}}
+{{#if is_postgres}}
+use sqlx::PgPool;
+{{/if}}
+{{#if is_sqlite}}
+use sqlx::SqlitePool;
+{{/if}}
+{{/if}}
+{{#if is_sea_orm}}
+use std::time::Duration;
+use sea_orm::{entity::prelude::DatabaseConnection, ConnectOptions, Database};
+{{/if}}
+{{#if is_sea_orm_or_sqlx}}
+use tokio::sync::OnceCell;
+{{/if}}
+{{#if is_diesel}}
+use diesel::prelude::*;
+{{#if is_sqlite}}
+pub fn establish_connection() -> SqliteConnection {
+    let conn = SqliteConnection::establish(&CFG.database.database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url));
+    conn
+}
+{{/if}}
+{{#if is_mysql}}
+pub fn establish_connection() -> MysqlConnection {
+    MysqlConnection::establish(&CFG.database.database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
+}
+{{/if}}
+{{#if is_postgres}}
+pub fn establish_connection() -> PgConnection {
+    PgConnection::establish(&CFG.database.database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
+}
+{{/if}}
+{{/if}}
+{{#if is_sqlx}}
+{{#if is_sqlite}}
+pub static DB: OnceCell<SqlitePool> = OnceCell::const_new();
+{{/if}}
+{{#if is_postgres}}
+pub static DB: OnceCell<PgPool> = OnceCell::const_new();
+{{/if}}
+{{#if is_mysql}}
+pub static DB: OnceCell<MySqlPool> = OnceCell::const_new();
+{{/if}}
+pub async fn init_db_conn() {
+    DB.get_or_init(|| async {
+        {{#if is_sqlx}}
+        {{#if is_sqlite}}
+        SqlitePool::connect(&CFG.database.database_url)
+            .await
+            .expect("{{database_connection_failed}}")
+        {{/if}}
+        {{#if is_postgres}}
+        PgPool::connect(&CFG.database.database_url)
+            .await
+            .expect("{{database_connection_failed}}")
+        {{/if}}
+        {{#if is_mysql}}
+        MySqlPool::connect(&CFG.database.database_url)
+        .await
+        .expect("{{database_connection_failed}}")
+        {{/if}}
+        {{/if}}
+    })
+    .await;
+}
+{{/if}}
+{{#if is_sea_orm}}
+pub static DB: OnceCell<DatabaseConnection> = OnceCell::const_new();
+
+pub async fn init_db_conn() {
+	DB.get_or_init(|| async {
+		let mut opt = ConnectOptions::new(CFG.database.database_url.to_owned());
+		opt.max_connections(1000)
+			.min_connections(5)
+			.connect_timeout(Duration::from_secs(8))
+			.idle_timeout(Duration::from_secs(8))
+			.sqlx_logging(false);
+
+		Database::connect(opt).await.expect("数据库打开失败")
+	})
+	.await;
+}
+{{/if}}
+{{#if is_rbatis}}
+use tokio::sync::OnceCell;
+use rbatis::rbatis::RBatis;
+pub static DB: OnceCell<RBatis> = OnceCell::const_new();
+
+pub async fn init_db_conn() {
+    DB.get_or_init(|| async {
+        let rb = RBatis::new();
+
+        {{#if is_postgres}}
+        // PostgreSQL
+        rb.init(rbdc_pg::driver::PgDriver {}, &CFG.database.database_url).unwrap();
+        {{/if}}
+        {{#if is_mysql}}
+        // MySQL
+        rb.init(rbdc_mysql::driver::MysqlDriver {}, &CFG.database.database_url).unwrap();
+        {{/if}}
+        {{#if is_sqlite}}
+        // SQLite
+        rb.init(rbdc_sqlite::driver::SqliteDriver {}, &CFG.database.database_url).unwrap();
+        {{/if}}
+        {{#if is_mssql}}
+        // MS SQL
+        rb.init(rbdc_mssql::driver::MssqlDriver {}, &CFG.database.database_url).unwrap();
+        {{/if}}
+
+        let sql_file = match rb.driver_type().unwrap() {
+            "sqlite" => "./data/table_sqlite.sql",
+            "postgres" => "./data/table_postgres.sql",
+            "mysql" => "./data/table_mysql.sql",
+            "mssql" => "./data/table_mssql.sql",
+            _ => { "" }
+        };
+        if sql_file != "" {
+            let sql = std::fs::read_to_string(sql_file).unwrap();
+            let _ = rb.exec(&sql, vec![]).await;
+        }
+        return rb;    
+    })
+    .await;
+}
+{{/if}}
+{{#if is_mongodb}}
+use crate::entities::user::User;
+use mongodb::{bson::doc, options::IndexOptions, Client, IndexModel};
+use once_cell::sync::OnceCell;
+pub const DB_NAME: &str = "myApp";
+pub const COLL_NAME: &str = "users";
+pub static MONGODB_CLIENT: OnceCell<Client> = OnceCell::new();
+pub async fn init_db_conn() {
+        let mongodb_uri = &CFG.database.database_url;
+    let client = Client::with_uri_str(mongodb_uri)
+        .await
+        .expect("failed to connect");
+    let options = IndexOptions::builder().unique(true).build();
+    let model = IndexModel::builder()
+        .keys(doc! { "username": 1 })
+        .options(options)
+        .build();
+    client
+        .database(DB_NAME)
+        .collection::<User>(COLL_NAME)
+        .create_index(model, None)
+        .await
+        .expect("creating an index should succeed");
+    MONGODB_CLIENT.get_or_init(|| client);
+}
+{{/if}}

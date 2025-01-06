@@ -13,7 +13,7 @@ use std::{
 
 use super::{
     directory2md::write_directory_contents_to_markdown,
-    get_selection::{get_user_selected, DbConnectionType, DbType, TemplateType, UserSelected},
+    get_selection::{get_user_selected, DbLib, DbType, TemplateType, UserSelected},
     print_util, restricted_names, warning,
 };
 use crate::Project;
@@ -64,12 +64,12 @@ pub fn write_project_file(
 ) -> Result<()> {
     let handlebars = Handlebars::new();
     let is_web_site = user_selected.template_type == TemplateType::SalvoWebSite;
-    let need_db_conn = user_selected.db_conn_type != DbConnectionType::Nothing;
-    let is_sqlx = user_selected.db_conn_type == DbConnectionType::Sqlx;
-    let is_sea_orm = user_selected.db_conn_type == DbConnectionType::SeaOrm;
-    let is_diesel = user_selected.db_conn_type == DbConnectionType::Diesel;
-    let is_rbatis = user_selected.db_conn_type == DbConnectionType::Rbatis;
-    let is_mongodb = user_selected.db_conn_type == DbConnectionType::Mongodb;
+    let need_db_conn = user_selected.db_lib != DbLib::Nothing;
+    let is_sqlx = user_selected.db_lib == DbLib::Sqlx;
+    let is_sea_orm = user_selected.db_lib == DbLib::SeaOrm;
+    let is_diesel = user_selected.db_lib == DbLib::Diesel;
+    let is_rbatis = user_selected.db_lib == DbLib::Rbatis;
+    let is_mongodb = user_selected.db_lib == DbLib::Mongodb;
     let is_mysql = user_selected.db_type == DbType::Mysql;
     let is_postgres = user_selected.db_type == DbType::Postgres;
     let is_sqlite = user_selected.db_type == DbType::Sqlite;
@@ -83,7 +83,7 @@ pub fn write_project_file(
             "jsonwebtoken": "9.2.0",
             "once_cell": "1.19.0",
             "salvo": {
-                "version": "0.74.3",
+                "version": "0.76.0",
                 "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "rustls", "catch-panic","cookie","serve-static","test"]
             },
             "serde": "1.0.196",
@@ -97,7 +97,7 @@ pub fn write_project_file(
             "serde_yaml": "0.9.31",
             "tracing": "0.1"
         },
-        "is_web_site":is_web_site,
+        "enable_openapi":enable_openapi,
         "need_db_conn":need_db_conn,
         "is_sqlx":is_sqlx,
         "is_mysql":is_mysql,
@@ -149,7 +149,7 @@ pub fn write_project_file(
         &mut dependencies,
         need_db_conn,
         user_selected.db_type,
-        user_selected.db_conn_type,
+        user_selected.db_lib,
     );
     data["dependencies"] = dependencies;
     create_basic_file(project_path, &handlebars, &data)?;
@@ -172,18 +172,18 @@ pub fn write_project_file(
         include_bytes!("../template/.github/workflows/build.yml"),
         project_path.join(".github/workflows/build.yml"),
     )?;
-    let mut templates: Vec<(&str, &str)> = vec![];
-    if is_web_site {
-        //templates
-        let template_path = project_path.join("templates");
+    let mut views: Vec<(&str, &str)> = vec![];
+    if enable_openapi {
+        // views
+        let template_path = project_path.join("views");
         create_dir_all(template_path)?;
         copy_binary_file(
-            include_bytes!("../template/templates/hello.hbs"),
-            project_path.join("templates/hello.html"),
+            include_bytes!("../template/views/hello.hbs"),
+            project_path.join("views/hello.html"),
         )?;
         let mut web_comm_templates = vec![(
-            "templates/handle_404.html",
-            include_str!("../template/templates/404.hbs"),
+            "views/handle_404.html",
+            include_str!("../template/views/404.hbs"),
         )];
         templates.append(&mut web_comm_templates);
         if need_db_conn {
@@ -201,16 +201,16 @@ pub fn write_project_file(
             )?;
             let mut web_db_templates = vec![
                 (
-                    "templates/login.html",
-                    include_str!("../template/templates/login.hbs"),
+                    "views/login.html",
+                    include_str!("../template/views/login.hbs"),
                 ),
                 (
-                    "templates/user_list.html",
-                    include_str!("../template/templates/user_list.hbs"),
+                    "views/user_list.html",
+                    include_str!("../template/views/user_list.hbs"),
                 ),
                 (
-                    "templates/user_list_page.html",
-                    include_str!("../template/templates/user_list_page.hbs"),
+                    "views/user_list_page.html",
+                    include_str!("../template/views/user_list_page.hbs"),
                 ),
             ];
             templates.append(&mut web_db_templates);
@@ -603,7 +603,7 @@ fn handle_dependencies(
     dependencies: &mut serde_json::Value,
     need_db_conn: bool,
     db_type: DbType,
-    conn_type: DbConnectionType,
+    conn_type: DbLib,
 ) {
     if need_db_conn {
         dependencies["validator"] = json!({
@@ -611,61 +611,61 @@ fn handle_dependencies(
             "features": ["derive"]
         });
         match (conn_type, db_type) {
-            (DbConnectionType::Sqlx, DbType::Mysql) => {
+            (DbLib::Sqlx, DbType::Mysql) => {
                 dependencies["sqlx"] = json!({
                     "version": "0.7",
                     "features": ["runtime-tokio", "macros", "mysql"]
                 });
             }
-            (DbConnectionType::Sqlx, DbType::Postgres) => {
+            (DbLib::Sqlx, DbType::Postgres) => {
                 dependencies["sqlx"] = json!({
                     "version": "0.7",
                     "features": ["runtime-tokio", "macros", "postgres"]
                 });
             }
-            (DbConnectionType::Sqlx, DbType::Sqlite) => {
+            (DbLib::Sqlx, DbType::Sqlite) => {
                 dependencies["sqlx"] = json!({
                     "version": "0.7",
                     "features": ["runtime-tokio", "macros", "sqlite"]
                 });
             }
-            (DbConnectionType::SeaOrm, DbType::Mysql) => {
+            (DbLib::SeaOrm, DbType::Mysql) => {
                 dependencies["sea-orm"] = json!({
                     "version": "0",
                     "features": ["runtime-tokio-native-tls","sqlx-mysql"]
                 });
             }
-            (DbConnectionType::SeaOrm, DbType::Postgres) => {
+            (DbLib::SeaOrm, DbType::Postgres) => {
                 dependencies["sea-orm"] = json!({
                     "version": "0",
                     "features": ["runtime-tokio-native-tls","sqlx-postgres"]
                 });
             }
-            (DbConnectionType::SeaOrm, DbType::Sqlite) => {
+            (DbLib::SeaOrm, DbType::Sqlite) => {
                 dependencies["sea-orm"] = json!({
                     "version": "0",
                     "features": ["runtime-tokio-native-tls","sqlx-sqlite"]
                 });
             }
-            (DbConnectionType::Diesel, DbType::Mysql) => {
+            (DbLib::Diesel, DbType::Mysql) => {
                 dependencies["diesel"] = json!({
                     "version": "2.1.5",
                     "features": ["mysql"]
                 });
             }
-            (DbConnectionType::Diesel, DbType::Postgres) => {
+            (DbLib::Diesel, DbType::Postgres) => {
                 dependencies["diesel"] = json!({
                     "version": "2.1.5",
                     "features": ["postgres"]
                 });
             }
-            (DbConnectionType::Diesel, DbType::Sqlite) => {
+            (DbLib::Diesel, DbType::Sqlite) => {
                 dependencies["diesel"] = json!({
                     "version": "2.1.5",
                     "features": ["sqlite","returning_clauses_for_sqlite_3_35"]
                 });
             }
-            (DbConnectionType::Rbatis, DbType::Mysql) => {
+            (DbLib::Rbatis, DbType::Mysql) => {
                 dependencies["rbs"] = json!({"version":"4.4"});
                 dependencies["rbdc-mysql"] = json!({
                     "version": "4.4"
@@ -675,7 +675,7 @@ fn handle_dependencies(
                     "features": ["debug_mode"]
                 });
             }
-            (DbConnectionType::Rbatis, DbType::Postgres) => {
+            (DbLib::Rbatis, DbType::Postgres) => {
                 dependencies["rbs"] = json!({"version":"4.4"});
                 dependencies["rbdc-pg"] = json!({
                     "version": "4.4"
@@ -685,7 +685,7 @@ fn handle_dependencies(
                     "features": ["debug_mode"]
                 });
             }
-            (DbConnectionType::Rbatis, DbType::Sqlite) => {
+            (DbLib::Rbatis, DbType::Sqlite) => {
                 dependencies["rbs"] = json!({"version":"4.4"});
                 dependencies["rbdc-sqlite"] = json!({
                     "version": "4.4"
@@ -695,7 +695,7 @@ fn handle_dependencies(
                     "features": ["debug_mode"]
                 });
             }
-            (DbConnectionType::Rbatis, DbType::Mssql) => {
+            (DbLib::Rbatis, DbType::Mssql) => {
                 dependencies["rbs"] = json!({"version":"4.4"});
                 dependencies["rbdc-mssql"] = json!({
                     "version": "4.4"
@@ -705,7 +705,7 @@ fn handle_dependencies(
                     "features": ["debug_mode"]
                 });
             }
-            (DbConnectionType::Mongodb, _) => {
+            (DbLib::Mongodb, _) => {
                 dependencies["mongodb"] = json!({"version":"2.8"});
                 dependencies["futures-util"] = json!({
                     "version": "0.3",

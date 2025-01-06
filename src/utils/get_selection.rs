@@ -4,9 +4,9 @@ use rust_i18n::t;
 
 #[derive(Debug, Clone, Copy)]
 pub struct UserSelected {
-    pub template_type: TemplateType,
+    pub enable_openapi: bool,
     pub db_type: DbType,
-    pub db_conn_type: DbConnectionType,
+    pub db_lib: DbLib,
 }
 
 pub fn get_user_selected() -> Result<Option<UserSelected>> {
@@ -27,43 +27,39 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         .default(0)
         .items(&selections[..])
         .interact()?;
-    let template_type = match selection {
-        0 => TemplateType::SalvoWebSite,
-        1 => TemplateType::SalvoWebApi,
-        _ => anyhow::bail!("Invalid selection"),
-    };
-    let db_conn_types = &[
-        t!("db_conn_types_sqlx"),
-        t!("db_conn_types_sea_orm"),
-        t!("db_conn_types_diesel"),
-        t!("db_conn_types_rbatis"),
-        t!("db_conn_types_mongodb"),
-        t!("db_conn_types_nothing"),
+    let enable_openapi = selection == 1;
+    let db_libs = &[
+        t!("db_lib_sqlx"),
+        t!("db_lib_sea_orm"),
+        t!("db_lib_diesel"),
+        t!("db_lib_rbatis"),
+        t!("db_lib_mongodb"),
+        t!("db_lib_nothing"),
         // "custom",
     ];
-    let db_conn_type_selection = Select::with_theme(&theme)
+    let db_lib_selection = Select::with_theme(&theme)
         .with_prompt(t!("select_db_conn_type").replace(r"\n", "\n"))
         .default(0)
-        .items(&db_conn_types[..])
+        .items(&db_libs[..])
         .interact()?;
-    let db_conn_type = match db_conn_type_selection {
-        0 => DbConnectionType::Sqlx,
-        1 => DbConnectionType::SeaOrm,
-        2 => DbConnectionType::Diesel,
-        3 => DbConnectionType::Rbatis,
-        4 => DbConnectionType::Mongodb,
-        5 => DbConnectionType::Nothing,
+    let db_lib = match db_lib_selection {
+        0 => DbLib::Sqlx,
+        1 => DbLib::SeaOrm,
+        2 => DbLib::Diesel,
+        3 => DbLib::Rbatis,
+        4 => DbLib::Mongodb,
+        5 => DbLib::Nothing,
         _ => anyhow::bail!("Invalid db connection type selection"),
     };
-    if db_conn_type == DbConnectionType::Nothing || db_conn_type == DbConnectionType::Mongodb {
+    if db_lib == DbLib::Nothing || db_lib == DbLib::Mongodb {
         return Ok(Some(UserSelected {
-            template_type,
+            enable_openapi,
             db_type: DbType::Sqlite,
-            db_conn_type,
+            db_lib,
         }));
     }
     let mut db_types: Vec<&str> = vec!["sqlite", "mysql", "postgres"];
-    if db_conn_type == DbConnectionType::Rbatis {
+    if db_lib == DbLib::Rbatis {
         db_types = vec!["sqlite", "mysql", "postgres", "mssql"];
     }
     let db_type_selection = Select::with_theme(&theme)
@@ -80,15 +76,10 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
     };
 
     Ok(Some(UserSelected {
-        template_type,
+        enable_openapi,
         db_type,
-        db_conn_type,
+        db_lib,
     }))
-}
-#[derive(Debug, PartialEq, Clone, Copy)]
-pub enum TemplateType {
-    SalvoWebSite,
-    SalvoWebApi,
 }
 
 #[derive(Debug, PartialEq, Clone, Copy)]
@@ -100,7 +91,7 @@ pub enum DbType {
 }
 
 #[derive(Debug, PartialEq, Clone, Copy)]
-pub enum DbConnectionType {
+pub enum DbLib {
     Sqlx,
     SeaOrm,
     Diesel,
