@@ -1,0 +1,48 @@
+
+use crate::{JsonResult, AppResult, json_ok, json_empty};
+use crate::{
+    hoops::jwt::decode_token,
+    labors::user,
+};
+{% if code_gen == "website" %}
+use askama::Template;
+{% endif %}
+use salvo::prelude::*;
+
+#[endpoint]
+pub async fn show_login(res: &mut Response) -> AppResult<Text> {
+    #[derive(Template)]
+    #[template(path = "login.html")]
+    struct LoginTemplate {}
+    if let Some(cookie) = res.cookies().get("jwt_token") {
+        let token = cookie.value().to_string();
+        if decode_token(&token) {
+            res.render(Redirect::other("/users"));
+            return Ok(());
+        }
+    }
+    let hello_tmpl = LoginTemplate {};
+    Ok(Text::Html(hello_tmpl.render().unwrap()))
+}
+{{else}}
+
+#[derive(Debug, Serialize, ToSchema, Default)]
+pub struct UserLoginResponse {
+    pub id: String,
+    pub username: String,
+    pub token: String,
+    pub exp: i64,
+}
+#[endpoint(tags("auth"))]
+pub async fn login(req: JsonBody<UserLoginRequest>, res: &mut Response) -> JsonResult<()> {
+    let data = user::login(req.0).await?;
+    let jwt_token = data.token.clone();
+    let cookie = Cookie::build(("jwt_token", jwt_token))
+        .path("/")
+        .http_only(true)
+        .build();
+    res.add_cookie(cookie);
+    json_empty()
+}
+
+{{/if}}

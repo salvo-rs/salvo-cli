@@ -1,36 +1,30 @@
-{{#if is_web_site}}
+
+{% if code_gen == "website" %}
 use askama::Template;
-{{/if}}
-{{#if is_web_site}}
-use salvo::{oapi::endpoint, writing::Text, Request, Response};
-{{else}}
-use salvo::oapi::endpoint;
-{{/if}}
+{% endif %}
+use salvo::prelude::*;
 use crate::AppResult;
-{{#if is_web_site}}
 
-#[derive(Template)]
-#[template(path = "hello.html")]
-struct HelloTemplate<'a> {
-    name: &'a str,
-}
-
-#[endpoint]
-pub async fn hello(req: &mut Request, res: &mut Response)->AppResult<()>{
+{% if code_gen == "website" %}
+#[handle]
+pub async fn hello(req: &mut Request, res: &mut Response)->AppResult<Text>{
+    #[derive(Template)]
+    #[template(path = "hello.html")]
+    struct HelloTemplate<'a> {
+        name: &'a str,
+    }
     let hello_tmpl = HelloTemplate {
         name: req.param::<&str>("name").unwrap_or("World"),
     };
-    res.render(Text::Html(hello_tmpl.render().unwrap()));
-    Ok(())
+    Ok(Text::Html(hello_tmpl.render().unwrap()))
 }
-{{else}}
+{% else %}
 #[endpoint]
 pub async fn hello() -> AppResult<&'static str> {
     Ok("Hello World from salvo")
 }
-{{/if}}
+{% endif %}
 
-#[allow(unused_imports)]
 mod tests {
     use salvo::test::{ResponseExt, TestClient};
     use salvo::Service;

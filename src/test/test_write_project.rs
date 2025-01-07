@@ -24,24 +24,24 @@ mod tests {
         ];
 
         // Generate all combinations
-        let combinations = template_types
+        let combinations = code_styles
             .iter()
             .cartesian_product(db_types.iter())
             .cartesian_product(db_libs.iter())
-            .map(|((template_type, db_type), db_lib)| (template_type, db_type, db_lib))
+            .map(|((code_style, db_type), db_lib)| (code_style, db_type, db_lib))
             .collect::<Vec<_>>();
 
         // Test each combination
-        for (template_type, db_type, db_lib) in combinations {
+        for (code_style, db_type, db_lib) in combinations {
             // Generate a unique project name for each combination
-            let project_name = format!("test_{:?}_{:?}_{:?}", template_type, db_type, db_lib);
+            let project_name = format!("test_{:?}_{:?}_{:?}", code_style, db_type, db_lib);
             println!("Testing combination: {:?}", project_name);
             let path_str = format!("target/{}", project_name);
             std::fs::remove_dir_all(&path_str).unwrap_or(());
             let path = Path::new(&path_str);
 
             let user_selected = UserSelected {
-                template_type: *template_type,
+                code_style: *code_style,
                 db_type: *db_type,
                 db_lib: *db_lib,
             };
@@ -58,8 +58,8 @@ mod tests {
                         .expect("failed to execute process");
                     if !output.status.success() {
                         eprintln!(
-                            "Failed on combination: template_type={:?}, db_type={:?}, db_lib={:?}",
-                            template_type, db_type, db_lib
+                            "Failed on combination: code_style={:?}, db_type={:?}, db_lib={:?}",
+                            code_style, db_type, db_lib
                         );
                         eprintln!("Output: {:?}", output);
                         panic!();
@@ -67,8 +67,8 @@ mod tests {
                 }
                 Err(e) => {
                     eprintln!(
-                        "Failed to write project file on combination: template_type={:?}, db_type={:?}, db_lib={:?}",
-                        template_type, db_type, db_lib
+                        "Failed to write project file on combination: code_style={:?}, db_type={:?}, db_lib={:?}",
+                        code_style, db_type, db_lib
                     );
                     eprintln!("Error: {:?}", e);
                     panic!();

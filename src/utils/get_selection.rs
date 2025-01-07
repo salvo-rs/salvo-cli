@@ -99,3 +99,9 @@ pub enum DbLib {
     Mongodb,
     Nothing,
 }
+
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub enum CodeGen {
+    WebSite,
+    OpenApi,
+}

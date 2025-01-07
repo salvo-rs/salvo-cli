@@ -63,23 +63,13 @@ pub fn write_project_file(
     project: Project,
 ) -> Result<()> {
     let handlebars = Handlebars::new();
-    let is_web_site = user_selected.template_type == TemplateType::SalvoWebSite;
-    let need_db_conn = user_selected.db_lib != DbLib::Nothing;
-    let is_sqlx = user_selected.db_lib == DbLib::Sqlx;
-    let is_sea_orm = user_selected.db_lib == DbLib::SeaOrm;
-    let is_diesel = user_selected.db_lib == DbLib::Diesel;
-    let is_rbatis = user_selected.db_lib == DbLib::Rbatis;
-    let is_mongodb = user_selected.db_lib == DbLib::Mongodb;
-    let is_mysql = user_selected.db_type == DbType::Mysql;
-    let is_postgres = user_selected.db_type == DbType::Postgres;
-    let is_sqlite = user_selected.db_type == DbType::Sqlite;
-    let is_mssql = user_selected.db_type == DbType::Mssql;
-    let is_sea_orm_or_sqlx = is_sea_orm || is_sqlx;
+    let code_style = user_selected.code_style.to_string();
+    let db_lib = user_selected.db_lib.to_string();
+    let db_type = user_selected.db_type.to_string();
     let mut data = json!({
         "project_name": project.project_name,
         "dependencies": {
             "anyhow": "1.0.79",
-            "clia-tracing-config": "0.2.7",
             "jsonwebtoken": "9.2.0",
             "once_cell": "1.19.0",
             "salvo": {
@@ -97,18 +87,9 @@ pub fn write_project_file(
             "serde_yaml": "0.9.31",
             "tracing": "0.1"
         },
-        "enable_oapi":enable_oapi,
-        "need_db_conn":need_db_conn,
-        "is_sqlx":is_sqlx,
-        "is_mysql":is_mysql,
-        "is_postgres":is_postgres,
-        "is_sqlite":is_sqlite,
-        "is_mssql":is_mssql,
-        "is_sea_orm":is_sea_orm,
-        "is_sea_orm_or_sqlx":is_sea_orm_or_sqlx,
-        "is_diesel":is_diesel,
-        "is_rbatis":is_rbatis,
-        "is_mongodb":is_mongodb,
+        "code_style":code_style,
+        "db_type":db_type,
+        "db_lib":db_lib,
         "main_log_message":t!("main_log_message"),
         "config_error_no_exits":t!("config_error_no_exits"),
         "config_error_read":t!("config_error_read"),
