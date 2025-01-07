@@ -63,8 +63,15 @@ use salvo::{
     Request, Response,
 };
 
-#[endpoint( tags("comm"),)]
-pub async fn post_login(req: JsonBody<UserLoginRequest>, res: &mut Response) -> JsonResult<()> {
+#[derive(Debug, Serialize, ToSchema, Default)]
+pub struct UserLoginResponse {
+    pub id: String,
+    pub username: String,
+    pub token: String,
+    pub exp: i64,
+}
+#[endpoint]
+pub async fn login(req: JsonBody<UserLoginRequest>, res: &mut Response) -> JsonResult<()> {
     let data = user::login(req.0).await?;
     let jwt_token = data.token.clone();
     let cookie = Cookie::build(("jwt_token", jwt_token))

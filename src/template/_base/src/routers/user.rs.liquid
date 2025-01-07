@@ -63,13 +63,6 @@ pub struct UserResponse {
     pub username: String,
 }
 
-#[derive(Debug, Serialize, ToSchema, Default)]
-pub struct UserLoginResponse {
-    pub id: String,
-    pub username: String,
-    pub token: String,
-    pub exp: i64,
-}
 
 #[endpoint(tags("users"))]
 pub async fn create_user(new_user: JsonBody<UserAddRequest>) -> JsonResult<User> {
