@@ -24,24 +24,24 @@ mod tests {
         ];
 
         // Generate all combinations
-        let combinations = code_styles
+        let combinations = code_gens
             .iter()
             .cartesian_product(db_types.iter())
             .cartesian_product(db_libs.iter())
-            .map(|((code_style, db_type), db_lib)| (code_style, db_type, db_lib))
+            .map(|((code_gen, db_type), db_lib)| (code_gen, db_type, db_lib))
             .collect::<Vec<_>>();
 
         // Test each combination
-        for (code_style, db_type, db_lib) in combinations {
+        for (code_gen, db_type, db_lib) in combinations {
             // Generate a unique project name for each combination
-            let project_name = format!("test_{:?}_{:?}_{:?}", code_style, db_type, db_lib);
+            let project_name = format!("test_{:?}_{:?}_{:?}", code_gen, db_type, db_lib);
             println!("Testing combination: {:?}", project_name);
             let path_str = format!("target/{}", project_name);
             std::fs::remove_dir_all(&path_str).unwrap_or(());
             let path = Path::new(&path_str);
 
             let user_selected = UserSelected {
-                code_style: *code_style,
+                code_gen: *code_gen,
                 db_type: *db_type,
                 db_lib: *db_lib,
             };

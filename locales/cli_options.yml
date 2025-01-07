@@ -53,7 +53,7 @@ salvo_web_site:
   th: salvo_web_site (เทมเพลตเว็บไซต์ตั้งต้น)
   el: salvo_web_site (Προεπιλεγμένο πρότυπο ιστότοπου)
   da: salvo_web_site (Standard websted skabelon)
-select_db_conn_type:
+select_db_lib:
   en: select database connection type
   zh_CN: 选择数据库连接类型
   zh_TW: 選擇資料庫連接類型

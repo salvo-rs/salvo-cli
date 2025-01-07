@@ -4,7 +4,7 @@ use rust_i18n::t;
 
 #[derive(Debug, Clone, Copy)]
 pub struct UserSelected {
-    pub enable_oapi: bool,
+    pub code_gen: CodeGen,
     pub db_type: DbType,
     pub db_lib: DbLib,
 }
@@ -18,8 +18,8 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         ..ColorfulTheme::default()
     };
     let selections = &[
-        t!("salvo_web_site"),
-        t!("salvo_web_api"),
+        t!("salvo_website"),
+        t!("salvo_openapi"),
         // "custom",
     ];
     let selection = Select::with_theme(&theme)
@@ -27,7 +27,11 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         .default(0)
         .items(&selections[..])
         .interact()?;
-    let enable_oapi = selection == 1;
+    let code_gen = if selection == 1 {
+        CodeGen::WebSite
+    } else {
+        CodeGen::OpenApi
+    };
     let db_libs = &[
         t!("db_lib_sqlx"),
         t!("db_lib_sea_orm"),
@@ -38,7 +42,7 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         // "custom",
     ];
     let db_lib_selection = Select::with_theme(&theme)
-        .with_prompt(t!("select_db_conn_type").replace(r"\n", "\n"))
+        .with_prompt(t!("select_db_lib").replace(r"\n", "\n"))
         .default(0)
         .items(&db_libs[..])
         .interact()?;
@@ -53,7 +57,7 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
     };
     if db_lib == DbLib::Nothing || db_lib == DbLib::Mongodb {
         return Ok(Some(UserSelected {
-            enable_oapi,
+            code_gen,
             db_type: DbType::Sqlite,
             db_lib,
         }));
@@ -76,7 +80,7 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
     };
 
     Ok(Some(UserSelected {
-        enable_oapi,
+        code_gen,
         db_type,
         db_lib,
     }))
