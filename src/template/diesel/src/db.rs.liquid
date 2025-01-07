@@ -1,0 +1,57 @@
+
+
+{{#if is_diesel}}
+use diesel::prelude::*;
+{{#if is_sqlite}}
+pub fn establish_connection() -> SqliteConnection {
+    let conn = SqliteConnection::establish(&CFG.database.database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url));
+    conn
+}
+{{/if}}
+{{#if is_mysql}}
+pub fn establish_connection() -> MysqlConnection {
+    MysqlConnection::establish(&CFG.database.database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
+}
+{{/if}}
+{{#if is_postgres}}
+pub fn establish_connection() -> PgConnection {
+    PgConnection::establish(&CFG.database.database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
+}
+{{/if}}
+{{/if}}
+{{#if is_sqlx}}
+{{#if is_sqlite}}
+pub static DB: OnceCell<SqlitePool> = OnceCell::const_new();
+{{/if}}
+{{#if is_postgres}}
+pub static DB: OnceCell<PgPool> = OnceCell::const_new();
+{{/if}}
+{{#if is_mysql}}
+pub static DB: OnceCell<MySqlPool> = OnceCell::const_new();
+{{/if}}
+pub async fn init_db_conn() {
+    DB.get_or_init(|| async {
+        {{#if is_sqlx}}
+        {{#if is_sqlite}}
+        SqlitePool::connect(&CFG.database.database_url)
+            .await
+            .expect("{{database_connection_failed}}")
+        {{/if}}
+        {{#if is_postgres}}
+        PgPool::connect(&CFG.database.database_url)
+            .await
+            .expect("{{database_connection_failed}}")
+        {{/if}}
+        {{#if is_mysql}}
+        MySqlPool::connect(&CFG.database.database_url)
+        .await
+        .expect("{{database_connection_failed}}")
+        {{/if}}
+        {{/if}}
+    })
+    .await;
+}
+{{/if}}
