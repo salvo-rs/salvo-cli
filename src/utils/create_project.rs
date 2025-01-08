@@ -197,122 +197,121 @@ pub fn write_project_file(
             templates.append(&mut web_db_templates);
         }
     }
-    if need_db_conn {
-        let mut db_templates = vec![
-            ("src/db.rs", include_str!("../template/src/db.hbs")),
-            (
-                "src/routers/user.rs",
-                include_str!("../template/src/routers/user.hbs"),
-            ),
-            (
-                "src/routers/static_routers.rs",
-                include_str!("../template/src/routers/static_routers.hbs"),
-            ),
-            (
-                "src/services/mod.rs",
-                include_str!("../template/src/services/mod.hbs"),
-            ),
-            (
-                "src/services/user.rs",
-                include_str!("../template/src/services/user.hbs"),
-            ),
-            (
-                "src/utils/mod.rs",
-                include_str!("../template/src/utils/mod.hbs"),
-            ),
-            (
-                "src/utils/rand_utils.rs",
-                include_str!("../template/src/utils/rand_utils.hbs"),
-            ),
-            (
-                "src/dtos/mod.rs",
-                include_str!("../template/src/dtos/mod.hbs"),
-            ),
-            (
-                "src/dtos/user.rs",
-                include_str!("../template/src/dtos/user.hbs"),
-            ),
-        ];
-        if is_sea_orm || is_sqlx {
-            db_templates.append(
-                vec![
-                    (
-                        "src/entities/mod.rs",
-                        include_str!("../template/src/entities/mod.hbs"),
-                    ),
-                    (
-                        "src/entities/users.rs",
-                        include_str!("../template/src/entities/users.hbs"),
-                    ),
-                    (".env", include_str!("../template/.env.hbs")),
-                ]
-                .as_mut(),
-            );
-            if is_sea_orm {
+    let mut db_templates = vec![
+        ("src/db.rs", include_str!("../template/src/db.hbs")),
+        (
+            "src/routers/user.rs",
+            include_str!("../template/src/routers/user.hbs"),
+        ),
+        (
+            "src/routers/static_routers.rs",
+            include_str!("../template/src/routers/static_routers.hbs"),
+        ),
+        (
+            "src/services/mod.rs",
+            include_str!("../template/src/services/mod.hbs"),
+        ),
+        (
+            "src/services/user.rs",
+            include_str!("../template/src/services/user.hbs"),
+        ),
+        (
+            "src/utils/mod.rs",
+            include_str!("../template/src/utils/mod.hbs"),
+        ),
+        (
+            "src/utils/rand_utils.rs",
+            include_str!("../template/src/utils/rand_utils.hbs"),
+        ),
+        (
+            "src/dtos/mod.rs",
+            include_str!("../template/src/dtos/mod.hbs"),
+        ),
+        (
+            "src/dtos/user.rs",
+            include_str!("../template/src/dtos/user.hbs"),
+        ),
+    ];
+    if is_sea_orm || is_sqlx {
+        db_templates.append(
+            vec![
+                (
+                    "src/entities/mod.rs",
+                    include_str!("../template/src/entities/mod.hbs"),
+                ),
+                (
+                    "src/entities/users.rs",
+                    include_str!("../template/src/entities/users.hbs"),
+                ),
+                (".env", include_str!("../template/.env.hbs")),
+            ]
+            .as_mut(),
+        );
+        if is_sea_orm {
+            db_templates.push((
+                "src/entities/prelude.rs",
+                include_str!("../template/src/entities/prelude.hbs"),
+            ));
+        }
+        if is_sqlx {
+            //data
+            let data_path = project_path.join("data");
+            create_dir_all(data_path)?;
+            if is_sqlite {
+                copy_binary_file(
+                    include_bytes!("../template/data/demo.db"),
+                    project_path.join("data/demo.db"),
+                )?;
+            } else {
                 db_templates.push((
-                    "src/entities/prelude.rs",
-                    include_str!("../template/src/entities/prelude.hbs"),
+                    "data/init_sql.sql",
+                    include_str!("../template/data/init_sql_sql.hbs"),
                 ));
             }
-            if is_sqlx {
-                //data
-                let data_path = project_path.join("data");
-                create_dir_all(data_path)?;
-                if is_sqlite {
-                    copy_binary_file(
-                        include_bytes!("../template/data/demo.db"),
-                        project_path.join("data/demo.db"),
-                    )?;
-                } else {
-                    db_templates.push((
-                        "data/init_sql.sql",
-                        include_str!("../template/data/init_sql_sql.hbs"),
-                    ));
-                }
+            copy_binary_file(
+                include_bytes!("../template/migrations/20231001143156_users.sql"),
+                project_path.join("migrations/2021-10-20-000000_create_users_table/up.sql"),
+            )?;
+        }
+        if is_sea_orm {
+            copy_binary_file(
+                include_bytes!("../template/migration/src/main.rs"),
+                project_path.join("migration/src/main.rs"),
+            )?;
+            copy_binary_file(
+                include_bytes!("../template/migration/src/lib.rs"),
+                project_path.join("migration/src/lib.rs"),
+            )?;
+            copy_binary_file(
+                include_bytes!("../template/migration/src/m20220101_000001_create_table.rs"),
+                project_path.join("migration/src/m20220101_000001_create_table.rs"),
+            )?;
+            copy_binary_file(
+                include_bytes!("../template/migration/README.md"),
+                project_path.join("migration/README.md"),
+            )?;
+            db_templates.append(
+                vec![(
+                    "migration/Cargo.toml",
+                    include_str!("../template/migration/Cargo.toml.hbs"),
+                )]
+                .as_mut(),
+            );
+            if is_sqlite {
                 copy_binary_file(
-                    include_bytes!("../template/migrations/20231001143156_users.sql"),
-                    project_path.join("migrations/2021-10-20-000000_create_users_table/up.sql"),
+                    include_bytes!("../template/data/demo_sea_orm.db"),
+                    project_path.join("data/demo.db"),
                 )?;
-            }
-            if is_sea_orm {
-                copy_binary_file(
-                    include_bytes!("../template/migration/src/main.rs"),
-                    project_path.join("migration/src/main.rs"),
-                )?;
-                copy_binary_file(
-                    include_bytes!("../template/migration/src/lib.rs"),
-                    project_path.join("migration/src/lib.rs"),
-                )?;
-                copy_binary_file(
-                    include_bytes!("../template/migration/src/m20220101_000001_create_table.rs"),
-                    project_path.join("migration/src/m20220101_000001_create_table.rs"),
-                )?;
-                copy_binary_file(
-                    include_bytes!("../template/migration/README.md"),
-                    project_path.join("migration/README.md"),
-                )?;
-                db_templates.append(
-                    vec![(
-                        "migration/Cargo.toml",
-                        include_str!("../template/migration/Cargo.toml.hbs"),
-                    )]
-                    .as_mut(),
-                );
-                if is_sqlite {
-                    copy_binary_file(
-                        include_bytes!("../template/data/demo_sea_orm.db"),
-                        project_path.join("data/demo.db"),
-                    )?;
-                } else {
-                    db_templates.push((
-                        "data/init_sql.sql",
-                        include_str!("../template/data/init_sql_sql.hbs"),
-                    ));
-                }
+            } else {
+                db_templates.push((
+                    "data/init_sql.sql",
+                    include_str!("../template/data/init_sql_sql.hbs"),
+                ));
             }
         }
-        if is_diesel {
-            db_templates.append(vec![
+    }
+    if is_diesel {
+        db_templates.append(vec![
                 (
                     "src/schema.rs",
                     include_str!("../template/src/schema.hbs"),
@@ -352,76 +351,75 @@ pub fn write_project_file(
                     include_str!("../template/data/init_sql_sql.hbs"),
                 ),
             ].as_mut());
-            if is_sqlite {
+        if is_sqlite {
+            copy_binary_file(
+                include_bytes!("../template/data/diesel_test.db"),
+                project_path.join("data/test.db"),
+            )?;
+        }
+    }
+    if is_rbatis {
+        db_templates.append(
+            vec![
+                (
+                    "src/entities/mod.rs",
+                    include_str!("../template/src/entities/mod.hbs"),
+                ),
+                (
+                    "src/entities/user.rs",
+                    include_str!("../template/src/entities/users.hbs"),
+                ),
+            ]
+            .as_mut(),
+        );
+
+        match user_selected.db_type {
+            DbType::Sqlite => {
                 copy_binary_file(
-                    include_bytes!("../template/data/diesel_test.db"),
-                    project_path.join("data/test.db"),
+                    include_bytes!("../template/data/table_sqlite.sql"),
+                    project_path.join("data/table_sqlite.sql"),
+                )?;
+            }
+            DbType::Mysql => {
+                copy_binary_file(
+                    include_bytes!("../template/data/table_mysql.sql"),
+                    project_path.join("data/table_mysql.sql"),
+                )?;
+            }
+            DbType::Postgres => {
+                copy_binary_file(
+                    include_bytes!("../template/data/table_postgres.sql"),
+                    project_path.join("data/table_postgres.sql"),
+                )?;
+            }
+            DbType::Mssql => {
+                copy_binary_file(
+                    include_bytes!("../template/data/table_mssql.sql"),
+                    project_path.join("data/table_mssql.sql"),
                 )?;
             }
         }
-        if is_rbatis {
-            db_templates.append(
-                vec![
-                    (
-                        "src/entities/mod.rs",
-                        include_str!("../template/src/entities/mod.hbs"),
-                    ),
-                    (
-                        "src/entities/user.rs",
-                        include_str!("../template/src/entities/users.hbs"),
-                    ),
-                ]
-                .as_mut(),
-            );
-
-            match user_selected.db_type {
-                DbType::Sqlite => {
-                    copy_binary_file(
-                        include_bytes!("../template/data/table_sqlite.sql"),
-                        project_path.join("data/table_sqlite.sql"),
-                    )?;
-                }
-                DbType::Mysql => {
-                    copy_binary_file(
-                        include_bytes!("../template/data/table_mysql.sql"),
-                        project_path.join("data/table_mysql.sql"),
-                    )?;
-                }
-                DbType::Postgres => {
-                    copy_binary_file(
-                        include_bytes!("../template/data/table_postgres.sql"),
-                        project_path.join("data/table_postgres.sql"),
-                    )?;
-                }
-                DbType::Mssql => {
-                    copy_binary_file(
-                        include_bytes!("../template/data/table_mssql.sql"),
-                        project_path.join("data/table_mssql.sql"),
-                    )?;
-                }
-            }
-        }
-        if is_mongodb {
-            db_templates.append(
-                vec![
-                    (
-                        "src/entities/mod.rs",
-                        include_str!("../template/src/entities/mod.hbs"),
-                    ),
-                    (
-                        "src/entities/user.rs",
-                        include_str!("../template/src/entities/users.hbs"),
-                    ),
-                ]
-                .as_mut(),
-            );
-            copy_binary_file(
-                include_bytes!("../template/data/users.json"),
-                project_path.join("data/users.json"),
-            )?;
-        }
-        templates.append(&mut db_templates);
     }
+    if is_mongodb {
+        db_templates.append(
+            vec![
+                (
+                    "src/entities/mod.rs",
+                    include_str!("../template/src/entities/mod.hbs"),
+                ),
+                (
+                    "src/entities/user.rs",
+                    include_str!("../template/src/entities/users.hbs"),
+                ),
+            ]
+            .as_mut(),
+        );
+        copy_binary_file(
+            include_bytes!("../template/data/users.json"),
+            project_path.join("data/users.json"),
+        )?;
+    }
+    templates.append(&mut db_templates);
     for (file_name, template) in &templates {
         render_and_write_to_file(&handlebars, template, &data, project_path.join(file_name))?;
     }

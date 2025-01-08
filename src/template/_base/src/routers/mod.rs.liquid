@@ -15,7 +15,6 @@ use self::{
 };
 pub mod demo;
 pub mod user;
-mod static_routers;
 
 pub fn router() -> Router {
     let mut no_auth_routers = vec![
@@ -34,7 +33,6 @@ pub fn router() -> Router {
                 .delete(delete_user),
         ),
     ];
-    let static_routers = static_routers::create_static_routers();
     no_auth_routers.extend(static_routers);
     let router = Router::new()
         .hoop(Logger::new())
@@ -66,7 +64,6 @@ use self::{
 };
 pub mod demo;
 pub mod user;
-mod static_routers;
 
 pub fn router() -> Router {
     let mut no_auth_routers = vec![
@@ -111,7 +108,6 @@ use salvo::{
 use crate::middleware::cors::cors_middleware;
 use self::demo::hello;
 pub mod demo;
-mod static_routers;
 
 pub fn router() -> Router {
     let _cors_handler = cors_middleware();

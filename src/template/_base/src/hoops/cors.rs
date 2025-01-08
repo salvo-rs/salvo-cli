@@ -1,4 +1,3 @@
-use crate::config::CFG;
 use salvo::cors::{AllowHeaders, AllowMethods, Cors, CorsHandler};
 
 pub fn cors_hoop(config: &Config) -> CorsHandler {

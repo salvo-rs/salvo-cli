@@ -25,16 +25,15 @@ pub async fn show_login(res: &mut Response) -> AppResult<Text> {
     Ok(Text::Html(hello_tmpl.render().unwrap()))
 }
 {{else}}
-
 #[derive(Debug, Serialize, ToSchema, Default)]
-pub struct UserLoginResponse {
+pub struct LoginInData {
     pub id: String,
     pub username: String,
     pub token: String,
     pub exp: i64,
 }
 #[endpoint(tags("auth"))]
-pub async fn login(req: JsonBody<UserLoginRequest>, res: &mut Response) -> JsonResult<()> {
+pub async fn login(req: JsonBody<LoginInData>, res: &mut Response) -> JsonResult<()> {
     let data = user::login(req.0).await?;
     let jwt_token = data.token.clone();
     let cookie = Cookie::build(("jwt_token", jwt_token))
@@ -44,5 +43,4 @@ pub async fn login(req: JsonBody<UserLoginRequest>, res: &mut Response) -> JsonR
     res.add_cookie(cookie);
     json_empty()
 }
-
 {{/if}}
