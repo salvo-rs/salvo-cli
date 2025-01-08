@@ -86,15 +86,19 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
     }))
 }
 
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, PartialEq, Clone, Copy, strum::Display)]
 pub enum DbType {
+    #[strum(serialize = "sqlite")]
     Sqlite,
+    #[strum(serialize = "mysql")]
     Mysql,
+    #[strum(serialize = "postgres")]
     Postgres,
+    #[strum(serialize = "mssql")]
     Mssql,
 }
 
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, PartialEq, Clone, Copy, strum::Display)]
 pub enum DbLib {
     Sqlx,
     SeaOrm,
@@ -104,7 +108,7 @@ pub enum DbLib {
     Nothing,
 }
 
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, PartialEq, Clone, Copy, strum::Display)]
 pub enum CodeGen {
     WebSite,
     OpenApi,

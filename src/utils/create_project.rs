@@ -164,7 +164,7 @@ pub fn write_project_file(
         )?;
         let mut web_comm_templates = vec![(
             "views/handle_404.html",
-            include_str!("../template/_base/views/404.hbs"),
+            include_str!("../template/_base/views/404.html.liquid"),
         )];
         templates.append(&mut web_comm_templates);
         if need_db_conn {
@@ -173,25 +173,25 @@ pub fn write_project_file(
                 project_path.join("assets/js/alpinejs.js"),
             )?;
             copy_binary_file(
-                include_bytes!("../template/assets/js/sweetalert2.js"),
+                include_bytes!("../template/_base/assets/js/sweetalert2.js"),
                 project_path.join("assets/js/sweetalert2.js"),
             )?;
             copy_binary_file(
-                include_bytes!("../template/assets/js/tailwindcss.js"),
+                include_bytes!("../template/_base/assets/js/tailwindcss.js"),
                 project_path.join("assets/js/tailwindcss.js"),
             )?;
             let mut web_db_templates = vec![
                 (
                     "views/login.html",
-                    include_str!("../template/views/login.hbs"),
+                    include_str!("../template/_base/views/login.html.liquid"),
                 ),
                 (
                     "views/user_list.html",
-                    include_str!("../template/views/user_list.hbs"),
+                    include_str!("../template/_base/views/user_list.html.liquid"),
                 ),
                 (
                     "views/user_list_page.html",
-                    include_str!("../template/views/user_list_page.hbs"),
+                    include_str!("../template/_base/views/user_list_page.html.liquid"),
                 ),
             ];
             templates.append(&mut web_db_templates);
@@ -202,10 +202,6 @@ pub fn write_project_file(
         (
             "src/routers/user.rs",
             include_str!("../template/src/routers/user.hbs"),
-        ),
-        (
-            "src/routers/static_routers.rs",
-            include_str!("../template/src/routers/static_routers.hbs"),
         ),
         (
             "src/services/mod.rs",
@@ -222,10 +218,6 @@ pub fn write_project_file(
         (
             "src/utils/rand_utils.rs",
             include_str!("../template/src/utils/rand_utils.hbs"),
-        ),
-        (
-            "src/dtos/mod.rs",
-            include_str!("../template/src/dtos/mod.hbs"),
         ),
         (
             "src/dtos/user.rs",
@@ -548,7 +540,7 @@ fn create_basic_file(
         ),
         (
             "src/services/user.rs",
-            include_str!("../template/src/services/user.hbs"),
+            include_str!("../template/_base/src/services/user.hbs"),
         ),
         (
             "src/utils/mod.rs",
