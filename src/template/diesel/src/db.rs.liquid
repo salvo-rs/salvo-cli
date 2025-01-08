@@ -24,13 +24,13 @@ pub fn establish_connection() -> PgConnection {
 {{/if}}
 {{#if is_sqlx}}
 {{#if is_sqlite}}
-pub static DB: OnceCell<SqlitePool> = OnceCell::const_new();
+pub static DB_POOL: OnceCell<SqlitePool> = OnceCell::const_new();
 {{/if}}
 {{#if is_postgres}}
-pub static DB: OnceCell<PgPool> = OnceCell::const_new();
+pub static DB_POOL: OnceCell<PgPool> = OnceCell::const_new();
 {{/if}}
 {{#if is_mysql}}
-pub static DB: OnceCell<MySqlPool> = OnceCell::const_new();
+pub static DB_POOL: OnceCell<MySqlPool> = OnceCell::const_new();
 {{/if}}
 pub async fn init_db_conn() {
     DB.get_or_init(|| async {

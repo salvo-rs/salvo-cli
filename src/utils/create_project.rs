@@ -135,22 +135,22 @@ pub fn write_project_file(
     data["dependencies"] = dependencies;
     create_basic_file(project_path, &handlebars, &data)?;
     copy_binary_file(
-        include_bytes!("../template/assets/favicon.ico"),
+        include_bytes!("../template/_base/assets/favicon.ico"),
         project_path.join("assets/favicon.ico"),
     )?;
     //cliff.toml
     copy_binary_file(
-        include_bytes!("../template/cliff.toml"),
+        include_bytes!("../template/_base/cliff.toml"),
         project_path.join("cliff.toml"),
     )?;
     //deny.toml
     copy_binary_file(
-        include_bytes!("../template/deny.toml"),
+        include_bytes!("../template/_base/deny.toml"),
         project_path.join("deny.toml"),
     )?;
     //.github/workflows/build.yml
     copy_binary_file(
-        include_bytes!("../template/.github/workflows/build.yml"),
+        include_bytes!("../template/_base/.github/workflows/build.yml"),
         project_path.join(".github/workflows/build.yml"),
     )?;
     let mut views: Vec<(&str, &str)> = vec![];
@@ -159,17 +159,17 @@ pub fn write_project_file(
         let template_path = project_path.join("views");
         create_dir_all(template_path)?;
         copy_binary_file(
-            include_bytes!("../template/views/hello.hbs"),
+            include_bytes!("../template/_base/views/hello.html.liquid"),
             project_path.join("views/hello.html"),
         )?;
         let mut web_comm_templates = vec![(
             "views/handle_404.html",
-            include_str!("../template/views/404.hbs"),
+            include_str!("../template/_base/views/404.hbs"),
         )];
         templates.append(&mut web_comm_templates);
         if need_db_conn {
             copy_binary_file(
-                include_bytes!("../template/assets/js/alpinejs.js"),
+                include_bytes!("../template/_base/assets/js/alpinejs.js"),
                 project_path.join("assets/js/alpinejs.js"),
             )?;
             copy_binary_file(
@@ -484,24 +484,20 @@ fn create_basic_file(
     let templates = [
         (
             "Cargo.toml",
-            include_str!("../template/src/cargo_template.hbs"),
+            include_str!("../template/_base/src/Cargo.toml.liquid"),
         ),
         //src
         (
             "src/main.rs",
-            include_str!("../template/src/main_template.hbs"),
+            include_str!("../template/_base/src/main.rs.liquid"),
         ),
         (
             "src/config.rs",
-            include_str!("../template/src/config_template.hbs"),
+            include_str!("../template/src/config.rs.liquid"),
         ),
         (
             "src/app_error.rs",
             include_str!("../template/src/app_error.hbs"),
-        ),
-        (
-            "src/app_writer.rs",
-            include_str!("../template/src/app_writer.hbs"),
         ),
         //src/middleware
         (
