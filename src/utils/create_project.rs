@@ -138,6 +138,7 @@ pub fn write_project_file(
         include_bytes!("../template/_base/assets/favicon.ico"),
         project_path.join("assets/favicon.ico"),
     )?;
+<<<<<<< HEAD
     //cliff.toml
     copy_binary_file(
         include_bytes!("../template/_base/cliff.toml"),
@@ -153,18 +154,29 @@ pub fn write_project_file(
         include_bytes!("../template/_base/.github/workflows/build.yml"),
         project_path.join(".github/workflows/build.yml"),
     )?;
+=======
+>>>>>>> 90b5ff2 (wip)
     let mut views: Vec<(&str, &str)> = vec![];
     if enable_oapi {
         // views
         let template_path = project_path.join("views");
         create_dir_all(template_path)?;
         copy_binary_file(
+<<<<<<< HEAD
             include_bytes!("../template/_base/views/hello.html.liquid"),
             project_path.join("views/hello.html"),
         )?;
         let mut web_comm_templates = vec![(
             "views/handle_404.html",
             include_str!("../template/_base/views/404.html.liquid"),
+=======
+            include_bytes!("../template/_base/views/hello.hbs"),
+            project_path.join("views/hello.html"),
+        )?;
+        let mut web_comm_templates = vec![(
+            "views/error_404.html",
+            include_str!("../template/_base/views/error_404.hbs"),
+>>>>>>> 90b5ff2 (wip)
         )];
         templates.append(&mut web_comm_templates);
         if need_db_conn {
@@ -183,6 +195,7 @@ pub fn write_project_file(
             let mut web_db_templates = vec![
                 (
                     "views/login.html",
+<<<<<<< HEAD
                     include_str!("../template/_base/views/login.html.liquid"),
                 ),
                 (
@@ -192,11 +205,23 @@ pub fn write_project_file(
                 (
                     "views/user_list_page.html",
                     include_str!("../template/_base/views/user_list_page.html.liquid"),
+=======
+                    include_str!("../template/_base/views/login.hbs"),
+                ),
+                (
+                    "views/user_list.html",
+                    include_str!("../template/_base/views/user_list.hbs"),
+                ),
+                (
+                    "views/user_list_page.html",
+                    include_str!("../template/_base/views/user_list_page.hbs"),
+>>>>>>> 90b5ff2 (wip)
                 ),
             ];
             templates.append(&mut web_db_templates);
         }
     }
+<<<<<<< HEAD
     let mut db_templates = vec![
         ("src/db.rs", include_str!("../template/src/db.hbs")),
         (
@@ -258,6 +283,63 @@ pub fn write_project_file(
                 db_templates.push((
                     "data/init_sql.sql",
                     include_str!("../template/data/init_sql_sql.hbs"),
+=======
+    if need_db_conn {
+        let mut db_templates = vec![
+            ("src/db.rs", include_str!("../template/_base/src/db.hbs")),
+            (
+                "src/routers/user.rs",
+                include_str!("../template/_base/src/routers/user.hbs"),
+            ),
+            (
+                "src/routers/static_routers.rs",
+                include_str!("../template/_base/src/routers/static_routers.hbs"),
+            ),
+            (
+                "src/services/mod.rs",
+                include_str!("../template/_base/src/services/mod.hbs"),
+            ),
+            (
+                "src/services/user.rs",
+                include_str!("../template/_base/src/services/user.hbs"),
+            ),
+            (
+                "src/utils/mod.rs",
+                include_str!("../template/_base/src/utils/mod.hbs"),
+            ),
+            (
+                "src/utils/rand_utils.rs",
+                include_str!("../template/_base/src/utils/rand_utils.hbs"),
+            ),
+            (
+                "src/dtos/mod.rs",
+                include_str!("../template/_base/src/dtos/mod.hbs"),
+            ),
+            (
+                "src/dtos/user.rs",
+                include_str!("../template/_base/src/dtos/user.hbs"),
+            ),
+        ];
+        if is_sea_orm || is_sqlx {
+            db_templates.append(
+                vec![
+                    (
+                        "src/entities/mod.rs",
+                        include_str!("../template/_base/src/entities/mod.hbs"),
+                    ),
+                    (
+                        "src/entities/users.rs",
+                        include_str!("../template/_base/src/entities/users.hbs"),
+                    ),
+                    (".env", include_str!("../template/.env.hbs")),
+                ]
+                .as_mut(),
+            );
+            if is_sea_orm {
+                db_templates.push((
+                    "src/entities/prelude.rs",
+                    include_str!("../template/_base/src/entities/prelude.hbs"),
+>>>>>>> 90b5ff2 (wip)
                 ));
             }
             copy_binary_file(
@@ -306,15 +388,15 @@ pub fn write_project_file(
         db_templates.append(vec![
                 (
                     "src/schema.rs",
-                    include_str!("../template/src/schema.hbs"),
+                    include_str!("../template/_base/src/schema.hbs"),
                 ),
                 (
                     "src/models/mod.rs",
-                    include_str!("../template/src/models/mod.hbs"),
+                    include_str!("../template/_base/src/models/mod.hbs"),
                 ),
                 (
                     "src/models/user.rs",
-                    include_str!("../template/src/models/user.hbs"),
+                    include_str!("../template/_base/src/models/user.hbs"),
                 ),
                 (
                     "migrations/2023-10-21-084227_create_users_table/up.sql",
@@ -391,6 +473,71 @@ pub fn write_project_file(
                 )?;
             }
         }
+<<<<<<< HEAD
+=======
+        if is_rbatis {
+            db_templates.append(
+                vec![
+                    (
+                        "src/entities/mod.rs",
+                        include_str!("../template/_base/src/entities/mod.hbs"),
+                    ),
+                    (
+                        "src/entities/user.rs",
+                        include_str!("../template/_base/src/entities/users.hbs"),
+                    ),
+                ]
+                .as_mut(),
+            );
+
+            match user_selected.db_type {
+                DbType::Sqlite => {
+                    copy_binary_file(
+                        include_bytes!("../template/data/table_sqlite.sql"),
+                        project_path.join("data/table_sqlite.sql"),
+                    )?;
+                }
+                DbType::Mysql => {
+                    copy_binary_file(
+                        include_bytes!("../template/data/table_mysql.sql"),
+                        project_path.join("data/table_mysql.sql"),
+                    )?;
+                }
+                DbType::Postgres => {
+                    copy_binary_file(
+                        include_bytes!("../template/data/table_postgres.sql"),
+                        project_path.join("data/table_postgres.sql"),
+                    )?;
+                }
+                DbType::Mssql => {
+                    copy_binary_file(
+                        include_bytes!("../template/data/table_mssql.sql"),
+                        project_path.join("data/table_mssql.sql"),
+                    )?;
+                }
+            }
+        }
+        if is_mongodb {
+            db_templates.append(
+                vec![
+                    (
+                        "src/entities/mod.rs",
+                        include_str!("../template/_base/src/entities/mod.hbs"),
+                    ),
+                    (
+                        "src/entities/user.rs",
+                        include_str!("../template/_base/src/entities/users.hbs"),
+                    ),
+                ]
+                .as_mut(),
+            );
+            copy_binary_file(
+                include_bytes!("../template/data/users.json"),
+                project_path.join("data/users.json"),
+            )?;
+        }
+        templates.append(&mut db_templates);
+>>>>>>> 90b5ff2 (wip)
     }
     if is_mongodb {
         db_templates.append(
@@ -476,37 +623,56 @@ fn create_basic_file(
     let templates = [
         (
             "Cargo.toml",
+<<<<<<< HEAD
             include_str!("../template/_base/src/Cargo.toml.liquid"),
+=======
+            include_str!("../template/_base/src/cargo_template.hbs"),
+>>>>>>> 90b5ff2 (wip)
         ),
         //src
         (
             "src/main.rs",
+<<<<<<< HEAD
             include_str!("../template/_base/src/main.rs.liquid"),
         ),
         (
             "src/config.rs",
             include_str!("../template/src/config.rs.liquid"),
+=======
+            include_str!("../template/_base/src/main_template.hbs"),
+        ),
+        (
+            "src/config.rs",
+            include_str!("../template/_base/src/config_template.hbs"),
+>>>>>>> 90b5ff2 (wip)
         ),
         (
             "src/app_error.rs",
-            include_str!("../template/src/app_error.hbs"),
+            include_str!("../template/_base/src/app_error.hbs"),
         ),
+<<<<<<< HEAD
+=======
+        (
+            "src/app_writer.rs",
+            include_str!("../template/_base/src/app_writer.hbs"),
+        ),
+>>>>>>> 90b5ff2 (wip)
         //src/middleware
         (
             "src/middleware/jwt.rs",
-            include_str!("../template/src/middleware/jwt.hbs"),
+            include_str!("../template/_base/src/middleware/jwt.hbs"),
         ),
         (
             "src/middleware/mod.rs",
-            include_str!("../template/src/middleware/mod.hbs"),
+            include_str!("../template/_base/src/middleware/mod.hbs"),
         ),
         (
             "src/middleware/handle_404.rs",
-            include_str!("../template/src/middleware/handle_404.hbs"),
+            include_str!("../template/_base/src/middleware/handle_404.hbs"),
         ),
         (
             "src/middleware/cors.rs",
-            include_str!("../template/src/middleware/cors.hbs"),
+            include_str!("../template/_base/src/middleware/cors.hbs"),
         ),
         //config
         (
@@ -524,19 +690,19 @@ fn create_basic_file(
         //src/routers
         (
             "src/routers/mod.rs",
-            include_str!("../template/src/routers/mod.hbs"),
+            include_str!("../template/_base/src/routers/mod.hbs"),
         ),
         (
             "src/routers/demo.rs",
-            include_str!("../template/src/routers/demo.hbs"),
+            include_str!("../template/_base/src/routers/demo.hbs"),
         ),
         (
             "src/routers/static_routers.rs",
-            include_str!("../template/src/routers/static_routers.hbs"),
+            include_str!("../template/_base/src/routers/static_routers.hbs"),
         ),
         (
             "src/services/mod.rs",
-            include_str!("../template/src/services/mod.hbs"),
+            include_str!("../template/_base/src/services/mod.hbs"),
         ),
         (
             "src/services/user.rs",
@@ -544,19 +710,19 @@ fn create_basic_file(
         ),
         (
             "src/utils/mod.rs",
-            include_str!("../template/src/utils/mod.hbs"),
+            include_str!("../template/_base/src/utils/mod.hbs"),
         ),
         (
             "src/utils/rand_utils.rs",
-            include_str!("../template/src/utils/rand_utils.hbs"),
+            include_str!("../template/_base/src/utils/rand_utils.hbs"),
         ),
         (
             "src/dtos/mod.rs",
-            include_str!("../template/src/dtos/mod.hbs"),
+            include_str!("../template/_base/src/dtos/mod.hbs"),
         ),
         (
             "src/dtos/user.rs",
-            include_str!("../template/src/dtos/user.hbs"),
+            include_str!("../template/_base/src/dtos/user.hbs"),
         ),
     ];
 
