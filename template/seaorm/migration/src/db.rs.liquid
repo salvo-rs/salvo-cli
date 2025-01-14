@@ -1,0 +1,23 @@
+
+pub async fn init_db_conn() {
+    DB.get_or_init(|| async {
+        {{#if is_sqlx}}
+        {{#if is_sqlite}}
+        SqlitePool::connect(&CFG.database.database_url)
+            .await
+            .expect("{{database_connection_failed}}")
+        {% endif %}
+        {{#if is_postgres}}
+        PgPool::connect(&CFG.database.database_url)
+            .await
+            .expect("{{database_connection_failed}}")
+        {% endif %}
+        {{#if is_mysql}}
+        MySqlPool::connect(&CFG.database.database_url)
+        .await
+        .expect("{{database_connection_failed}}")
+        {% endif %}
+        {% endif %}
+    })
+    .await;
+}

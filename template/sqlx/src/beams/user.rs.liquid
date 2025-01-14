@@ -1,0 +1,128 @@
+use uuid::Uuid;
+pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
+    let id = Uuid::new_v4().to_string();
+    let hash_password = rand_utils::hash_password(req.password).await?;
+    let _ = sqlx::query!(
+        r#"
+            INSERT INTO users (id, username, password)
+            {{#if is_mysql}}
+            VALUES (?, ?, ?)
+            {{else}}
+            VALUES ($1, $2, $3)
+            {% endif %}
+            "#,
+        id,
+        req.username,
+        hash_password,
+    )
+    .execute(db)
+    .await?;
+
+    Ok(UserResponse {
+        id,
+        username: req.username,
+    })
+}
+
+pub async fn login(req: UserLoginRequest) -> AppResult<UserLoginResponse> {
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
+    let user = sqlx::query_as!(
+        User,
+        r#"
+            SELECT id, username, password FROM users
+            {{#if is_mysql}}
+            WHERE username = ?
+            {{else}}
+            WHERE username = $1
+            {% endif %}
+            "#,
+        req.username
+    )
+    .fetch_optional(db)
+    .await?;
+    if user.is_none() {
+        return Err(anyhow::anyhow!("{{user_does_not_exist}}").into());
+    }
+    let user = user.unwrap();
+    if rand_utils::verify_password(req.password, user.password)
+        .await
+        .is_err()
+    {
+        return Err(anyhow::anyhow!("{{incorrect_password}}").into());
+    }
+    let (token, exp) = get_token(user.username.clone(), user.id.clone())?;
+    let res = UserLoginResponse {
+        id: user.id,
+        username: user.username,
+        token,
+        exp,
+    };
+    Ok(res)
+}
+
+pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
+    let hash_password = rand_utils::hash_password(req.password).await?;
+    let _ = sqlx::query!(
+        r#"
+            UPDATE users
+            {{#if is_mysql}}
+            SET username = ?, password = ?
+            WHERE id = ?
+            {{else}}
+            SET username = $1, password = $2
+            WHERE id = $3
+            {% endif %}
+            "#,
+        req.username,
+        hash_password,
+        req.id,
+    )
+    .execute(db)
+    .await?;
+
+    Ok(UserResponse {
+        id: req.id,
+        username: req.username,
+    })
+}
+
+pub async fn delete_user(id: String) -> AppResult<()> {
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
+    sqlx::query!(
+        r#"
+            DELETE FROM users
+            {{#if is_mysql}}
+            WHERE id = ?
+            {{else}}
+            WHERE id = $1
+            {% endif %}
+            "#,
+        id,
+    )
+    .execute(db)
+    .await?;
+
+    Ok(())
+}
+
+pub async fn users() -> AppResult<Vec<UserResponse>> {
+    let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
+    let users = sqlx::query_as!(
+        User,
+        r#"
+            SELECT id, username, password FROM users
+            "#,
+    )
+    .fetch_all(db)
+    .await?;
+    let res = users
+        .into_iter()
+        .map(|user| UserResponse {
+            id: user.id,
+            username: user.username,
+        })
+        .collect::<Vec<_>>();
+    Ok(res)
+}
