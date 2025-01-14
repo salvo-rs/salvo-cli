@@ -34,7 +34,7 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
     };
     let db_libs = &[
         t!("db_lib_sqlx"),
-        t!("db_lib_sea_orm"),
+        t!("db_lib_seaorm"),
         t!("db_lib_diesel"),
         t!("db_lib_rbatis"),
         t!("db_lib_mongodb"),
@@ -52,10 +52,9 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         2 => DbLib::Diesel,
         3 => DbLib::Rbatis,
         4 => DbLib::Mongodb,
-        5 => DbLib::Nothing,
         _ => anyhow::bail!("Invalid db connection type selection"),
     };
-    if db_lib == DbLib::Nothing || db_lib == DbLib::Mongodb {
+    if db_lib == DbLib::Mongodb {
         return Ok(Some(UserSelected {
             code_gen,
             db_type: DbType::Sqlite,
@@ -100,12 +99,16 @@ pub enum DbType {
 
 #[derive(Debug, PartialEq, Clone, Copy, strum::Display)]
 pub enum DbLib {
+    #[strum(serialize = "sqlx")]
     Sqlx,
+    #[strum(serialize = "seaorm")]
     SeaOrm,
+    #[strum(serialize = "diesel")]
     Diesel,
+    #[strum(serialize = "rbatis")]
     Rbatis,
-    Mongodb,
-    Nothing,
+    #[strum(serialize = "mongodb")]
+    Mongodb
 }
 
 #[derive(Debug, PartialEq, Clone, Copy, strum::Display)]

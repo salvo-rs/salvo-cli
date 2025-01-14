@@ -107,7 +107,7 @@ create_success_mysql_or_pgsql_fist_use:
   th:  -- โปรดใช้ก่อน cargo install sqlx-cli \n -- แก้ไขสตริงการเชื่อมต่อฐานข้อมูลใน .env และ config/config.toml \n -- จากนั้นเรียกใช้ sqlx database create เพื่อสร้างฐานข้อมูล \n -- รัน sqlx migrate run เพื่อกู้คืนฐานข้อมูล รัน SQL ต่อไปนี้ในฐานข้อมูลเพื่อเพิ่มข้อมูลเริ่มต้น \n -- หลังจากเรียกใช้งาน คุณสามารถเข้าถึง /login ด้วยชื่อผู้ใช้เริ่มต้น:zhangsan และรหัสผ่าน:123.
   el:  -- Παρακαλώ χρησιμοποιήστε πρώτα cargo install sqlx-cli \n -- Τροποποιήστε τη συμβολοσειρά σύνδεσης της βάσης δεδομένων στα .env και config/config.toml \n -- Στη συνέχεια, εκτελέστε sqlx database create για να δημιουργήσετε τη βάση δεδομένων \n -- Εκτελέστε το sqlx migrate run για να επαναφέρετε τη βάση δεδομένων, εκτελέστε το ακόλουθο SQL στη βάση δεδομένων για να προσθέσετε προεπιλεγμένα δεδομένα. \n -- Μετά την εκτέλεση, μπορείτε να έχετε πρόσβαση στο /login με προεπιλεγμένο όνομα χρήστη:zhangsan και κωδικό πρόσβασης:123.
   da:  -- Brug venligst først cargo install sqlx-cli \n -- Rediger databaseforbindelsesstrengen i .env og config/config.toml \n -- Kør derefter sqlx database create for at oprette databasen \n -- Kør sqlx migrate run for at gendanne databasen, kør følgende SQL i databasen for at tilføje standarddata. \n -- Efter at have kørt det, kan du få adgang til /login med standardbrugernavnet:zhangsan og adgangskoden:123.
-create_success_sea_orm__mysql_or_pgsql_install_sea_orm:
+create_success_seaorm__mysql_or_pgsql_install_seaorm:
   en: -- Please first use cargo install sea-orm-cli \n
   zh_CN: -- 请先使用 cargo install sea-orm-cli \n
   zh_TW: -- 請先使用 cargo install sea-orm-cli \n
@@ -125,7 +125,7 @@ create_success_sea_orm__mysql_or_pgsql_install_sea_orm:
   th: -- โปรดใช้ก่อน cargo install sea-orm-cli \n
   el: -- Παρακαλώ χρησιμοποιήστε πρώτα cargo install sea-orm-cli \n
   da: -- Brug venligst først cargo install sea-orm-cli \n
-create_success_sea_orm__mysql_or_pgsql_fist_use:
+create_success_seaorm__mysql_or_pgsql_fist_use:
 create_success_diesel__mysql_or_pgsql_fist_use:
   en: -- Please modify the database connection string in .env and config/config.toml first \n -- Make sure the database exists, then run diesel migration run to restore the database, and run the following SQL in the database to add the default data. \n -- After running, you can use the default username:zhangsan and password:123 to access /login. \n -- For more diesel-cli functionality, please check /migration/README.md.
   zh_CN: -- 请先修改.env 和 config/config.toml 中的数据库连接字符串 \n -- 确保数据库存在，然后运行 diesel migration run 还原数据库，在数据库中运以下 SQL 以添加默认数据。 \n -- 运行后，您可以使用默认用户名:zhangsan 和密码:123 访问/login。 \n -- 更多 diesel-cli 功能，请查看/migration/README.md。

@@ -5,6 +5,7 @@ mod utils;
 use i18n::set_locale;
 use utils::check_for_updates;
 mod i18n;
+
 rust_i18n::i18n!("locales", fallback = "en");
 #[derive(Parser, Debug)]
 #[clap(version = env!("CARGO_PKG_VERSION"), author = "Fankai liu <liufankai137@outlook.com>")]

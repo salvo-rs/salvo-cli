@@ -7,7 +7,7 @@ server:
 
 {{#if need_db_conn}}
 database:
-  {{#if is_sea_orm_or_sqlx}}
+  {{#if is_seaorm_or_sqlx}}
   {{#if is_postgres}}
   database_url: "postgresql://liufankai:1@localhost/salvo_demo"
   {{/if}}

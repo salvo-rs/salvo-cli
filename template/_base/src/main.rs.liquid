@@ -1,4 +1,4 @@
-{{#if is_sea_orm_or_sqlx}}
+{{#if is_seaorm_or_sqlx}}
 use crate::db::init_db_conn;
 {{/if}}
 {{#if is_rbatis}}
@@ -29,7 +29,7 @@ mod dtos;
 mod services;
 mod utils;
 {{/if}}
-{{#if is_sea_orm_or_sqlx}}
+{{#if is_seaorm_or_sqlx}}
 mod entities;
 {{/if}}
 {{#if is_mongodb}}
@@ -58,7 +58,7 @@ async fn main() {
         .init();
     tracing::info!("log level: {}", &CFG.log.filter_level);
 
-    {{#if is_sea_orm_or_sqlx}}
+    {{#if is_seaorm_or_sqlx}}
     init_db_conn().await;
     {{/if}}
     {{#if is_rbatis}}

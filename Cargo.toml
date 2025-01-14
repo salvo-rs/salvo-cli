@@ -1,32 +1,34 @@
 [package]
 name = "salvo-cli"
 version = "0.1.52"
+authors = ["Fankai Liu <liufankai137@outlook.com>", "mrxiaozhuox <mrxzx.info@gmail.com>", "Chrislearn Young <chris@acroidea.com>"]
 edition = "2021"
-authors = ["Fankai Liu  liufankai137@outlook.com","mrxiaozhuox mrxzx.info@gmail.com"]
-keywords = ["salvo", "cli","template"]
-description = "Salvo CLI, a tool for the Salvo web framework, creates clean, easy-to-read code, saving you time for the more enjoyable aspects of life."
-license = "MIT/Apache-2.0"
-repository = "https://github.com/fankaiLiu/salvo-cli"
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+rust-version = "1.80"
+readme = "./README.md"
+keywords = ["salvo", "cli", "template"]
+description = "Cli for the Salvo web framework, creates clean, easy-to-read code, saving you time for the more enjoyable aspects of life."
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/salvo-rs/salvo-cli"
 
 [[bin]]
 name = "salvo"
 path = "src/main.rs"
 
 [dependencies]
-ansi_term = "0.12.1"
-anyhow = "1.0"
-clap = { version = "4.4.4", features = ["derive"] }
-dialoguer = "0.11.0"
-git2 = "0.20.0"
-liquid = "0.26.0"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-unicode-xid = "0.2.6"
-rust-i18n = "3"
-itertools = "0.14.0"
-reqwest = "0.12"
-tokio = { version = "1", features = ["full"] }
-walkdir = "2.5.0"
+ansi_term = "0.12"
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+dialoguer = "0.11"
+git2 = "0.20"
+itertools = "0.14"
+liquid = "0.26"
 once_cell = "1.20"
+reqwest = "0.12"
+rust-embed = { version = ">= 6, <= 9" }
+rust-i18n = "3"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1"
 strum = { version = "0.26", features = ["derive"] }
+tokio = { version = "1", features = ["full"] }
+unicode-xid = "0.2"
+walkdir = "2.5"

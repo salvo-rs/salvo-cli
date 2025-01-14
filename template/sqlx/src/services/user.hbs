@@ -1,4 +1,4 @@
-{{#if is_sea_orm_or_sqlx}}
+{{#if is_seaorm_or_sqlx}}
 {{#if is_sqlx}}
 use crate::{
     AppResult,
@@ -12,7 +12,7 @@ use crate::{
     utils::rand_utils,
 };
 {{/if}}
-{{#if is_sea_orm}}
+{{#if is_seaorm}}
 use crate::{
     AppResult,
     db::DB,
@@ -24,7 +24,7 @@ use crate::{
     entities::{prelude::Users,users},
     utils::rand_utils,
 };
-use sea_orm::{EntityTrait, Set, ActiveModelTrait, QueryFilter, ColumnTrait};
+use seaorm::{EntityTrait, Set, ActiveModelTrait, QueryFilter, ColumnTrait};
 {{/if}}
 use uuid::Uuid;
 {{#if is_sqlx}}
@@ -156,7 +156,7 @@ pub async fn users() -> AppResult<Vec<UserResponse>> {
     Ok(res)
 }
 {{/if}}
-{{#if is_sea_orm}}
+{{#if is_seaorm}}
 pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
     let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
     let model =users::ActiveModel {

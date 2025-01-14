@@ -1,23 +1,21 @@
-use anyhow::{Context, Result};
-use handlebars::Handlebars;
-use rust_i18n::t;
-use serde_json::json;
-use std::{
-    env,
-    ffi::{OsStr, OsString},
-    fs::{self, File},
-    io::Write,
-    path::Path,
-    slice,
-};
+use std::ffi::{OsStr, OsString};
+use std::fs::{self, File};
+use std::io::Write;
+use std::path::Path;
+use std::{env, slice};
 
-use super::{
-    directory2md::write_directory_contents_to_markdown,
-    get_selection::{get_user_selected, DbLib, DbType, TemplateType, UserSelected},
-    print_util, restricted_names, warning,
-};
-use crate::Project;
+use anyhow::{Context, Result};
 use print_util::success;
+use rust_i18n::t;
+use serde_json::{json, Value as JsonValue};
+
+use super::get_selection::{get_user_selected, CodeGen, DbLib, DbType, UserSelected};
+use super::{print_util, restricted_names, warning};
+use crate::Project;
+
+#[derive(rust_embed::RustEmbed)]
+#[folder = "./template"]
+struct Template;
 
 pub fn create_project(project: Project) -> Result<()> {
     check_name(&project.project_name)?;
@@ -62,32 +60,12 @@ pub fn write_project_file(
     user_selected: UserSelected,
     project: Project,
 ) -> Result<()> {
-    let handlebars = Handlebars::new();
-    let code_style = user_selected.code_style.to_string();
+    let code_gen = user_selected.code_gen.to_string();
     let db_lib = user_selected.db_lib.to_string();
     let db_type = user_selected.db_type.to_string();
     let mut data = json!({
         "project_name": project.project_name,
-        "dependencies": {
-            "anyhow": "1.0.79",
-            "jsonwebtoken": "9.2.0",
-            "once_cell": "1.19.0",
-            "salvo": {
-                "version": "0.76.0",
-                "features": ["anyhow", "logging", "cors", "oapi", "jwt-auth", "rustls", "catch-panic","cookie","serve-static","test"]
-            },
-            "serde": "1.0.196",
-            "thiserror": "1.0.57",
-            "time": "0.3.28",
-            "rust-embed":"8.0.0",
-            "tokio": {
-                "version": "1",
-                "features": ["full"]
-            },
-            "serde_yaml": "0.9.31",
-            "tracing": "0.1"
-        },
-        "code_style":code_style,
+        "code_gen":code_gen,
         "db_type":db_type,
         "db_lib":db_lib,
         "main_log_message":t!("main_log_message"),
@@ -113,763 +91,61 @@ pub fn write_project_file(
         "open_api_page":t!("open_api_page"),
         "login_page":t!("login_page"),
         "operation":t!("operation"),
-        "create_success_sea_orm__mysql_or_pgsql_install_sea_orm":t!("create_success_sea_orm__mysql_or_pgsql_install_sea_orm"),
+        "create_success_seaorm__mysql_or_pgsql_install_seaorm":t!("create_success_seaorm__mysql_or_pgsql_install_seaorm"),
         "create_success_mysql_or_pgsql_fist_use":t!("create_success_mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
-        "create_success_sea_orm__mysql_or_pgsql_fist_use":t!("create_success_sea_orm__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
+        "create_success_seaorm__mysql_or_pgsql_fist_use":t!("create_success_seaorm__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
         "create_success_diesel__mysql_or_pgsql_fist_use":t!("create_success_diesel__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
     });
-    data["is_starting"] = handlebars::JsonValue::String(t!("is_starting"));
-    data["listen_on"] = handlebars::JsonValue::String(t!("listen_on"));
-    data["database_connection_failed"] =
-        handlebars::JsonValue::String(t!("database_connection_failed"));
-    data["user_does_not_exist"] = handlebars::JsonValue::String(t!("user_does_not_exist"));
-    data["rust_version_tip"] = handlebars::JsonValue::String(t!("rust_version_tip"));
-    data["git_cliff"] = handlebars::JsonValue::String(t!("git_cliff"));
-    let mut dependencies = data["dependencies"].clone();
-    handle_dependencies(
-        &mut dependencies,
-        need_db_conn,
-        user_selected.db_type,
-        user_selected.db_lib,
-    );
-    data["dependencies"] = dependencies;
-    create_basic_file(project_path, &handlebars, &data)?;
-    copy_binary_file(
-        include_bytes!("../template/_base/assets/favicon.ico"),
-        project_path.join("assets/favicon.ico"),
-    )?;
-<<<<<<< HEAD
-    //cliff.toml
-    copy_binary_file(
-        include_bytes!("../template/_base/cliff.toml"),
-        project_path.join("cliff.toml"),
-    )?;
-    //deny.toml
-    copy_binary_file(
-        include_bytes!("../template/_base/deny.toml"),
-        project_path.join("deny.toml"),
-    )?;
-    //.github/workflows/build.yml
-    copy_binary_file(
-        include_bytes!("../template/_base/.github/workflows/build.yml"),
-        project_path.join(".github/workflows/build.yml"),
-    )?;
-=======
->>>>>>> 90b5ff2 (wip)
-    let mut views: Vec<(&str, &str)> = vec![];
-    if enable_oapi {
-        // views
-        let template_path = project_path.join("views");
-        create_dir_all(template_path)?;
-        copy_binary_file(
-<<<<<<< HEAD
-            include_bytes!("../template/_base/views/hello.html.liquid"),
-            project_path.join("views/hello.html"),
-        )?;
-        let mut web_comm_templates = vec![(
-            "views/handle_404.html",
-            include_str!("../template/_base/views/404.html.liquid"),
-=======
-            include_bytes!("../template/_base/views/hello.hbs"),
-            project_path.join("views/hello.html"),
-        )?;
-        let mut web_comm_templates = vec![(
-            "views/error_404.html",
-            include_str!("../template/_base/views/error_404.hbs"),
->>>>>>> 90b5ff2 (wip)
-        )];
-        templates.append(&mut web_comm_templates);
-        if need_db_conn {
-            copy_binary_file(
-                include_bytes!("../template/_base/assets/js/alpinejs.js"),
-                project_path.join("assets/js/alpinejs.js"),
-            )?;
-            copy_binary_file(
-                include_bytes!("../template/_base/assets/js/sweetalert2.js"),
-                project_path.join("assets/js/sweetalert2.js"),
-            )?;
-            copy_binary_file(
-                include_bytes!("../template/_base/assets/js/tailwindcss.js"),
-                project_path.join("assets/js/tailwindcss.js"),
-            )?;
-            let mut web_db_templates = vec![
-                (
-                    "views/login.html",
-<<<<<<< HEAD
-                    include_str!("../template/_base/views/login.html.liquid"),
-                ),
-                (
-                    "views/user_list.html",
-                    include_str!("../template/_base/views/user_list.html.liquid"),
-                ),
-                (
-                    "views/user_list_page.html",
-                    include_str!("../template/_base/views/user_list_page.html.liquid"),
-=======
-                    include_str!("../template/_base/views/login.hbs"),
-                ),
-                (
-                    "views/user_list.html",
-                    include_str!("../template/_base/views/user_list.hbs"),
-                ),
-                (
-                    "views/user_list_page.html",
-                    include_str!("../template/_base/views/user_list_page.hbs"),
->>>>>>> 90b5ff2 (wip)
-                ),
-            ];
-            templates.append(&mut web_db_templates);
-        }
-    }
-<<<<<<< HEAD
-    let mut db_templates = vec![
-        ("src/db.rs", include_str!("../template/src/db.hbs")),
-        (
-            "src/routers/user.rs",
-            include_str!("../template/src/routers/user.hbs"),
-        ),
-        (
-            "src/services/mod.rs",
-            include_str!("../template/src/services/mod.hbs"),
-        ),
-        (
-            "src/services/user.rs",
-            include_str!("../template/src/services/user.hbs"),
-        ),
-        (
-            "src/utils/mod.rs",
-            include_str!("../template/src/utils/mod.hbs"),
-        ),
-        (
-            "src/utils/rand_utils.rs",
-            include_str!("../template/src/utils/rand_utils.hbs"),
-        ),
-        (
-            "src/dtos/user.rs",
-            include_str!("../template/src/dtos/user.hbs"),
-        ),
-    ];
-    if is_sea_orm || is_sqlx {
-        db_templates.append(
-            vec![
-                (
-                    "src/entities/mod.rs",
-                    include_str!("../template/src/entities/mod.hbs"),
-                ),
-                (
-                    "src/entities/users.rs",
-                    include_str!("../template/src/entities/users.hbs"),
-                ),
-                (".env", include_str!("../template/.env.hbs")),
-            ]
-            .as_mut(),
-        );
-        if is_sea_orm {
-            db_templates.push((
-                "src/entities/prelude.rs",
-                include_str!("../template/src/entities/prelude.hbs"),
-            ));
-        }
-        if is_sqlx {
-            //data
-            let data_path = project_path.join("data");
-            create_dir_all(data_path)?;
-            if is_sqlite {
-                copy_binary_file(
-                    include_bytes!("../template/data/demo.db"),
-                    project_path.join("data/demo.db"),
-                )?;
-            } else {
-                db_templates.push((
-                    "data/init_sql.sql",
-                    include_str!("../template/data/init_sql_sql.hbs"),
-=======
-    if need_db_conn {
-        let mut db_templates = vec![
-            ("src/db.rs", include_str!("../template/_base/src/db.hbs")),
-            (
-                "src/routers/user.rs",
-                include_str!("../template/_base/src/routers/user.hbs"),
-            ),
-            (
-                "src/routers/static_routers.rs",
-                include_str!("../template/_base/src/routers/static_routers.hbs"),
-            ),
-            (
-                "src/services/mod.rs",
-                include_str!("../template/_base/src/services/mod.hbs"),
-            ),
-            (
-                "src/services/user.rs",
-                include_str!("../template/_base/src/services/user.hbs"),
-            ),
-            (
-                "src/utils/mod.rs",
-                include_str!("../template/_base/src/utils/mod.hbs"),
-            ),
-            (
-                "src/utils/rand_utils.rs",
-                include_str!("../template/_base/src/utils/rand_utils.hbs"),
-            ),
-            (
-                "src/dtos/mod.rs",
-                include_str!("../template/_base/src/dtos/mod.hbs"),
-            ),
-            (
-                "src/dtos/user.rs",
-                include_str!("../template/_base/src/dtos/user.hbs"),
-            ),
-        ];
-        if is_sea_orm || is_sqlx {
-            db_templates.append(
-                vec![
-                    (
-                        "src/entities/mod.rs",
-                        include_str!("../template/_base/src/entities/mod.hbs"),
-                    ),
-                    (
-                        "src/entities/users.rs",
-                        include_str!("../template/_base/src/entities/users.hbs"),
-                    ),
-                    (".env", include_str!("../template/.env.hbs")),
-                ]
-                .as_mut(),
-            );
-            if is_sea_orm {
-                db_templates.push((
-                    "src/entities/prelude.rs",
-                    include_str!("../template/_base/src/entities/prelude.hbs"),
->>>>>>> 90b5ff2 (wip)
-                ));
-            }
-            copy_binary_file(
-                include_bytes!("../template/migrations/20231001143156_users.sql"),
-                project_path.join("migrations/2021-10-20-000000_create_users_table/up.sql"),
-            )?;
-        }
-        if is_sea_orm {
-            copy_binary_file(
-                include_bytes!("../template/migration/src/main.rs"),
-                project_path.join("migration/src/main.rs"),
-            )?;
-            copy_binary_file(
-                include_bytes!("../template/migration/src/lib.rs"),
-                project_path.join("migration/src/lib.rs"),
-            )?;
-            copy_binary_file(
-                include_bytes!("../template/migration/src/m20220101_000001_create_table.rs"),
-                project_path.join("migration/src/m20220101_000001_create_table.rs"),
-            )?;
-            copy_binary_file(
-                include_bytes!("../template/migration/README.md"),
-                project_path.join("migration/README.md"),
-            )?;
-            db_templates.append(
-                vec![(
-                    "migration/Cargo.toml",
-                    include_str!("../template/migration/Cargo.toml.hbs"),
-                )]
-                .as_mut(),
-            );
-            if is_sqlite {
-                copy_binary_file(
-                    include_bytes!("../template/data/demo_sea_orm.db"),
-                    project_path.join("data/demo.db"),
-                )?;
-            } else {
-                db_templates.push((
-                    "data/init_sql.sql",
-                    include_str!("../template/data/init_sql_sql.hbs"),
-                ));
-            }
-        }
-    }
-    if is_diesel {
-        db_templates.append(vec![
-                (
-                    "src/schema.rs",
-                    include_str!("../template/_base/src/schema.hbs"),
-                ),
-                (
-                    "src/models/mod.rs",
-                    include_str!("../template/_base/src/models/mod.hbs"),
-                ),
-                (
-                    "src/models/user.rs",
-                    include_str!("../template/_base/src/models/user.hbs"),
-                ),
-                (
-                    "migrations/2023-10-21-084227_create_users_table/up.sql",
-                    include_str!(
-                        "../template/diesel_migrations/2023-10-21-084227_create_users_table/up.sql"
-                    ),
-                ),
-                ("migrations/.keep","",),
-                (
-                    "migrations/2023-10-21-084227_create_users_table/down.sql",
-                    include_str!(
-                        "../template/diesel_migrations/2023-10-21-084227_create_users_table/down.sql"
-                    ),
-                ),
-                (
-                    "migrations/README.md",
-                    include_str!("../template/diesel_migrations/README.md"),
-                ),
-                (".env", include_str!("../template/.env.hbs")),
-                (
-                    "template//diesel.toml",
-                    include_str!("../template/diesel.hbs"),
-                ),
-                (
-                    "data/init_sql.sql",
-                    include_str!("../template/data/init_sql_sql.hbs"),
-                ),
-            ].as_mut());
-        if is_sqlite {
-            copy_binary_file(
-                include_bytes!("../template/data/diesel_test.db"),
-                project_path.join("data/test.db"),
-            )?;
-        }
-    }
-    if is_rbatis {
-        db_templates.append(
-            vec![
-                (
-                    "src/entities/mod.rs",
-                    include_str!("../template/src/entities/mod.hbs"),
-                ),
-                (
-                    "src/entities/user.rs",
-                    include_str!("../template/src/entities/users.hbs"),
-                ),
-            ]
-            .as_mut(),
-        );
-
-        match user_selected.db_type {
-            DbType::Sqlite => {
-                copy_binary_file(
-                    include_bytes!("../template/data/table_sqlite.sql"),
-                    project_path.join("data/table_sqlite.sql"),
-                )?;
-            }
-            DbType::Mysql => {
-                copy_binary_file(
-                    include_bytes!("../template/data/table_mysql.sql"),
-                    project_path.join("data/table_mysql.sql"),
-                )?;
-            }
-            DbType::Postgres => {
-                copy_binary_file(
-                    include_bytes!("../template/data/table_postgres.sql"),
-                    project_path.join("data/table_postgres.sql"),
-                )?;
-            }
-            DbType::Mssql => {
-                copy_binary_file(
-                    include_bytes!("../template/data/table_mssql.sql"),
-                    project_path.join("data/table_mssql.sql"),
-                )?;
-            }
-        }
-<<<<<<< HEAD
-=======
-        if is_rbatis {
-            db_templates.append(
-                vec![
-                    (
-                        "src/entities/mod.rs",
-                        include_str!("../template/_base/src/entities/mod.hbs"),
-                    ),
-                    (
-                        "src/entities/user.rs",
-                        include_str!("../template/_base/src/entities/users.hbs"),
-                    ),
-                ]
-                .as_mut(),
-            );
-
-            match user_selected.db_type {
-                DbType::Sqlite => {
-                    copy_binary_file(
-                        include_bytes!("../template/data/table_sqlite.sql"),
-                        project_path.join("data/table_sqlite.sql"),
-                    )?;
-                }
-                DbType::Mysql => {
-                    copy_binary_file(
-                        include_bytes!("../template/data/table_mysql.sql"),
-                        project_path.join("data/table_mysql.sql"),
-                    )?;
-                }
-                DbType::Postgres => {
-                    copy_binary_file(
-                        include_bytes!("../template/data/table_postgres.sql"),
-                        project_path.join("data/table_postgres.sql"),
-                    )?;
-                }
-                DbType::Mssql => {
-                    copy_binary_file(
-                        include_bytes!("../template/data/table_mssql.sql"),
-                        project_path.join("data/table_mssql.sql"),
-                    )?;
-                }
-            }
-        }
-        if is_mongodb {
-            db_templates.append(
-                vec![
-                    (
-                        "src/entities/mod.rs",
-                        include_str!("../template/_base/src/entities/mod.hbs"),
-                    ),
-                    (
-                        "src/entities/user.rs",
-                        include_str!("../template/_base/src/entities/users.hbs"),
-                    ),
-                ]
-                .as_mut(),
-            );
-            copy_binary_file(
-                include_bytes!("../template/data/users.json"),
-                project_path.join("data/users.json"),
-            )?;
-        }
-        templates.append(&mut db_templates);
->>>>>>> 90b5ff2 (wip)
-    }
-    if is_mongodb {
-        db_templates.append(
-            vec![
-                (
-                    "src/entities/mod.rs",
-                    include_str!("../template/src/entities/mod.hbs"),
-                ),
-                (
-                    "src/entities/user.rs",
-                    include_str!("../template/src/entities/users.hbs"),
-                ),
-            ]
-            .as_mut(),
-        );
-        copy_binary_file(
-            include_bytes!("../template/data/users.json"),
-            project_path.join("data/users.json"),
-        )?;
-    }
-    templates.append(&mut db_templates);
-    for (file_name, template) in &templates {
-        render_and_write_to_file(&handlebars, template, &data, project_path.join(file_name))?;
-    }
-
-    let directory_contents = write_directory_contents_to_markdown(&project_path.join("README.md"))?;
-    data["directory_contents"] = handlebars::JsonValue::String(directory_contents);
-    data["project_dir_description"] = handlebars::JsonValue::String(t!("project_dir_description"));
-    data["introduction"] = handlebars::JsonValue::String(t!("introduction"));
-    data["introduction_text"] = handlebars::JsonValue::String(t!("introduction_text"));
-    data["seleted_sqlite"] = handlebars::JsonValue::String(t!("seleted_sqlite"));
-    data["run_the_project"] = handlebars::JsonValue::String(t!("run_the_project"));
-    data["run_the_tests"] = handlebars::JsonValue::String(t!("run_the_tests"));
-    data["sqlx_cli"] = handlebars::JsonValue::String(t!("sqlx_cli"));
-    data["about_salvo"] = handlebars::JsonValue::String(t!("about_salvo"));
-    data["about_salvo_text"] = handlebars::JsonValue::String(t!("about_salvo_text"));
-    data["tip_title"] = handlebars::JsonValue::String(t!("tip_title"));
-    data["password_tip"] = handlebars::JsonValue::String(t!("password_tip"));
-    data["config_tip"] = handlebars::JsonValue::String(t!("config_tip"));
-    data["orm_title"] = handlebars::JsonValue::String(t!("orm_title"));
-    data["sqlx_website"] = handlebars::JsonValue::String(t!("sqlx_website"));
-    data["sea_orm_website"] = handlebars::JsonValue::String(t!("sea_orm_website"));
-    data["diesel_website"] = handlebars::JsonValue::String(t!("diesel_website"));
-    data["rbatis_website"] = handlebars::JsonValue::String(t!("rbatis_website"));
-    data["mongodb_website"] = handlebars::JsonValue::String(t!("mongodb_website"));
-    data["initialization"] = handlebars::JsonValue::String(t!("initialization"));
-    data["initialization_sqlx_cli_not_sqlite"] = handlebars::JsonValue::String(
-        t!("initialization_sqlx_cli_not_sqlite").replace(r"\n", "\n"),
-    );
-    data["initialization_seaorm_cli_not_sqlite"] = handlebars::JsonValue::String(
-        t!("initialization_seaorm_cli_not_sqlite").replace(r"\n", "\n"),
-    );
-    data["initialization_diesel_cli_not_sqlite"] = handlebars::JsonValue::String(
-        t!("initialization_diesel_cli_not_sqlite").replace(r"\n", "\n"),
-    );
-    data["initialization_rbatis_cli_not_sqlite"] = handlebars::JsonValue::String(
-        t!("initialization_rbatis_cli_not_sqlite").replace(r"\n", "\n"),
-    );
-    data["sea_orm_cli_website"] =
-        handlebars::JsonValue::String(t!("sea_orm_cli_website").replace(r"\n", "\n"));
-    data["diesel_cli_website"] =
-        handlebars::JsonValue::String(t!("diesel_cli_website").replace(r"\n", "\n"));
+    data["is_starting"] = json_string(t!("is_starting"));
+    data["listen_on"] = json_string(t!("listen_on"));
+    data["database_connection_failed"] = json_string(t!("database_connection_failed"));
+    data["user_does_not_exist"] = json_string(t!("user_does_not_exist"));
+    data["rust_version_tip"] = json_string(t!("rust_version_tip"));
+    data["project_dir_description"] = json_string(t!("project_dir_description"));
+    data["introduction"] = json_string(t!("introduction"));
+    data["introduction_text"] = json_string(t!("introduction_text"));
+    data["seleted_sqlite"] = json_string(t!("seleted_sqlite"));
+    data["run_the_project"] = json_string(t!("run_the_project"));
+    data["run_the_tests"] = json_string(t!("run_the_tests"));
+    data["sqlx_cli"] = json_string(t!("sqlx_cli"));
+    data["about_salvo"] = json_string(t!("about_salvo"));
+    data["about_salvo_text"] = json_string(t!("about_salvo_text"));
+    data["tip_title"] = json_string(t!("tip_title"));
+    data["password_tip"] = json_string(t!("password_tip"));
+    data["config_tip"] = json_string(t!("config_tip"));
+    data["orm_title"] = json_string(t!("orm_title"));
+    data["sqlx_website"] = json_string(t!("sqlx_website"));
+    data["seaorm_website"] = json_string(t!("seaorm_website"));
+    data["diesel_website"] = json_string(t!("diesel_website"));
+    data["rbatis_website"] = json_string(t!("rbatis_website"));
+    data["mongodb_website"] = json_string(t!("mongodb_website"));
+    data["initialization"] = json_string(t!("initialization"));
+    data["initialization_sqlx_cli_not_sqlite"] =
+        json_string(t!("initialization_sqlx_cli_not_sqlite").replace(r"\n", "\n"));
+    data["initialization_seaorm_cli_not_sqlite"] =
+        json_string(t!("initialization_seaorm_cli_not_sqlite").replace(r"\n", "\n"));
+    data["initialization_diesel_cli_not_sqlite"] =
+        json_string(t!("initialization_diesel_cli_not_sqlite").replace(r"\n", "\n"));
+    data["initialization_rbatis_cli_not_sqlite"] =
+        json_string(t!("initialization_rbatis_cli_not_sqlite").replace(r"\n", "\n"));
+    data["seaorm_cli_website"] = json_string(t!("seaorm_cli_website").replace(r"\n", "\n"));
+    data["diesel_cli_website"] = json_string(t!("diesel_cli_website").replace(r"\n", "\n"));
     data["mongodb_usage_import_user_data"] =
-        handlebars::JsonValue::String(t!("mongodb_usage_import_user_data").replace(r"\n", "\n"));
-    render_and_write_to_file(
-        &handlebars,
-        include_str!("../template/README.md"),
-        &data,
-        project_path.join("README.md"),
-    )?;
-    Ok(())
+        json_string(t!("mongodb_usage_import_user_data").replace(r"\n", "\n"));
+
+    create_files(project_path, &data)
 }
 
-fn create_basic_file(
-    project_path: &Path,
-    handlebars: &Handlebars<'_>,
-    data: &serde_json::Value,
-) -> Result<()> {
+fn json_string(value: impl Into<String>) -> JsonValue {
+    JsonValue::String(value.into())
+}
+
+fn create_files(project_path: &Path, data: &serde_json::Value) -> Result<()> {
     create_dir_all(project_path)?;
     let src_path = project_path.join("src");
     create_dir_all(src_path)?;
 
-    let templates = [
-        (
-            "Cargo.toml",
-<<<<<<< HEAD
-            include_str!("../template/_base/src/Cargo.toml.liquid"),
-=======
-            include_str!("../template/_base/src/cargo_template.hbs"),
->>>>>>> 90b5ff2 (wip)
-        ),
-        //src
-        (
-            "src/main.rs",
-<<<<<<< HEAD
-            include_str!("../template/_base/src/main.rs.liquid"),
-        ),
-        (
-            "src/config.rs",
-            include_str!("../template/src/config.rs.liquid"),
-=======
-            include_str!("../template/_base/src/main_template.hbs"),
-        ),
-        (
-            "src/config.rs",
-            include_str!("../template/_base/src/config_template.hbs"),
->>>>>>> 90b5ff2 (wip)
-        ),
-        (
-            "src/app_error.rs",
-            include_str!("../template/_base/src/app_error.hbs"),
-        ),
-<<<<<<< HEAD
-=======
-        (
-            "src/app_writer.rs",
-            include_str!("../template/_base/src/app_writer.hbs"),
-        ),
->>>>>>> 90b5ff2 (wip)
-        //src/middleware
-        (
-            "src/middleware/jwt.rs",
-            include_str!("../template/_base/src/middleware/jwt.hbs"),
-        ),
-        (
-            "src/middleware/mod.rs",
-            include_str!("../template/_base/src/middleware/mod.hbs"),
-        ),
-        (
-            "src/middleware/handle_404.rs",
-            include_str!("../template/_base/src/middleware/handle_404.hbs"),
-        ),
-        (
-            "src/middleware/cors.rs",
-            include_str!("../template/_base/src/middleware/cors.hbs"),
-        ),
-        //config
-        (
-            "config/config.yml",
-            include_str!("../template/config/config.hbs"),
-        ),
-        (
-            "config/certs/cert.pem",
-            include_str!("../template/config/certs/cert.pem"),
-        ),
-        (
-            "config/certs/key.pem",
-            include_str!("../template/config/certs/key.pem"),
-        ),
-        //src/routers
-        (
-            "src/routers/mod.rs",
-            include_str!("../template/_base/src/routers/mod.hbs"),
-        ),
-        (
-            "src/routers/demo.rs",
-            include_str!("../template/_base/src/routers/demo.hbs"),
-        ),
-        (
-            "src/routers/static_routers.rs",
-            include_str!("../template/_base/src/routers/static_routers.hbs"),
-        ),
-        (
-            "src/services/mod.rs",
-            include_str!("../template/_base/src/services/mod.hbs"),
-        ),
-        (
-            "src/services/user.rs",
-            include_str!("../template/_base/src/services/user.hbs"),
-        ),
-        (
-            "src/utils/mod.rs",
-            include_str!("../template/_base/src/utils/mod.hbs"),
-        ),
-        (
-            "src/utils/rand_utils.rs",
-            include_str!("../template/_base/src/utils/rand_utils.hbs"),
-        ),
-        (
-            "src/dtos/mod.rs",
-            include_str!("../template/_base/src/dtos/mod.hbs"),
-        ),
-        (
-            "src/dtos/user.rs",
-            include_str!("../template/_base/src/dtos/user.hbs"),
-        ),
-    ];
-
-    for (file_name, template) in &templates {
-        render_and_write_to_file(handlebars, template, &data, project_path.join(file_name))?;
-    }
-    Ok(())
-}
-
-fn handle_dependencies(
-    dependencies: &mut serde_json::Value,
-    need_db_conn: bool,
-    db_type: DbType,
-    conn_type: DbLib,
-) {
-    if need_db_conn {
-        dependencies["validator"] = json!({
-            "version": "0.18",
-            "features": ["derive"]
-        });
-        match (conn_type, db_type) {
-            (DbLib::Sqlx, DbType::Mysql) => {
-                dependencies["sqlx"] = json!({
-                    "version": "0.7",
-                    "features": ["runtime-tokio", "macros", "mysql"]
-                });
-            }
-            (DbLib::Sqlx, DbType::Postgres) => {
-                dependencies["sqlx"] = json!({
-                    "version": "0.7",
-                    "features": ["runtime-tokio", "macros", "postgres"]
-                });
-            }
-            (DbLib::Sqlx, DbType::Sqlite) => {
-                dependencies["sqlx"] = json!({
-                    "version": "0.7",
-                    "features": ["runtime-tokio", "macros", "sqlite"]
-                });
-            }
-            (DbLib::SeaOrm, DbType::Mysql) => {
-                dependencies["sea-orm"] = json!({
-                    "version": "0",
-                    "features": ["runtime-tokio-native-tls","sqlx-mysql"]
-                });
-            }
-            (DbLib::SeaOrm, DbType::Postgres) => {
-                dependencies["sea-orm"] = json!({
-                    "version": "0",
-                    "features": ["runtime-tokio-native-tls","sqlx-postgres"]
-                });
-            }
-            (DbLib::SeaOrm, DbType::Sqlite) => {
-                dependencies["sea-orm"] = json!({
-                    "version": "0",
-                    "features": ["runtime-tokio-native-tls","sqlx-sqlite"]
-                });
-            }
-            (DbLib::Diesel, DbType::Mysql) => {
-                dependencies["diesel"] = json!({
-                    "version": "2.1.5",
-                    "features": ["mysql"]
-                });
-            }
-            (DbLib::Diesel, DbType::Postgres) => {
-                dependencies["diesel"] = json!({
-                    "version": "2.1.5",
-                    "features": ["postgres"]
-                });
-            }
-            (DbLib::Diesel, DbType::Sqlite) => {
-                dependencies["diesel"] = json!({
-                    "version": "2.1.5",
-                    "features": ["sqlite","returning_clauses_for_sqlite_3_35"]
-                });
-            }
-            (DbLib::Rbatis, DbType::Mysql) => {
-                dependencies["rbs"] = json!({"version":"4.4"});
-                dependencies["rbdc-mysql"] = json!({
-                    "version": "4.4"
-                });
-                dependencies["rbatis"] = json!({
-                    "version": "4.4",
-                    "features": ["debug_mode"]
-                });
-            }
-            (DbLib::Rbatis, DbType::Postgres) => {
-                dependencies["rbs"] = json!({"version":"4.4"});
-                dependencies["rbdc-pg"] = json!({
-                    "version": "4.4"
-                });
-                dependencies["rbatis"] = json!({
-                    "version": "4.4",
-                    "features": ["debug_mode"]
-                });
-            }
-            (DbLib::Rbatis, DbType::Sqlite) => {
-                dependencies["rbs"] = json!({"version":"4.4"});
-                dependencies["rbdc-sqlite"] = json!({
-                    "version": "4.4"
-                });
-                dependencies["rbatis"] = json!({
-                    "version": "4.4",
-                    "features": ["debug_mode"]
-                });
-            }
-            (DbLib::Rbatis, DbType::Mssql) => {
-                dependencies["rbs"] = json!({"version":"4.4"});
-                dependencies["rbdc-mssql"] = json!({
-                    "version": "4.4"
-                });
-                dependencies["rbatis"] = json!({
-                    "version": "4.4",
-                    "features": ["debug_mode"]
-                });
-            }
-            (DbLib::Mongodb, _) => {
-                dependencies["mongodb"] = json!({"version":"2.8"});
-                dependencies["futures-util"] = json!({
-                    "version": "0.3",
-                });
-            }
-            _ => {}
-        }
-        //add uuid dependency
-        dependencies["uuid"] = json!({
-            "version": "1.4.1",
-            "features": ["v4", "fast-rng", "macro-diagnostics"]
-        });
-        //add rand dependency
-        dependencies["rand"] = json!({
-            "version": "0.8.5",
-        });
-        //add argon2 dependency
-        dependencies["argon2"] = json!({
-            "version": "0.5.3",
-        });
-    }
-}
-
-fn render_and_write_to_file<T: AsRef<Path>>(
-    handlebars: &Handlebars,
-    template: &str,
-    data: &impl serde::Serialize,
-    file_path: T,
-) -> Result<()> {
     // Render the template
-    let rendered = handlebars.render_template(template, data)?;
 
     // Get the parent directory of the file
     if let Some(parent) = file_path.as_ref().parent() {

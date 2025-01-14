@@ -12,7 +12,7 @@ cargo test
 {{#if need_db_conn}}
 # {{tip_title}}
 - {{password_tip}}
-{{# if is_sea_orm_or_sqlx}}
+{{# if is_seaorm_or_sqlx}}
 - {{config_tip}}
 {{/if}}
 # {{orm_title}}
@@ -27,13 +27,13 @@ cargo test
 - {{initialization_sqlx_cli_not_sqlite}}
 {{/if}}
 {{/if}}
-{{#if is_sea_orm}}
-{{sea_orm_website}}
-## sea_orm_cli
-{{sea_orm_cli_website}}
+{{#if is_seaorm}}
+{{seaorm_website}}
+## seaorm_cli
+{{seaorm_cli_website}}
 ## {{initialization}}
 {{/if}}
-{{#if is_sea_orm}}
+{{#if is_seaorm}}
 {{#if is_sqlite}}
 {{seleted_sqlite}}
 {{else}}
