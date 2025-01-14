@@ -5,11 +5,11 @@ use std::path::Path;
 use std::{env, slice};
 
 use anyhow::{Context, Result};
+use liquid::model::{Object, Value};
 use print_util::success;
 use rust_i18n::t;
-use serde_json::{json, Value as JsonValue};
 
-use super::get_selection::{get_user_selected, CodeGen, DbLib, DbType, UserSelected};
+use super::get_selection::{get_user_selected, UserSelected};
 use super::{print_util, restricted_names, warning};
 use crate::Project;
 
@@ -63,7 +63,7 @@ pub fn write_project_file(
     let code_gen = user_selected.code_gen.to_string();
     let db_lib = user_selected.db_lib.to_string();
     let db_type = user_selected.db_type.to_string();
-    let mut data = json!({
+    let mut data = liquid::object!({
         "project_name": project.project_name,
         "code_gen":code_gen,
         "db_type":db_type,
@@ -96,78 +96,69 @@ pub fn write_project_file(
         "create_success_seaorm__mysql_or_pgsql_fist_use":t!("create_success_seaorm__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
         "create_success_diesel__mysql_or_pgsql_fist_use":t!("create_success_diesel__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
     });
-    data["is_starting"] = json_string(t!("is_starting"));
-    data["listen_on"] = json_string(t!("listen_on"));
-    data["database_connection_failed"] = json_string(t!("database_connection_failed"));
-    data["user_does_not_exist"] = json_string(t!("user_does_not_exist"));
-    data["rust_version_tip"] = json_string(t!("rust_version_tip"));
-    data["project_dir_description"] = json_string(t!("project_dir_description"));
-    data["introduction"] = json_string(t!("introduction"));
-    data["introduction_text"] = json_string(t!("introduction_text"));
-    data["seleted_sqlite"] = json_string(t!("seleted_sqlite"));
-    data["run_the_project"] = json_string(t!("run_the_project"));
-    data["run_the_tests"] = json_string(t!("run_the_tests"));
-    data["sqlx_cli"] = json_string(t!("sqlx_cli"));
-    data["about_salvo"] = json_string(t!("about_salvo"));
-    data["about_salvo_text"] = json_string(t!("about_salvo_text"));
-    data["tip_title"] = json_string(t!("tip_title"));
-    data["password_tip"] = json_string(t!("password_tip"));
-    data["config_tip"] = json_string(t!("config_tip"));
-    data["orm_title"] = json_string(t!("orm_title"));
-    data["sqlx_website"] = json_string(t!("sqlx_website"));
-    data["seaorm_website"] = json_string(t!("seaorm_website"));
-    data["diesel_website"] = json_string(t!("diesel_website"));
-    data["rbatis_website"] = json_string(t!("rbatis_website"));
-    data["mongodb_website"] = json_string(t!("mongodb_website"));
-    data["initialization"] = json_string(t!("initialization"));
+    data["is_starting"] = Value::scalar(t!("is_starting").to_string());
+    data["listen_on"] = Value::scalar(t!("listen_on").to_string());
+    data["database_connection_failed"] = Value::scalar(t!("database_connection_failed").to_string());
+    data["user_does_not_exist"] = Value::scalar(t!("user_does_not_exist").to_string());
+    data["rust_version_tip"] = Value::scalar(t!("rust_version_tip").to_string());
+    data["project_dir_description"] = Value::scalar(t!("project_dir_description").to_string());
+    data["introduction"] = Value::scalar(t!("introduction").to_string());
+    data["introduction_text"] = Value::scalar(t!("introduction_text").to_string());
+    data["seleted_sqlite"] = Value::scalar(t!("seleted_sqlite").to_string());
+    data["run_the_project"] = Value::scalar(t!("run_the_project").to_string());
+    data["run_the_tests"] = Value::scalar(t!("run_the_tests").to_string());
+    data["sqlx_cli"] = Value::scalar(t!("sqlx_cli").to_string());
+    data["about_salvo"] = Value::scalar(t!("about_salvo").to_string());
+    data["about_salvo_text"] = Value::scalar(t!("about_salvo_text").to_string());
+    data["tip_title"] = Value::scalar(t!("tip_title").to_string());
+    data["password_tip"] = Value::scalar(t!("password_tip").to_string());
+    data["config_tip"] = Value::scalar(t!("config_tip").to_string());
+    data["orm_title"] = Value::scalar(t!("orm_title").to_string());
+    data["sqlx_website"] = Value::scalar(t!("sqlx_website").to_string());
+    data["seaorm_website"] = Value::scalar(t!("seaorm_website").to_string());
+    data["diesel_website"] = Value::scalar(t!("diesel_website").to_string());
+    data["rbatis_website"] = Value::scalar(t!("rbatis_website").to_string());
+    data["mongodb_website"] = Value::scalar(t!("mongodb_website").to_string());
+    data["initialization"] = Value::scalar(t!("initialization").to_string());
     data["initialization_sqlx_cli_not_sqlite"] =
-        json_string(t!("initialization_sqlx_cli_not_sqlite").replace(r"\n", "\n"));
+        Value::scalar(t!("initialization_sqlx_cli_not_sqlite").replace(r"\n", "\n"));
     data["initialization_seaorm_cli_not_sqlite"] =
-        json_string(t!("initialization_seaorm_cli_not_sqlite").replace(r"\n", "\n"));
+        Value::scalar(t!("initialization_seaorm_cli_not_sqlite").replace(r"\n", "\n"));
     data["initialization_diesel_cli_not_sqlite"] =
-        json_string(t!("initialization_diesel_cli_not_sqlite").replace(r"\n", "\n"));
+        Value::scalar(t!("initialization_diesel_cli_not_sqlite").replace(r"\n", "\n"));
     data["initialization_rbatis_cli_not_sqlite"] =
-        json_string(t!("initialization_rbatis_cli_not_sqlite").replace(r"\n", "\n"));
-    data["seaorm_cli_website"] = json_string(t!("seaorm_cli_website").replace(r"\n", "\n"));
-    data["diesel_cli_website"] = json_string(t!("diesel_cli_website").replace(r"\n", "\n"));
+        Value::scalar(t!("initialization_rbatis_cli_not_sqlite").replace(r"\n", "\n"));
+    data["seaorm_cli_website"] = Value::scalar(t!("seaorm_cli_website").replace(r"\n", "\n"));
+    data["diesel_cli_website"] = Value::scalar(t!("diesel_cli_website").replace(r"\n", "\n"));
     data["mongodb_usage_import_user_data"] =
-        json_string(t!("mongodb_usage_import_user_data").replace(r"\n", "\n"));
+        Value::scalar(t!("mongodb_usage_import_user_data").replace(r"\n", "\n"));
 
     create_files(project_path, &data)
 }
 
-fn json_string(value: impl Into<String>) -> JsonValue {
-    JsonValue::String(value.into())
-}
+fn create_files(project_path: &Path, data: &Object) -> Result<()> {
+    for filename in Template::iter() {
+        let file = Template::get(filename.as_ref()).expect("file must exist");
 
-fn create_files(project_path: &Path, data: &serde_json::Value) -> Result<()> {
-    create_dir_all(project_path)?;
-    let src_path = project_path.join("src");
-    create_dir_all(src_path)?;
-
-    // Render the template
-
-    // Get the parent directory of the file
-    if let Some(parent) = file_path.as_ref().parent() {
-        fs::create_dir_all(parent)?;
+        let file_path = project_path.join(filename.as_ref());
+        if let Some(parent) = file_path.parent() {
+            fs::create_dir_all(parent)?;
+        }
+        if file_path.extension() == Some(OsStr::new("liquid")) {
+            let template = liquid::ParserBuilder::with_stdlib()
+                .build()
+                .expect("should be valid template")
+                .parse(&String::from_utf8_lossy(&file.data))?;
+            let rendered = template.render(liquid::object!(data))?;
+            let mut target_file = File::create(file_path)?;
+            target_file.write_all(rendered.as_bytes())?;
+        } else {
+            let mut target_file = File::create(file_path)?;
+            target_file.write_all(&file.data)?;
+        }
     }
-
-    // Create the file and write the rendered template to it
-    let mut file = fs::File::create(file_path)?;
-    file.write_all(rendered.as_bytes())?;
 
     Ok(())
-}
-
-fn copy_binary_file<T: AsRef<Path>>(file_bytes: &[u8], target_path: T) -> std::io::Result<()> {
-    // Ensure the target directory exists
-    if let Some(parent) = target_path.as_ref().parent() {
-        fs::create_dir_all(parent)?;
-    }
-
-    // Create the target file and write the source file bytes into it
-    let mut target_file = File::create(target_path)?;
-    target_file.write_all(file_bytes)
 }
 
 fn check_name(name: &str) -> Result<()> {
