@@ -1,5 +1,5 @@
 [package]
-name = "{% project_name %}"
+name = "{{ project_name }}"
 version = "0.1.1"
 edition = "2021"
 rust-version = "1.80"
@@ -17,52 +17,52 @@ time = "0.3.28",
 tokio = {"version": "1", "features": ["full"]},
 tracing": "0.1"
 validator = {"version": "0.18", "features": ["derive"]};
-{% if db_lib == "sqlx" && db_type == "postgres" %} }}
+{% if db_lib == "sqlx" and db_type == "postgres" %}
 sqlx = { "version": "0.7", "features": ["runtime-tokio", "macros", "postgres"]}
 {% endif %}
-{% if db_lib == "sqlx" && db_type == "mysql" %} }}
+{% if db_lib == "sqlx" and db_type == "mysql" %}
 sqlx = { "version": "0.7", "features": ["runtime-tokio", "macros", "mysql"]}
 {% endif %}
-{% if db_lib == "sqlx" && db_type == "sqlite" %} }}
+{% if db_lib == "sqlx" and db_type == "sqlite" %}
 sqlx = { "version": "0.7", "features": ["runtime-tokio", "macros", "sqlite"]}
 {% endif %}
 
-{% if db_lib == "seaorm" && db_type == "postgres" %} }}
+{% if db_lib == "seaorm" and db_type == "postgres" %}
 sea-orm = { "version": "1", "features": ["runtime-tokio-native-tls","sqlx-postgres"]}
 {% endif %}
-{% if db_lib == "seaorm" && db_type == "mysql" %} }}
+{% if db_lib == "seaorm" and db_type == "mysql" %}
 sea-orm = { "version": "1", "features": ["runtime-tokio-native-tls","sqlx-mysql"]}
 {% endif %}
-{% if db_lib == "seaorm" && db_type == "sqlite" %} }}
+{% if db_lib == "seaorm" and db_type == "sqlite" %}
 sea-orm = { "version": "1", "features": ["runtime-tokio-native-tls","sqlx-sqlite"]}
 {% endif %}
 
-{% if db_lib == "diesel" && db_type == "postgres" %} }}
+{% if db_lib == "diesel" and db_type == "postgres" %}
 diesel = { "version": "2", "features": ["postgres"]}
 {% endif %}
-{% if db_lib == "diesel" && db_type == "mysql" %} }}
+{% if db_lib == "diesel" and db_type == "mysql" %}
 diesel = { "version": "2", "features": ["mysql"]}
 {% endif %}
-{% if db_lib == "diesel" && db_type == "sqlite" %} }}
+{% if db_lib == "diesel" and db_type == "sqlite" %}
 diesel = { "version": "2", "features": ["sqlite","returning_clauses_for_sqlite_3_35"]}
 {% endif %}
 
 
-{% if db_lib == "rbatis" && db_type == "postgres" %} }}
+{% if db_lib == "rbatis" and db_type == "postgres" %}
 rbatis = { "version": "4", "features": ["debug_mode"]}
-{% if db_type == "postgres" %} }}
+{% if db_type == "postgres" %}
 rbdc-pg = { "version": "4"}
 {% endif %}
-{% if db_type == "mysql" %} }}
+{% if db_type == "mysql" %}
 rbdc-mysql = { "version": "4"}
 {% endif %}
-{% if db_type == "sqlite" %} }}
+{% if db_type == "sqlite" %}
 rbdc-sqlite = { "version": "4"}
 {% endif %}
 rbs = { "version": "4"}
 {% endif %}
 
-{% if db_type == "mongodb" %} }}
+{% if db_type == "mongodb" %}
 mongodb = { "version": "2"}
 futures-util = { "version": "0.3"}
 {% endif %}

@@ -3,7 +3,7 @@ use salvo::http::ParseError;
 use mongodb::bson::document::ValueAccessError as MongoBsonAccessError;
 use mongodb::bson::oid::Error as MongoBsonOidError;
 use mongodb::error::Error as MongoDbError;
-{{/if}}
+{% endif %}
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -15,19 +15,19 @@ pub enum AppError {
     {{#if is_sqlx}}
     #[error("sqlx::Error:`{0}`")]
     SqlxError(#[from] sqlx::Error),
-    {{/if}}
+    {% endif %}
     {{#if is_seaorm}}
     #[error("seaorm::DbErr:Error:`{0}`")]
     DbErr(#[from] seaorm::DbErr),
-    {{/if}}
+    {% endif %}
     {{#if is_diesel}}
     #[error("diesel::result::Error:`{0}`")]
     DieselErr(#[from] diesel::result::Error),
-    {{/if}}
+    {% endif %}
     {{#if is_rbatis}}
     #[error("rbatis::Error:`{0}`")]
     RbatisErr(#[from] rbatis::Error),
-    {{/if}}
+    {% endif %}
     {{#if is_mongodb}}
     #[error("mongodb::error::Error:`{0}`")]
     MongoDbErr(#[from] MongoDbError),
@@ -35,11 +35,11 @@ pub enum AppError {
     MongoBsonAccessError(#[from] MongoBsonAccessError),
     #[error("mongodb::bson::oid::Error`{0}`")]
     MongoBsonOidError(#[from] MongoBsonOidError),
-    {{/if}}
+    {% endif %}
     {{#if need_db_conn}}
     #[error("ValidationError:`{0}`")]
     ValidationError(#[from] validator::ValidationErrors),
-    {{/if}}
+    {% endif %}
 }
 
 impl EndpointOutRegister for AppError {

@@ -20,11 +20,11 @@ features = [
   "runtime-tokio-rustls",  # `ASYNC_RUNTIME` feature
   {{#if is_postgres}}
   "sqlx-postgres",         # `DATABASE_DRIVER` feature
-  {{/if}}
+  {% endif %}
   {{#if is_sqlite}}
   "sqlx-sqlite"            # `DATABASE_DRIVER` feature
-  {{/if}}
+  {% endif %}
   {{#if is_mysql}}
   "sqlx-mysql",         # `DATABASE_DRIVER` feature
-  {{/if}}
+  {% endif %}
 ]

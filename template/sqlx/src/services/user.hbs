@@ -11,7 +11,7 @@ use crate::{
     entities::users::User,
     utils::rand_utils,
 };
-{{/if}}
+{% endif %}
 {{#if is_seaorm}}
 use crate::{
     AppResult,
@@ -25,7 +25,7 @@ use crate::{
     utils::rand_utils,
 };
 use seaorm::{EntityTrait, Set, ActiveModelTrait, QueryFilter, ColumnTrait};
-{{/if}}
+{% endif %}
 use uuid::Uuid;
 {{#if is_sqlx}}
 pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
@@ -39,7 +39,7 @@ pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
             VALUES (?, ?, ?)
             {{else}}
             VALUES ($1, $2, $3)
-            {{/if}}
+            {% endif %}
             "#,
         id,
         req.username,
@@ -64,7 +64,7 @@ pub async fn login(req: UserLoginRequest) -> AppResult<UserLoginResponse> {
             WHERE username = ?
             {{else}}
             WHERE username = $1
-            {{/if}}
+            {% endif %}
             "#,
         req.username
     )
@@ -102,7 +102,7 @@ pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
             {{else}}
             SET username = $1, password = $2
             WHERE id = $3
-            {{/if}}
+            {% endif %}
             "#,
         req.username,
         hash_password,
@@ -126,7 +126,7 @@ pub async fn delete_user(id: String) -> AppResult<()> {
             WHERE id = ?
             {{else}}
             WHERE id = $1
-            {{/if}}
+            {% endif %}
             "#,
         id,
     )
@@ -155,7 +155,7 @@ pub async fn users() -> AppResult<Vec<UserResponse>> {
         .collect::<Vec<_>>();
     Ok(res)
 }
-{{/if}}
+{% endif %}
 {{#if is_seaorm}}
 pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
     let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
@@ -232,8 +232,8 @@ pub async fn users() -> AppResult<Vec<UserResponse>> {
         .collect::<Vec<_>>();
     Ok(res)
 }
-{{/if}}
-{{/if}}
+{% endif %}
+{% endif %}
 {{#if is_diesel}}
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl, SelectableHelper};
 use uuid::Uuid;
@@ -341,7 +341,7 @@ pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
         id: user.id,
         username: user.username,
     })
-    {{/if}}
+    {% endif %}
 }
 
 pub async fn delete_user(req: String) -> AppResult<()> {
@@ -367,7 +367,7 @@ pub async fn users() -> AppResult<Vec<UserResponse>> {
 
     Ok(res)
 }
-{{/if}}
+{% endif %}
 {{#if is_rbatis}}
 use uuid::Uuid;
 
@@ -451,7 +451,7 @@ pub async fn users() -> AppResult<Vec<UserResponse>> {
         .collect::<Vec<_>>();
     Ok(res)
 }
-{{/if}}
+{% endif %}
 {{#if is_mongodb}}
 use crate::{
     app_writer::AppResult,
@@ -573,4 +573,4 @@ pub async fn users() -> AppResult<Vec<UserResponse>> {
     }
     Ok(users)
 }
-{{/if}}
+{% endif %}

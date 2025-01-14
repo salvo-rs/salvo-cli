@@ -9,8 +9,8 @@ edition = "2021"
 {{@key}} = { version = "{{this.version}}", features = [{{#each this.features}}"{{this}}"{{#unless @last}}, {{/unless}}{{/each}}] }
 {{else}}
 {{@key}} = "{{this}}"
-{{/if}}
+{% endif %}
 {{/each}}
 {{#if is_web_site}}
 askama = "0.12.0"
-{{/if}}
+{% endif %}

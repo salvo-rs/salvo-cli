@@ -98,7 +98,7 @@ pub fn router() -> Router {
         .push(doc.into_router("/api-doc/openapi.json"))
         .push(Scalar::new("/api-doc/openapi.json").into_router("scalar"))
 }
-    {{/if}}
+    {% endif %}
 {{else}}
     {{#if is_web_site}}
 use salvo::{
@@ -148,8 +148,8 @@ pub fn router() -> Router {
         .push(doc.into_router("/api-doc/openapi.json"))
         .push(Scalar::new("/api-doc/openapi.json").into_router("scalar"))
 }
-    {{/if}}
-{{/if}}
+    {% endif %}
+{% endif %}
 
 #[derive(RustEmbed)]
 #[folder = "assets"]

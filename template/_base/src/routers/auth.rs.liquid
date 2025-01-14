@@ -43,4 +43,4 @@ pub async fn login(req: JsonBody<LoginInData>, res: &mut Response) -> JsonResult
     res.add_cookie(cookie);
     json_empty()
 }
-{{/if}}
+{% endif %}

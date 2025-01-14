@@ -101,9 +101,8 @@ pub fn write_project_file(
     "database_connection_failed": t!("database_connection_failed"),
     "user_does_not_exist": t!("user_does_not_exist"),
     "rust_version_tip": t!("rust_version_tip"),
-    "project_dir_description": t!("project_dir_description"),
-    "introduction": t!("introduction"),
-    "introduction_text": t!("introduction_text"),
+    "introduction_title": t!("introduction_title"),
+    "introduction_content": t!("introduction_content"),
     "seleted_sqlite": t!("seleted_sqlite"),
     "run_the_project": t!("run_the_project"),
     "run_the_tests": t!("run_the_tests"),
@@ -134,31 +133,54 @@ pub fn write_project_file(
        t!("mongodb_usage_import_user_data").replace(r"\n", "\n")
     });
 
-    create_files(project_path, &data)
+    create_files(project_path, user_selected, &data)
 }
 
-fn create_files(project_path: &Path, data: &Object) -> Result<()> {
+fn create_files(project_path: &Path, user_selected: UserSelected, data: &Object) -> Result<()> {
     for filename in Template::iter() {
-        let file = Template::get(filename.as_ref()).expect("file must exist");
-
-        let file_path = project_path.join(filename.as_ref());
-        if let Some(parent) = file_path.parent() {
-            fs::create_dir_all(parent)?;
-        }
-        if file_path.extension() == Some(OsStr::new("liquid")) {
-            let template = liquid::ParserBuilder::with_stdlib()
-                .build()
-                .expect("should be valid template")
-                .parse(&String::from_utf8_lossy(&file.data))?;
-            let rendered = template.render(liquid::object!(data))?;
-            let mut target_file = File::create(file_path)?;
-            target_file.write_all(rendered.as_bytes())?;
-        } else {
-            let mut target_file = File::create(file_path)?;
-            target_file.write_all(&file.data)?;
+        if filename.starts_with("_base/") {
+            let file = Template::get(filename.as_ref()).expect("file must exist");
+            let file_path = project_path.join(filename.as_ref().trim_start_matches("_base/"));
+            write_file(&file.data, &file_path, data)?;
+        } else if filename.starts_with("_data/") {
+            if filename.contains(user_selected.db_lib.to_string().as_str())
+                || filename.contains(user_selected.db_type.to_string().as_str())
+            {
+                let file = Template::get(filename.as_ref()).expect("file must exist");
+                let file_path = project_path.join(filename.as_ref().trim_start_matches("_data/"));
+                write_file(&file.data, &file_path, data)?;
+            }
+        } else if filename.starts_with(user_selected.db_lib.to_string().as_str()) {
+            let file = Template::get(filename.as_ref()).expect("file must exist");
+            let file_path = project_path.join(
+                filename
+                    .as_ref()
+                    .trim_start_matches(user_selected.db_lib.to_string().as_str()),
+            );
+            write_file(&file.data, &file_path, data)?;
         }
     }
 
+    Ok(())
+}
+
+fn write_file(tmpl: &[u8], file_path: &Path, data: &Object) -> Result<()> {
+    if let Some(parent) = file_path.parent() {
+        fs::create_dir_all(parent)?;
+    }
+    if file_path.extension() == Some(OsStr::new("liquid")) {
+        let template = liquid::ParserBuilder::with_stdlib()
+            .build()
+            .expect("should create liquid parser")
+            .parse(&String::from_utf8_lossy(tmpl))?;
+        let rendered = template.render(data)?;
+        let mut target_file =
+            File::create(file_path.to_string_lossy().trim_end_matches(".liquid"))?;
+        target_file.write_all(rendered.as_bytes())?;
+    } else {
+        let mut target_file = File::create(file_path)?;
+        target_file.write_all(tmpl)?;
+    }
     Ok(())
 }
 
