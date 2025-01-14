@@ -5,7 +5,7 @@ use std::path::Path;
 use std::{env, slice};
 
 use anyhow::{Context, Result};
-use liquid::model::{Object, Value};
+use liquid::model::Object;
 use print_util::success;
 use rust_i18n::t;
 
@@ -63,7 +63,7 @@ pub fn write_project_file(
     let code_gen = user_selected.code_gen.to_string();
     let db_lib = user_selected.db_lib.to_string();
     let db_type = user_selected.db_type.to_string();
-    let mut data = liquid::object!({
+    let data = liquid::object!({
         "project_name": project.project_name,
         "code_gen":code_gen,
         "db_type":db_type,
@@ -95,43 +95,44 @@ pub fn write_project_file(
         "create_success_mysql_or_pgsql_fist_use":t!("create_success_mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
         "create_success_seaorm__mysql_or_pgsql_fist_use":t!("create_success_seaorm__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
         "create_success_diesel__mysql_or_pgsql_fist_use":t!("create_success_diesel__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
+
+    "is_starting": t!("is_starting"),
+    "listen_on": t!("listen_on"),
+    "database_connection_failed": t!("database_connection_failed"),
+    "user_does_not_exist": t!("user_does_not_exist"),
+    "rust_version_tip": t!("rust_version_tip"),
+    "project_dir_description": t!("project_dir_description"),
+    "introduction": t!("introduction"),
+    "introduction_text": t!("introduction_text"),
+    "seleted_sqlite": t!("seleted_sqlite"),
+    "run_the_project": t!("run_the_project"),
+    "run_the_tests": t!("run_the_tests"),
+    "sqlx_cli": t!("sqlx_cli"),
+    "about_salvo": t!("about_salvo"),
+    "about_salvo_text": t!("about_salvo_text"),
+    "tip_title": t!("tip_title"),
+    "password_tip": t!("password_tip"),
+    "config_tip": t!("config_tip"),
+    "orm_title": t!("orm_title"),
+    "sqlx_website": t!("sqlx_website"),
+    "seaorm_website": t!("seaorm_website"),
+    "diesel_website": t!("diesel_website"),
+    "rbatis_website": t!("rbatis_website"),
+    "mongodb_website": t!("mongodb_website"),
+    "initialization": t!("initialization"),
+    "initialization_sqlx_cli_not_sqlite":
+        t!("initialization_sqlx_cli_not_sqlite").replace(r"\n", "\n"),
+    "initialization_seaorm_cli_not_sqlite":
+        t!("initialization_seaorm_cli_not_sqlite").replace(r"\n", "\n"),
+    "initialization_diesel_cli_not_sqlite":
+        t!("initialization_diesel_cli_not_sqlite").replace(r"\n", "\n"),
+    "initialization_rbatis_cli_not_sqlite":
+        t!("initialization_rbatis_cli_not_sqlite").replace(r"\n", "\n"),
+    "seaorm_cli_website": t!("seaorm_cli_website").replace(r"\n", "\n"),
+    "diesel_cli_website": t!("diesel_cli_website").replace(r"\n", "\n"),
+    "mongodb_usage_import_user_data":
+       t!("mongodb_usage_import_user_data").replace(r"\n", "\n")
     });
-    data["is_starting"] = Value::scalar(t!("is_starting").to_string());
-    data["listen_on"] = Value::scalar(t!("listen_on").to_string());
-    data["database_connection_failed"] = Value::scalar(t!("database_connection_failed").to_string());
-    data["user_does_not_exist"] = Value::scalar(t!("user_does_not_exist").to_string());
-    data["rust_version_tip"] = Value::scalar(t!("rust_version_tip").to_string());
-    data["project_dir_description"] = Value::scalar(t!("project_dir_description").to_string());
-    data["introduction"] = Value::scalar(t!("introduction").to_string());
-    data["introduction_text"] = Value::scalar(t!("introduction_text").to_string());
-    data["seleted_sqlite"] = Value::scalar(t!("seleted_sqlite").to_string());
-    data["run_the_project"] = Value::scalar(t!("run_the_project").to_string());
-    data["run_the_tests"] = Value::scalar(t!("run_the_tests").to_string());
-    data["sqlx_cli"] = Value::scalar(t!("sqlx_cli").to_string());
-    data["about_salvo"] = Value::scalar(t!("about_salvo").to_string());
-    data["about_salvo_text"] = Value::scalar(t!("about_salvo_text").to_string());
-    data["tip_title"] = Value::scalar(t!("tip_title").to_string());
-    data["password_tip"] = Value::scalar(t!("password_tip").to_string());
-    data["config_tip"] = Value::scalar(t!("config_tip").to_string());
-    data["orm_title"] = Value::scalar(t!("orm_title").to_string());
-    data["sqlx_website"] = Value::scalar(t!("sqlx_website").to_string());
-    data["seaorm_website"] = Value::scalar(t!("seaorm_website").to_string());
-    data["diesel_website"] = Value::scalar(t!("diesel_website").to_string());
-    data["rbatis_website"] = Value::scalar(t!("rbatis_website").to_string());
-    data["mongodb_website"] = Value::scalar(t!("mongodb_website").to_string());
-    data["initialization"] = Value::scalar(t!("initialization").to_string());
-    data["initialization_sqlx_cli_not_sqlite"] =
-        Value::scalar(t!("initialization_sqlx_cli_not_sqlite").replace(r"\n", "\n"));
-    data["initialization_seaorm_cli_not_sqlite"] =
-        Value::scalar(t!("initialization_seaorm_cli_not_sqlite").replace(r"\n", "\n"));
-    data["initialization_diesel_cli_not_sqlite"] =
-        Value::scalar(t!("initialization_diesel_cli_not_sqlite").replace(r"\n", "\n"));
-    data["initialization_rbatis_cli_not_sqlite"] =
-        Value::scalar(t!("initialization_rbatis_cli_not_sqlite").replace(r"\n", "\n"));
-    data["seaorm_cli_website"] = Value::scalar(t!("seaorm_cli_website").replace(r"\n", "\n"));
-    data["diesel_cli_website"] = Value::scalar(t!("diesel_cli_website").replace(r"\n", "\n"));
-    data["mongodb_usage_import_user_data"] =
-        Value::scalar(t!("mongodb_usage_import_user_data").replace(r"\n", "\n"));
 
     create_files(project_path, &data)
 }
