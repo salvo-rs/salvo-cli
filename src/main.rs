@@ -18,10 +18,10 @@ struct Opts {
 
 #[derive(Parser, Debug)]
 enum SubCommand {
-    New(Project),
+    New(NewCmd),
 }
 #[derive(Parser, Debug, Clone)]
-pub struct Project {
+pub struct NewCmd {
     pub project_name: String,
     #[clap(short, long)]
     lang: Option<String>,
@@ -31,10 +31,10 @@ async fn main() -> Result<()> {
     utils::print_logo();
     let opts: Opts = Opts::parse();
     match opts.subcmd {
-        SubCommand::New(project) => {
-            set_locale(&project.lang);
+        SubCommand::New(new_cmd) => {
+            set_locale(&new_cmd.lang);
             check_for_updates().await;
-            match utils::create_project(project) {
+            match utils::create_project(new_cmd.project_name) {
                 Ok(_) => (),
                 Err(e) => utils::error(e.to_string()),
             };
