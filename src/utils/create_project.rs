@@ -11,15 +11,15 @@ use rust_i18n::t;
 
 use super::get_selection::{get_user_selected, UserSelected};
 use super::{print_util, restricted_names, warning};
-use crate::Project;
+use crate::NewCmd;
 
 #[derive(rust_embed::RustEmbed)]
 #[folder = "./template"]
 struct Template;
 
-pub fn create_project(project: Project) -> Result<()> {
-    check_name(&project.project_name)?;
-    let project_name = &project.project_name;
+pub fn create_project(new_cmd: &NewCmd) -> Result<()> {
+    check_name(&new_cmd.project_name)?;
+    let project_name = &new_cmd.project_name;
     let project_path = Path::new(project_name);
     if project_path.exists() {
         anyhow::bail!(t!(
@@ -32,7 +32,7 @@ pub fn create_project(project: Project) -> Result<()> {
     let config = get_user_selected()?;
     match config {
         Some(config) => {
-            write_project_file(project_path, config, project.clone())?;
+            write_project_file(project_path, config, new_cmd)?;
 
             match init_git(project_path) {
                 Ok(_) => {}
@@ -58,13 +58,13 @@ fn after_print_info(project_name: &String) {
 pub fn write_project_file(
     project_path: &Path,
     user_selected: UserSelected,
-    project: Project,
+    new_cmd: &NewCmd,
 ) -> Result<()> {
     let code_gen = user_selected.code_gen.to_string();
     let db_lib = user_selected.db_lib.to_string();
     let db_type = user_selected.db_type.to_string();
     let data = liquid::object!({
-        "project_name": project.project_name,
+        "project_name": new_cmd.project_name,
         "code_gen":code_gen,
         "db_type":db_type,
         "db_lib":db_lib,
@@ -147,7 +147,7 @@ fn create_files(project_path: &Path, user_selected: UserSelected, data: &Object)
                 || filename.contains(user_selected.db_type.to_string().as_str())
             {
                 let file = Template::get(filename.as_ref()).expect("file must exist");
-                let file_path = project_path.join(filename.as_ref().trim_start_matches("_data/"));
+                let file_path = project_path.join(filename.as_ref().trim_start_matches("_"));
                 write_file(&file.data, &file_path, data)?;
             }
         } else if filename.starts_with(user_selected.db_lib.to_string().as_str()) {

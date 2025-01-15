@@ -34,7 +34,7 @@ async fn main() -> Result<()> {
         SubCommand::New(new_cmd) => {
             set_locale(&new_cmd.lang);
             check_for_updates().await;
-            match utils::create_project(new_cmd.project_name) {
+            match utils::create_project(&new_cmd) {
                 Ok(_) => (),
                 Err(e) => utils::error(e.to_string()),
             };
