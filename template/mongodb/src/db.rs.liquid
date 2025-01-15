@@ -1,51 +1,51 @@
 
 
-{{#if is_diesel}}
+{% if db_lib == "diesel" %}
 use diesel::prelude::*;
-{{#if is_sqlite}}
+{% if db_type == "sqlite" %}
 pub fn establish_connection() -> SqliteConnection {
     let conn = SqliteConnection::establish(&CFG.database.database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url));
     conn
 }
 {% endif %}
-{{#if is_mysql}}
+{% if db_type == "mysql" %}
 pub fn establish_connection() -> MysqlConnection {
     MysqlConnection::establish(&CFG.database.database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
 }
 {% endif %}
-{{#if is_postgres}}
+{% if db_type == "postgres" %}
 pub fn establish_connection() -> PgConnection {
     PgConnection::establish(&CFG.database.database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
 }
 {% endif %}
 {% endif %}
-{{#if is_sqlx}}
-{{#if is_sqlite}}
+{% if db_lib == "sqlx" %}
+{% if db_type == "sqlite" %}
 pub static DB_POOL: OnceCell<SqlitePool> = OnceCell::const_new();
 {% endif %}
-{{#if is_postgres}}
+{% if db_type == "postgres" %}
 pub static DB_POOL: OnceCell<PgPool> = OnceCell::const_new();
 {% endif %}
-{{#if is_mysql}}
+{% if db_type == "mysql" %}
 pub static DB_POOL: OnceCell<MySqlPool> = OnceCell::const_new();
 {% endif %}
 pub async fn init_db_conn() {
     DB.get_or_init(|| async {
-        {{#if is_sqlx}}
-        {{#if is_sqlite}}
+        {% if db_lib == "sqlx" %}
+        {% if db_type == "sqlite" %}
         SqlitePool::connect(&CFG.database.database_url)
             .await
             .expect("{{database_connection_failed}}")
         {% endif %}
-        {{#if is_postgres}}
+        {% if db_type == "postgres" %}
         PgPool::connect(&CFG.database.database_url)
             .await
             .expect("{{database_connection_failed}}")
         {% endif %}
-        {{#if is_mysql}}
+        {% if db_type == "mysql" %}
         MySqlPool::connect(&CFG.database.database_url)
         .await
         .expect("{{database_connection_failed}}")

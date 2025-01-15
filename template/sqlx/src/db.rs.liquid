@@ -1,68 +1,66 @@
 use crate::config::CFG;
-{{#if is_sqlx}}
-{{#if is_mysql}}
+{% if db_lib == "sqlx" %}
+{% if db_type == "mysql" %}
 use sqlx::MySqlPool;
 {% endif %}
-{{#if is_postgres}}
+{% if db_type == "postgres" %}
 use sqlx::PgPool;
 {% endif %}
-{{#if is_sqlite}}
+{% if db_type == "sqlite" %}
 use sqlx::SqlitePool;
 {% endif %}
 {% endif %}
-{{#if is_seaorm}}
+{% if db_lib == "seaorm" %}
 use std::time::Duration;
 use seaorm::{entity::prelude::DatabaseConnection, ConnectOptions, Database};
 {% endif %}
-{{#if is_seaorm_or_sqlx}}
 use tokio::sync::OnceCell;
-{% endif %}
-{{#if is_diesel}}
+{% if db_lib == "diesel" %}
 use diesel::prelude::*;
-{{#if is_sqlite}}
+{% if db_type == "sqlite" %}
 pub fn establish_connection() -> SqliteConnection {
     let conn = SqliteConnection::establish(&CFG.database.database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url));
     conn
 }
 {% endif %}
-{{#if is_mysql}}
+{% if db_type == "mysql" %}
 pub fn establish_connection() -> MysqlConnection {
     MysqlConnection::establish(&CFG.database.database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
 }
 {% endif %}
-{{#if is_postgres}}
+{% if db_type == "postgres" %}
 pub fn establish_connection() -> PgConnection {
     PgConnection::establish(&CFG.database.database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
 }
 {% endif %}
 {% endif %}
-{{#if is_sqlx}}
-{{#if is_sqlite}}
+{% if db_lib == "sqlx" %}
+{% if db_type == "sqlite" %}
 pub static DB: OnceCell<SqlitePool> = OnceCell::const_new();
 {% endif %}
-{{#if is_postgres}}
+{% if db_type == "postgres" %}
 pub static DB: OnceCell<PgPool> = OnceCell::const_new();
 {% endif %}
-{{#if is_mysql}}
+{% if db_type == "mysql" %}
 pub static DB: OnceCell<MySqlPool> = OnceCell::const_new();
 {% endif %}
 pub async fn init_db_conn() {
     DB.get_or_init(|| async {
-        {{#if is_sqlx}}
-        {{#if is_sqlite}}
+        {% if db_lib == "sqlx" %}
+        {% if db_type == "sqlite" %}
         SqlitePool::connect(&CFG.database.database_url)
             .await
             .expect("{{database_connection_failed}}")
         {% endif %}
-        {{#if is_postgres}}
+        {% if db_type == "postgres" %}
         PgPool::connect(&CFG.database.database_url)
             .await
             .expect("{{database_connection_failed}}")
         {% endif %}
-        {{#if is_mysql}}
+        {% if db_type == "mysql" %}
         MySqlPool::connect(&CFG.database.database_url)
         .await
         .expect("{{database_connection_failed}}")
@@ -72,7 +70,7 @@ pub async fn init_db_conn() {
     .await;
 }
 {% endif %}
-{{#if is_seaorm}}
+{% if db_lib == "seaorm" %}
 pub static DB: OnceCell<DatabaseConnection> = OnceCell::const_new();
 
 pub async fn init_db_conn() {
@@ -89,7 +87,7 @@ pub async fn init_db_conn() {
 	.await;
 }
 {% endif %}
-{{#if is_rbatis}}
+{% if db_lib == "rbatis" %}
 use tokio::sync::OnceCell;
 use rbatis::rbatis::RBatis;
 pub static DB: OnceCell<RBatis> = OnceCell::const_new();
@@ -98,21 +96,17 @@ pub async fn init_db_conn() {
     DB.get_or_init(|| async {
         let rb = RBatis::new();
 
-        {{#if is_postgres}}
+        {% if db_type == "postgres" %}
         // PostgreSQL
         rb.init(rbdc_pg::driver::PgDriver {}, &CFG.database.database_url).unwrap();
         {% endif %}
-        {{#if is_mysql}}
+        {% if db_type == "mysql" %}
         // MySQL
         rb.init(rbdc_mysql::driver::MysqlDriver {}, &CFG.database.database_url).unwrap();
         {% endif %}
-        {{#if is_sqlite}}
+        {% if db_type == "sqlite" %}
         // SQLite
         rb.init(rbdc_sqlite::driver::SqliteDriver {}, &CFG.database.database_url).unwrap();
-        {% endif %}
-        {{#if is_mssql}}
-        // MS SQL
-        rb.init(rbdc_mssql::driver::MssqlDriver {}, &CFG.database.database_url).unwrap();
         {% endif %}
 
         let sql_file = match rb.driver_type().unwrap() {
@@ -131,7 +125,7 @@ pub async fn init_db_conn() {
     .await;
 }
 {% endif %}
-{{#if is_mongodb}}
+{% if db_type == "mongodb" %}
 use crate::entities::user::User;
 use mongodb::{bson::doc, options::IndexOptions, Client, IndexModel};
 use once_cell::sync::OnceCell;

@@ -1,5 +1,5 @@
 use salvo::http::ParseError;
-{{#if is_mongodb}}
+{% if db_type == "mongodb" %}
 use mongodb::bson::document::ValueAccessError as MongoBsonAccessError;
 use mongodb::bson::oid::Error as MongoBsonOidError;
 use mongodb::error::Error as MongoDbError;
@@ -12,23 +12,23 @@ pub enum AppError {
     AnyHow(#[from] anyhow::Error),
     #[error("http::ParseError:`{0}`")]
     ParseError(#[from] ParseError),
-    {{#if is_sqlx}}
+    {% if db_lib == "sqlx" %}
     #[error("sqlx::Error:`{0}`")]
     SqlxError(#[from] sqlx::Error),
     {% endif %}
-    {{#if is_seaorm}}
+    {% if db_lib == "seaorm" %}
     #[error("seaorm::DbErr:Error:`{0}`")]
     DbErr(#[from] seaorm::DbErr),
     {% endif %}
-    {{#if is_diesel}}
+    {% if db_lib == "diesel" %}
     #[error("diesel::result::Error:`{0}`")]
     DieselErr(#[from] diesel::result::Error),
     {% endif %}
-    {{#if is_rbatis}}
+    {% if db_lib == "rbatis" %}
     #[error("rbatis::Error:`{0}`")]
     RbatisErr(#[from] rbatis::Error),
     {% endif %}
-    {{#if is_mongodb}}
+    {% if db_type == "mongodb" %}
     #[error("mongodb::error::Error:`{0}`")]
     MongoDbErr(#[from] MongoDbError),
     #[error("mongodb::bson::document::ValueAccessError:`{0}`")]
@@ -36,10 +36,8 @@ pub enum AppError {
     #[error("mongodb::bson::oid::Error`{0}`")]
     MongoBsonOidError(#[from] MongoBsonOidError),
     {% endif %}
-    {{#if need_db_conn}}
     #[error("ValidationError:`{0}`")]
     ValidationError(#[from] validator::ValidationErrors),
-    {% endif %}
 }
 
 impl EndpointOutRegister for AppError {

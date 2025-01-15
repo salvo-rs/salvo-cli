@@ -6,9 +6,7 @@ use std::{fs::File, io::Read, path::Path};
 pub struct Configs {
     pub server: Server,
     pub log: Log,
-    {{#if need_db_conn}}
     pub database: DataBase,
-    {% endif %}
     pub cert: Cert,
     pub jwt: Jwt,
 }
@@ -20,12 +18,11 @@ pub struct Server {
     pub cors_allow_origin: Vec<String>,
     pub ssl: bool,
 }
-{{#if need_db_conn}}
+
 #[derive(Debug, Deserialize)]
 pub struct DataBase {
     pub database_url: String,
 }
-{% endif %}
 
 #[derive(Debug, Deserialize)]
 pub struct Log {

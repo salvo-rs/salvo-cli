@@ -1,12 +1,5 @@
-{{#if is_seaorm_or_sqlx}}
+
 use crate::db::init_db_conn;
-{% endif %}
-{{#if is_rbatis}}
-use crate::db::init_db_conn;
-{% endif %}
-{{#if is_mongodb}}
-use crate::db::init_db_conn;
-{% endif %}
 use tokio::signal;
 use tracing::info;
 use crate::middleware::{handle_404::handle_404,cors::cors_middleware};
@@ -17,32 +10,18 @@ use salvo::catcher::Catcher;
 use salvo::conn::rustls::{Keycert, RustlsConfig};
 use salvo::prelude::*;
 mod app_error;
-{{#if need_db_conn}}
-{{else}}
-#[allow(dead_code)]
-{% endif %}
-mod app_writer;
 mod config;
-{{#if need_db_conn}}
 mod db;
 mod dtos;
 mod services;
 mod utils;
-{% endif %}
-{{#if is_seaorm_or_sqlx}}
+{% if db_type == "mongodb" %}
 mod entities;
 {% endif %}
-{{#if is_mongodb}}
-mod entities;
-{% endif %}
-{{#if is_diesel}}
-mod models;
+{% if db_lib == "diesel" %}
 mod schema;
 {% endif %}
-{{#if is_rbatis}}
-mod entities;
-{% endif %}
-mod middleware;
+mod hoops;
 mod routers;
 
 #[tokio::main]
@@ -58,15 +37,8 @@ async fn main() {
         .init();
     tracing::info!("log level: {}", &CFG.log.filter_level);
 
-    {{#if is_seaorm_or_sqlx}}
     init_db_conn().await;
-    {% endif %}
-    {{#if is_rbatis}}
-    init_db_conn().await;
-    {% endif %}
-    {{#if is_mongodb}}
-    init_db_conn().await;
-    {% endif %}
+
     let router = router();
     let service: Service = router.into();
     let service = service.catcher(Catcher::default().hoop(handle_404));//.hoop(_cors_handler).hoop(handle_404));
@@ -79,10 +51,8 @@ async fn main() {
                 "📖 {{open_api_page}}: https://{}/scalar",
                 &CFG.server.address.replace("0.0.0.0", "127.0.0.1")
             );
-            {{#if is_web_site}}
-            {{#if need_db_conn}}
+            {% if code_gen == "website" %}
             println!("🔑 {{login_page}}: https://{}/login", &CFG.server.address.replace("0.0.0.0", "127.0.0.1"));
-            {% endif %}
             {% endif %}
             let config = RustlsConfig::new(
                 Keycert::new()
@@ -103,10 +73,8 @@ async fn main() {
                 "📖 {{open_api_page}}: http://{}/scalar",
                 &CFG.server.address.replace("0.0.0.0", "127.0.0.1")
             );
-            {{#if is_web_site}}
-            {{#if need_db_conn}}
-            println!("🔑 {{login_page}}: http://{}/login", &CFG.server.address.replace("0.0.0.0", "127.0.0.1"));
-            {% endif %}
+            {% if code_gen == "website" %}
+            println!("🔑 {{login_page}}: http://{}/login", &config().server.address.replace("0.0.0.0", "127.0.0.1"));
             {% endif %}
             let acceptor = TcpListener::new(&CFG.server.address).bind().await;
             let server = Server::new(acceptor);

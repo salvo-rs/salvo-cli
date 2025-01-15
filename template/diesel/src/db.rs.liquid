@@ -1,20 +1,20 @@
 
 
 use diesel::prelude::*;
-{{#if is_sqlite}}
+{% if db_type == "sqlite" %}
 pub fn establish_connection() -> SqliteConnection {
     let conn = SqliteConnection::establish(&CFG.database.database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url));
     conn
 }
 {% endif %}
-{{#if is_mysql}}
+{% if db_type == "mysql" %}
 pub fn establish_connection() -> MysqlConnection {
     MysqlConnection::establish(&CFG.database.database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
 }
 {% endif %}
-{{#if is_postgres}}
+{% if db_type == "postgres" %}
 pub fn establish_connection() -> PgConnection {
     PgConnection::establish(&CFG.database.database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))

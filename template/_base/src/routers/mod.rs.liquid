@@ -1,5 +1,5 @@
-{{#if need_db_conn}}
-    {{#if enable_oapi}}
+
+    {% if code_gen == "openapi" %}
 use crate::middleware::jwt::jwt_middleware;
 use salvo::{
     prelude::{CatchPanic, Logger, OpenApi, Scalar},
@@ -49,7 +49,7 @@ pub fn router() -> Router {
         .push(doc.into_router("/api-doc/openapi.json"))
         .push(Scalar::new("/api-doc/openapi.json").into_router("scalar"))
 }
-    {{else}}
+{% else %}
 use crate::middleware::{cors::cors_middleware, jwt::jwt_middleware};
 use salvo::{
     prelude::{CatchPanic, Logger, OpenApi, Scalar},
@@ -98,57 +98,6 @@ pub fn router() -> Router {
         .push(doc.into_router("/api-doc/openapi.json"))
         .push(Scalar::new("/api-doc/openapi.json").into_router("scalar"))
 }
-    {% endif %}
-{{else}}
-    {{#if is_web_site}}
-use salvo::{
-    prelude::{CatchPanic, Logger, OpenApi, Scalar},
-    Router,
-};
-use crate::middleware::cors::cors_middleware;
-use self::demo::hello;
-pub mod demo;
-
-pub fn router() -> Router {
-    let _cors_handler = cors_middleware();
-    let mut static_routers = static_routers::create_static_routers();
-    let router = Router::new()
-        //.hoop(_cors_handler)
-        .hoop(Logger::new())
-        .hoop(CatchPanic::new())
-        .get(hello)
-        .append(&mut static_routers);
-    let doc = OpenApi::new("salvo web api", "0.0.1").merge_router(&router);
-    router
-        .push(doc.into_router("/api-doc/openapi.json"))
-        .push(Scalar::new("/api-doc/openapi.json").into_router("scalar"))
-}
-    {{else}}
-use salvo::{
-    prelude::{CatchPanic, Logger, OpenApi, Scalar},
-    Router,
-};
-use crate::middleware::cors::cors_middleware;
-use self::demo::hello;
-pub mod demo;
-mod static_routers;
-
-pub fn router() -> Router {
-    let _cors_handler = cors_middleware();
-    let mut static_routers = static_routers::create_static_routers();
-    let router = Router::new()
-        //.hoop(_cors_handler)
-        .hoop(Logger::new())
-        .hoop(CatchPanic::new())
-        .get(hello)
-        .push(Router::with_path("favicon.ico").get(get_favicon))
-        .push(Router::with_path("assets/{**path}").get(static_embed::<Assets>()));
-    let doc = OpenApi::new("salvo web api", "0.0.1").merge_router(&router);
-    router
-        .push(doc.into_router("/api-doc/openapi.json"))
-        .push(Scalar::new("/api-doc/openapi.json").into_router("scalar"))
-}
-    {% endif %}
 {% endif %}
 
 #[derive(RustEmbed)]
