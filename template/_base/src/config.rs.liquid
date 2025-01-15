@@ -2,30 +2,101 @@ use once_cell::sync::Lazy;
 use serde::Deserialize;
 use std::{fs::File, io::Read, path::Path};
 
-#[derive(Debug, Deserialize)]
-pub struct Configs {
-    pub server: Server,
-    pub log: Log,
-    pub database: DataBase,
-    pub cert: Cert,
-    pub jwt: Jwt,
+
+
+#[derive(Clone, Debug, Deserialize)]
+pub struct ServerConfig {
+    pub tls: Option<TlsConfig>,
+
+    #[serde(default = "default_listen_addr")]
+    pub listen_addr: String,
+    pub db: DbConfig,
+
+    pub jwt_secret: Option<String>,
+    #[serde(default = "default_log")]
+    pub log: String,
+
+    pub auto_acme: Option<String>,
+    #[serde(default = "false_value")]
+    pub enable_tls: bool,
+}
+
+#[derive(Clone, Debug, Default)]
+pub struct AllowedOrigins(Vec<String>);
+impl AllowedOrigins {
+    pub fn from_env() -> anyhow::Result<Self> {
+        let allowed_origins = required_var("WEB_ALLOWED_ORIGINS")?
+            .split(',')
+            .map(ToString::to_string)
+            .collect();
+
+        Ok(Self(allowed_origins))
+    }
+
+    pub fn contains(&self, value: &HeaderValue) -> bool {
+        self.0.iter().any(|it| it == value)
+    }
+}
+
+#[derive(Clone, Debug, Deserialize)]
+pub struct TlsConfig {
+    pub certs: String,
+    pub key: String,
+}
+fn default_db_pooll_size() -> u32 {
+    10
+}
+fn default_tcp_timeout() -> u64 {
+    10000
+}
+fn default_connection_timeout() -> u64 {
+    30000
+}
+fn default_statement_timeout() -> u64 {
+    30000
+}
+fn default_helper_threads() -> usize {
+    10
+}
+
+#[derive(Deserialize, Serialize, Clone, Debug)]
+pub struct DbConfig {
+    /// Settings for the primary database. This is usually writeable, but will be read-only in
+    /// some configurations.
+    /// An optional follower database. Always read-only.
+    pub url: String,
+    #[serde(default = "default_db_pooll_size")]
+    pub pool_size: u32,
+    pub min_idle: Option<u32>,
+
+    /// Number of seconds to wait for unacknowledged TCP packets before treating the connection as
+    /// broken. This value will determine how long crates.io stays unavailable in case of full
+    /// packet loss between the application and the database: setting it too high will result in an
+    /// unnecessarily long outage (before the unhealthy database logic kicks in), while setting it
+    /// too low might result in healthy connections being dropped.
+    #[serde(default = "default_tcp_timeout")]
+    pub tcp_timeout: u64,
+    /// Time to wait for a connection to become available from the connection
+    /// pool before returning an error.
+    /// Time to wait for a connection to become available from the connection
+    /// pool before returning an error.
+    #[serde(default = "default_connection_timeout")]
+    pub connection_timeout: u64,
+    /// Time to wait for a query response before canceling the query and
+    /// returning an error.
+    #[serde(default = "default_statement_timeout")]
+    pub statement_timeout: u64,
+    /// Number of threads to use for asynchronous operations such as connection
+    /// creation.
+    #[serde(default = "default_helper_threads")]
+    pub helper_threads: usize,
+    /// Whether to enforce that all the database connections are encrypted with TLS.
+    #[serde(default = "false_value")]
+    pub enforce_tls: bool,
 }
 
 #[derive(Debug, Deserialize)]
-pub struct Server {
-    pub name: String,
-    pub address: String,
-    pub cors_allow_origin: Vec<String>,
-    pub ssl: bool,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct DataBase {
-    pub database_url: String,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Log {
+pub struct LogConfig  {
     pub filter_level: String,
     pub with_ansi: bool,
     pub to_stdout: bool,
@@ -92,4 +163,9 @@ fn get_cert_key() -> CertKey {
 
 fn get_string<P: AsRef<Path>>(path: P) -> Vec<u8> {
     std::fs::read(path).expect("{{config_error_read_failed}}")
+}
+
+
+fn default_listen_addr() -> String {
+    "127.0.0.1:8008".into()
 }

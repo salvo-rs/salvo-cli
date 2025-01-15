@@ -29,11 +29,7 @@ pub fn establish_connection() -> MysqlConnection {
     pub static DB_POOL: OnceCell<PgPool> = OnceCell::new();
     pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
     
-    // pub fn connect()? -> PgConnection {
-    //     PgConnection::establish(&crate::database_url()).expect("connect database error")
-    // }
     pub fn connect() -> Result<PooledConnection<ConnectionManager<PgConnection>>, PoolError> {
-        // println!("==========get db conn");
         DB_POOL.get().unwrap().get()
     }
     
@@ -46,5 +42,4 @@ pub fn establish_connection() -> MysqlConnection {
         println!("Has pending migration: {}", conn.has_pending_migration(MIGRATIONS).unwrap());
         conn.run_pending_migrations(MIGRATIONS).expect("migrate db should worked");
     }
-    
 {% endif %}
