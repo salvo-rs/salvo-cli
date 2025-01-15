@@ -14,9 +14,37 @@ pub fn establish_connection() -> MysqlConnection {
         .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
 }
 {% endif %}
-{% if db_type == "postgres" %}
-pub fn establish_connection() -> PgConnection {
-    PgConnection::establish(&CFG.database.database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
-}
+{% if db_type == "postgres" %}    
+    use diesel::expression::{is_aggregate, AppearsOnTable, ValidGrouping};
+    use diesel::pg::{Pg, PgConnection};
+    use diesel::prelude::*;
+    use diesel::query_builder::*;
+    use diesel::r2d2::{ConnectionManager, Pool, PoolError, PooledConnection};
+    use diesel::sql_types::*;
+    use diesel_migrations::{EmbeddedMigrations, MigrationHarness};
+    use once_cell::sync::OnceCell;
+    
+    pub type PgPool = Pool<ConnectionManager<PgConnection>>;
+    
+    pub static DB_POOL: OnceCell<PgPool> = OnceCell::new();
+    pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
+    
+    // pub fn connect()? -> PgConnection {
+    //     PgConnection::establish(&crate::database_url()).expect("connect database error")
+    // }
+    pub fn connect() -> Result<PooledConnection<ConnectionManager<PgConnection>>, PoolError> {
+        // println!("==========get db conn");
+        DB_POOL.get().unwrap().get()
+    }
+    
+    pub fn build_pool(database_url: &str) -> Result<PgPool, PoolError> {
+        let manager = ConnectionManager::<PgConnection>::new(database_url);
+        diesel::r2d2::Pool::builder().max_size(crate::database_conns()).build(manager)
+    }
+    
+    pub fn migrate(conn: &mut PgConnection) {
+        println!("Has pending migration: {}", conn.has_pending_migration(MIGRATIONS).unwrap());
+        conn.run_pending_migrations(MIGRATIONS).expect("migrate db should worked");
+    }
+    
 {% endif %}
