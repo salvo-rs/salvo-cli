@@ -36,7 +36,7 @@ mod tests {
 
         let content = TestClient::get(format!(
             "http://{}",
-            &CFG.server.address.replace("0.0.0.0", "127.0.0.1")
+            &config.listen_addr.replace("0.0.0.0", "127.0.0.1")
         ))
         .send(&service)
         .await

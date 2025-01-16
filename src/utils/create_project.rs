@@ -29,21 +29,19 @@ pub fn create_project(new_cmd: &NewCmd) -> Result<()> {
     }
 
     check_path(project_path)?;
-    let config = get_user_selected()?;
-    match config {
-        Some(config) => {
-            write_project_file(project_path, config, new_cmd)?;
-
-            match init_git(project_path) {
-                Ok(_) => {}
-                Err(e) => {
-                    warning(t!("warning_init_git", error = e).replace(r"\n", "\n"));
-                }
-            }
-            after_print_info(project_name);
+    let Some(config) = get_user_selected()? else {
+        anyhow::bail!("cli quit!")
+    };
+    match init_git(project_path) {
+        Ok(_) => {}
+        Err(e) => {
+            warning(t!("warning_init_git", error = e).replace(r"\n", "\n"));
         }
-        None => anyhow::bail!("cli quit!"),
     }
+
+    create_files(project_path, config, new_cmd)?;
+
+    after_print_info(project_name);
     Ok(())
 }
 
@@ -55,7 +53,7 @@ fn after_print_info(project_name: &String) {
     println!(); // a new line
 }
 
-pub fn write_project_file(
+pub fn create_files(
     project_path: &Path,
     user_selected: UserSelected,
     new_cmd: &NewCmd,
@@ -133,22 +131,18 @@ pub fn write_project_file(
        t!("mongodb_usage_import_user_data").replace(r"\n", "\n")
     });
 
-    create_files(project_path, user_selected, &data)
-}
-
-fn create_files(project_path: &Path, user_selected: UserSelected, data: &Object) -> Result<()> {
     for filename in Template::iter() {
         if filename.starts_with("_base/") {
             let file = Template::get(filename.as_ref()).expect("file must exist");
             let file_path = project_path.join(filename.as_ref().trim_start_matches("_base/"));
-            write_file(&file.data, &file_path, data)?;
+            write_file(&file.data, &file_path, &data)?;
         } else if filename.starts_with("_data/") {
             if filename.contains(user_selected.db_lib.to_string().as_str())
                 && filename.contains(user_selected.db_type.to_string().as_str())
             {
                 let file = Template::get(filename.as_ref()).expect("file must exist");
                 let file_path = project_path.join(filename.as_ref().trim_start_matches("_"));
-                write_file(&file.data, &file_path, data)?;
+                write_file(&file.data, &file_path, &data)?;
             }
         } else if filename.starts_with(user_selected.db_lib.to_string().as_str()) {
             let file = Template::get(filename.as_ref()).expect("file must exist");
@@ -157,7 +151,7 @@ fn create_files(project_path: &Path, user_selected: UserSelected, data: &Object)
                     .as_ref()
                     .trim_start_matches(user_selected.db_lib.to_string().as_str()),
             );
-            write_file(&file.data, &file_path, data)?;
+            write_file(&file.data, &file_path, &data)?;
         }
     }
 
@@ -252,10 +246,7 @@ fn write_ignore_file(project_path: &Path) -> Result<()> {
 
 /// Equivalent to [`create_dir_all`] with better error messages.
 pub fn create_dir_all(p: impl AsRef<Path>) -> Result<()> {
-    _create_dir_all(p.as_ref())
-}
-
-fn _create_dir_all(p: &Path) -> Result<()> {
+    let p = p.as_ref();
     fs::create_dir_all(p)
         .with_context(|| format!("failed to create directory `{}`", p.display()))?;
     Ok(())

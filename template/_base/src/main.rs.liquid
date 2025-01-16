@@ -9,11 +9,9 @@ use salvo::server::ServerHandle;
 use salvo::catcher::Catcher;
 use salvo::conn::rustls::{Keycert, RustlsConfig};
 use salvo::prelude::*;
-mod app_error;
 mod config;
 mod db;
-mod dtos;
-mod services;
+mod beams;
 mod utils;
 {% if db_lib == "diesel" %}
 mod schema;
@@ -44,110 +42,70 @@ async fn main() {
             std::process::exit(1);
         }
     };
+    crate::config::CONFIG.set(config).expect("config should be set");
+    let config = crate::config();
 
     {% if db_lib == "diesel" %}
     let thread_pool = Arc::new(ScheduledThreadPool::new(conf.db.helper_threads));
 
     let db_primary = {
         let db_connection_config = ConnectionConfig {
-            statement_timeout: conf.db.statement_timeout,
+            statement_timeout: config.db.statement_timeout,
         };
 
         let db_config = r2d2::Pool::builder()
             .max_size(conf.db.pool_size)
             .min_idle(conf.db.min_idle)
-            .connection_timeout(Duration::from_millis(conf.db.connection_timeout))
+            .connection_timeout(Duration::from_millis(config.db.connection_timeout))
             .connection_customizer(Box::new(db_connection_config))
             .thread_pool(thread_pool.clone());
 
-        DieselPool::new(&conf.db.url, &conf.db, db_config).unwrap()
+        DieselPool::new(&config.db.url, &config.db, db_config).unwrap()
     };
     crate::db::DIESEL_POOL
         .set(db_primary)
         .expect("diesel pool should be set");
     {% endif %}
 
-    crate::config::CONFIG.set(config).expect("config should be set");
     crate::db::migrate();
 
-    //{{main_log_message}}
-    let _guard = clia_tracing_config::build()
-        .filter_level(&CFG.log.filter_level)
-        .with_ansi(CFG.log.with_ansi)
-        .to_stdout(CFG.log.to_stdout)
-        .directory(&CFG.log.directory)
-        .file_name(&CFG.log.file_name)
-        .rolling(&CFG.log.rolling)
-        .init();
-    tracing::info!("log level: {}", &CFG.log.filter_level);
-
+    let _guard = config.log.guard();
+    tracing::info!("log level: {}", &config.log.filter_level);
     
-    
-    let db_primary = {
-        let db_connection_config = ConnectionConfig {
-            statement_timeout: conf.db.statement_timeout,
-        };
-
-        let db_config = r2d2::Pool::builder()
-            .max_size(conf.db.pool_size)
-            .min_idle(conf.db.min_idle)
-            .connection_timeout(Duration::from_millis(conf.db.connection_timeout))
-            .connection_customizer(Box::new(db_connection_config))
-            .thread_pool(thread_pool.clone());
-
-        DieselPool::new(&conf.db.url, &conf.db, db_config).unwrap()
-    };
-    crate::db::DIESEL_POOL
-        .set(db_primary)
-        .expect("diesel pool should be set");
-    let enable_tls = conf.enable_tls;
-    crate::config::CONFIG.set(conf).expect("config should be set");
-    crate::db::migrate();
-    
-
-    let router = router();
-    let service: Service = router.into();
-    let service = service.catcher(Catcher::default().hoop(handle_404));//.hoop(_cors_handler).hoop(handle_404));
-    println!("🌪️ {} {{is_starting}} ", &CFG.server.name);
-    println!("🔄 {{listen_on}} {}", &CFG.server.address);
-    let _cors_handler = cors_middleware();
-    match CFG.server.ssl {
-        true => {
-            println!(
-                "📖 {{open_api_page}}: https://{}/scalar",
-                &CFG.server.address.replace("0.0.0.0", "127.0.0.1")
-            );
-            {% if code_gen == "website" %}
-            println!("🔑 {{login_page}}: https://{}/login", &CFG.server.address.replace("0.0.0.0", "127.0.0.1"));
-            {% endif %}
-            let config = RustlsConfig::new(
-                Keycert::new()
-                    .cert(CERT_KEY.cert.clone())
-                    .key(CERT_KEY.key.clone()),
-            );
-            let acceptor = TcpListener::new(&CFG.server.address)
-                .rustls(config)
-                .bind()
-                .await;
-            let server = Server::new(acceptor);
-            let handle = server.handle();
-            tokio::spawn(shutdown_signal(handle));
-            server.serve(service).await;
-         }
-        false => {
-            println!(
-                "📖 {{open_api_page}}: http://{}/scalar",
-                &CFG.server.address.replace("0.0.0.0", "127.0.0.1")
-            );
-            {% if code_gen == "website" %}
-            println!("🔑 {{login_page}}: http://{}/login", &config().server.address.replace("0.0.0.0", "127.0.0.1"));
-            {% endif %}
-            let acceptor = TcpListener::new(&CFG.server.address).bind().await;
-            let server = Server::new(acceptor);
-            let handle = server.handle();
-            tokio::spawn(shutdown_signal(handle));
-            server.serve(service).await;
-            }
+    let service = Service::new(routers::root()).catcher(Catcher::default().hoop(handle_404)).hoop(cors_hoop()));
+    println!("🔄 {{listen_on}} {}", &config.listen_addr);
+    if config.ssl {
+        println!(
+            "📖 {{open_api_page}}: https://{}/scalar",
+            config.listen_addr.replace("0.0.0.0", "127.0.0.1")
+        );
+        {% if code_gen == "website" %}
+        println!("🔑 {{login_page}}: https://{}/login", config.listen_addr.replace("0.0.0.0", "127.0.0.1"));
+        {% endif %}
+        let config = RustlsConfig::new(
+            Keycert::new()
+                .cert(CERT_KEY.cert.clone())
+                .key(CERT_KEY.key.clone()),
+        );
+        let acceptor = TcpListener::new(&config.server.listen_addr)
+            .rustls(config)
+            .bind()
+            .await;
+        let server = Server::new(acceptor);
+        tokio::spawn(shutdown_signal(server.handle()));
+        server.serve(service).await;
+    } else {
+        println!(
+            "📖 {{open_api_page}}: http://{}/scalar",
+            config.listen_addr.replace("0.0.0.0", "127.0.0.1")
+        );
+        {% if code_gen == "website" %}
+        println!("🔑 {{login_page}}: http://{}/login", config().server.listen_addr.replace("0.0.0.0", "127.0.0.1"));
+        {% endif %}
+        let acceptor = TcpListener::new(&config.listen_addr).bind().await;
+        let server = Server::new(acceptor);
+        tokio::spawn(shutdown_signal(server.handle()));
+        server.serve(service).await;
     }
 }
 
@@ -181,7 +139,7 @@ mod tests {
     use salvo::prelude::*;
     use salvo::test::{ResponseExt, TestClient};
 
-    use crate::config::CFG;
+    use crate::config;
 
     #[tokio::test]
     async fn test_hello_world() {
@@ -189,7 +147,7 @@ mod tests {
 
         let content = TestClient::get(format!(
             "http://{}",
-            &CFG.server.address.replace("0.0.0.0", "127.0.0.1")
+            &config().address.replace("0.0.0.0", "127.0.0.1")
         ))
         .send(&service)
         .await

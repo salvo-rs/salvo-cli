@@ -60,7 +60,7 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         }));
     }
     
-    let mut db_types: Vec<&str> = vec!["sqlite", "mysql", "postgres"];
+    let db_types: Vec<&str> = vec!["sqlite", "mysql", "postgres"];
     // if db_lib == DbLib::Rbatis {
     //     db_types = vec!["sqlite", "mysql", "postgres", "mssql"];
     // }
