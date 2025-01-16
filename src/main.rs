@@ -2,7 +2,7 @@
 
 use anyhow::Result;
 use clap::Parser;
-mod test;
+mod tests;
 mod utils;
 use i18n::set_locale;
 mod i18n;
