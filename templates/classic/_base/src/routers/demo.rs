@@ -1,11 +1,8 @@
 
-{% if code_gen == "website" %}
 use askama::Template;
-{% endif %}
 use salvo::prelude::*;
 use crate::AppResult;
 
-{% if code_gen == "website" %}
 #[handle]
 pub async fn hello(req: &mut Request, res: &mut Response)->AppResult<Text>{
     #[derive(Template)]
@@ -18,12 +15,6 @@ pub async fn hello(req: &mut Request, res: &mut Response)->AppResult<Text>{
     };
     Ok(Text::Html(hello_tmpl.render().unwrap()))
 }
-{% else %}
-#[endpoint]
-pub async fn hello() -> AppResult<&'static str> {
-    Ok("Hello World from salvo")
-}
-{% endif %}
 
 mod tests {
     use salvo::test::{ResponseExt, TestClient};

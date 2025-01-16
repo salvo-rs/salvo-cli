@@ -4,7 +4,6 @@ use crate::{
     hoops::jwt::decode_token,
     labors::user,
 };
-{% if code_gen == "website" %}
 use askama::Template;
 use salvo::prelude::*;
 
@@ -23,7 +22,6 @@ pub async fn show_login(res: &mut Response) -> AppResult<Text> {
     let hello_tmpl = LoginTemplate {};
     Ok(Text::Html(hello_tmpl.render().unwrap()))
 }
-{{else}}
 #[derive(Debug, Serialize, ToSchema, Default)]
 pub struct LoginInData {
     pub id: String,
@@ -32,7 +30,7 @@ pub struct LoginInData {
     pub exp: i64,
 }
 #[endpoint(tags("auth"))]
-pub async fn login(req: JsonBody<LoginInData>, res: &mut Response) -> JsonResult<()> {
+pub async fn post_login(req: JsonBody<LoginInData>, res: &mut Response) -> JsonResult<()> {
     let data = user::login(req.0).await?;
     let jwt_token = data.token.clone();
     let cookie = Cookie::build(("jwt_token", jwt_token))
@@ -42,4 +40,3 @@ pub async fn login(req: JsonBody<LoginInData>, res: &mut Response) -> JsonResult
     res.add_cookie(cookie);
     json_empty()
 }
-{% endif %}

@@ -9,6 +9,9 @@ use salvo::server::ServerHandle;
 use salvo::catcher::Catcher;
 use salvo::conn::rustls::{Keycert, RustlsConfig};
 use salvo::prelude::*;
+
+use figment::Figment;
+
 mod config;
 mod db;
 mod beams;
@@ -72,22 +75,20 @@ async fn main() {
     let _guard = config.log.guard();
     tracing::info!("log level: {}", &config.log.filter_level);
     
-    let service = Service::new(routers::root()).catcher(Catcher::default().hoop(handle_404)).hoop(cors_hoop()));
+    let service = Service::new(routers::root()).catcher(Catcher::default().hoop(handle_404)).hoop(cors_hoop());
     println!("🔄 {{listen_on}} {}", &config.listen_addr);
     if config.ssl {
         println!(
             "📖 {{open_api_page}}: https://{}/scalar",
             config.listen_addr.replace("0.0.0.0", "127.0.0.1")
         );
-        {% if code_gen == "website" %}
         println!("🔑 {{login_page}}: https://{}/login", config.listen_addr.replace("0.0.0.0", "127.0.0.1"));
-        {% endif %}
         let config = RustlsConfig::new(
             Keycert::new()
                 .cert(CERT_KEY.cert.clone())
                 .key(CERT_KEY.key.clone()),
         );
-        let acceptor = TcpListener::new(&config.server.listen_addr)
+        let acceptor = TcpListener::new(&config.listen_addr)
             .rustls(config)
             .bind()
             .await;
@@ -99,9 +100,7 @@ async fn main() {
             "📖 {{open_api_page}}: http://{}/scalar",
             config.listen_addr.replace("0.0.0.0", "127.0.0.1")
         );
-        {% if code_gen == "website" %}
         println!("🔑 {{login_page}}: http://{}/login", config().server.listen_addr.replace("0.0.0.0", "127.0.0.1"));
-        {% endif %}
         let acceptor = TcpListener::new(&config.listen_addr).bind().await;
         let server = Server::new(acceptor);
         tokio::spawn(shutdown_signal(server.handle()));

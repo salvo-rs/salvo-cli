@@ -5,8 +5,13 @@ use clap::Parser;
 mod test;
 mod utils;
 use i18n::set_locale;
-use utils::check_for_updates;
 mod i18n;
+mod git;
+mod templates;
+mod project;
+mod updater;
+mod printer;
+mod namer;
 
 rust_i18n::i18n!("locales", fallback = "en");
 #[derive(Parser, Debug)]
@@ -28,17 +33,19 @@ pub struct NewCmd {
 }
 #[tokio::main]
 async fn main() -> Result<()> {
-    utils::print_logo();
+    printer::print_logo();
     let opts: Opts = Opts::parse();
     match opts.subcmd {
         SubCommand::New(new_cmd) => {
             set_locale(&new_cmd.lang);
-            check_for_updates().await;
-            match utils::create_project(&new_cmd) {
+            updater::check_for_updates().await;
+            match project::create(&new_cmd) {
                 Ok(_) => (),
-                Err(e) => utils::error(e.to_string()),
+                Err(e) => printer::error(e.to_string()),
             };
         }
     }
     Ok(())
 }
+
+

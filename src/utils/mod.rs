@@ -1,8 +1,12 @@
-mod check_for_updates;
-pub mod create_project;
-pub mod get_selection;
-mod print_util;
-mod restricted_names;
-pub use check_for_updates::check_for_updates;
-pub use create_project::create_project;
-pub use print_util::{error, print_logo, success, warning};
+use std::fs;
+use std::path::Path;
+
+use anyhow::{Context, Result};
+
+/// Equivalent to [`create_dir_all`] with better error messages.
+pub fn create_dir_all(p: impl AsRef<Path>) -> Result<()> {
+    let p = p.as_ref();
+    fs::create_dir_all(p)
+        .with_context(|| format!("failed to create directory `{}`", p.display()))?;
+    Ok(())
+}

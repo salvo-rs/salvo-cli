@@ -1,10 +1,9 @@
-use crate::utils::{print_util::orange, success, warning};
 use rust_i18n::t;
 use serde_json::Value;
 use std::time::Duration;
 use tokio::time::timeout;
 
-use super::print_util::green;
+use crate::printer::{green, orange, success, warning};
 
 async fn get_latest_version(crate_name: &str) -> Result<String, Box<dyn std::error::Error>> {
     let url = format!("https://crates.io/api/v1/crates/{}", crate_name);

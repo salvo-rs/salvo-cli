@@ -3,13 +3,12 @@ use dialoguer::{console::Style, theme::ColorfulTheme, Select};
 use rust_i18n::t;
 
 #[derive(Debug, Clone, Copy)]
-pub struct UserSelected {
-    pub code_gen: CodeGen,
+pub struct Selected {
     pub db_type: DbType,
     pub db_lib: DbLib,
 }
 
-pub fn get_user_selected() -> Result<Option<UserSelected>> {
+pub fn get_selected() -> Result<Option<Selected>> {
     let theme = ColorfulTheme {
         defaults_style: Style::new().blue(),
         prompt_style: Style::new().green().bold(),
@@ -17,21 +16,16 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         values_style: Style::new().blue().dim(),
         ..ColorfulTheme::default()
     };
-    let selections = &[
-        t!("salvo_website"),
-        t!("salvo_openapi"),
-        // "custom",
-    ];
-    let selection = Select::with_theme(&theme)
-        .with_prompt(t!("welcome_message").replace(r"\n", "\n"))
-        .default(0)
-        .items(&selections[..])
-        .interact()?;
-    let code_gen = if selection == 1 {
-        CodeGen::WebSite
-    } else {
-        CodeGen::OpenApi
-    };
+    // let selections = &[
+    //     t!("salvo_website"),
+    //     t!("salvo_openapi"),
+    //     // "custom",
+    // ];
+    // let selection = Select::with_theme(&theme)
+    //     .with_prompt(t!("welcome_message").replace(r"\n", "\n"))
+    //     .default(0)
+    //     .items(&selections[..])
+    //     .interact()?;
     let db_libs = &[
         t!("db_lib_sqlx"),
         t!("db_lib_seaorm"),
@@ -53,13 +47,12 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         _ => anyhow::bail!("Invalid db connection type selection"),
     };
     if db_lib == DbLib::Mongodb {
-        return Ok(Some(UserSelected {
-            code_gen,
+        return Ok(Some(Selected {
             db_type: DbType::Mongodb,
             db_lib,
         }));
     }
-    
+
     let db_types: Vec<&str> = vec!["sqlite", "mysql", "postgres"];
     // if db_lib == DbLib::Rbatis {
     //     db_types = vec!["sqlite", "mysql", "postgres", "mssql"];
@@ -76,8 +69,7 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         _ => anyhow::bail!("Invalid db type selection"),
     };
 
-    Ok(Some(UserSelected {
-        code_gen,
+    Ok(Some(Selected {
         db_type,
         db_lib,
     }))
@@ -107,10 +99,4 @@ pub enum DbLib {
     Rbatis,
     #[strum(serialize = "mongodb")]
     Mongodb
-}
-
-#[derive(Debug, PartialEq, Clone, Copy, strum::Display)]
-pub enum CodeGen {
-    WebSite,
-    OpenApi,
 }

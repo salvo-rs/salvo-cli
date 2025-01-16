@@ -8,7 +8,7 @@ use crate::{
 };
 use validator::Validate;
 use askama::Template;
-use salvo::prelude::*;;
+use salvo::prelude::*;
 
 #[derive(Template)]
 #[template(path = "user_list_page.html")]
@@ -19,7 +19,7 @@ pub struct UserListPageTemplate {}
 pub struct UserListTemplate {}
 
 #[handle]
-pub async fn user_list_page(req: &mut Request, res: &mut Response) -> AppResult<()> {
+pub async fn list_page(req: &mut Request, res: &mut Response) -> AppResult<()> {
     let is_fragment = req.headers().get("X-Fragment-Header");
     match is_fragment {
         Some(_) => {
@@ -70,11 +70,11 @@ pub async fn create_user(new_user: JsonBody<UserAddRequest>) -> JsonResult<User>
     json_ok(user)
 }
 
-#[endpoint(  tags("users"),
+#[endpoint(tags("users"),
 parameters(
     ("id", description = "user id"),
 ))]
-pub async fn update_user(req: &mut Request) -> AppResult<JsonResult<UserResponse>> {
+pub async fn update_user(user_id: PathParam<i64>) -> AppResult<JsonResult<UserResponse>> {
     let req: UserUpdateRequest = req.extract().await?;
     let result = user::update_user(req).await;
     json_ok(result)

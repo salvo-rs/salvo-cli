@@ -1,6 +1,7 @@
 use anyhow::bail;
 use anyhow::Result;
 
+
 /// Returns `true` if the name contains non-ASCII characters.
 pub fn is_non_ascii_name(name: &str) -> bool {
     name.chars().any(|ch| ch > '\x7f')
