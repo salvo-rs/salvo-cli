@@ -3,6 +3,7 @@ use serde::Deserialize;
 use std::{fs::File, io::Read, path::Path};
 
 
+pub static CONFIG: OnceLock<ServerConfig> = OnceLock::new();
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct ServerConfig {
