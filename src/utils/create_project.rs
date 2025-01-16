@@ -144,7 +144,7 @@ fn create_files(project_path: &Path, user_selected: UserSelected, data: &Object)
             write_file(&file.data, &file_path, data)?;
         } else if filename.starts_with("_data/") {
             if filename.contains(user_selected.db_lib.to_string().as_str())
-                || filename.contains(user_selected.db_type.to_string().as_str())
+                && filename.contains(user_selected.db_type.to_string().as_str())
             {
                 let file = Template::get(filename.as_ref()).expect("file must exist");
                 let file_path = project_path.join(filename.as_ref().trim_start_matches("_"));

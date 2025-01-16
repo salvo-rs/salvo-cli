@@ -49,12 +49,21 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         1 => DbLib::SeaOrm,
         2 => DbLib::Diesel,
         3 => DbLib::Rbatis,
+        4 => DbLib::Mongodb,
         _ => anyhow::bail!("Invalid db connection type selection"),
     };
-    let mut db_types: Vec<&str> = vec!["sqlite", "mysql", "postgres"];
-    if db_lib == DbLib::Rbatis {
-        db_types = vec!["sqlite", "mysql", "postgres", "mssql"];
+    if db_lib == DbLib::Mongodb {
+        return Ok(Some(UserSelected {
+            code_gen,
+            db_type: DbType::Mongodb,
+            db_lib,
+        }));
     }
+    
+    let mut db_types: Vec<&str> = vec!["sqlite", "mysql", "postgres"];
+    // if db_lib == DbLib::Rbatis {
+    //     db_types = vec!["sqlite", "mysql", "postgres", "mssql"];
+    // }
     let db_type_selection = Select::with_theme(&theme)
         .with_prompt(t!("select_db_type").replace(r"\n", "\n"))
         .default(0)
@@ -64,7 +73,6 @@ pub fn get_user_selected() -> Result<Option<UserSelected>> {
         0 => DbType::Sqlite,
         1 => DbType::Mysql,
         2 => DbType::Postgres,
-        3 => DbType::Mongodb,
         _ => anyhow::bail!("Invalid db type selection"),
     };
 
@@ -96,7 +104,9 @@ pub enum DbLib {
     #[strum(serialize = "diesel")]
     Diesel,
     #[strum(serialize = "rbatis")]
-    Rbatis
+    Rbatis,
+    #[strum(serialize = "mongodb")]
+    Mongodb
 }
 
 #[derive(Debug, PartialEq, Clone, Copy, strum::Display)]
