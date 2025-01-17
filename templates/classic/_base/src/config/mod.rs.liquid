@@ -1,6 +1,10 @@
-use once_cell::sync::Lazy;
-use serde::Deserialize;
+use std::sync::OnceLock;
 use std::{fs::File, io::Read, path::Path};
+
+use serde::Deserialize;
+use salvo::http::HeaderValue;
+
+use crate::config;
 
 
 pub static CONFIG: OnceLock<ServerConfig> = OnceLock::new();
@@ -89,8 +93,8 @@ impl CertKey {
     }
 }
 fn get_cert_key() -> CertKey {
-    let cert = get_string(&CFG.cert.cert);
-    let key = get_string(&CFG.cert.key);
+    let cert = get_string(&config().cert.cert);
+    let key = get_string(&config()cert.key);
     CertKey::new(cert, key)
 }
 

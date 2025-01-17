@@ -1,6 +1,9 @@
 
 
 use diesel::prelude::*;
+
+use crate::config;
+
 {% if db_type == "sqlite" %}
 pub fn establish_connection() -> SqliteConnection {
     let conn = SqliteConnection::establish(&config().db.database_url)

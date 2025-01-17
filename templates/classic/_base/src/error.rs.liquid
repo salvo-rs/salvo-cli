@@ -2,12 +2,18 @@ use salvo::http::ParseError;
 {% if db_type == "mongodb" %}
 use mongodb::bson::document::ValueAccessError as MongoBsonAccessError;
 use mongodb::bson::oid::Error as MongoBsonOidError;
-use mongodb::error::Error as MongoDbError;
+use mongodb::error::Error as MongoDbErroror;
 {% endif %}
 use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum AppError {
+    #[error("public: `{0}`")]
+    Public(String),
+    #[error("internal: `{0}`")]
+    Internal(String),
+    #[error("salvo internal error: `{0}`")]
+    Salvo(#[from] ::salvo::Error),
     #[error("error:`{0}`")]
     AnyHow(#[from] anyhow::Error),
     #[error("http::ParseError:`{0}`")]
@@ -17,8 +23,8 @@ pub enum AppError {
     SqlxError(#[from] sqlx::Error),
     {% endif %}
     {% if db_lib == "seaorm" %}
-    #[error("seaorm::DbErr:Error:`{0}`")]
-    DbErr(#[from] seaorm::DbErr),
+    #[error("seaorm::DbError:Error:`{0}`")]
+    DbError(#[from] seaorm::DbError),
     {% endif %}
     {% if db_lib == "diesel" %}
     #[error("diesel::result::Error:`{0}`")]
@@ -30,7 +36,7 @@ pub enum AppError {
     {% endif %}
     {% if db_type == "mongodb" %}
     #[error("mongodb::error::Error:`{0}`")]
-    MongoDbErr(#[from] MongoDbError),
+    MongoDbError(#[from] MongoDbErroror),
     #[error("mongodb::bson::document::ValueAccessError:`{0}`")]
     MongoBsonAccessError(#[from] MongoBsonAccessError),
     #[error("mongodb::bson::oid::Error`{0}`")]
@@ -38,6 +44,15 @@ pub enum AppError {
     {% endif %}
     #[error("ValidationError:`{0}`")]
     ValidationError(#[from] validator::ValidationErrors),
+}
+impl AppError {
+    pub fn public<S: Into<String>>(msg: S) -> Self {
+        Self::Public(msg.into())
+    }
+
+    pub fn internal<S: Into<String>>(msg: S) -> Self {
+        Self::Internal(msg.into())
+    }
 }
 
 impl EndpointOutRegister for AppError {

@@ -1,10 +1,11 @@
 
 use askama::Template;
 use salvo::prelude::*;
+
 use crate::AppResult;
 
-#[handle]
-pub async fn hello(req: &mut Request, res: &mut Response)->AppResult<Text>{
+#[handler]
+pub async fn hello(req: &mut Request, res: &mut Response) -> AppResult<Text>{
     #[derive(Template)]
     #[template(path = "hello.html")]
     struct HelloTemplate<'a> {

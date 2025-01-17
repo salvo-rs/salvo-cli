@@ -1,24 +1,21 @@
-use crate::{JsonResult, AppResult, json_ok, json_empty};
-use crate::{
-    dtos::user::{
-        UserAddRequest, UserLoginRequest, UserLoginResponse, UserResponse, UserUpdateRequest,
-    },
-    middleware::jwt::decode_token,
-    services::user,
-};
-use validator::Validate;
+use serde::{Deserialize, Serialize};
+
 use askama::Template;
 use salvo::prelude::*;
+use validator::Validate;
+
+use crate::hoops::jwt::decode_token;
+use crate::{empty_ok, json_ok, AppResult, JsonResult};
 
 #[derive(Template)]
-#[template(path = "user_list_page.html")]
+#[template(path = "views/user_list_page.html")]
 pub struct UserListPageTemplate {}
 
 #[derive(Template)]
-#[template(path = "user_list.html")]
+#[template(path = "views/user_list.html")]
 pub struct UserListTemplate {}
 
-#[handle]
+#[handler]
 pub async fn list_page(req: &mut Request, res: &mut Response) -> AppResult<()> {
     let is_fragment = req.headers().get("X-Fragment-Header");
     match is_fragment {

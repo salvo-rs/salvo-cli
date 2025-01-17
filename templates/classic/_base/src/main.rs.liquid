@@ -1,3 +1,4 @@
+use std::sync::Arc;
 
 use crate::db::init_db_conn;
 use tokio::signal;
@@ -26,6 +27,16 @@ mod error;
 pub use error::AppError;
 
 pub type AppResult<T> = Result<T, AppError>;
+pub type JsonResult<T> = Result<Json<T>, AppError>;
+
+pub fn json_ok<T>(data: T) -> JsonResult<T> {
+    Ok(Json(data))
+}
+#[derive(Serialize, ToSchema, Clone, Copy, Debug)]
+pub struct Empty {}
+pub fn empty_ok() -> JsonResult<Empty> {
+    Ok(Json(Empty {}))
+}
 
 use config::ServerConfig;
 pub fn config() -> &'static ServerConfig {
