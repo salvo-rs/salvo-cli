@@ -1,9 +1,5 @@
-
-use crate::{JsonResult, AppResult, json_ok, json_empty};
-use crate::{
-    hoops::jwt::decode_token,
-    labors::user,
-};
+use crate::{hoops::jwt::decode_token, labors::user};
+use crate::{json_empty, json_ok, AppResult, JsonResult};
 use askama::Template;
 use salvo::prelude::*;
 
@@ -31,7 +27,32 @@ pub struct LoginInData {
 }
 #[endpoint(tags("auth"))]
 pub async fn post_login(req: JsonBody<LoginInData>, res: &mut Response) -> JsonResult<()> {
-    let data = user::login(req.0).await?;
+    let result = diesel_users
+        .filter(username.eq(&req.username))
+        .select((id, username, password))
+        .first::<(String, String, String)>(&mut connection)
+        .optional()?;
+
+    match result {
+        None => Err(anyhow::anyhow!("User does not exist.").into()),
+        Some((uid, uname, hashed_pwd)) => {
+            if rand_utils::verify_password(req.password, hashed_pwd)
+                .await
+                .is_err()
+            {
+                return Err(anyhow::anyhow!("Incorrect password.").into());
+            }
+
+            let (token, exp) = get_token(uname.clone(), uid.clone())?;
+            let res = UserLoginResponse {
+                id: uid,
+                username: uname,
+                token,
+                exp,
+            };
+            Ok(res)
+        }
+    }
     let jwt_token = data.token.clone();
     let cookie = Cookie::build(("jwt_token", jwt_token))
         .path("/")

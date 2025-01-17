@@ -21,20 +21,16 @@ pub enum AppError {
     {% if db_lib == "sqlx" %}
     #[error("sqlx::Error:`{0}`")]
     SqlxError(#[from] sqlx::Error),
-    {% endif %}
-    {% if db_lib == "seaorm" %}
+    {% elsif db_lib == "seaorm" %}
     #[error("seaorm::DbError:Error:`{0}`")]
     DbError(#[from] seaorm::DbError),
-    {% endif %}
-    {% if db_lib == "diesel" %}
+    {% elsif db_lib == "diesel" %}
     #[error("diesel::result::Error:`{0}`")]
-    DieselErr(#[from] diesel::result::Error),
-    {% endif %}
-    {% if db_lib == "rbatis" %}
+    DieselError(#[from] diesel::result::Error),
+    {% elsif db_lib == "rbatis" %}
     #[error("rbatis::Error:`{0}`")]
     RbatisErr(#[from] rbatis::Error),
-    {% endif %}
-    {% if db_type == "mongodb" %}
+    {% elsif db_type == "mongodb" %}
     #[error("mongodb::error::Error:`{0}`")]
     MongoDbError(#[from] MongoDbErroror),
     #[error("mongodb::bson::document::ValueAccessError:`{0}`")]

@@ -5,6 +5,7 @@ use serde::Deserialize;
 use salvo::http::HeaderValue;
 
 use crate::config;
+use crate::env_vars::required_var;
 
 
 pub static CONFIG: OnceLock<ServerConfig> = OnceLock::new();
@@ -94,7 +95,7 @@ impl CertKey {
 }
 fn get_cert_key() -> CertKey {
     let cert = get_string(&config().cert.cert);
-    let key = get_string(&config()cert.key);
+    let key = get_string(&config().cert.key);
     CertKey::new(cert, key)
 }
 
