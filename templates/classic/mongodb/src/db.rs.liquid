@@ -4,21 +4,21 @@
 use diesel::prelude::*;
 {% if db_type == "sqlite" %}
 pub fn establish_connection() -> SqliteConnection {
-    let conn = SqliteConnection::establish(&CFG.database.database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url));
+    let conn = SqliteConnection::establish(&config().db.database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", &config().db.database_url));
     conn
 }
 {% endif %}
 {% if db_type == "mysql" %}
 pub fn establish_connection() -> MysqlConnection {
-    MysqlConnection::establish(&CFG.database.database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
+    MysqlConnection::establish(&config().db.database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", &config().db.database_url))
 }
 {% endif %}
 {% if db_type == "postgres" %}
 pub fn establish_connection() -> PgConnection {
-    PgConnection::establish(&CFG.database.database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
+    PgConnection::establish(&config().db.database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", &config().db.database_url))
 }
 {% endif %}
 {% endif %}
@@ -36,17 +36,17 @@ pub async fn init_db_conn() {
     DB.get_or_init(|| async {
         {% if db_lib == "sqlx" %}
         {% if db_type == "sqlite" %}
-        SqlitePool::connect(&CFG.database.database_url)
+        SqlitePool::connect(&config().db.database_url)
             .await
             .expect("{{database_connection_failed}}")
         {% endif %}
         {% if db_type == "postgres" %}
-        PgPool::connect(&CFG.database.database_url)
+        PgPool::connect(&config().db.database_url)
             .await
             .expect("{{database_connection_failed}}")
         {% endif %}
         {% if db_type == "mysql" %}
-        MySqlPool::connect(&CFG.database.database_url)
+        MySqlPool::connect(&config().db.database_url)
         .await
         .expect("{{database_connection_failed}}")
         {% endif %}

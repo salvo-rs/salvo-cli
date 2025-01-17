@@ -3,17 +3,17 @@ pub async fn init_db_conn() {
     DB.get_or_init(|| async {
         {% if db_lib == "sqlx" %}
         {% if db_type == "sqlite" %}
-        SqlitePool::connect(&CFG.database.database_url)
+        SqlitePool::connect(&config().db.database_url)
             .await
             .expect("{{database_connection_failed}}")
         {% endif %}
         {% if db_type == "postgres" %}
-        PgPool::connect(&CFG.database.database_url)
+        PgPool::connect(&config().db.database_url)
             .await
             .expect("{{database_connection_failed}}")
         {% endif %}
         {% if db_type == "mysql" %}
-        MySqlPool::connect(&CFG.database.database_url)
+        MySqlPool::connect(&config().db.database_url)
         .await
         .expect("{{database_connection_failed}}")
         {% endif %}

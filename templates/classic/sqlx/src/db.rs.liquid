@@ -19,21 +19,21 @@ use tokio::sync::OnceCell;
 use diesel::prelude::*;
 {% if db_type == "sqlite" %}
 pub fn establish_connection() -> SqliteConnection {
-    let conn = SqliteConnection::establish(&CFG.database.database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url));
+    let conn = SqliteConnection::establish(&config().db.database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", &config().db.database_url));
     conn
 }
 {% endif %}
 {% if db_type == "mysql" %}
 pub fn establish_connection() -> MysqlConnection {
-    MysqlConnection::establish(&CFG.database.database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
+    MysqlConnection::establish(&config().db.database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", &config().db.database_url))
 }
 {% endif %}
 {% if db_type == "postgres" %}
 pub fn establish_connection() -> PgConnection {
-    PgConnection::establish(&CFG.database.database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
+    PgConnection::establish(&config().db.database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", &config().db.database_url))
 }
 {% endif %}
 {% endif %}
@@ -51,17 +51,17 @@ pub async fn init_db_conn() {
     DB.get_or_init(|| async {
         {% if db_lib == "sqlx" %}
         {% if db_type == "sqlite" %}
-        SqlitePool::connect(&CFG.database.database_url)
+        SqlitePool::connect(&config().db.database_url)
             .await
             .expect("{{database_connection_failed}}")
         {% endif %}
         {% if db_type == "postgres" %}
-        PgPool::connect(&CFG.database.database_url)
+        PgPool::connect(&config().db.database_url)
             .await
             .expect("{{database_connection_failed}}")
         {% endif %}
         {% if db_type == "mysql" %}
-        MySqlPool::connect(&CFG.database.database_url)
+        MySqlPool::connect(&config().db.database_url)
         .await
         .expect("{{database_connection_failed}}")
         {% endif %}
@@ -75,7 +75,7 @@ pub static DB: OnceCell<DatabaseConnection> = OnceCell::const_new();
 
 pub async fn init_db_conn() {
 	DB.get_or_init(|| async {
-		let mut opt = ConnectOptions::new(CFG.database.database_url.to_owned());
+		let mut opt = ConnectOptions::new(config().db.database_url.to_owned());
 		opt.max_connections(1000)
 			.min_connections(5)
 			.connect_timeout(Duration::from_secs(8))
@@ -98,15 +98,15 @@ pub async fn init_db_conn() {
 
         {% if db_type == "postgres" %}
         // PostgreSQL
-        rb.init(rbdc_pg::driver::PgDriver {}, &CFG.database.database_url).unwrap();
+        rb.init(rbdc_pg::driver::PgDriver {}, &config().db.database_url).unwrap();
         {% endif %}
         {% if db_type == "mysql" %}
         // MySQL
-        rb.init(rbdc_mysql::driver::MysqlDriver {}, &CFG.database.database_url).unwrap();
+        rb.init(rbdc_mysql::driver::MysqlDriver {}, &config().db.database_url).unwrap();
         {% endif %}
         {% if db_type == "sqlite" %}
         // SQLite
-        rb.init(rbdc_sqlite::driver::SqliteDriver {}, &CFG.database.database_url).unwrap();
+        rb.init(rbdc_sqlite::driver::SqliteDriver {}, &config().db.database_url).unwrap();
         {% endif %}
 
         let sql_file = match rb.driver_type().unwrap() {
@@ -133,7 +133,7 @@ pub const DB_NAME: &str = "myApp";
 pub const COLL_NAME: &str = "users";
 pub static MONGODB_CLIENT: OnceCell<Client> = OnceCell::new();
 pub async fn init_db_conn() {
-        let mongodb_uri = &CFG.database.database_url;
+        let mongodb_uri = &config().db.database_url;
     let client = Client::with_uri_str(mongodb_uri)
         .await
         .expect("failed to connect");

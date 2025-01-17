@@ -3,15 +3,15 @@
 use diesel::prelude::*;
 {% if db_type == "sqlite" %}
 pub fn establish_connection() -> SqliteConnection {
-    let conn = SqliteConnection::establish(&CFG.database.database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url));
+    let conn = SqliteConnection::establish(&config().db.database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", &config().db.database_url));
     conn
 }
 {% endif %}
 {% if db_type == "mysql" %}
 pub fn establish_connection() -> MysqlConnection {
-    MysqlConnection::establish(&CFG.database.database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", &CFG.database.database_url))
+    MysqlConnection::establish(&config().db.database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", &config().db.database_url))
 }
 {% endif %}
 {% if db_type == "postgres" %}    
