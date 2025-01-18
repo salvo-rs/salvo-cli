@@ -1,8 +1,8 @@
-use salvo::cors::{AllowHeaders, AllowMethods, Cors, CorsHandler};
+use salvo::cors::{AllowHeaders, AllowMethods, AllowOrigin, Cors, CorsHandler};
 
-pub fn cors_hoop(config: &Config) -> CorsHandler {
+pub fn cors_hoop() -> CorsHandler {
     Cors::new()
-        .allow_origin(&config.server.cors_allow_origin)
+        .allow_origin(AllowOrigin::any())
         .allow_methods(AllowMethods::any())
         .allow_headers(AllowHeaders::any())
         .into_handler()

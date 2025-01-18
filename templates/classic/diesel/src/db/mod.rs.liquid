@@ -1,8 +1,8 @@
 
 
-use diesel::prelude::*;
 
-use crate::config;
+use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
+use crate::config::DbConfig;
 
 {% if db_type == "sqlite" %}
 pub fn establish_connection() -> SqliteConnection {
@@ -18,30 +18,16 @@ pub fn establish_connection() -> MysqlConnection {
 }
 {% endif %}
 {% if db_type == "postgres" %}
-use diesel::expression::{is_aggregate, AppearsOnTable, ValidGrouping};
-use diesel::pg::{Pg, PgConnection};
-use diesel::prelude::*;
-use diesel::query_builder::*;
-use diesel::r2d2::{ConnectionManager, Pool, PoolError, PooledConnection};
-use diesel::sql_types::*;
-use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
-use once_cell::sync::OnceCell;
+use url::Url;
 
-pub type PgPool = Pool<ConnectionManager<PgConnection>>;
+pub mod pool;
+pub use pool::{DieselPool, PgPooledConnection, PoolError};
 
-pub static DB_POOL: OnceCell<PgPool> = OnceCell::new();
+pub static DIESEL_POOL: OnceLock<DieselPool> = OnceLock::new();
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
 
-pub fn connect() -> Result<PooledConnection<ConnectionManager<PgConnection>>, PoolError> {
-    DB_POOL.get().unwrap().get()
-}
-
-pub fn build_pool(database_url: &str) -> Result<PgPool, PoolError> {
-    let manager = ConnectionManager::<PgConnection>::new(database_url);
-    diesel::r2d2::Pool::builder().max_size(crate::database_conns()).build(manager)
-}
-
-pub fn migrate(conn: &mut PgConnection) {
+pub fn migrate() {
+    let conn = &mut connect().expect("db connect should worked");
     println!(
         "Has pending migration: {}",
         conn.has_pending_migration(MIGRATIONS).unwrap()
@@ -49,4 +35,67 @@ pub fn migrate(conn: &mut PgConnection) {
     conn.run_pending_migrations(MIGRATIONS)
         .expect("migrate db should worked");
 }
+pub fn connect() -> Result<PgPooledConnection, PoolError> {
+    match DIESEL_POOL.get().expect("diesel pool should set").get() {
+        Ok(conn) => Ok(conn),
+        Err(e) => {
+            println!("db connect error {e}");
+            Err(e)
+        }
+    }
+}
 {% endif %}
+
+
+pub fn state() -> State {
+    DIESEL_POOL.get().expect("diesel pool should set").state()
+}
+
+pub fn connection_url(config: &DbConfig, url: &str) -> String {
+    let mut url = Url::parse(url).expect("Invalid database URL");
+
+    if config.enforce_tls {
+        maybe_append_url_param(&mut url, "sslmode", "require");
+    }
+
+    // Configure the time it takes for diesel to return an error when there is full packet loss
+    // between the application and the database.
+    maybe_append_url_param(
+        &mut url,
+        "tcp_user_timeout",
+        &config.tcp_timeout.to_string(),
+    );
+
+    url.into()
+}
+
+fn maybe_append_url_param(url: &mut Url, key: &str, value: &str) {
+    if !url.query_pairs().any(|(k, _)| k == key) {
+        url.query_pairs_mut().append_pair(key, value);
+    }
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct ConnectionConfig {
+    pub statement_timeout: u64,
+    // pub read_only: bool,
+}
+
+impl CustomizeConnection<PgConnection, r2d2::Error> for ConnectionConfig {
+    fn on_acquire(&self, conn: &mut PgConnection) -> Result<(), r2d2::Error> {
+        use diesel::sql_query;
+
+        sql_query(format!(
+            "SET statement_timeout = {}",
+            self.statement_timeout
+        ))
+        .execute(conn)
+        .map_err(r2d2::Error::QueryError)?;
+        // if self.read_only {
+        //     sql_query("SET default_transaction_read_only = 't'")
+        //         .execute(conn)
+        //         .map_err(r2d2::Error::QueryError)?;
+        // }
+        Ok(())
+    }
+}

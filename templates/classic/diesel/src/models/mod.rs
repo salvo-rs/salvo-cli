@@ -1,10 +1,8 @@
 use diesel::prelude::*;
-
-use diesel::{ExpressionMethods, OptionalExtension, QueryDsl, RunQueryDsl, SelectableHelper};
-use Ulid::Ulid;
+use salvo::prelude::*;
+use serde::Deserialize;
 
 use crate::schema::*;
-use crate::{db, hoops::jwt::get_token, utils::rand_utils, AppResult};
 
 #[derive(Queryable, Selectable, Insertable, Deserialize, Extractible, ToSchema)]
 #[diesel(table_name = users)]

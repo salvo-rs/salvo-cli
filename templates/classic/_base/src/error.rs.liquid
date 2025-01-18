@@ -1,4 +1,10 @@
-use salvo::http::ParseError;
+use std::borrow::Cow;
+use std::io;
+use std::string::FromUtf8Error;
+
+use salvo::http::{ParseError, StatusCode, StatusError};
+use salvo::oapi::{self, EndpointOutRegister, ToSchema};
+use salvo::prelude::*;
 {% if db_type == "mongodb" %}
 use mongodb::bson::document::ValueAccessError as MongoBsonAccessError;
 use mongodb::bson::oid::Error as MongoBsonOidError;
@@ -14,32 +20,40 @@ pub enum AppError {
     Internal(String),
     #[error("salvo internal error: `{0}`")]
     Salvo(#[from] ::salvo::Error),
-    #[error("error:`{0}`")]
-    AnyHow(#[from] anyhow::Error),
+    #[error("http status error: `{0}`")]
+    HttpStatus(#[from] StatusError),
+    #[error("http parse error:`{0}`")]
+    HttpParse(#[from] ParseError),
+    #[error("anyhow error:`{0}`")]
+    Anyhow(#[from] anyhow::Error),
     #[error("http::ParseError:`{0}`")]
     ParseError(#[from] ParseError),
-    {% if db_lib == "sqlx" %}
+    {%- if db_lib == "sqlx" %}
     #[error("sqlx::Error:`{0}`")]
     SqlxError(#[from] sqlx::Error),
-    {% elsif db_lib == "seaorm" %}
+    {%- elsif db_lib == "seaorm" %}
     #[error("seaorm::DbError:Error:`{0}`")]
-    DbError(#[from] seaorm::DbError),
-    {% elsif db_lib == "diesel" %}
+    Seaorm(#[from] seaorm::DbError),
+    {%- elsif db_lib == "diesel" %}
     #[error("diesel::result::Error:`{0}`")]
-    DieselError(#[from] diesel::result::Error),
-    {% elsif db_lib == "rbatis" %}
+    Diesel(#[from] diesel::result::Error),
+    #[error("r2d2: `{0}`")]
+    R2d2(#[from] diesel::r2d2::PoolError),
+    #[error("pool: `{0}`")]
+    Pool(#[from] crate::db::PoolError),
+    {%- elsif db_lib == "rbatis" %}
     #[error("rbatis::Error:`{0}`")]
-    RbatisErr(#[from] rbatis::Error),
-    {% elsif db_type == "mongodb" %}
+    Rbatis(#[from] rbatis::Error),
+    {%- elsif db_type == "mongodb" %}
     #[error("mongodb::error::Error:`{0}`")]
-    MongoDbError(#[from] MongoDbErroror),
+    MongoDb(#[from] MongoDbErroror),
     #[error("mongodb::bson::document::ValueAccessError:`{0}`")]
-    MongoBsonAccessError(#[from] MongoBsonAccessError),
+    MongoBsonAccess(#[from] MongoBsonAccessError),
     #[error("mongodb::bson::oid::Error`{0}`")]
-    MongoBsonOidError(#[from] MongoBsonOidError),
+    MongoBsonOid(#[from] MongoBsonOidError),
     {% endif %}
     #[error("ValidationError:`{0}`")]
-    ValidationError(#[from] validator::ValidationErrors),
+    Validation(#[from] validator::ValidationErrors),
 }
 impl AppError {
     pub fn public<S: Into<String>>(msg: S) -> Self {
@@ -51,19 +65,54 @@ impl AppError {
     }
 }
 
+#[async_trait]
+impl Writer for AppError {
+    async fn write(mut self, req: &mut Request, depot: &mut Depot, res: &mut Response) {
+        let code = match &self {
+            Self::HttpStatus(e) => e.code,
+            _ => StatusCode::INTERNAL_SERVER_ERROR,
+        };
+        res.status_code(code);
+        let data = match self {
+            Self::Salvo(e) => {
+                StatusError::internal_server_error().brief("Unknown error happened in salvo.")
+            }
+            Self::Public(msg) => StatusError::internal_server_error().brief(msg),
+            Self::Internal(msg) => StatusError::internal_server_error(),
+            {%- if db_lib == "diesel" %}
+            Self::Diesel(e) => {
+                tracing::error!(error = ?e, "diesel db error");
+                if let diesel::result::Error::NotFound = e {
+                    StatusError::not_found().brief("Resource not found.")
+                } else {
+                    StatusError::internal_server_error().brief("Database error.")
+                }
+            }
+            {% endif %}
+            Self::HttpStatus(e) => e,
+            e => StatusError::internal_server_error()
+                .brief(format!("Unknown error happened: {e}"))
+                .cause(e),
+        };
+        res.render(data);
+    }
+}
 impl EndpointOutRegister for AppError {
-    fn register(_components: &mut salvo::oapi::Components, operation: &mut salvo::oapi::Operation) {
+    fn register(components: &mut salvo::oapi::Components, operation: &mut salvo::oapi::Operation) {
         operation.responses.insert(
             StatusCode::INTERNAL_SERVER_ERROR.as_str(),
-            oapi::Response::new("Internal server error").add_content("application/json", StatusError::to_schema(components)),
+            oapi::Response::new("Internal server error")
+                .add_content("application/json", StatusError::to_schema(components)),
         );
         operation.responses.insert(
             StatusCode::NOT_FOUND.as_str(),
-            oapi::Response::new("Not found").add_content("application/json", StatusError::to_schema(components)),
+            oapi::Response::new("Not found")
+                .add_content("application/json", StatusError::to_schema(components)),
         );
         operation.responses.insert(
             StatusCode::BAD_REQUEST.as_str(),
-            oapi::Response::new("Bad request").add_content("application/json", StatusError::to_schema(components)),
+            oapi::Response::new("Bad request")
+                .add_content("application/json", StatusError::to_schema(components)),
         );
     }
 }

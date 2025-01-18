@@ -5,7 +5,7 @@ use salvo::prelude::*;
 use crate::AppResult;
 
 #[handler]
-pub async fn hello(req: &mut Request, res: &mut Response) -> AppResult<Text>{
+pub async fn hello(req: &mut Request, res: &mut Response) -> AppResult<Text<String>>{
     #[derive(Template)]
     #[template(path = "hello.html")]
     struct HelloTemplate<'a> {
@@ -20,7 +20,6 @@ pub async fn hello(req: &mut Request, res: &mut Response) -> AppResult<Text>{
 mod tests {
     use salvo::test::{ResponseExt, TestClient};
     use salvo::Service;
-    use crate::config::CFG;
 
     #[tokio::test]
     async fn test_hello_world() {

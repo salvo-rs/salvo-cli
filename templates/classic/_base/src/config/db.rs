@@ -1,6 +1,8 @@
-use once_cell::sync::Lazy;
-use serde::Deserialize;
 use std::{fs::File, io::Read, path::Path};
+
+use serde::{Deserialize, Serialize};
+
+use super::default_false;
 
 #[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct DbConfig {
@@ -34,6 +36,22 @@ pub struct DbConfig {
     #[serde(default = "default_helper_threads")]
     pub helper_threads: usize,
     /// Whether to enforce that all the database connections are encrypted with TLS.
-    #[serde(default = "false_value")]
+    #[serde(default = "default_false")]
     pub enforce_tls: bool,
+}
+
+fn default_helper_threads() -> usize {
+    10
+}
+fn default_db_pooll_size() -> u32 {
+    10
+}
+fn default_tcp_timeout() -> u64 {
+    10000
+}
+fn default_connection_timeout() -> u64 {
+    30000
+}
+fn default_statement_timeout() -> u64 {
+    30000
 }

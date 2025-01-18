@@ -1,18 +1,20 @@
 use std::sync::Arc;
 use std::time::Duration;
 
-use tokio::signal;
-use tracing::info;
-use crate::routers::router;
-use salvo::server::ServerHandle;
+{%- if db_lib == "diesel" %}
+use diesel::r2d2;
+{% endif %}
+use dotenvy::dotenv;
+use figment::providers::{Env, Format, Toml};
+use figment::Figment;
 use salvo::catcher::Catcher;
 use salvo::conn::rustls::{Keycert, RustlsConfig};
 use salvo::prelude::*;
-use dotenvy::dotenv;
-use figment::Figment;
-use figment::providers::{Env, Format, Toml};
-
-use figment::Figment;
+use salvo::server::ServerHandle;
+use scheduled_thread_pool::ScheduledThreadPool;
+use serde::Serialize;
+use tokio::signal;
+use tracing::info;
 
 mod config;
 mod db;
@@ -21,9 +23,9 @@ mod utils;
 {% if db_lib == "diesel" %}
 mod schema;
 {% endif %}
+mod env_vars;
 mod hoops;
 mod routers;
-mod env_vars;
 
 mod error;
 pub use error::AppError;
@@ -41,11 +43,6 @@ pub fn empty_ok() -> JsonResult<Empty> {
     Ok(Json(Empty {}))
 }
 
-use config::ServerConfig;
-pub fn config() -> &'static ServerConfig {
-    &*crate::config::CONFIG
-}
-
 #[tokio::main]
 async fn main() {
     if let Err(e) = dotenv() {
@@ -53,7 +50,9 @@ async fn main() {
     }
 
     let raw_config = Figment::new()
-        .merge(Toml::file(Env::var("APP_CONFIG").as_deref().unwrap_or("config.toml")))
+        .merge(Toml::file(
+            Env::var("APP_CONFIG").as_deref().unwrap_or("config.toml"),
+        ))
         .merge(Env::prefixed("APP_").global());
 
     let config = match raw_config.extract::<ServerConfig>() {
@@ -63,30 +62,33 @@ async fn main() {
             std::process::exit(1);
         }
     };
-    crate::config::CONFIG.set(config).expect("config should be set");
-    let config = crate::config();
+    crate::config::CONFIG
+        .set(config)
+        .expect("config should be set");
+    let config = crate::config::get();
 
-    {% if db_lib == "diesel" %}
-    let thread_pool = Arc::new(ScheduledThreadPool::new(conf.db.helper_threads));
+    {%- if db_lib == "diesel" %}
+    let thread_pool = Arc::new(ScheduledThreadPool::new(config.db.helper_threads));
+
 
     let db_primary = {
-        let db_connection_config = ConnectionConfig {
+        let db_connection_config = db::ConnectionConfig {
             statement_timeout: config.db.statement_timeout,
         };
 
         let db_config = r2d2::Pool::builder()
-            .max_size(conf.db.pool_size)
-            .min_idle(conf.db.min_idle)
+            .max_size(config.db.pool_size)
+            .min_idle(config.db.min_idle)
             .connection_timeout(Duration::from_millis(config.db.connection_timeout))
             .connection_customizer(Box::new(db_connection_config))
             .thread_pool(thread_pool.clone());
 
-        DieselPool::new(&config.db.url, &config.db, db_config).unwrap()
+            db::DieselPool::new(&config.db.url, &config.db, db_config).expect("diesel pool should be created")
     };
     crate::db::DIESEL_POOL
         .set(db_primary)
         .expect("diesel pool should be set");
-    {% endif %}
+    {%- endif %}
 
     crate::db::migrate();
 
@@ -94,10 +96,10 @@ async fn main() {
     tracing::info!("log level: {}", &config.log.filter_level);
 
     let service = Service::new(routers::root())
-        .catcher(Catcher::default().hoop(handle_404))
-        .hoop(cors_hoop());
+        .catcher(Catcher::default().hoop(hoops::error_404))
+        .hoop(hoops::cors_hoop());
     println!("🔄 {{listen_on}} {}", &config.listen_addr);
-    if config.ssl {
+    if let Some(tls) = &config.tls {
         println!(
             "📖 {{open_api_page}}: https://{}/scalar",
             config.listen_addr.replace("0.0.0.0", "127.0.0.1")
@@ -106,11 +108,7 @@ async fn main() {
             "🔑 Login Page: https://{}/login",
             config.listen_addr.replace("0.0.0.0", "127.0.0.1")
         );
-        let config = RustlsConfig::new(
-            Keycert::new()
-                .cert(CERT_KEY.cert.clone())
-                .key(CERT_KEY.key.clone()),
-        );
+        let config = RustlsConfig::new(Keycert::new().cert(tls.cert.clone()).key(tls.key.clone()));
         let acceptor = TcpListener::new(&config.listen_addr)
             .rustls(config)
             .bind()
@@ -125,7 +123,7 @@ async fn main() {
         );
         println!(
             "🔑 Login Page: http://{}/login",
-            config().server.listen_addr.replace("0.0.0.0", "127.0.0.1")
+            config.server.listen_addr.replace("0.0.0.0", "127.0.0.1")
         );
         let acceptor = TcpListener::new(&config.listen_addr).bind().await;
         let server = Server::new(acceptor);
@@ -172,7 +170,7 @@ mod tests {
 
         let content = TestClient::get(format!(
             "http://{}",
-            &config().address.replace("0.0.0.0", "127.0.0.1")
+            &config::get().address.replace("0.0.0.0", "127.0.0.1")
         ))
         .send(&service)
         .await

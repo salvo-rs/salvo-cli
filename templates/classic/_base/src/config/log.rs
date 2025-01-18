@@ -1,10 +1,15 @@
+// https://github.com/clia/tracing-config/blob/main/src/lib.rs
+
 use std::{fs::File, io::Read, path::Path};
 
 use once_cell::sync::Lazy;
 use serde::Deserialize;
+use time::macros::format_description;
+pub use tracing_appender::non_blocking::WorkerGuard;
+use tracing_subscriber::fmt;
+use tracing_subscriber::fmt::time::OffsetTime;
 
 use tracing_appender::rolling;
-
 
 use super::default_true;
 
@@ -13,13 +18,13 @@ const FORMAT_COMPACT: &str = "compact";
 const FORMAT_JSON: &str = "json";
 const FORMAT_FULL: &str = "full";
 
-#[derive(Debug, Deserialize)]
+#[derive(Deserialize, Clone, Debug)]
 pub struct LogConfig {
     #[serde(default = "default_filter_level")]
     pub filter_level: String,
     #[serde(default = "default_true")]
     pub with_ansi: bool,
-    #[serde(default = "default_rolling")]
+    #[serde(default = "default_true")]
     pub to_stdout: bool,
     #[serde(default = "default_directory")]
     pub directory: String,
@@ -114,18 +119,12 @@ impl LogConfig {
     /// Valid values: minutely | hourly | daily | never
     ///
     /// Will panic on other values.
-    pub fn rolling(mut self, rolling: &str) -> Self {
-        if rolling == "minutely" {
-            self.rolling = tracing_appender::rolling::Rotation::MINUTELY;
-        } else if rolling == "hourly" {
-            self.rolling = tracing_appender::rolling::Rotation::HOURLY;
-        } else if rolling == "daily" {
-            self.rolling = tracing_appender::rolling::Rotation::DAILY;
-        } else if rolling == "never" {
-            self.rolling = tracing_appender::rolling::Rotation::NEVER;
-        } else {
+    pub fn rolling(mut self, rolling: impl Into<String>) -> Self {
+        let rolling = rolling.into();
+        if !["minutely", "hourly", "daily", "never"].contains(&&*rolling) {
             panic!("Unknown rolling")
         }
+        self.rolling = rolling;
         self
     }
 
@@ -179,11 +178,12 @@ impl LogConfig {
     /// Caller should hold the guard.
     pub fn guard(&self) -> WorkerGuard {
         // Tracing appender init.
-        let file_appender = match self.rolling {
-            rolling::Rotation::MINUTELY => rolling::minutely(self.directory, self.file_name),
-            rolling::Rotation::HOURLY => rolling::hourly(self.directory, self.file_name),
-            rolling::Rotation::DAILY => rolling::daily(self.directory, self.file_name),
-            rolling::Rotation::NEVER => rolling::never(self.directory, self.file_name),
+        let file_appender = match &*self.rolling {
+            "minutely" => rolling::minutely(&self.directory, &self.file_name),
+            "hourly" => rolling::hourly(&self.directory, &self.file_name),
+            "daily" => rolling::daily(&self.directory, &self.file_name),
+            "never"=> rolling::never(&self.directory, &self.file_name),
+            _ => rolling::never(&self.directory, &self.file_name),
         };
         let (file_writer, guard) = tracing_appender::non_blocking(file_appender);
 
@@ -211,34 +211,30 @@ impl LogConfig {
                 subscriber.with_writer(file_writer).init();
             };
         } else if self.format == FORMAT_COMPACT {
-            let subscriber = subscriber
-                .event_format(
-                    fmt::format()
-                        .compact()
-                        .with_level(self.with_level)
-                        .with_target(self.with_target)
-                        .with_thread_ids(self.with_thread_ids)
-                        .with_thread_names(self.with_thread_names)
-                        .with_source_location(self.with_source_location),
-                )
-                .with_timer(timer);
+            let subscriber = subscriber.event_format(
+                fmt::format()
+                    .compact()
+                    .with_level(self.with_level)
+                    .with_target(self.with_target)
+                    .with_thread_ids(self.with_thread_ids)
+                    .with_thread_names(self.with_thread_names)
+                    .with_source_location(self.with_source_location),
+            );
             if self.to_stdout {
                 subscriber.with_writer(std::io::stdout).init();
             } else {
                 subscriber.with_writer(file_writer).init();
             };
         } else if self.format == FORMAT_JSON {
-            let subscriber = subscriber
-                .event_format(
-                    fmt::format()
-                        .json()
-                        .with_level(self.with_level)
-                        .with_target(self.with_target)
-                        .with_thread_ids(self.with_thread_ids)
-                        .with_thread_names(self.with_thread_names)
-                        .with_source_location(self.with_source_location),
-                )
-                .with_timer(timer);
+            let subscriber = subscriber.event_format(
+                fmt::format()
+                    .json()
+                    .with_level(self.with_level)
+                    .with_target(self.with_target)
+                    .with_thread_ids(self.with_thread_ids)
+                    .with_thread_names(self.with_thread_names)
+                    .with_source_location(self.with_source_location),
+            );
             if self.to_stdout {
                 subscriber.json().with_writer(std::io::stdout).init();
             } else {
@@ -253,8 +249,7 @@ impl LogConfig {
                         .with_thread_ids(self.with_thread_ids)
                         .with_thread_names(self.with_thread_names)
                         .with_source_location(self.with_source_location),
-                )
-                .with_timer(timer);
+                );
             if self.to_stdout {
                 subscriber.with_writer(std::io::stdout).init();
             } else {

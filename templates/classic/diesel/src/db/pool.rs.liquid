@@ -49,7 +49,6 @@ impl DieselPool {
         self.inner.state()
     }
 
-    #[instrument(skip_all)]
     pub fn wait_until_healthy(&self, timeout: Duration) -> Result<(), PoolError> {
         match self.inner.get_timeout(timeout) {
             Ok(_) => Ok(()),
