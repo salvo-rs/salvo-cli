@@ -12,7 +12,7 @@ pub async fn hello(req: &mut Request) -> AppResult<Text<String>>{
         name: &'a str,
     }
     let hello_tmpl = HelloTemplate {
-        name: req.param::<&str>("name").unwrap_or("World"),
+        name: req.query::<&str>("name").unwrap_or("World"),
     };
     Ok(Text::Html(hello_tmpl.render().unwrap()))
 }
