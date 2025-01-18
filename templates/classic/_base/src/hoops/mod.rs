@@ -1,5 +1,5 @@
 use askama::Template;
-use salvo::{handler, prelude::StatusCode, writing::Text, Depot, FlowCtrl, Request, Response};
+use salvo::prelude::*;
 
 pub mod jwt;
 pub use jwt::jwt_hoop;

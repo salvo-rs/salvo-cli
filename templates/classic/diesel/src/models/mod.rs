@@ -1,6 +1,6 @@
 use diesel::prelude::*;
 use salvo::prelude::*;
-use serde::Deserialize;
+use serde::{Serialize, Deserialize};
 
 use crate::schema::*;
 
@@ -12,4 +12,11 @@ pub struct User {
     pub id: String,
     pub username: String,
     pub password: String,
+}
+
+#[derive(Queryable, Selectable, Serialize, ToSchema, Debug)]
+#[diesel(table_name = users)]
+pub struct SafeUser {
+    pub id: String,
+    pub username: String,
 }

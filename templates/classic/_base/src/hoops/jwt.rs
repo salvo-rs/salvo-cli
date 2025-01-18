@@ -15,7 +15,7 @@ pub struct JwtClaims {
 }
 
 pub fn jwt_hoop(config: &JwtConfig) -> JwtAuth<JwtClaims, ConstDecoder> {
-    let auth_handler: JwtAuth<JwtClaims, _> = JwtAuth::new(ConstDecoder::from_secret(
+    JwtAuth::new(ConstDecoder::from_secret(
         config.secret.to_owned().as_bytes(),
     ))
     .finders(vec![
@@ -23,8 +23,7 @@ pub fn jwt_hoop(config: &JwtConfig) -> JwtAuth<JwtClaims, ConstDecoder> {
         Box::new(QueryFinder::new("token")),
         Box::new(CookieFinder::new("jwt_token")),
     ])
-    .force_passed(false);
-    auth_handler
+    .force_passed(false)
 }
 
 pub fn get_token(username: String, user_id: String) -> Result<(String, i64)> {

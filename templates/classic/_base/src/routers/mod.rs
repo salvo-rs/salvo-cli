@@ -6,6 +6,8 @@ mod auth;
 mod demo;
 mod user;
 
+use crate::{config, hoops};
+
 #[derive(RustEmbed)]
 #[folder = "assets"]
 struct Assets;
@@ -17,7 +19,7 @@ pub fn root() -> Router {
         .push(Router::with_path("/api/login").post(auth::post_login))
         .push(
             Router::with_path("/api/users")
-                // .hoop(auth())
+                .hoop(hoops::jwt_hoop(&config::get().jwt))
                 .get(user::list_users)
                 .post(user::create_user)
                 .push(

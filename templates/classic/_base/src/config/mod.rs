@@ -1,10 +1,6 @@
 use std::sync::OnceLock;
-use std::{fs::File, io::Read, path::Path};
 
 use serde::Deserialize;
-use salvo::http::HeaderValue;
-
-use crate::env_vars::required_var;
 
 mod log;
 pub use log::LogConfig;
@@ -15,7 +11,6 @@ pub static CONFIG: OnceLock<ServerConfig> = OnceLock::new();
 pub fn get() -> &'static ServerConfig {
     CONFIG.get().expect("config should be set")
 }
-
 
 #[derive(Deserialize, Clone, Debug)]
 pub struct ServerConfig {
@@ -41,6 +36,9 @@ pub struct TlsConfig {
 
 pub fn default_false() -> bool {
     false
+}
+pub fn default_true() -> bool {
+    true
 }
 
 fn default_listen_addr() -> String {

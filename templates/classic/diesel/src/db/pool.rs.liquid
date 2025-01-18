@@ -19,7 +19,7 @@ pub struct DieselPool {
 
 impl DieselPool {
     pub(crate) fn new(
-        url: &String,
+        url: &str,
         config: &DbConfig,
         r2d2_config: r2d2::Builder<ConnectionManager<PgConnection>>,
     ) -> Result<DieselPool, PoolError> {
@@ -35,10 +35,6 @@ impl DieselPool {
         }
 
         Ok(pool)
-    }
-
-    pub fn new_background_worker(inner: r2d2::Pool<ConnectionManager<PgConnection>>) -> Self {
-        Self { inner }
     }
 
     pub fn get(&self) -> Result<PgPooledConnection, PoolError> {

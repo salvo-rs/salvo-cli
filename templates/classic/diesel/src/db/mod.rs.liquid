@@ -1,24 +1,27 @@
 
+use std::sync::OnceLock;
 
-
+use diesel::r2d2::{self, CustomizeConnection};
 use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
+
 use crate::config::DbConfig;
 
-{% if db_type == "sqlite" %}
+{%- if db_type == "sqlite" %}
 pub fn establish_connection() -> SqliteConnection {
     let conn = SqliteConnection::establish(&config().db.database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", &config().db.database_url));
     conn
 }
-{% endif %}
-{% if db_type == "mysql" %}
+{%- endif %}
+{%- if db_type == "mysql" %}
 pub fn establish_connection() -> MysqlConnection {
     MysqlConnection::establish(&config().db.database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", &config().db.database_url))
 }
-{% endif %}
-{% if db_type == "postgres" %}
+{%- endif %}
+{%- if db_type == "postgres" %}
 use url::Url;
+use diesel::{PgConnection, RunQueryDsl};
 
 pub mod pool;
 pub use pool::{DieselPool, PgPooledConnection, PoolError};
@@ -44,12 +47,7 @@ pub fn connect() -> Result<PgPooledConnection, PoolError> {
         }
     }
 }
-{% endif %}
-
-
-pub fn state() -> State {
-    DIESEL_POOL.get().expect("diesel pool should set").state()
-}
+{%- endif %}
 
 pub fn connection_url(config: &DbConfig, url: &str) -> String {
     let mut url = Url::parse(url).expect("Invalid database URL");

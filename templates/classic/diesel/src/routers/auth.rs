@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::hoops::jwt;
 use crate::schema::*;
-use crate::{db, empty_ok, json_ok, utils, AppResult, JsonResult};
+use crate::{db, json_ok, utils, AppResult, JsonResult};
 
 #[handler]
 pub async fn login_page(res: &mut Response) -> AppResult<()> {
@@ -43,7 +43,7 @@ pub async fn post_login(
     res: &mut Response,
 ) -> JsonResult<LoginOutData> {
     let idata = idata.into_inner();
-    let mut conn = &mut db::connect()?;
+    let conn = &mut db::connect()?;
     let Some((id, username, hashed)) = users::table
         .filter(users::username.eq(&idata.username))
         .select((users::id, users::username, users::password))

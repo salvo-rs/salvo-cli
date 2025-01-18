@@ -1,13 +1,7 @@
 // https://github.com/clia/tracing-config/blob/main/src/lib.rs
-
-use std::{fs::File, io::Read, path::Path};
-
-use once_cell::sync::Lazy;
 use serde::Deserialize;
-use time::macros::format_description;
-pub use tracing_appender::non_blocking::WorkerGuard;
+use tracing_appender::non_blocking::WorkerGuard;
 use tracing_subscriber::fmt;
-use tracing_subscriber::fmt::time::OffsetTime;
 
 use tracing_appender::rolling;
 
@@ -25,7 +19,7 @@ pub struct LogConfig {
     #[serde(default = "default_true")]
     pub with_ansi: bool,
     #[serde(default = "default_true")]
-    pub to_stdout: bool,
+    pub stdout: bool,
     #[serde(default = "default_directory")]
     pub directory: String,
     #[serde(default = "default_file_name")]
@@ -66,7 +60,7 @@ impl Default for LogConfig {
         Self {
             filter_level: default_filter_level(),
             with_ansi: true,
-            to_stdout: false,
+            stdout: false,
             directory: default_directory(),
             file_name: default_file_name(),
             rolling: default_rolling(),
@@ -80,6 +74,7 @@ impl Default for LogConfig {
     }
 }
 
+#[allow(dead_code)]
 impl LogConfig {
     /// Will try_from_default_env while not setted.
     ///
@@ -99,20 +94,20 @@ impl LogConfig {
     }
 
     /// Will append log to stdout.
-    pub fn to_stdout(mut self, to_stdout: bool) -> Self {
-        self.to_stdout = to_stdout;
+    pub fn stdout(mut self, stdout: bool) -> Self {
+        self.stdout = stdout;
         self
     }
 
     /// Set log file directory.
-    pub fn directory(mut self, directory: &str) -> Self {
-        self.directory = directory.to_owned();
+    pub fn directory(mut self, directory: impl Into<String>) -> Self {
+        self.directory = directory.into();
         self
     }
 
     /// Set log file name.
-    pub fn file_name(mut self, file_name: &str) -> Self {
-        self.file_name = file_name.to_owned();
+    pub fn file_name(mut self, file_name: impl Into<String>) -> Self {
+        self.file_name = file_name.into();
         self
     }
 
@@ -131,7 +126,8 @@ impl LogConfig {
     /// Valid values: pretty | compact | json | full
     ///
     /// Will panic on other values.
-    pub fn format(mut self, format: &str) -> Self {
+    pub fn format(mut self, format: impl Into<String>) -> Self {
+        let format = format.into();
         if format != FORMAT_PRETTY
             && format != FORMAT_COMPACT
             && format != FORMAT_JSON
@@ -139,7 +135,7 @@ impl LogConfig {
         {
             panic!("Unknown format")
         }
-        self.format = format.to_owned();
+        self.format = format;
         self
     }
 
@@ -205,7 +201,7 @@ impl LogConfig {
                     .with_thread_names(self.with_thread_names)
                     .with_source_location(self.with_source_location),
             );
-            if self.to_stdout {
+            if self.stdout {
                 subscriber.with_writer(std::io::stdout).init();
             } else {
                 subscriber.with_writer(file_writer).init();
@@ -220,7 +216,7 @@ impl LogConfig {
                     .with_thread_names(self.with_thread_names)
                     .with_source_location(self.with_source_location),
             );
-            if self.to_stdout {
+            if self.stdout {
                 subscriber.with_writer(std::io::stdout).init();
             } else {
                 subscriber.with_writer(file_writer).init();
@@ -235,7 +231,7 @@ impl LogConfig {
                     .with_thread_names(self.with_thread_names)
                     .with_source_location(self.with_source_location),
             );
-            if self.to_stdout {
+            if self.stdout {
                 subscriber.json().with_writer(std::io::stdout).init();
             } else {
                 subscriber.json().with_writer(file_writer).init();
@@ -250,7 +246,7 @@ impl LogConfig {
                         .with_thread_names(self.with_thread_names)
                         .with_source_location(self.with_source_location),
                 );
-            if self.to_stdout {
+            if self.stdout {
                 subscriber.with_writer(std::io::stdout).init();
             } else {
                 subscriber.with_writer(file_writer).init();

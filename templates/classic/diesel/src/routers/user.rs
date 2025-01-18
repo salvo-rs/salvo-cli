@@ -2,12 +2,11 @@ use askama::Template;
 use diesel::prelude::*;
 use salvo::oapi::extract::*;
 use salvo::prelude::*;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use ulid::Ulid;
 use validator::Validate;
 
-use crate::hoops::jwt::decode_token;
-use crate::models::User;
+use crate::models::{SafeUser, User};
 use crate::schema::*;
 use crate::{db, empty_ok, json_ok, utils, AppResult, EmptyResult, JsonResult};
 
@@ -43,9 +42,9 @@ pub struct CreateInData {
     pub password: String,
 }
 #[endpoint(tags("users"))]
-pub async fn create_user(idata: JsonBody<CreateInData>) -> JsonResult<User> {
+pub async fn create_user(idata: JsonBody<CreateInData>) -> JsonResult<SafeUser> {
     let CreateInData { username, password } = idata.into_inner();
-    let mut conn = &mut db::connect()?;
+    let conn = &mut db::connect()?;
     let user = User {
         id: Ulid::new().to_string(),
         username,
@@ -53,32 +52,33 @@ pub async fn create_user(idata: JsonBody<CreateInData>) -> JsonResult<User> {
     };
     let user = diesel::insert_into(users::table)
         .values(&user)
-        .get_result::<User>(conn)?;
+        .returning(SafeUser::as_returning())
+        .get_result(conn)?;
     json_ok(user)
 }
 
-#[derive(Deserialize, Debug, Validate, ToSchema, Default)]
-pub struct UpdateInData {
+#[derive(Deserialize, Debug, Validate, ToSchema)]
+struct UpdateInData {
     #[validate(length(min = 5, message = "username length must be greater than 5"))]
-    pub username: String,
+    username: String,
     #[validate(length(min = 6, message = "password length must be greater than 5"))]
-    pub password: String,
+    password: String,
 }
 #[endpoint(tags("users"), parameters(("id", description = "user id")))]
 pub async fn update_user(
     user_id: PathParam<String>,
     idata: JsonBody<UpdateInData>,
-) -> JsonResult<User> {
+) -> JsonResult<SafeUser> {
     let user_id = user_id.into_inner();
     let idata = idata.into_inner();
     let conn = &mut db::connect()?;
-    let user = diesel::update(users::table.find(user_id))
+    let User { id, username, .. } = diesel::update(users::table.find(user_id))
         .set((
             users::username.eq(&idata.username),
             users::password.eq(utils::hash_password(idata.password).await?),
         ))
         .get_result::<User>(conn)?;
-    json_ok(user)
+    json_ok(SafeUser { id, username })
 }
 
 #[endpoint(tags("users"))]
@@ -89,8 +89,8 @@ pub async fn delete_user(user_id: PathParam<String>) -> EmptyResult {
 }
 
 #[endpoint(tags("users"))]
-pub async fn list_users() -> JsonResult<Vec<User>> {
+pub async fn list_users() -> JsonResult<Vec<SafeUser>> {
     let conn = &mut db::connect()?;
-    let users = users::table.load::<User>(conn)?;
+    let users = users::table.select(SafeUser::as_select()).load(conn)?;
     json_ok(users)
 }

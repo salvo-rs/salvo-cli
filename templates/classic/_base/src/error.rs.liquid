@@ -1,7 +1,3 @@
-use std::borrow::Cow;
-use std::io;
-use std::string::FromUtf8Error;
-
 use salvo::http::{ParseError, StatusCode, StatusError};
 use salvo::oapi::{self, EndpointOutRegister, ToSchema};
 use salvo::prelude::*;
@@ -26,8 +22,6 @@ pub enum AppError {
     HttpParse(#[from] ParseError),
     #[error("anyhow error:`{0}`")]
     Anyhow(#[from] anyhow::Error),
-    #[error("http::ParseError:`{0}`")]
-    ParseError(#[from] ParseError),
     {%- if db_lib == "sqlx" %}
     #[error("sqlx::Error:`{0}`")]
     SqlxError(#[from] sqlx::Error),
@@ -67,7 +61,7 @@ impl AppError {
 
 #[async_trait]
 impl Writer for AppError {
-    async fn write(mut self, req: &mut Request, depot: &mut Depot, res: &mut Response) {
+    async fn write(mut self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
         let code = match &self {
             Self::HttpStatus(e) => e.code,
             _ => StatusCode::INTERNAL_SERVER_ERROR,
@@ -75,10 +69,14 @@ impl Writer for AppError {
         res.status_code(code);
         let data = match self {
             Self::Salvo(e) => {
+                tracing::error!(error = ?e, "salvo error");
                 StatusError::internal_server_error().brief("Unknown error happened in salvo.")
             }
             Self::Public(msg) => StatusError::internal_server_error().brief(msg),
-            Self::Internal(msg) => StatusError::internal_server_error(),
+            Self::Internal(msg) => {
+                tracing::error!(msg = msg, "internal error");
+                StatusError::internal_server_error()
+            }
             {%- if db_lib == "diesel" %}
             Self::Diesel(e) => {
                 tracing::error!(error = ?e, "diesel db error");
@@ -88,7 +86,7 @@ impl Writer for AppError {
                     StatusError::internal_server_error().brief("Database error.")
                 }
             }
-            {% endif %}
+            {%- endif %}
             Self::HttpStatus(e) => e,
             e => StatusError::internal_server_error()
                 .brief(format!("Unknown error happened: {e}"))

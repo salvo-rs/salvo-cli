@@ -9,7 +9,6 @@ readme = "./README.md"
 anyhow = "1.0.79"
 figment = { version = "0.10.8", features = ["env", "toml"] }
 jsonwebtoken = "9.2.0"
-once_cell = "1.19.0"
 rust-embed = "8.0.0"
 salvo = {version = "0.76.0", features = ["full"]}
 serde = "1.0.196"
@@ -26,50 +25,50 @@ tracing-appender ="0.2.3"
 tracing-subscriber = {version = "0.3.19", features = ["std", "fmt", "env-filter", "tracing-log", "time", "local-time", "json"]}
 {%- if db_lib == "sqlx" and db_type == "postgres" %}
 sqlx = { version = "0.8", features = ["runtime-tokio", "macros", "postgres"]}
-{% endif %}
+{%- endif %}
 {%- if db_lib == "sqlx" and db_type == "mysql" %}
 sqlx = { version = "0.8", features = ["runtime-tokio", "macros", "mysql"]}
 {%- endif %}
 {%- if db_lib == "sqlx" and db_type == "sqlite" %}
 sqlx = { version = "0.8", features = ["runtime-tokio", "macros", "sqlite"]}
-{% endif %}
+{%- endif %}
 {%- if db_lib == "seaorm" and db_type == "postgres" %}
 sea-orm = { version = "1", features = ["runtime-tokio-native-tls", "sqlx-postgres"]}
-{% endif %}
+{%- endif %}
 {%- if db_lib == "seaorm" and db_type == "mysql" %}
 sea-orm = { version = "1", features = ["runtime-tokio-native-tls", "sqlx-mysql"]}
-{% endif %}
+{%- endif %}
 {%- if db_lib == "seaorm" and db_type == "sqlite" %}
 sea-orm = { version = "1", "features": ["runtime-tokio-native-tls", "sqlx-sqlite"]}
-{% endif %}
+{%- endif %}
 {%- if db_lib == "diesel" and db_type == "postgres" %}
 diesel = { version = "2", features = ["postgres", "r2d2", "chrono", "serde_json"]}
 diesel_migrations = "2"
 scheduled-thread-pool = "0.2.0"
 url = "2"
-{% endif %}
+{%- endif %}
 {%- if db_lib == "diesel" and db_type == "mysql" %}
 diesel = { version = "2", features = ["mysql"]}
-{% endif %}
+{%- endif %}
 {%- if db_lib == "diesel" and db_type == "sqlite" %}
 diesel = { version = "2", features = ["sqlite", "returning_clauses_for_sqlite_3_35"]}
-{% endif %}
+{%- endif %}
 {%- if db_lib == "rbatis" and db_type == "postgres" %}
 rbatis = { version = "4", features = ["debug_mode"]}
-{% if db_type == "postgres" %}
+{%- if db_type == "postgres" %}
 rbdc-pg = { "version": "4"}
-{% endif %}
+{%- endif %}
 {%- if db_type == "mysql" %}
 rbdc-mysql = { version = "4"}
 {% endif %}
 {%- if db_type == "sqlite" %}
 rbdc-sqlite = { version = "4"}
-{% endif %}
+{%- endif %}
 rbs = { version = "4"}
-{% endif %}
+{%- endif %}
 {%- if db_type == "mongodb" %}
 mongodb = { version = "2"}
 futures-util = { version = "0.3"}
-{% endif %}
+{%- endif %}
 askama = "0.12.0"
 rand = "0.8.3"
