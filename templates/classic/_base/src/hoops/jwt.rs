@@ -27,7 +27,7 @@ pub fn jwt_hoop(config: &JwtConfig) -> JwtAuth<JwtClaims, ConstDecoder> {
 }
 
 pub fn get_token(username: String, user_id: String) -> Result<(String, i64)> {
-    let exp = OffsetDateTime::now_utc() + Duration::seconds(config::get().jwt.expires);
+    let exp = OffsetDateTime::now_utc() + Duration::seconds(config::get().jwt.expiry);
     let claim = JwtClaims {
         username,
         user_id,

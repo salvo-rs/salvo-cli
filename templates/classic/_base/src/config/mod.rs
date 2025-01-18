@@ -26,7 +26,7 @@ pub struct ServerConfig {
 #[derive(Deserialize, Clone, Debug)]
 pub struct JwtConfig {
     pub secret: String,
-    pub expires: i64,
+    pub expiry: i64,
 }
 #[derive(Deserialize, Clone, Debug)]
 pub struct TlsConfig {
