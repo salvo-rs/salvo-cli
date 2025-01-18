@@ -14,7 +14,7 @@ pub struct JwtClaims {
     exp: i64,
 }
 
-pub fn jwt_hoop(config: &JwtConfig) -> JwtAuth<JwtClaims, ConstDecoder> {
+pub fn auth_hoop(config: &JwtConfig) -> JwtAuth<JwtClaims, ConstDecoder> {
     JwtAuth::new(ConstDecoder::from_secret(
         config.secret.to_owned().as_bytes(),
     ))

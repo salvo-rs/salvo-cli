@@ -1,11 +1,11 @@
 use salvo::http::{ParseError, StatusCode, StatusError};
 use salvo::oapi::{self, EndpointOutRegister, ToSchema};
 use salvo::prelude::*;
-{% if db_type == "mongodb" %}
+{%- if db_type == "mongodb" %}
 use mongodb::bson::document::ValueAccessError as MongoBsonAccessError;
 use mongodb::bson::oid::Error as MongoBsonOidError;
 use mongodb::error::Error as MongoDbErroror;
-{% endif %}
+{%- endif %}
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -45,7 +45,7 @@ pub enum AppError {
     MongoBsonAccess(#[from] MongoBsonAccessError),
     #[error("mongodb::bson::oid::Error`{0}`")]
     MongoBsonOid(#[from] MongoBsonOidError),
-    {% endif %}
+    {%- endif %}
     #[error("ValidationError:`{0}`")]
     Validation(#[from] validator::ValidationErrors),
 }

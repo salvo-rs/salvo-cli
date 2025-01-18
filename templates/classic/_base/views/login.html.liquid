@@ -73,9 +73,7 @@
         <button
           type="submit"
           class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
-        >
-          {{login}}
-        </button>
+        >{{login}}</button>
       </div>
     </form>
   </div>
@@ -102,6 +100,7 @@
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                "accept": "application/json",
               },
               body: JSON.stringify({
                 username: this.username,
@@ -110,7 +109,7 @@
             });
             if (!response.ok) {
               const data = await response.json();
-              throw new Error(`${data.msg}`);
+              throw new Error(`${data.error.brief}`);
             }
             this.isLoggedIn = true;
             const userListResponse = await fetch("/users", {

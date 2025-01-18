@@ -12,7 +12,7 @@ const FORMAT_COMPACT: &str = "compact";
 const FORMAT_JSON: &str = "json";
 const FORMAT_FULL: &str = "full";
 
-#[derive(Deserialize, Default, Clone, Debug)]
+#[derive(Deserialize, Clone, Debug)]
 pub struct LogConfig {
     #[serde(default = "default_filter_level")]
     pub filter_level: String,

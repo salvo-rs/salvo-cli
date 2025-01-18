@@ -131,6 +131,7 @@ fn write_file(tmpl: &[u8], file_path: &Path, data: &Object) -> Result<()> {
         fs::create_dir_all(parent)?;
     }
     if file_path.extension() == Some(OsStr::new("liquid")) {
+        println!("rendering liquid file: {:?}", file_path);
         let template = liquid::ParserBuilder::with_stdlib()
             .build()
             .expect("should create liquid parser")

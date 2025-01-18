@@ -6,11 +6,11 @@ pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
     let _ = sqlx::query!(
         r#"
             INSERT INTO users (id, username, password)
-            {% if db_type == "mysql" %}
+            {%- if db_type == "mysql" %}
             VALUES (?, ?, ?)
             {{else}}
             VALUES ($1, $2, $3)
-            {% endif %}
+            {%- endif %}
             "#,
         id,
         req.username,
@@ -31,11 +31,11 @@ pub async fn login(req: UserLoginRequest) -> AppResult<UserLoginResponse> {
         User,
         r#"
             SELECT id, username, password FROM users
-            {% if db_type == "mysql" %}
+            {%- if db_type == "mysql" %}
             WHERE username = ?
             {{else}}
             WHERE username = $1
-            {% endif %}
+            {%- endif %}
             "#,
         req.username
     )
@@ -67,13 +67,13 @@ pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
     let _ = sqlx::query!(
         r#"
             UPDATE users
-            {% if db_type == "mysql" %}
+            {%- if db_type == "mysql" %}
             SET username = ?, password = ?
             WHERE id = ?
             {{else}}
             SET username = $1, password = $2
             WHERE id = $3
-            {% endif %}
+            {%- endif %}
             "#,
         req.username,
         hash_password,
@@ -93,11 +93,11 @@ pub async fn delete_user(id: String) -> AppResult<()> {
     sqlx::query!(
         r#"
             DELETE FROM users
-            {% if db_type == "mysql" %}
+            {%- if db_type == "mysql" %}
             WHERE id = ?
             {{else}}
             WHERE id = $1
-            {% endif %}
+            {%- endif %}
             "#,
         id,
     )

@@ -50,7 +50,7 @@ pub async fn post_login(
         .first::<(String, String, String)>(conn)
         .optional()?
     else {
-        return Err(StatusError::not_found()
+        return Err(StatusError::unauthorized()
             .brief("User does not exist.")
             .into());
     };
