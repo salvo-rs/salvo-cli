@@ -1,13 +1,12 @@
-use serde::{Deserialize, Serialize};
-
-use super::default_false;
+use once_cell::sync::Lazy;
+use serde::Deserialize;
+use std::{fs::File, io::Read, path::Path};
 
 #[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct DbConfig {
     /// Settings for the primary database. This is usually writeable, but will be read-only in
     /// some configurations.
     /// An optional follower database. Always read-only.
-    #[serde(alias = "database_url")]
     pub url: String,
     #[serde(default = "default_db_pool_size")]
     pub pool_size: u32,
@@ -35,22 +34,6 @@ pub struct DbConfig {
     #[serde(default = "default_helper_threads")]
     pub helper_threads: usize,
     /// Whether to enforce that all the database connections are encrypted with TLS.
-    #[serde(default = "default_false")]
+    #[serde(default = "false_value")]
     pub enforce_tls: bool,
-}
-
-fn default_helper_threads() -> usize {
-    10
-}
-fn default_db_pool_size() -> u32 {
-    10
-}
-fn default_tcp_timeout() -> u64 {
-    10000
-}
-fn default_connection_timeout() -> u64 {
-    30000
-}
-fn default_statement_timeout() -> u64 {
-    30000
 }

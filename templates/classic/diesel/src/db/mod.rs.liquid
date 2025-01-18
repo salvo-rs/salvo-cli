@@ -89,11 +89,6 @@ impl CustomizeConnection<PgConnection, r2d2::Error> for ConnectionConfig {
         ))
         .execute(conn)
         .map_err(r2d2::Error::QueryError)?;
-        // if self.read_only {
-        //     sql_query("SET default_transaction_read_only = 't'")
-        //         .execute(conn)
-        //         .map_err(r2d2::Error::QueryError)?;
-        // }
         Ok(())
     }
 }

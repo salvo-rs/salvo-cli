@@ -12,7 +12,7 @@ const FORMAT_COMPACT: &str = "compact";
 const FORMAT_JSON: &str = "json";
 const FORMAT_FULL: &str = "full";
 
-#[derive(Deserialize, Clone, Debug)]
+#[derive(Deserialize, Default, Clone, Debug)]
 pub struct LogConfig {
     #[serde(default = "default_filter_level")]
     pub filter_level: String,
@@ -46,7 +46,7 @@ fn default_directory() -> String {
     "./logs".into()
 }
 fn default_file_name() -> String {
-    "main.log".into()
+    "app.log".into()
 }
 fn default_rolling() -> String {
     "daily".into()

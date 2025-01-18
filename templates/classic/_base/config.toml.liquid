@@ -1,0 +1,11 @@
+listen_addr = "127.0.0.1:8008"
+
+[db]
+url = "postgres://postgres:root@127.0.0.1:5432/{{project_name}}"
+pool_size = 1
+
+[jwt]
+
+[log]
+file_name = "app.log"
+rolling = "daily"
