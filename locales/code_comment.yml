@@ -583,13 +583,13 @@ account:
   it: Account demo
 
 salvo_cli_welcome:
-  en: Welcome to Salvo CLI Demo
-  zh_CN: 欢迎使用 Salvo CLI 演示
-  zh_TW: 歡迎使用 Salvo CLI 演示
-  fr: Bienvenue sur la démo Salvo CLI
-  ja: Salvo CLI デモへようこそ
-  es: Bienvenido a la demostración de Salvo CLI
-  de: Willkommen bei der Salvo CLI Demo
+  en: Welcome to Salvo CLI Project
+  zh_CN: 欢迎使用 Salvo CLI 脚手架项目
+  zh_TW: 歡迎使用 Salvo CLI 腳手架項目
+  fr: Bienvenue sur le projet Salvo CLI
+  ja: Salvo CLI プロジェクトへようこそ
+  es: Bienvenido al proyecto de demostración de Salvo CLI
+  de: Willkommen im Salvo CLI-Projekt
   ru: Добро пожаловать в демо Salvo CLI
   ko: Salvo CLI 데모에 오신 것을 환영합니다
   pt: Bem-vindo à demonstração do Salvo CLI
@@ -606,3 +606,136 @@ lang:
   ko: ko
   pt: pt
   it: it
+
+search_placeholder:
+  en: Search username...
+  zh_CN: 搜索用户名...
+  zh_TW: 搜索用戶名...
+  fr: Rechercher un nom d'utilisateur...
+  ja: ユーザー名を検索...
+  es: Buscar nombre de usuario...
+  de: Benutzernamen suchen...
+  ru: Поиск имени пользователя...
+  it: Cerca nome utente...
+  pt: Pesquisar nome de usuário...
+  ko: 사용자 이름 검색...
+  no: Søk brukernavn...
+  is: Leita að notandanafni...
+  uk: Пошук імені користувача...
+  th: ค้นหาชื่อผู้ใช้...
+  el: Αναζήτηση ονόματος χρήστη...
+  da: Søg brugernavn...
+
+search:
+  en: Search
+  zh_CN: 搜索
+  zh_TW: 搜索
+  fr: Rechercher
+  ja: 検索
+  es: Buscar
+  de: Suchen
+  ru: Поиск
+  it: Cerca
+  pt: Pesquisar
+  ko: 검색
+  no: Søk
+  is: Leita
+  uk: Пошук
+  th: ค้นหา
+  el: Αναζήτηση
+  da: Søg
+
+update:
+  en: Update
+  zh_CN: 更新
+  zh_TW: 更新
+  fr: Mettre à jour
+  ja: 更新
+  es: Actualizar
+  de: Aktualisieren
+  ru: Обновить
+  it: Aggiorna
+  pt: Atualizar
+  ko: 업데이트
+  no: Oppdater
+  is: Uppfæra
+  uk: Оновити
+  th: อัปเดต
+  el: Ενημέρωση
+  da: Opdater
+
+total_records:
+  en: Total records
+  zh_CN: 共 %{count} 条记录
+  zh_TW: 共 %{count} 條記錄
+  fr: Total des enregistrements
+  ja: 合計レコード
+  es: Total de registros
+  de: Gesamtanzahl der Einträge
+  ru: Всего записей
+  it: Totale record
+  pt: Total de registros
+  ko: 전체 기록
+  no: Totalt antall oppføringer
+  is: Heildarfjöldi færslna
+  uk: Всього записів
+  th: จำนวนรายการทั้งหมด
+  el: Σύνολο εγγραφών
+  da: Samlede poster
+
+page:
+  en: Page %{number}
+  zh_CN: 第 %{number} 页
+  zh_TW: 第 %{number} 頁
+  fr: Page %{number}
+  ja: ページ %{number}
+  es: Página %{number}
+  de: Seite %{number}
+  ru: Страница %{number}
+  it: Pagina %{number}
+  pt: Página %{number}
+  ko: 페이지 %{number}
+  no: Side %{number}
+  is: Síða %{number}
+  uk: Сторінка %{number}
+  th: หน้า %{number}
+  el: Σελίδα %{number}
+  da: Side %{number}
+
+previous_page:
+  en: Previous
+  zh_CN: 上一页
+  zh_TW: 上一頁
+  fr: Précédent
+  ja: 前へ
+  es: Anterior
+  de: Zurück
+  ru: Предыдущая
+  it: Precedente
+  pt: Anterior
+  ko: 이전
+  no: Forrige
+  is: Fyrri
+  uk: Попередня
+  th: ก่อนหน้า
+  el: Προηγούμενο
+  da: Forrige
+
+next_page:
+  en: Next
+  zh_CN: 下一页
+  zh_TW: 下一頁
+  fr: Suivant
+  ja: 次へ
+  es: Siguiente
+  de: Weiter
+  ru: Следующая
+  it: Successivo
+  pt: Próximo
+  ko: 다음
+  no: Neste
+  is: Næsta
+  uk: Наступна
+  th: ถัดไป
+  el: Επόμενο
+  da: Næste

@@ -13,6 +13,23 @@
         </button>
       </div>
     </div>
+    <div class="mt-4">
+      <div class="flex gap-4 items-center">
+        <input
+          type="text"
+          x-model="searchUsername"
+          @keyup.enter="search()"
+          placeholder="{{search_placeholder}}"
+          class="block w-64 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3"
+        />
+        <button
+          @click="search()"
+          class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          {{search}}
+        </button>
+      </div>
+    </div>
     <div class="mt-8 flow-root">
       <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -26,7 +43,7 @@
                 <th
                   scope="col"
                   class="relative py-3.5 pl-3 pr-4 text-right sm:pr-0 rounded-lg"
-                >{{delete}}</th>
+                >{{operation}}</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -39,18 +56,48 @@
                   <td
                     class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0 rounded-lg"
                   >
-                    <a
-                      href="#"
-                      class="text-sky-600 hover:text-sky-900 rounded-full"
-                      @click.prevent="deleteUser(user.id)"
-                      >{{delete}}<span class="sr-only">, {{delete}}</span></a
-                    >
+                    <div class="flex justify-end space-x-3">
+                      <a
+                        href="#"
+                        class="text-indigo-600 hover:text-indigo-900 rounded-full px-3 py-1 bg-indigo-100 hover:bg-indigo-200 transition-colors"
+                        @click.prevent="updateUser(user.id, user.username)"
+                      >{{update}}</a>
+                      <a
+                        href="#"
+                        class="text-red-600 hover:text-red-900 rounded-full px-3 py-1 bg-red-100 hover:bg-red-200 transition-colors"
+                        @click.prevent="deleteUser(user.id)"
+                      >{{delete}}</a>
+                    </div>
                   </td>
                 </tr>
               </template>
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+    <div class="mt-4 flex items-center justify-between">
+      <div class="text-sm text-gray-700">
+        <span x-text="'{{total_records}}'.replace('%{count}', total)"></span>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button
+          @click="prevPage()"
+          :disabled="currentPage <= 1"
+          :class="{'opacity-50 cursor-not-allowed': currentPage <= 1}"
+          class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        >
+          {{previous_page}}
+        </button>
+        <span class="text-sm text-gray-700" x-text="'{{page}}'.replace('%{number}', currentPage)"></span>
+        <button
+          @click="nextPage()"
+          :disabled="currentPage >= Math.ceil(total / pageSize)"
+          :class="{'opacity-50 cursor-not-allowed': currentPage >= Math.ceil(total / pageSize)}"
+          class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        >
+          {{next_page}}
+        </button>
       </div>
     </div>
   </div>

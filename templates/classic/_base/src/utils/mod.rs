@@ -1,4 +1,3 @@
-use anyhow::Context;
 use argon2::{password_hash::SaltString, Argon2, PasswordHash};
 use rand::Rng;
 use std::iter;

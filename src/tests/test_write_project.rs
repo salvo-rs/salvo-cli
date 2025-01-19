@@ -9,7 +9,6 @@ mod tests {
     };
     use itertools::Itertools;
     use std::path::Path;
-
     #[test]
     fn test_write_project_all_combinations() {
         //let db_types = [DbType::Sqlite, DbType::Mysql, DbType::Postgres, DbType::Mssql];

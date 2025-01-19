@@ -2,9 +2,10 @@ use diesel::prelude::*;
 use rinja::Template;
 use salvo::oapi::extract::*;
 use salvo::prelude::*;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use ulid::Ulid;
 use validator::Validate;
+use diesel::dsl::*;
 
 use crate::models::{SafeUser, User};
 use crate::schema::*;
@@ -91,9 +92,49 @@ pub async fn delete_user(user_id: PathParam<String>) -> EmptyResult {
     empty_ok()
 }
 
+#[derive(Debug, Deserialize, Validate, Extractible, ToSchema)]
+#[salvo(extract(default_source(from = "query")))]
+pub struct UserListQuery {
+    pub username: Option<String>,
+    #[serde(default = "default_page")]
+    pub current_page: i64,
+    #[serde(default = "default_page_size")]
+    pub page_size: i64,
+}
+
+fn default_page() -> i64 { 1 }
+fn default_page_size() -> i64 { 10 }
+
+#[derive(Debug, Serialize, ToSchema)]
+pub struct UserListResponse {
+    pub data: Vec<SafeUser>,
+    pub total: i64,
+    pub current_page: i64,
+    pub page_size: i64,
+}
+
 #[endpoint(tags("users"))]
-pub async fn list_users() -> JsonResult<Vec<SafeUser>> {
+pub async fn list_users(query: &mut Request) -> JsonResult<UserListResponse> {
     let conn = &mut db::connect()?;
-    let users = users::table.select(SafeUser::as_select()).load(conn)?;
-    json_ok(users)
+    let query: UserListQuery = query.extract().await?;
+    let username_filter = query.username.clone().unwrap_or_default();
+    
+    let total = users::table
+        .select(count_star())
+        .filter(users::username.like(format!("%{}%", username_filter)))
+        .first::<i64>(conn)?;
+    
+    let users = users::table
+        .select(SafeUser::as_select())
+        .filter(users::username.like(format!("%{}%", username_filter)))
+        .offset((query.current_page - 1) * query.page_size)
+        .limit(query.page_size)
+        .load(conn)?;
+    
+    json_ok(UserListResponse {
+        data: users,
+        total,
+        current_page: query.current_page,
+        page_size: query.page_size,
+    })
 }
