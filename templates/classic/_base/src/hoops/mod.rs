@@ -1,4 +1,4 @@
-use askama::Template;
+use rinja::Template;
 use salvo::http::ResBody;
 use salvo::prelude::*;
 

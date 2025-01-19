@@ -1,5 +1,5 @@
 
-use askama::Template;
+use rinja::Template;
 use salvo::prelude::*;
 
 use crate::AppResult;

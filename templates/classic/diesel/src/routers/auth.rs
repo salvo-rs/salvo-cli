@@ -1,6 +1,6 @@
-use askama::Template;
 use cookie::Cookie;
 use diesel::prelude::*;
+use rinja::Template;
 use salvo::oapi::extract::*;
 use salvo::prelude::*;
 use serde::{Deserialize, Serialize};
