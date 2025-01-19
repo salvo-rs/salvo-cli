@@ -56,7 +56,7 @@ fn create_files(project_path: &Path, user_selected: Selected, new_cmd: &NewCmd) 
         "account":t!("account"),
         "password":t!("password"),
         "you_wont_be_able_to_revert_this":t!("you_wont_be_able_to_revert_this"),
-        
+
         "salvo_cli_welcome":t!("salvo_cli_welcome"),
         "user_list":t!("user_list"),
         "are_you_sure_you_want_to_delete":t!("are_you_sure_you_want_to_delete"),

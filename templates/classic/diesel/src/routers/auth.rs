@@ -6,6 +6,7 @@ use salvo::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use crate::hoops::jwt;
+use crate::models::User;
 use crate::schema::*;
 use crate::{db, json_ok, utils, AppResult, JsonResult};
 
@@ -64,7 +65,7 @@ pub async fn post_login(
             .into());
     }
 
-    let (token, exp) = jwt::get_token(&username, &id)?;
+    let (token, exp) = jwt::get_token(&id)?;
     let odata = LoginOutData {
         id,
         username,

@@ -474,6 +474,25 @@ listen_on:
   th: ฟังที่
   el: ακούστε στο
   da: lyt på
+
+lang:
+  en: en
+  zh_CN: zh-cn
+  zh_TW: zh-tw
+  fr: fr
+  ja: ja
+  es: es
+  de: de
+  ru: ru
+  it: it
+  pt: pt
+  ko: ko
+  no: no
+  is: is
+  uk: uk
+  th: th
+  el: el
+  da: da
 salvo_cli_welcome:
   en: Salvo-Cli Generated, Please Read README.md
   zh_CN: 由Salvo-Cli生成，使用前请阅读README.md
