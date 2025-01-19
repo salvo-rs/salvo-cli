@@ -1,7 +1,7 @@
-
 use std::sync::OnceLock;
-
+{%- if db_type != "sqlite" %}
 use diesel::r2d2::{self, CustomizeConnection};
+{%- endif %}
 use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 
 use crate::config::DbConfig;
@@ -11,18 +11,24 @@ use diesel::{PgConnection, RunQueryDsl};
 {%- elsif db_type == "mysql" %}
 use diesel::{MysqlConnection, RunQueryDsl};
 {%- elsif db_type == "sqlite" %}
-use diesel::{SqliteConnection, RunQueryDsl};
+use diesel::{Connection, SqliteConnection, RunQueryDsl};
 {%- endif %}
 use url::Url;
 
+{%- if db_type != "sqlite" %}
 pub mod pool;
 pub use pool::{DieselPool, DbPooledConnection, PoolError};
 
 pub static DIESEL_POOL: OnceLock<DieselPool> = OnceLock::new();
+{%- endif %}
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
 
 pub fn migrate() {
+    {%- if db_type == "sqlite" %}
+    let conn = &mut establish_connection();
+    {%- else %}
     let conn = &mut connect().expect("db connect should worked");
+    {%- endif %}
     println!(
         "Has pending migration: {}",
         conn.has_pending_migration(MIGRATIONS).unwrap()
@@ -30,6 +36,19 @@ pub fn migrate() {
     conn.run_pending_migrations(MIGRATIONS)
         .expect("migrate db should worked");
 }
+
+{%- if db_type == "sqlite" %}
+pub fn establish_connection() -> SqliteConnection {
+    let config = crate::config::get();
+    SqliteConnection::establish(&config.db.url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", config.db.url))
+}
+
+pub fn connect() -> Result<SqliteConnection, diesel::ConnectionError> {
+    let config = crate::config::get();
+    SqliteConnection::establish(&config.db.url)
+}
+{%- else %}
 pub fn connect() -> Result<DbPooledConnection, PoolError> {
     match DIESEL_POOL.get().expect("diesel pool should set").get() {
         Ok(conn) => Ok(conn),
@@ -74,15 +93,11 @@ impl CustomizeConnection<{%- if db_type == "postgres" -%}
     PgConnection
     {%- elsif db_type == "mysql" -%}
     MysqlConnection
-    {%- elsif db_type == "sqlite" -%}
-    SqliteConnection
     {%- endif -%}, r2d2::Error> for ConnectionConfig {
     fn on_acquire(&self, conn: &mut {% if db_type == "postgres" -%}
         PgConnection
         {%- elsif db_type == "mysql" -%}
         MysqlConnection
-        {%- elsif db_type == "sqlite" -%}
-        SqliteConnection
         {%- endif -%}) -> Result<(), r2d2::Error> {
         use diesel::sql_query;
 
@@ -95,3 +110,4 @@ impl CustomizeConnection<{%- if db_type == "postgres" -%}
         Ok(())
     }
 }
+{%- endif %}

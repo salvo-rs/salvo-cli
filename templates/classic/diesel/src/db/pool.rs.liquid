@@ -1,4 +1,4 @@
-
+{% if db_type == "postgres" %}
 use std::ops::Deref;
 use std::time::Duration;
 
@@ -9,19 +9,9 @@ use thiserror::Error;
 use super::connection_url;
 use crate::config::DbConfig;
 
-{%- if db_type == "postgres" %}
 pub type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
 pub type DbPooledConnection = r2d2::PooledConnection<ConnectionManager<PgConnection>>;
 pub type ConfigBuilder = r2d2::Builder<ConnectionManager<PgConnection>>;
-{%- elsif db_type == "sqlite" %}
-pub type DbPool = r2d2::Pool<ConnectionManager<SqliteConnection>>;
-pub type DbPooledConnection = r2d2::PooledConnection<ConnectionManager<SqliteConnection>>;
-type ConfigBuilder = r2d2::Builder<ConnectionManager<SqliteConnection>>;
-{%- elsif db_type == "mysql" %}
-pub type DbPool = r2d2::Pool<ConnectionManager<MysqlConnection>>;
-pub type DbPooledConnection = r2d2::PooledConnection<ConnectionManager<MysqlConnection>>;
-type ConfigBuilder = r2d2::Builder<ConnectionManager<MysqlConnection>>;
-{%- endif %}
 
 #[derive(Clone, Debug)]
 pub struct DieselPool {
@@ -86,3 +76,85 @@ pub enum PoolError {
     #[error("Failed to lock test database connection")]
     TestConnectionUnavailable,
 }
+{% elsif db_type == "sqlite" %}
+// SQLite does not support connection pooling as it is designed for single-file database access
+// Each connection directly operates on the database file
+{% elsif db_type == "mysql" %}
+use std::ops::Deref;
+use std::time::Duration;
+
+use diesel::prelude::*;
+use diesel::r2d2::{self, ConnectionManager, State};
+use thiserror::Error;
+
+use super::connection_url;
+use crate::config::DbConfig;
+
+pub type DbPool = r2d2::Pool<ConnectionManager<MysqlConnection>>;
+pub type DbPooledConnection = r2d2::PooledConnection<ConnectionManager<MysqlConnection>>;
+type ConfigBuilder = r2d2::Builder<ConnectionManager<MysqlConnection>>;
+
+#[derive(Clone, Debug)]
+pub struct DieselPool {
+    inner: DbPool,
+}
+
+impl DieselPool {
+    pub(crate) fn new(
+        url: &str,
+        config: &DbConfig,
+        r2d2_config: ConfigBuilder,
+    ) -> Result<DieselPool, PoolError> {
+        let manager = ConnectionManager::new(connection_url(config, url));
+
+        let pool = DieselPool {
+            inner: r2d2_config.build_unchecked(manager),
+        };
+        match pool.wait_until_healthy(Duration::from_secs(5)) {
+            Ok(()) => {}
+            Err(PoolError::UnhealthyPool) => {}
+            Err(err) => return Err(err),
+        }
+
+        Ok(pool)
+    }
+
+    pub fn get(&self) -> Result<DbPooledConnection, PoolError> {
+        Ok(self.inner.get()?)
+    }
+
+    pub fn state(&self) -> State {
+        self.inner.state()
+    }
+
+    pub fn wait_until_healthy(&self, timeout: Duration) -> Result<(), PoolError> {
+        match self.inner.get_timeout(timeout) {
+            Ok(_) => Ok(()),
+            Err(_) if !self.is_healthy() => Err(PoolError::UnhealthyPool),
+            Err(err) => Err(PoolError::R2D2(err)),
+        }
+    }
+
+    fn is_healthy(&self) -> bool {
+        self.state().connections > 0
+    }
+}
+
+impl Deref for DieselPool {
+    type Target = DbPool;
+
+    fn deref(&self) -> &Self::Target {
+        &self.inner
+    }
+}
+
+#[derive(Debug, Error)]
+pub enum PoolError {
+    #[error(transparent)]
+    R2D2(#[from] r2d2::PoolError),
+    #[error("unhealthy database pool")]
+    UnhealthyPool,
+    #[error("Failed to lock test database connection")]
+    TestConnectionUnavailable,
+}
+{% endif %}

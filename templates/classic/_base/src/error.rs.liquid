@@ -33,8 +33,12 @@ pub enum AppError {
     Diesel(#[from] diesel::result::Error),
     #[error("r2d2: `{0}`")]
     R2d2(#[from] diesel::r2d2::PoolError),
+    {%- if db_type != "sqlite" %}
     #[error("pool: `{0}`")]
     Pool(#[from] crate::db::PoolError),
+    {%- endif %}
+    #[error("diesel::ConnectionError:`{0}`")]
+    DieselConnection(#[from] diesel::ConnectionError),
     {%- elsif db_lib == "rbatis" %}
     #[error("rbatis::Error:`{0}`")]
     Rbatis(#[from] rbatis::Error),

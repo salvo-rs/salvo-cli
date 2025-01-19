@@ -140,6 +140,7 @@ fn create_files(project_path: &Path, user_selected: Selected, new_cmd: &NewCmd) 
     Ok(())
 }
 
+
 fn write_file(tmpl: &[u8], file_path: &Path, data: &Object) -> Result<()> {
     if let Some(parent) = file_path.parent() {
         fs::create_dir_all(parent)?;
@@ -160,3 +161,4 @@ fn write_file(tmpl: &[u8], file_path: &Path, data: &Object) -> Result<()> {
     }
     Ok(())
 }
+
