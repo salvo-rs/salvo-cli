@@ -6,7 +6,6 @@ use salvo::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use crate::hoops::jwt;
-use crate::models::User;
 use crate::schema::*;
 use crate::{db, json_ok, utils, AppResult, JsonResult};
 
@@ -46,10 +45,10 @@ pub async fn post_login(
 ) -> JsonResult<LoginOutData> {
     let idata = idata.into_inner();
     let conn = &mut db::connect()?;
-    let Some(User{id, username, password}) = users::table
+    let Some((id, username, hashed)) = users::table
         .filter(users::username.eq(&idata.username))
         .select((users::id, users::username, users::password))
-        .first::<User>(conn)
+        .first::<(String, String, String)>(conn)
         .optional()?
     else {
         return Err(StatusError::unauthorized()
@@ -57,7 +56,7 @@ pub async fn post_login(
             .into());
     };
 
-    if utils::verify_password(&idata.password, &password)
+    if utils::verify_password(&idata.password, hashed)
         .await
         .is_err()
     {
@@ -66,7 +65,7 @@ pub async fn post_login(
             .into());
     }
 
-    let (token, exp) = jwt::get_token(&id)?;
+    let (token, exp) = jwt::get_token(username.clone(), id.clone())?;
     let odata = LoginOutData {
         id,
         username,

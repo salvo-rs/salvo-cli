@@ -5,7 +5,7 @@ use salvo::prelude::*;
 use crate::AppResult;
 
 #[handler]
-pub async fn hello(req: &mut Request) -> AppResult<Text<String>>{
+pub async fn hello(req: &mut Request) -> AppResult<Text<String>> {
     #[derive(Template)]
     #[template(path = "hello.html")]
     struct HelloTemplate<'a> {

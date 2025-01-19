@@ -256,24 +256,6 @@ username:
   th: ชื่อผู้ใช้
   el: Όνομα χρήστη
   da: Brugernavn
-generate_a_string_of_a_specified_length:
-  en: Generate a string of a specified length
-  zh_CN: 生成指定长度的字符串
-  zh_TW: 生成指定長度的字串
-  fr: Générer une chaîne de caractères d'une longueur spécifiée
-  ja: 指定した長さの文字列を生成する
-  es: Generar una cadena de una longitud especificada
-  de: Erzeugen Sie eine Zeichenkette einer bestimmten Länge
-  ru: Генерировать строку заданной длины
-  it: Generare una stringa di una lunghezza specificata
-  pt: Gerar uma string de um comprimento especificado
-  ko: 지정된 길이의 문자열 생성
-  no: Generer en streng av en spesifisert lengde
-  is: Búa til streng af tiltekinni lengd
-  uk: Генерувати рядок заданої довжини
-  th: สร้างสตริงความยาวที่ระบุ
-  el: Δημιουργήστε μια συμβολοσειρά ενός καθορισμένου μήκους
-  da: Generer en streng af en bestemt længde
 contact_support:
   en: Contact Support
   zh_CN: 联系支持
@@ -492,6 +474,25 @@ listen_on:
   th: ฟังที่
   el: ακούστε στο
   da: lyt på
+
+lang:
+  en: en
+  zh_CN: zh-cn
+  zh_TW: zh-tw
+  fr: fr
+  ja: ja
+  es: es
+  de: de
+  ru: ru
+  it: it
+  pt: pt
+  ko: ko
+  no: no
+  is: is
+  uk: uk
+  th: th
+  el: el
+  da: da
 salvo_cli_welcome:
   en: Salvo-Cli Generated, Please Read README.md
   zh_CN: 由Salvo-Cli生成，使用前请阅读README.md

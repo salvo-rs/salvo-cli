@@ -1,8 +1,15 @@
+
+
+{%- if db_lib == "diesel" %}
 use std::sync::Arc;
 use std::time::Duration;
+{%- endif %}
 
 {%- if db_lib == "diesel" %}
 use diesel::r2d2;
+use scheduled_thread_pool::ScheduledThreadPool;
+{%- elsif db_lib == "sqlx" %}
+use sqlx::SqlitePool;
 {%- endif %}
 use dotenvy::dotenv;
 use figment::providers::{Env, Format, Toml};
@@ -11,7 +18,6 @@ use salvo::catcher::Catcher;
 use salvo::conn::rustls::{Keycert, RustlsConfig};
 use salvo::prelude::*;
 use salvo::server::ServerHandle;
-use scheduled_thread_pool::ScheduledThreadPool;
 use serde::Serialize;
 use tokio::signal;
 use tracing::info;
@@ -69,8 +75,6 @@ async fn main() {
 
     {%- if db_lib == "diesel" %}
     let thread_pool = Arc::new(ScheduledThreadPool::new(config.db.helper_threads));
-
-
     let db_primary = {
         let db_connection_config = db::ConnectionConfig {
             statement_timeout: config.db.statement_timeout,
@@ -81,16 +85,22 @@ async fn main() {
             .min_idle(config.db.min_idle)
             .connection_timeout(Duration::from_millis(config.db.connection_timeout))
             .connection_customizer(Box::new(db_connection_config))
-            .thread_pool(thread_pool.clone());
+            .thread_pool(thread_pool);
 
             db::DieselPool::new(&config.db.url, &config.db, db_config).expect("diesel pool should be created")
     };
     crate::db::DIESEL_POOL
         .set(db_primary)
         .expect("diesel pool should be set");
-    {%- endif %}
-
     crate::db::migrate();
+    {%- elsif db_lib == "sqlx" %}
+    let sqlx_pool = SqlitePool::connect(&config::get().db.url)
+        .await
+        .expect("Database connection failed.");
+    crate::db::SQLX_POOL
+        .set(sqlx_pool)
+        .expect("diesel pool should be set");
+    {%- endif %}
 
     let _guard = config.log.guard();
     tracing::info!("log level: {}", &config.log.filter_level);
