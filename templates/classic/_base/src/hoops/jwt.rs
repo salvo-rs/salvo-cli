@@ -9,8 +9,7 @@ use crate::config::{self, JwtConfig};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct JwtClaims {
-    username: String,
-    user_id: String,
+    uid: String,
     exp: i64,
 }
 
@@ -26,11 +25,10 @@ pub fn auth_hoop(config: &JwtConfig) -> JwtAuth<JwtClaims, ConstDecoder> {
     .force_passed(false)
 }
 
-pub fn get_token(username: String, user_id: String) -> Result<(String, i64)> {
+pub fn get_token(uid: impl Into<String>) -> Result<(String, i64)> {
     let exp = OffsetDateTime::now_utc() + Duration::seconds(config::get().jwt.expiry);
     let claim = JwtClaims {
-        username,
-        user_id,
+        uid: uid.into(),
         exp: exp.unix_timestamp(),
     };
     let token: String = jsonwebtoken::encode(

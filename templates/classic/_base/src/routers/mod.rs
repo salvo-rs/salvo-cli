@@ -1,6 +1,6 @@
 use rust_embed::RustEmbed;
 use salvo::prelude::*;
-use salvo::serve_static::{EmbeddedFileExt, static_embed};
+use salvo::serve_static::{static_embed, EmbeddedFileExt};
 
 mod auth;
 mod demo;
@@ -13,7 +13,9 @@ use crate::{config, hoops};
 struct Assets;
 
 pub fn root() -> Router {
-    let favicon = Assets::get("favicon.ico").expect("favicon not found").into_handler();
+    let favicon = Assets::get("favicon.ico")
+        .expect("favicon not found")
+        .into_handler();
     let router = Router::new()
         .hoop(Logger::new())
         .get(demo::hello)

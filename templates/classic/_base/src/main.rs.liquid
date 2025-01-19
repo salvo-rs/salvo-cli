@@ -1,5 +1,9 @@
+
+
+{%- if db_lib == "diesel" %}
 use std::sync::Arc;
 use std::time::Duration;
+{%- endif %}
 
 {%- if db_lib == "diesel" %}
 use diesel::r2d2;
@@ -69,8 +73,6 @@ async fn main() {
 
     {%- if db_lib == "diesel" %}
     let thread_pool = Arc::new(ScheduledThreadPool::new(config.db.helper_threads));
-
-
     let db_primary = {
         let db_connection_config = db::ConnectionConfig {
             statement_timeout: config.db.statement_timeout,
@@ -81,7 +83,7 @@ async fn main() {
             .min_idle(config.db.min_idle)
             .connection_timeout(Duration::from_millis(config.db.connection_timeout))
             .connection_customizer(Box::new(db_connection_config))
-            .thread_pool(thread_pool.clone());
+            .thread_pool(thread_pool);
 
             db::DieselPool::new(&config.db.url, &config.db, db_config).expect("diesel pool should be created")
     };

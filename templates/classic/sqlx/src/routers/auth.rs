@@ -1,12 +1,11 @@
 use cookie::Cookie;
-use diesel::prelude::*;
 use rinja::Template;
 use salvo::oapi::extract::*;
 use salvo::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use crate::hoops::jwt;
-use crate::schema::*;
+use crate::models::User;
 use crate::{db, json_ok, utils, AppResult, JsonResult};
 
 #[handler]
@@ -43,12 +42,21 @@ pub async fn post_login(
     res: &mut Response,
 ) -> JsonResult<LoginOutData> {
     let idata = idata.into_inner();
-    let conn = &mut db::connect()?;
-    let Some(User{id, username, password}) = users::table
-        .filter(users::username.eq(&idata.username))
-        .select((users::id, users::username, users::password))
-        .first::<User>(conn)
-        .optional()?
+    let conn = db::pool();
+    let Some(User {
+        id,
+        username,
+        password,
+    }) = sqlx::query_as!(
+        User,
+        r#"
+            SELECT id, username, password FROM users
+            WHERE username = $1
+            "#,
+        idata.username
+    )
+    .fetch_optional(conn)
+    .await?
     else {
         return Err(StatusError::unauthorized()
             .brief("User does not exist.")
@@ -64,7 +72,7 @@ pub async fn post_login(
             .into());
     }
 
-    let (token, exp) = jwt::get_token(&username, &id)?;
+    let (token, exp) = jwt::get_token(&id)?;
     let odata = LoginOutData {
         id,
         username,

@@ -46,7 +46,6 @@ fn create_files(project_path: &Path, user_selected: Selected, new_cmd: &NewCmd) 
         "config_error_read":t!("config_error_read"),
         "config_error_parse":t!("config_error_parse"),
         "config_error_read_failed":t!("config_error_read_failed"),
-        "generate_a_string_of_a_specified_length":t!("generate_a_string_of_a_specified_length"),
         "username":t!("username"),
         "password":t!("password"),
         "incorrect_password":t!("incorrect_password"),
