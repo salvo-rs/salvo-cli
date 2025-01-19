@@ -39,7 +39,7 @@ sea-orm = { version = "1", features = ["runtime-tokio-native-tls", "sqlx-postgre
 sea-orm = { version = "1", features = ["runtime-tokio-native-tls", "sqlx-mysql"]}
 {%- endif %}
 {%- if db_lib == "seaorm" and db_type == "sqlite" %}
-sea-orm = { version = "1", "features": ["runtime-tokio-native-tls", "sqlx-sqlite"]}
+sea-orm = { version = "1", "features"  = ["runtime-tokio-native-tls", "sqlx-sqlite"]}
 {%- endif %}
 {%- if db_lib == "diesel" %}
 diesel_migrations = "2"
