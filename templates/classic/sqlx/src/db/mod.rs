@@ -1,18 +1,9 @@
-use salvo::prelude::*;
-use serde::{Deserialize, Serialize};
-use sqlx::prelude::*;
+use std::sync::OnceLock;
 
-#[derive(FromRow, Serialize, Deserialize, Extractible, Debug)]
-#[salvo(extract(default_source(from = "body", parse = "json")))]
-pub struct User {
-    #[salvo(extract(source(from = "param")))]
-    pub id: String,
-    pub username: String,
-    pub password: String,
-}
+use sqlx::SqlitePool;
 
-#[derive(FromRow, Serialize, ToSchema, Debug)]
-pub struct SafeUser {
-    pub id: String,
-    pub username: String,
+pub static SQLX_POOL: OnceLock<SqlitePool> = OnceLock::new();
+
+pub fn pool() -> &'static SqlitePool {
+    SQLX_POOL.get().expect("sqlx pool should set")
 }

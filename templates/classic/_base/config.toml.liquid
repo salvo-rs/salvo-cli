@@ -1,7 +1,15 @@
 listen_addr = "127.0.0.1:8008"
 
 [db]
+{%- if db_type == "postgres" %}
 url = "postgres://postgres:root@127.0.0.1:5432/{{project_name}}"
+{%- endif %}
+{%- if db_type == "sqlite" %}
+url = "sqlite:data/{{db_lib}}.sqlite"
+{%- endif %}
+{%- if db_type == "mysql" %}
+url = "mysql://root:root@localhost/{{project_name}}"
+{%- endif %}
 pool_size = 1
 
 [jwt]
