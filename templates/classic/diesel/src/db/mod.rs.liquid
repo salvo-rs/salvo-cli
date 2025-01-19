@@ -6,25 +6,17 @@ use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 
 use crate::config::DbConfig;
 
-{%- if db_type == "sqlite" %}
-pub fn establish_connection() -> SqliteConnection {
-    let conn = SqliteConnection::establish(&config().db.database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", &config().db.database_url));
-    conn
-}
-{%- endif %}
-{%- if db_type == "mysql" %}
-pub fn establish_connection() -> MysqlConnection {
-    MysqlConnection::establish(&config().db.database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", &config().db.database_url))
-}
-{%- endif %}
 {%- if db_type == "postgres" %}
-use url::Url;
 use diesel::{PgConnection, RunQueryDsl};
+{%- elsif db_type == "mysql" %}
+use diesel::{MysqlConnection, RunQueryDsl};
+{%- elsif db_type == "sqlite" %}
+use diesel::{SqliteConnection, RunQueryDsl};
+{%- endif %}
+use url::Url;
 
 pub mod pool;
-pub use pool::{DieselPool, PgPooledConnection, PoolError};
+pub use pool::{DieselPool, DbPooledConnection, PoolError};
 
 pub static DIESEL_POOL: OnceLock<DieselPool> = OnceLock::new();
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
@@ -38,7 +30,7 @@ pub fn migrate() {
     conn.run_pending_migrations(MIGRATIONS)
         .expect("migrate db should worked");
 }
-pub fn connect() -> Result<PgPooledConnection, PoolError> {
+pub fn connect() -> Result<DbPooledConnection, PoolError> {
     match DIESEL_POOL.get().expect("diesel pool should set").get() {
         Ok(conn) => Ok(conn),
         Err(e) => {
@@ -47,7 +39,6 @@ pub fn connect() -> Result<PgPooledConnection, PoolError> {
         }
     }
 }
-{%- endif %}
 
 pub fn connection_url(config: &DbConfig, url: &str) -> String {
     let mut url = Url::parse(url).expect("Invalid database URL");
@@ -79,8 +70,20 @@ pub struct ConnectionConfig {
     // pub read_only: bool,
 }
 
-impl CustomizeConnection<PgConnection, r2d2::Error> for ConnectionConfig {
-    fn on_acquire(&self, conn: &mut PgConnection) -> Result<(), r2d2::Error> {
+impl CustomizeConnection<{%- if db_type == "postgres" -%}
+    PgConnection
+    {%- elsif db_type == "mysql" -%}
+    MysqlConnection
+    {%- elsif db_type == "sqlite" -%}
+    SqliteConnection
+    {%- endif -%}, r2d2::Error> for ConnectionConfig {
+    fn on_acquire(&self, conn: &mut {% if db_type == "postgres" -%}
+        PgConnection
+        {%- elsif db_type == "mysql" -%}
+        MysqlConnection
+        {%- elsif db_type == "sqlite" -%}
+        SqliteConnection
+        {%- endif -%}) -> Result<(), r2d2::Error> {
         use diesel::sql_query;
 
         sql_query(format!(

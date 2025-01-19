@@ -9,7 +9,7 @@ mod i18n;
 mod git;
 mod templates;
 mod project;
-mod updater;
+// mod updater;
 mod printer;
 mod namer;
 
@@ -38,7 +38,7 @@ async fn main() -> Result<()> {
     match opts.subcmd {
         SubCommand::New(new_cmd) => {
             set_locale(&new_cmd.lang);
-            updater::check_for_updates().await;
+            // updater::check_for_updates().await;
             match project::create(&new_cmd) {
                 Ok(_) => (),
                 Err(e) => printer::error(e.to_string()),

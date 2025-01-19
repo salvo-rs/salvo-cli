@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use ansi_term::Colour;
 use ansi_term::Colour::{Blue, Green, Red, Yellow};
 

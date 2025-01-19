@@ -41,17 +41,19 @@ sea-orm = { version = "1", features = ["runtime-tokio-native-tls", "sqlx-mysql"]
 {%- if db_lib == "seaorm" and db_type == "sqlite" %}
 sea-orm = { version = "1", "features": ["runtime-tokio-native-tls", "sqlx-sqlite"]}
 {%- endif %}
-{%- if db_lib == "diesel" and db_type == "postgres" %}
-diesel = { version = "2", features = ["postgres", "r2d2", "chrono", "serde_json"]}
+{%- if db_lib == "diesel" %}
 diesel_migrations = "2"
 scheduled-thread-pool = "0.2.0"
 url = "2"
+{%- if db_type == "postgres" %}
+diesel = { version = "2", features = ["r2d2", "postgres", "serde_json"]}
 {%- endif %}
-{%- if db_lib == "diesel" and db_type == "mysql" %}
-diesel = { version = "2", features = ["mysql"]}
+{%- if db_type == "mysql" %}
+diesel = { version = "2", features = ["r2d2", "mysql"]}
 {%- endif %}
-{%- if db_lib == "diesel" and db_type == "sqlite" %}
-diesel = { version = "2", features = ["sqlite", "returning_clauses_for_sqlite_3_35"]}
+{%- if db_type == "sqlite" %}
+diesel = { version = "2", features = ["r2d2", "sqlite", "returning_clauses_for_sqlite_3_35"]}
+{%- endif %}
 {%- endif %}
 {%- if db_lib == "rbatis" and db_type == "postgres" %}
 rbatis = { version = "4", features = ["debug_mode"]}

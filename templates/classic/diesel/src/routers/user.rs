@@ -48,13 +48,13 @@ pub async fn create_user(idata: JsonBody<CreateInData>) -> JsonResult<SafeUser> 
     let user = User {
         id: Ulid::new().to_string(),
         username,
-        password: utils::hash_password(password).await?,
+        password: utils::hash_password(&password).await?,
     };
-    let user = diesel::insert_into(users::table)
+    diesel::insert_into(users::table)
         .values(&user)
-        .returning(SafeUser::as_returning())
-        .get_result(conn)?;
-    json_ok(user)
+        .execute(conn)?;
+    let User { id, username, .. } = user;
+    json_ok(SafeUser { id, username })
 }
 
 #[derive(Deserialize, Debug, Validate, ToSchema)]
@@ -70,15 +70,18 @@ pub async fn update_user(
     idata: JsonBody<UpdateInData>,
 ) -> JsonResult<SafeUser> {
     let user_id = user_id.into_inner();
-    let idata = idata.into_inner();
+    let UpdateInData { username, password } = idata.into_inner();
     let conn = &mut db::connect()?;
-    let User { id, username, .. } = diesel::update(users::table.find(user_id))
+    diesel::update(users::table.find(&user_id))
         .set((
-            users::username.eq(&idata.username),
-            users::password.eq(utils::hash_password(idata.password).await?),
+            users::username.eq(&username),
+            users::password.eq(utils::hash_password(&password).await?),
         ))
-        .get_result::<User>(conn)?;
-    json_ok(SafeUser { id, username })
+        .execute(conn)?;
+    json_ok(SafeUser {
+        id: user_id,
+        username,
+    })
 }
 
 #[endpoint(tags("users"))]

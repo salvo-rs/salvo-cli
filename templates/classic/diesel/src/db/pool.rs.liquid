@@ -9,19 +9,30 @@ use thiserror::Error;
 use super::connection_url;
 use crate::config::DbConfig;
 
-pub type PgPool = r2d2::Pool<ConnectionManager<PgConnection>>;
-pub type PgPooledConnection = r2d2::PooledConnection<ConnectionManager<PgConnection>>;
+{%- if db_type == "postgres" %}
+pub type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
+pub type DbPooledConnection = r2d2::PooledConnection<ConnectionManager<PgConnection>>;
+pub type ConfigBuilder = r2d2::Builder<ConnectionManager<PgConnection>>;
+{%- elsif db_type == "sqlite" %}
+pub type DbPool = r2d2::Pool<ConnectionManager<SqliteConnection>>;
+pub type DbPooledConnection = r2d2::PooledConnection<ConnectionManager<SqliteConnection>>;
+type ConfigBuilder = r2d2::Builder<ConnectionManager<SqliteConnection>>;
+{%- elsif db_type == "mysql" %}
+pub type DbPool = r2d2::Pool<ConnectionManager<MysqlConnection>>;
+pub type DbPooledConnection = r2d2::PooledConnection<ConnectionManager<MysqlConnection>>;
+type ConfigBuilder = r2d2::Builder<ConnectionManager<MysqlConnection>>;
+{%- endif %}
 
 #[derive(Clone, Debug)]
 pub struct DieselPool {
-    inner: PgPool,
+    inner: DbPool,
 }
 
 impl DieselPool {
     pub(crate) fn new(
         url: &str,
         config: &DbConfig,
-        r2d2_config: r2d2::Builder<ConnectionManager<PgConnection>>,
+        r2d2_config: ConfigBuilder,
     ) -> Result<DieselPool, PoolError> {
         let manager = ConnectionManager::new(connection_url(config, url));
 
@@ -37,7 +48,7 @@ impl DieselPool {
         Ok(pool)
     }
 
-    pub fn get(&self) -> Result<PgPooledConnection, PoolError> {
+    pub fn get(&self) -> Result<DbPooledConnection, PoolError> {
         Ok(self.inner.get()?)
     }
 
@@ -59,7 +70,7 @@ impl DieselPool {
 }
 
 impl Deref for DieselPool {
-    type Target = PgPool;
+    type Target = DbPool;
 
     fn deref(&self) -> &Self::Target {
         &self.inner

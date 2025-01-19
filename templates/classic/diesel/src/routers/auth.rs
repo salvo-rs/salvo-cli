@@ -55,7 +55,7 @@ pub async fn post_login(
             .into());
     };
 
-    if utils::verify_password(idata.password, hashed)
+    if utils::verify_password(&idata.password, hashed)
         .await
         .is_err()
     {
