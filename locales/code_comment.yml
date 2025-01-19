@@ -52,24 +52,6 @@ config_error_read:
   uk: Не вдалося прочитати файл конфігурації, повідомлення про помилку:{}
   th: ไม่สามารถอ่านไฟล์กำหนดค่าได้ ข้อความผิดพลาด:{}
   el: Απέτυχε η ανάγνωση του αρχείου ρυθμίσεων, μήνυμα σφάλματος:{}
-  da: Kunne ikke læse konfigurationsfilen, fejlmeddelelse:{}
-config_error_parse:
-  en: Failed to parse configuration file, error message:{}
-  zh_CN: 解析配置文件失败，错误信息:{}
-  zh_TW: 解析配置文件失敗，錯誤信息:{}
-  fr: Échec de l'analyse du fichier de configuration, message d'erreur:{}
-  ja: 設定ファイルの解析に失敗しました。エラーメッセージ:{}
-  es: Error al analizar el archivo de configuración, mensaje de error:{}
-  de: Fehler beim Analysieren der Konfigurationsdatei, Fehlermeldung:{}
-  ru: Ошибка анализа файла конфигурации, сообщение об ошибке:{}
-  it: Impossibile analizzare il file di configurazione, messaggio di errore:{}
-  pt: Falha ao analisar o arquivo de configuração, mensagem de erro:{}
-  ko: 구성 파일을 구문 분석하는 데 실패했습니다. 오류 메시지:{}
-  no: Kunne ikke analysere konfigurasjonsfilen, feilmelding:{}
-  is: Tókst ekki að greina stillingaskrá, villuboð:{}
-  uk: Не вдалося проаналізувати файл конфігурації, повідомлення про помилку:{}
-  th: ไม่สามารถแยกวิเคราะห์ไฟล์กำหนดค่าได้ ข้อความผิดพลาด:{}
-  el: Απέτυχε η ανάλυση του αρχείου ρυθμίσεων, μήνυμα σφάλματος:{}
   da: Kunne ikke analysere konfigurationsfilen, fejlmeddelelse:{}
 config_error_read_failed:
   en: failed to read file
@@ -510,3 +492,117 @@ listen_on:
   th: ฟังที่
   el: ακούστε στο
   da: lyt på
+salvo_cli_welcome:
+  en: Salvo-Cli Generated, Please Read README.md
+  zh_CN: 由Salvo-Cli生成，使用前请阅读README.md
+  zh_TW: 由Salvo-Cli生成，使用前請閱讀README.md
+  fr: Généré par Salvo-Cli, veuillez lire le fichier README.md
+  ja: Salvo-Cliで生成されました。README.mdをお読みください
+  es: Generado por Salvo-Cli, por favor lea README.md
+  de: Von Salvo-Cli generiert, bitte lesen Sie README.md
+  ru: Сгенерировано Salvo-Cli, пожалуйста, прочтите README.md
+  it: Generato da Salvo-Cli, si prega di leggere README.md
+  pt: Gerado por Salvo-Cli, por favor leia o README.md
+  ko: Salvo-Cli로 생성됨, README.md를 읽어주세요
+  no: Generert av Salvo-Cli, vennligst les README.md
+  is: Búið til af Salvo-Cli, vinsamlegast lesið README.md
+  uk: Згенеровано Salvo-Cli, будь ласка, прочитайте README.md
+  th: สร้างโดย Salvo-Cli กรุณาอ่าน README.md
+  el: Δημιουργήθηκε από το Salvo-Cli, παρακαλώ διαβάστε το README.md
+  da: Genereret af Salvo-Cli, læs venligst README.md
+
+you_wont_be_able_to_revert_this:
+  en: You won't be able to revert this!
+  zh_CN: 此操作无法撤销！
+  zh_TW: 此操作無法撤銷！
+  fr: Vous ne pourrez pas annuler cette action !
+  ja: この操作は元に戻せません！
+  es: ¡No podrás revertir esto!
+  de: Dies kann nicht rückgängig gemacht werden!
+  ru: Это действие нельзя отменить!
+  it: Non sarà possibile annullare questa operazione!
+  pt: Você não poderá reverter isso!
+  ko: 이 작업은 되돌릴 수 없습니다!
+  no: Du vil ikke kunne angre dette!
+  is: Þú munt ekki geta afturkallað þetta!
+  uk: Ви не зможете скасувати цю дію!
+  th: คุณจะไม่สามารถย้อนกลับการดำเนินการนี้ได้!
+  el: Δεν θα μπορείτε να το αναιρέσετε αυτό!
+  da: Du vil ikke kunne fortryde dette!
+_version: 2
+login:
+  en: Login
+  zh_CN: 登录
+  zh_TW: 登錄
+  fr: Connexion
+  ja: ログイン
+  es: Iniciar sesión
+  de: Anmelden
+  ru: Войти
+  ko: 로그인
+  pt: Entrar
+  it: Accedi
+
+username:
+  en: Username
+  zh_CN: 用户名
+  zh_TW: 用戶名
+  fr: Nom d'utilisateur
+  ja: ユーザー名
+  es: Nombre de usuario
+  de: Benutzername
+  ru: Имя пользователя
+  ko: 사용자 이름
+  pt: Nome de usuário
+  it: Nome utente
+
+password:
+  en: Password
+  zh_CN: 密码
+  zh_TW: 密碼
+  fr: Mot de passe
+  ja: パスワード
+  es: Contraseña
+  de: Passwort
+  ru: Пароль
+  ko: 비밀번호
+  pt: Senha
+  it: Password
+
+account:
+  en: Demo Account
+  zh_CN: 演示账号
+  zh_TW: 演示帳號
+  fr: Compte de démonstration
+  ja: デモアカウント
+  es: Cuenta de demostración
+  de: Demokonto
+  ru: Демо-аккаунт
+  ko: 데모 계정
+  pt: Conta de demonstração
+  it: Account demo
+
+salvo_cli_welcome:
+  en: Welcome to Salvo CLI Demo
+  zh_CN: 欢迎使用 Salvo CLI 演示
+  zh_TW: 歡迎使用 Salvo CLI 演示
+  fr: Bienvenue sur la démo Salvo CLI
+  ja: Salvo CLI デモへようこそ
+  es: Bienvenido a la demostración de Salvo CLI
+  de: Willkommen bei der Salvo CLI Demo
+  ru: Добро пожаловать в демо Salvo CLI
+  ko: Salvo CLI 데모에 오신 것을 환영합니다
+  pt: Bem-vindo à demonstração do Salvo CLI
+  it: Benvenuto alla demo di Salvo CLI 
+lang:
+  en: en
+  zh_CN: zh_CN
+  zh_TW: zh_TW
+  fr: fr
+  ja: ja
+  es: es
+  de: de
+  ru: ru
+  ko: ko
+  pt: pt
+  it: it

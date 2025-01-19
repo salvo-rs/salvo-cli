@@ -17,6 +17,7 @@ use selection::Selected;
 #[folder = "./templates/classic"]
 struct Template;
 
+
 pub fn generate(new_cmd: &NewCmd) -> Result<()> {
     let Some(config) = selection::get_selected()? else {
         anyhow::bail!("cli quit!")
@@ -52,6 +53,12 @@ fn create_files(project_path: &Path, user_selected: Selected, new_cmd: &NewCmd) 
         "login":t!("login"),
         "user":t!("user"),
         "add_user":t!("add_user"),
+        "lang":t!("lang"),
+        "account":t!("account"),
+        "password":t!("password"),
+        "you_wont_be_able_to_revert_this":t!("you_wont_be_able_to_revert_this"),
+        
+        "salvo_cli_welcome":t!("salvo_cli_welcome"),
         "user_list":t!("user_list"),
         "are_you_sure_you_want_to_delete":t!("are_you_sure_you_want_to_delete"),
         "page_not_found":t!("page_not_found"),
