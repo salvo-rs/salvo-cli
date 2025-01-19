@@ -26,6 +26,7 @@ pub async fn login_page(res: &mut Response) -> AppResult<()> {
     res.render(Text::Html(hello_tmpl.render().unwrap()));
     Ok(())
 }
+
 #[derive(Deserialize, ToSchema, Default, Debug)]
 pub struct LoginInData {
     pub username: String,
