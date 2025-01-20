@@ -26,8 +26,8 @@ pub enum AppError {
     #[error("sqlx::Error:`{0}`")]
     SqlxError(#[from] sqlx::Error),
     {%- elsif db_lib == "seaorm" %}
-    #[error("seaorm::DbError:Error:`{0}`")]
-    Seaorm(#[from] seaorm::DbError),
+    #[error("seaorm db error:`{0}`")]
+    Seaorm(#[from] sea_orm::DbErr),
     {%- elsif db_lib == "diesel" %}
     #[error("diesel::result::Error:`{0}`")]
     Diesel(#[from] diesel::result::Error),
@@ -50,7 +50,7 @@ pub enum AppError {
     #[error("mongodb::bson::oid::Error`{0}`")]
     MongoBsonOid(#[from] MongoBsonOidError),
     {%- endif %}
-    #[error("ValidationError:`{0}`")]
+    #[error("validation error:`{0}`")]
     Validation(#[from] validator::ValidationErrors),
 }
 impl AppError {

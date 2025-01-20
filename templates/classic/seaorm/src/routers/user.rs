@@ -1,10 +1,12 @@
 use rinja::Template;
 use salvo::oapi::extract::*;
 use salvo::prelude::*;
+use sea_orm::{ActiveModelTrait, EntityTrait, Set};
 use serde::Deserialize;
 use ulid::Ulid;
 use validator::Validate;
 
+use crate::entities::{prelude::Users, users};
 use crate::models::SafeUser;
 use crate::{db, empty_ok, json_ok, utils, AppResult, EmptyResult, JsonResult};
 
@@ -45,17 +47,12 @@ pub async fn create_user(idata: JsonBody<CreateInData>) -> JsonResult<SafeUser> 
     let id = Ulid::new().to_string();
     let password = utils::hash_password(&password).await?;
     let conn = db::pool();
-    let _ = sqlx::query!(
-        r#"
-            INSERT INTO users (id, username, password)
-            VALUES ($1, $2, $3)
-            "#,
-        id,
-        username,
-        password,
-    )
-    .execute(conn)
-    .await?;
+    let model = users::ActiveModel {
+        id: Set(id.clone()),
+        username: Set(username.clone()),
+        password: Set(password.clone()),
+    };
+    Users::insert(model).exec(conn).await?;
 
     json_ok(SafeUser { id, username })
 }
@@ -75,21 +72,18 @@ pub async fn update_user(
     let user_id = user_id.into_inner();
     let UpdateInData { username, password } = idata.into_inner();
     let conn = db::pool();
-    let _ = sqlx::query!(
-        r#"
-            UPDATE users
-            SET username = $1, password = $2
-            WHERE id = $3
-            "#,
-        username,
-        password,
-        user_id,
-    )
-    .execute(conn)
-    .await?;
+
+    let Some(user) = Users::find_by_id(user_id).one(conn).await? else {
+        return Err(anyhow::anyhow!("User does not exist.").into());
+    };
+    let mut user: users::ActiveModel = user.into();
+    user.username = Set(username.to_owned());
+    user.password = Set(utils::hash_password(&password).await?);
+
+    let user: users::Model = user.update(conn).await?;
     json_ok(SafeUser {
-        id: user_id,
-        username,
+        id: user.id,
+        username: user.username,
     })
 }
 
@@ -97,28 +91,21 @@ pub async fn update_user(
 pub async fn delete_user(user_id: PathParam<String>) -> EmptyResult {
     let user_id = user_id.into_inner();
     let conn = db::pool();
-    sqlx::query!(
-        r#"
-            DELETE FROM users
-            WHERE id = $1
-            "#,
-        user_id,
-    )
-    .execute(conn)
-    .await?;
+    Users::delete_by_id(user_id).exec(conn).await?;
     empty_ok()
 }
 
 #[endpoint(tags("users"))]
 pub async fn list_users() -> JsonResult<Vec<SafeUser>> {
     let conn = db::pool();
-    let users = sqlx::query_as!(
-        SafeUser,
-        r#"
-            SELECT id, username FROM users
-            "#,
-    )
-    .fetch_all(conn)
-    .await?;
+    let users = Users::find()
+        .all(conn)
+        .await?
+        .into_iter()
+        .map(|user| SafeUser {
+            id: user.id,
+            username: user.username,
+        })
+        .collect::<Vec<_>>();
     json_ok(users)
 }

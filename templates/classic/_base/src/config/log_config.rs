@@ -178,7 +178,7 @@ impl LogConfig {
             "minutely" => rolling::minutely(&self.directory, &self.file_name),
             "hourly" => rolling::hourly(&self.directory, &self.file_name),
             "daily" => rolling::daily(&self.directory, &self.file_name),
-            "never"=> rolling::never(&self.directory, &self.file_name),
+            "never" => rolling::never(&self.directory, &self.file_name),
             _ => rolling::never(&self.directory, &self.file_name),
         };
         let (file_writer, guard) = tracing_appender::non_blocking(file_appender);
@@ -237,8 +237,7 @@ impl LogConfig {
                 subscriber.json().with_writer(file_writer).init();
             };
         } else if self.format == FORMAT_FULL {
-            let subscriber = subscriber
-                .event_format(
+            let subscriber = subscriber.event_format(
                     fmt::format()
                         .with_level(self.with_level)
                         .with_target(self.with_target)

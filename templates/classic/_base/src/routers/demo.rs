@@ -1,4 +1,3 @@
-
 use rinja::Template;
 use salvo::prelude::*;
 

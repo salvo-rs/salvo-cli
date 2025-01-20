@@ -28,6 +28,8 @@ mod models;
 mod utils;
 {%- if db_lib == "diesel" %}
 mod schema;
+{%- elsif db_lib == "seaorm" %}
+mod entities;
 {%- endif %}
 mod hoops;
 mod routers;
@@ -54,23 +56,10 @@ async fn main() {
         println!("dotenv error: {:?}", e);
     }
 
-    let raw_config = Figment::new()
-        .merge(Toml::file(
-            Env::var("APP_CONFIG").as_deref().unwrap_or("config.toml"),
-        ))
-        .merge(Env::prefixed("APP_").global());
-
-    let config = match raw_config.extract::<ServerConfig>() {
-        Ok(s) => s,
-        Err(e) => {
-            eprintln!("It looks like your config is invalid. The following error occurred: {e}");
-            std::process::exit(1);
-        }
-    };
-    crate::config::CONFIG
-        .set(config)
-        .expect("config should be set");
+    crate::config::init();
     let config = crate::config::get();
+    
+    crate::db::init(&config.db).await;
 
     {%- if db_lib == "diesel" %}
     {%- if db_type == "sqlite" %}
@@ -128,10 +117,7 @@ async fn main() {
             listen_addr.replace("0.0.0.0", "127.0.0.1")
         );
         let config = RustlsConfig::new(Keycert::new().cert(tls.cert.clone()).key(tls.key.clone()));
-        let acceptor = TcpListener::new(listen_addr)
-            .rustls(config)
-            .bind()
-            .await;
+        let acceptor = TcpListener::new(listen_addr).rustls(config).bind().await;
         let server = Server::new(acceptor);
         tokio::spawn(shutdown_signal(server.handle()));
         server.serve(service).await;
