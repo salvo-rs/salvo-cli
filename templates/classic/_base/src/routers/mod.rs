@@ -30,7 +30,7 @@ pub fn root() -> Router {
                         .get(user::list_users)
                         .post(user::create_user)
                         .push(
-                            Router::with_path("{id}")
+                            Router::with_path("{user_id}")
                                 .put(user::update_user)
                                 .delete(user::delete_user),
                         ),

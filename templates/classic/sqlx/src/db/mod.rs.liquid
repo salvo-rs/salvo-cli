@@ -1,0 +1,21 @@
+use std::sync::OnceLock;
+
+{%- if db_type == "sqlite" %}
+use sqlx::SqlitePool;
+pub static SQLX_POOL: OnceLock<SqlitePool> = OnceLock::new();
+pub fn pool() -> &'static SqlitePool {
+    SQLX_POOL.get().expect("sqlx pool should be set")
+}
+{%- elsif db_type == "postgres" %}
+use sqlx::postgres::PgPool;
+pub static SQLX_POOL: OnceLock<PgPool> = OnceLock::new();
+pub fn pool() -> &'static PgPool {
+    SQLX_POOL.get().expect("sqlx pool should be set")
+}
+{%- elsif db_type == "mysql" %}
+use sqlx::mysql::MySqlPool;
+pub static SQLX_POOL: OnceLock<MySqlPool> = OnceLock::new();
+pub fn pool() -> &'static MySqlPool {
+    SQLX_POOL.get().expect("sqlx pool should be set")
+}
+{%- endif %}

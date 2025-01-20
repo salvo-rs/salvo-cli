@@ -8,7 +8,13 @@ use scheduled_thread_pool::ScheduledThreadPool;
 {%- endif %}
 {%- endif %}
 {%- if db_lib == "sqlx" %}
+{%- if db_type == "sqlite" %}
 use sqlx::SqlitePool;
+{%- elsif db_type == "postgres" %}
+use sqlx::PgPool;
+{%- elsif db_type == "mysql" %}
+use sqlx::mysql::MySqlPool;
+{%- endif %}
 {%- endif %}
 use dotenvy::dotenv;
 use salvo::catcher::Catcher;
@@ -87,12 +93,18 @@ async fn main() {
     {%- endif %}
 
     {%- elsif db_lib == "sqlx" %}
+    {%- if db_type == "sqlite" %}
     let sqlx_pool = SqlitePool::connect(&config::get().db.url)
+    {%- elsif db_type == "postgres" %}
+    let sqlx_pool = PgPool::connect(&config::get().db.url)
+    {%- elsif db_type == "mysql" %}
+    let sqlx_pool = MySqlPool::connect(&config::get().db.url)
+    {%- endif %}
         .await
         .expect("Database connection failed.");
     crate::db::SQLX_POOL
         .set(sqlx_pool)
-        .expect("diesel pool should be set");
+        .expect("sqlx pool should be set");
     {%- endif %}
 
     let _guard = config.log.guard();
