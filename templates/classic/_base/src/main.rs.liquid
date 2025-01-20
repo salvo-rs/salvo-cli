@@ -57,9 +57,8 @@ async fn main() {
     let config = crate::config::get();
     {%- if db_lib == "rbatis" or  db_lib == "seaorm" %}
     crate::db::init(&config.db).await;
-    {%- elsif db_lib == "rbatis" %}
-    crate::db::init(&config.db.url).await.expect("Failed to initialize database");
-    crate::db::migrate().await.expect("Failed to migrate database");
+    {%- else %}
+    crate::db::init(&config.db);
     {%- endif %}
 
     let _guard = config.log.guard();
