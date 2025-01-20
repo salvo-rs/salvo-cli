@@ -38,12 +38,6 @@ pub fn migrate() {
 }
 
 {%- if db_type == "sqlite" %}
-pub fn establish_connection() -> SqliteConnection {
-    let config = crate::config::get();
-    SqliteConnection::establish(&config.db.url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", config.db.url))
-}
-
 pub fn connect() -> Result<SqliteConnection, diesel::ConnectionError> {
     let config = crate::config::get();
     SqliteConnection::establish(&config.db.url)
