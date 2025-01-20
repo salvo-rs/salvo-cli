@@ -48,7 +48,7 @@ pub async fn create_user(idata: JsonBody<CreateInData>) -> JsonResult<SafeUser> 
     let user = User {
         id: Ulid::new().to_string(),
         username,
-        password: utils::hash_password(&password).await?,
+        password: utils::hash_password(&password)?,
     };
     diesel::insert_into(users::table)
         .values(&user)

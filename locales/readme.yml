@@ -790,7 +790,7 @@ initialization_diesel_cli_not_sqlite:
   el: Εγκαταστήστε το cargo install sqlx-cli \n- Τροποποιήστε το string σύνδεσης με τη βάση δεδομένων στο .env και στο config/config.toml \n- Στη συνέχεια εκτελέστε το sqlx database create για να δημιουργήσετε τη βάση δεδομένων \n- Εκτελέστε το sqlx migrate run για να επαναφέρετε τη βάση δεδομένων\n- Εκτελέστε το αρχείο data/init_sql.sql για να προσθέσετε τα αρχικά δεδομένα
   da: Installer cargo install sqlx-cli \n- Rediger databaseforbindelsesstrengen i .env og config/config.toml \n- Kør derefter sqlx database create for at oprette databasen \n- Kør sqlx migrate run for at gendanne databasen\n- Kør data/init_sql.sql-filen for at tilføje begyndelsesdata
 rbatis_website:
-  zh_CN: 你选择了 rbatis 请在此处查看文档 https://rbatis.github.io/rbatis.io/#/v4/
+  zh_CN: 你选择了 rbatis， 请在此处查看文档 https://rbatis.github.io/rbatis.io/#/v4/
   en: You chose rbatis, please check the documentation here https://rbatis.github.io/rbatis.io/#/v4/
   zh_TW: 你選擇了 rbatis，請在此處查看文檔 https://rbatis.github.io/rbatis.io/#/v4/
   fr: Vous avez choisi rbatis, veuillez consulter la documentation ici https://rbatis.github.io/rbatis.io/#/v4/

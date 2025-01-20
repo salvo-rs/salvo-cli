@@ -1,10 +1,6 @@
 {%- if db_lib == "diesel" %}
 {%- if db_type == "sqlite" %}
 {%- else %}
-use std::time::Duration;
-use diesel::r2d2;
-use std::sync::Arc;
-use scheduled_thread_pool::ScheduledThreadPool;
 {%- endif %}
 {%- endif %}
 {%- if db_lib == "sqlx" %}
@@ -59,55 +55,13 @@ async fn main() {
 
     crate::config::init();
     let config = crate::config::get();
-    
-    {%- if db_lib == "diesel" %}
-    {%- if db_type == "sqlite" %}
-    {%- else %}
-    let db_config = r2d2::Pool::builder()
-    .max_size(config.db.pool_size)
-    .min_idle(config.db.min_idle)
-    .connection_timeout(Duration::from_millis(config.db.connection_timeout));
-
-    let db_primary = db::DieselPool::new(&config.db.url, &config.db, db_config).expect("diesel pool should be created");
-    let thread_pool = Arc::new(ScheduledThreadPool::new(config.db.helper_threads));
-    let db_primary = {
-        let db_connection_config = db::ConnectionConfig {
-            statement_timeout: config.db.statement_timeout,
-        };
-
-        let db_config = r2d2::Pool::builder()
-            .max_size(config.db.pool_size)
-            .min_idle(config.db.min_idle)
-            .connection_timeout(Duration::from_millis(config.db.connection_timeout))
-            .connection_customizer(Box::new(db_connection_config))
-            .thread_pool(thread_pool);
-
-        db::DieselPool::new(&config.db.url, &config.db, db_config).expect("diesel pool should be created")
-    };
-    crate::db::DIESEL_POOL
-    .set(db_primary)
-    .expect("diesel pool should be set");
-    crate::db::migrate();
-    {%- endif %}
-    {%- elsif db_lib == "sqlx" %}
-    {%- if db_type == "sqlite" %}
-    let sqlx_pool = SqlitePool::connect(&config::get().db.url)
-    {%- elsif db_type == "postgres" %}
-    let sqlx_pool = PgPool::connect(&config::get().db.url)
-    {%- endif %}
-        .await
-        .expect("Database connection failed.");
-    crate::db::SQLX_POOL
-        .set(sqlx_pool)
-        .expect("sqlx pool should be set");
-    {%- endif %}
-
-    {%- if db_lib == "seaorm" %}
+    {%- if db_lib == "rbatis" or  db_lib == "seaorm" %}
     crate::db::init(&config.db).await;
     {%- elsif db_lib == "rbatis" %}
     crate::db::init(&config.db.url).await.expect("Failed to initialize database");
     crate::db::migrate().await.expect("Failed to migrate database");
     {%- endif %}
+
     let _guard = config.log.guard();
     tracing::info!("log level: {}", &config.log.filter_level);
 

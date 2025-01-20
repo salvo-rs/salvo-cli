@@ -1,16 +1,22 @@
-use std::sync::OnceLock;
 
-{%- if db_type == "postgres" %}
-use diesel::{PgConnection, RunQueryDsl};
+{%- if db_type != "sqlite" %}
+use std::sync::{Arc, OnceLock};
+use std::time::Duration;
+
+use diesel::r2d2;
+use scheduled_thread_pool::ScheduledThreadPool;
 use diesel::r2d2::{self, CustomizeConnection};
+use url::Url;
+{%- endif %}
+{%- if db_type == "postgres" %}
+use diesel::{PgConnection};
 {%- elsif db_type == "mysql" %}
-use diesel::{MysqlConnection, RunQueryDsl};
+use diesel::{MysqlConnection};
 use diesel::r2d2::{self, CustomizeConnection};
 {%- elsif db_type == "sqlite" %}
-use diesel::{Connection, SqliteConnection, RunQueryDsl};
+use diesel::{Connection, SqliteConnection};
 {%- endif %}
 use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
-use url::Url;
 
 use crate::config::DbConfig;
 
@@ -22,9 +28,32 @@ pub static DIESEL_POOL: OnceLock<DieselPool> = OnceLock::new();
 {%- endif %}
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
 
+{%- if db_type == "sqlite" %}
+pub fn init(_config: &DbConfig) {
+    migrate()
+}
+{%- else %}
+pub fn init(config: &DbConfig) {
+    let thread_pool = Arc::new(ScheduledThreadPool::new(config.helper_threads));
+    let db_connection_config = ConnectionConfig {
+        statement_timeout: config.statement_timeout,
+    };
+    let builder = r2d2::Pool::builder()
+        .max_size(config.pool_size)
+        .min_idle(config.min_idle)
+        .connection_timeout(Duration::from_millis(config.connection_timeout))
+        .connection_customizer(Box::new(db_connection_config))
+        .thread_pool(thread_pool);
+
+    let db_pool = DieselPool::new(&config.url, &config, builder).expect("diesel pool should be created")
+    DIESEL_POOL.set(db_pool).expect("diesel pool should be set");
+    crate::db::migrate();
+}
+{%- endif %}
+
 pub fn migrate() {
     {%- if db_type == "sqlite" %}
-    let conn = &mut establish_connection();
+    let conn = &mut connect().expect("db connect should worked");
     {%- else %}
     let conn = &mut connect().expect("db connect should worked");
     {%- endif %}

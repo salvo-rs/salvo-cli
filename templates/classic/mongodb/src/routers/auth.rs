@@ -56,9 +56,7 @@ pub async fn post_login(
             .into());
     };
 
-    if utils::verify_password(&idata.password, hashed)
-        .await
-        .is_err()
+    if utils::verify_password(&idata.password, hashed).is_err()
     {
         return Err(StatusError::unauthorized()
             .brief("Addount not exist or password is incorrect.")

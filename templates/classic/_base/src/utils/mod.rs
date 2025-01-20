@@ -12,7 +12,7 @@ pub fn random_string(limit: usize) -> String {
         .collect()
 }
 
-pub async fn verify_password(password: &str, password_hash: &str) -> anyhow::Result<()> {
+pub fn verify_password(password: &str, password_hash: &str) -> anyhow::Result<()> {
     let hash = PasswordHash::new(&password_hash)
         .map_err(|e| anyhow::anyhow!("invalid password hash: {}", e))?;
     let result = hash.verify_password(&[&Argon2::default()], password);
@@ -22,7 +22,7 @@ pub async fn verify_password(password: &str, password_hash: &str) -> anyhow::Res
     }
 }
 
-pub async fn hash_password(password: &str) -> anyhow::Result<String> {
+pub fn hash_password(password: &str) -> anyhow::Result<String> {
     let salt = SaltString::generate(rand::thread_rng());
     Ok(PasswordHash::generate(Argon2::default(), password, &salt)
         .map_err(|e| anyhow::anyhow!("failed to generate password hash: {}", e))?

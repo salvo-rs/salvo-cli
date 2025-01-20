@@ -49,7 +49,7 @@ pub async fn create_user(idata: JsonBody<CreateInData>) -> JsonResult<SafeUser> 
     let user = User {
         id: Ulid::new().to_string(),
         username,
-        password: utils::hash_password(&password).await?,
+        password: utils::hash_password(&password)?,
     };
     diesel::insert_into(users::table)
         .values(&user)
@@ -76,7 +76,7 @@ pub async fn update_user(
     diesel::update(users::table.find(&user_id))
         .set((
             users::username.eq(&username),
-            users::password.eq(utils::hash_password(&password).await?),
+            users::password.eq(utils::hash_password(&password)?),
         ))
         .execute(conn)?;
     json_ok(SafeUser {
@@ -118,19 +118,19 @@ pub async fn list_users(query: &mut Request) -> JsonResult<UserListResponse> {
     let conn = &mut db::connect()?;
     let query: UserListQuery = query.extract().await?;
     let username_filter = query.username.clone().unwrap_or_default();
-    
+
     let total = users::table
         .select(count_star())
         .filter(users::username.like(format!("%{}%", username_filter)))
         .first::<i64>(conn)?;
-    
+
     let users = users::table
         .select(SafeUser::as_select())
         .filter(users::username.like(format!("%{}%", username_filter)))
         .offset((query.current_page - 1) * query.page_size)
         .limit(query.page_size)
         .load(conn)?;
-    
+
     json_ok(UserListResponse {
         data: users,
         total,

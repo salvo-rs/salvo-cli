@@ -18,7 +18,6 @@ pub struct UserListPageTemplate {}
 #[template(path = "user_list_frag.html")]
 pub struct UserListFragTemplate {}
 
-
 #[handler]
 pub async fn list_page(req: &mut Request, res: &mut Response) -> AppResult<()> {
     let is_fragment = req.headers().get("X-Fragment-Header");
@@ -34,7 +33,6 @@ pub async fn list_page(req: &mut Request, res: &mut Response) -> AppResult<()> {
     }
     Ok(())
 }
-
 
 #[derive(Deserialize, Debug, Validate, ToSchema, Default)]
 pub struct CreateInData {
@@ -71,7 +69,6 @@ struct UpdateInData {
     #[validate(length(min = 6, message = "password length must be greater than 5"))]
     password: String,
 }
-
 #[endpoint(tags("users"), parameters(("id", description = "user id")))]
 pub async fn update_user(
     user_id: PathParam<String>,

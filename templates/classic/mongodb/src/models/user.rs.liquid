@@ -2,7 +2,7 @@ use uuid::Uuid;
 pub async fn add_user(req: UserAddRequest) -> AppResult<UserResponse> {
     let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
     let id = Uuid::new_v4().to_string();
-    let hash_password = rand_utils::hash_password(req.password).await?;
+    let hash_password = utils::hash_password(req.password).await?;
     let _ = sqlx::query!(
         r#"
             INSERT INTO users (id, username, password)
@@ -45,9 +45,7 @@ pub async fn login(req: UserLoginRequest) -> AppResult<UserLoginResponse> {
         return Err(anyhow::anyhow!("{{user_does_not_exist}}").into());
     }
     let user = user.unwrap();
-    if rand_utils::verify_password(req.password, user.password)
-        .await
-        .is_err()
+    if utils::verify_password(req.password, user.password).is_err()
     {
         return Err(anyhow::anyhow!("{{incorrect_password}}").into());
     }
@@ -63,7 +61,7 @@ pub async fn login(req: UserLoginRequest) -> AppResult<UserLoginResponse> {
 
 pub async fn update_user(req: UserUpdateRequest) -> AppResult<UserResponse> {
     let db = DB.get().ok_or(anyhow::anyhow!("{{database_connection_failed}}"))?;
-    let hash_password = rand_utils::hash_password(req.password).await?;
+    let hash_password = utils::hash_password(req.password).await?;
     let _ = sqlx::query!(
         r#"
             UPDATE users
