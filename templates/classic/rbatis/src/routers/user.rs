@@ -1,13 +1,13 @@
+use rbatis::impl_select_page;
+use rbatis::plugin::page::PageRequest;
 use rinja::Template;
 use salvo::oapi::extract::*;
 use salvo::prelude::*;
 use serde::{Deserialize, Serialize};
 use ulid::Ulid;
 use validator::Validate;
-use rbatis::plugin::page::PageRequest;
-use rbatis::impl_select_page;
 
-use crate::models::{SafeUser, Users};
+use crate::models::{SafeUser, User};
 use crate::{db, empty_ok, json_ok, utils, AppResult, EmptyResult, JsonResult};
 
 #[derive(Template)]
@@ -45,17 +45,17 @@ pub struct CreateInData {
 #[endpoint(tags("users"))]
 pub async fn create_user(idata: JsonBody<CreateInData>) -> JsonResult<SafeUser> {
     let CreateInData { username, password } = idata.into_inner();
-    let rb = db::get_pool().ok_or_else(|| anyhow::Error::msg("Database not initialized"))?;
-    
+    let rb = db::engine();
+
     let id = Ulid::new().to_string();
-    let user = Users {
+    let user = User {
         id: id.clone(),
         username: username.clone(),
-        password: utils::hash_password(&password).await?,
+        password: utils::hash_password(&password)?,
     };
-    
-    Users::insert(rb, &user).await.map_err(anyhow::Error::from)?;
-    
+
+    User::insert(rb, &user).await.map_err(anyhow::Error::from)?;
+
     json_ok(SafeUser {
         id: id,
         username: username,
@@ -76,16 +76,18 @@ pub async fn update_user(
 ) -> JsonResult<SafeUser> {
     let user_id = user_id.into_inner();
     let idata = idata.into_inner();
-    let rb = db::get_pool().ok_or_else(|| anyhow::Error::msg("Database not initialized"))?;
-    
-    let user = Users {
+    let rb = db::engine();
+
+    let user = User {
         id: user_id.clone(),
         username: idata.username.clone(),
-        password: utils::hash_password(&idata.password).await?,
+        password: utils::hash_password(&idata.password)?,
     };
-    
-    Users::update_by_column(rb, &user, "id").await.map_err(anyhow::Error::from)?;
-    
+
+    User::update_by_column(rb, &user, "id")
+        .await
+        .map_err(anyhow::Error::from)?;
+
     json_ok(SafeUser {
         id: user_id,
         username: idata.username,
@@ -94,16 +96,18 @@ pub async fn update_user(
 
 #[endpoint(tags("users"))]
 pub async fn delete_user(user_id: PathParam<String>) -> EmptyResult {
-    let rb = db::get_pool().ok_or_else(|| anyhow::Error::msg("Database not initialized"))?;
-    Users::delete_by_column(rb, "id", &user_id.into_inner()).await.map_err(anyhow::Error::from)?;
+    let rb = db::engine();
+    User::delete_by_column(rb, "id", &user_id.into_inner())
+        .await
+        .map_err(anyhow::Error::from)?;
     empty_ok()
 }
 
-impl_select_page!(Users{select_page() =>"
+impl_select_page!(User{select_page() =>"
      if !sql.contains('count(1)'):
        `order by id desc`"});
 
-impl_select_page!(Users{select_page_by_username(username:&str) =>"
+impl_select_page!(User{select_page_by_username(username:&str) =>"
      if username != null && username != '':
        `where username like #{username}`"});
 
@@ -117,8 +121,12 @@ pub struct UserListQuery {
     pub page_size: u64,
 }
 
-fn default_page() -> u64 { 1 }
-fn default_page_size() -> u64 { 10 }
+fn default_page() -> u64 {
+    1
+}
+fn default_page_size() -> u64 {
+    10
+}
 
 #[derive(Debug, Serialize, ToSchema)]
 pub struct UserListResponse {
@@ -130,30 +138,31 @@ pub struct UserListResponse {
 
 #[endpoint(tags("users"), status_codes(200, 400))]
 pub async fn list_users(query: &mut Request) -> JsonResult<UserListResponse> {
-    let rb = db::get_pool().ok_or_else(|| anyhow::Error::msg("Database not initialized"))?;
+    let rb = db::engine();
     let query: UserListQuery = query.extract().await?;
-    
+
     let page_req = PageRequest::new(query.current_page, query.page_size);
-    
+
     let page = if let Some(username) = query.username {
         let pattern = format!("%{}%", username);
-        Users::select_page_by_username(rb, &page_req, &pattern)
+        User::select_page_by_username(rb, &page_req, &pattern)
             .await
             .map_err(anyhow::Error::from)?
     } else {
-        Users::select_page(rb, &page_req)
+        User::select_page(rb, &page_req)
             .await
             .map_err(anyhow::Error::from)?
     };
-    
-    let safe_users: Vec<SafeUser> = page.records
+
+    let safe_users: Vec<SafeUser> = page
+        .records
         .into_iter()
         .map(|user| SafeUser {
             id: user.id,
             username: user.username,
         })
         .collect();
-    
+
     json_ok(UserListResponse {
         data: safe_users,
         total: page.total as i64,
@@ -161,4 +170,3 @@ pub async fn list_users(query: &mut Request) -> JsonResult<UserListResponse> {
         page_size: query.page_size,
     })
 }
-

@@ -107,6 +107,7 @@ fn create_files(project_path: &Path, user_selected: Selected, new_cmd: &NewCmd) 
         "initialization_sqlx_cli_not_sqlite": t!("initialization_sqlx_cli_not_sqlite").replace(r"\n", "\n"),
         "initialization_seaorm_cli_not_sqlite": t!("initialization_seaorm_cli_not_sqlite").replace(r"\n", "\n"),
         "initialization_diesel_cli_not_sqlite": t!("initialization_diesel_cli_not_sqlite").replace(r"\n", "\n"),
+        "initialization_rbatis_cli_not_sqlite": t!("initialization_rbatis_cli_not_sqlite").replace(r"\n", "\n"),
         "seaorm_cli_website": t!("seaorm_cli_website").replace(r"\n", "\n"),
         "diesel_cli_website": t!("diesel_cli_website").replace(r"\n", "\n"),
     });

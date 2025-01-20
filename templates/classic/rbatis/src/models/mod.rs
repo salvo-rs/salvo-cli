@@ -1,14 +1,14 @@
 use rbatis::crud;
-use serde::{Serialize, Deserialize};
 use salvo::oapi::ToSchema;
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone)]
-pub struct Users {
+pub struct User {
     pub id: String,
     pub username: String,
     pub password: String,
 }
-crud!(Users {});
+crud!(User {});
 
 #[derive(Serialize, Deserialize, Clone, Debug, ToSchema)]
 pub struct SafeUser {

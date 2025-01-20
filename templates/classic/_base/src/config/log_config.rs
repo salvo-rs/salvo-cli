@@ -238,12 +238,12 @@ impl LogConfig {
             };
         } else if self.format == FORMAT_FULL {
             let subscriber = subscriber.event_format(
-                    fmt::format()
-                        .with_level(self.with_level)
-                        .with_target(self.with_target)
-                        .with_thread_ids(self.with_thread_ids)
-                        .with_thread_names(self.with_thread_names)
-                        .with_source_location(self.with_source_location),
+                fmt::format()
+                    .with_level(self.with_level)
+                    .with_target(self.with_target)
+                    .with_thread_ids(self.with_thread_ids)
+                    .with_thread_names(self.with_thread_names)
+                    .with_source_location(self.with_source_location),
                 );
             if self.stdout {
                 subscriber.with_writer(std::io::stdout).init();

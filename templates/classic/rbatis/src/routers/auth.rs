@@ -6,9 +6,9 @@ use salvo::prelude::*;
 use serde::{Deserialize, Serialize};
 use validator::Validate;
 
-use crate::models::{SafeUser, Users};
-use crate::{db, json_ok, utils, JsonResult};
 use crate::hoops::jwt;
+use crate::models::{SafeUser, User};
+use crate::{db, json_ok, utils, JsonResult};
 
 #[derive(Deserialize, Debug, Validate, ToSchema)]
 pub struct LoginRequest {
@@ -61,19 +61,19 @@ pub async fn post_login(
     res: &mut Response,
 ) -> JsonResult<LoginOutData> {
     let login_data = idata.into_inner();
-    let rb = db::get_pool().ok_or_else(|| anyhow::Error::msg("Database not initialized"))?;
+    let rb = db::engine();
 
     // Find user by username
     let users = User::select_by_column(rb, "username", &login_data.username)
         .await
         .map_err(anyhow::Error::from)?;
 
-    let user = users.first().ok_or_else(|| {
-        StatusError::unauthorized().brief("User does not exist.")
-    })?;
+    let user = users
+        .first()
+        .ok_or_else(|| StatusError::unauthorized().brief("User does not exist."))?;
 
     // Verify password
-    if utils::verify_password(&login_data.password, &user.password).await.is_err() {
+    if utils::verify_password(&login_data.password, &user.password).is_err() {
         return Err(StatusError::unauthorized()
             .brief("Account not exist or password is incorrect.")
             .into());
@@ -88,12 +88,12 @@ pub async fn post_login(
         token: token.clone(),
         exp,
     };
-    
+
     let cookie = Cookie::build(("jwt_token", token))
         .path("/")
         .http_only(true)
         .build();
     res.add_cookie(cookie);
-    
+
     json_ok(odata)
 }
