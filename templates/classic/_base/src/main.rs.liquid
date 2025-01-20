@@ -11,8 +11,6 @@ use scheduled_thread_pool::ScheduledThreadPool;
 use sqlx::SqlitePool;
 {%- endif %}
 use dotenvy::dotenv;
-use figment::providers::{Env, Format, Toml};
-use figment::Figment;
 use salvo::catcher::Catcher;
 use salvo::conn::rustls::{Keycert, RustlsConfig};
 use salvo::prelude::*;
@@ -22,7 +20,6 @@ use tokio::signal;
 use tracing::info;
 
 mod config;
-use config::ServerConfig;
 mod db;
 mod models;
 mod utils;

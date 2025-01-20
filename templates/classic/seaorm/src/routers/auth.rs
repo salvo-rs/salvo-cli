@@ -2,10 +2,12 @@ use cookie::Cookie;
 use rinja::Template;
 use salvo::oapi::extract::*;
 use salvo::prelude::*;
+use sea_orm::{ColumnTrait, EntityTrait, QueryFilter};
 use serde::{Deserialize, Serialize};
 
+use crate::entities::users::Model;
+use crate::entities::{prelude::Users, users};
 use crate::hoops::jwt;
-use crate::models::User;
 use crate::{db, json_ok, utils, AppResult, JsonResult};
 
 #[handler]
@@ -44,20 +46,14 @@ pub async fn post_login(
 ) -> JsonResult<LoginOutData> {
     let idata = idata.into_inner();
     let conn = db::pool();
-    let Some(User {
+    let Some(Model {
         id,
         username,
         password,
-    }) = sqlx::query_as!(
-        User,
-        r#"
-            SELECT id, username, password FROM users
-            WHERE username = $1
-            "#,
-        idata.username
-    )
-    .fetch_optional(conn)
-    .await?
+    }) = Users::find()
+        .filter(users::Column::Username.eq(idata.username))
+        .one(conn)
+        .await?
     else {
         return Err(StatusError::unauthorized()
             .brief("User does not exist.")
