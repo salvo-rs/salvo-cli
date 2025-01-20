@@ -1,7 +1,7 @@
 use rinja::Template;
 use salvo::oapi::extract::*;
 use salvo::prelude::*;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use ulid::Ulid;
 use validator::Validate;
 
@@ -109,16 +109,63 @@ pub async fn delete_user(user_id: PathParam<String>) -> EmptyResult {
     empty_ok()
 }
 
+#[derive(Debug, Deserialize, Validate, Extractible, ToSchema)]
+#[salvo(extract(default_source(from = "query")))]
+pub struct UserListQuery {
+    pub username: Option<String>,
+    #[serde(default = "default_page")]
+    pub current_page: i64,
+    #[serde(default = "default_page_size")]
+    pub page_size: i64,
+}
+
+fn default_page() -> i64 { 1 }
+fn default_page_size() -> i64 { 10 }
+
+#[derive(Debug, Serialize, ToSchema)]
+pub struct UserListResponse {
+    pub data: Vec<SafeUser>,
+    pub total: i64,
+    pub current_page: i64,
+    pub page_size: i64,
+}
+
 #[endpoint(tags("users"))]
-pub async fn list_users() -> JsonResult<Vec<SafeUser>> {
+pub async fn list_users(query: &mut Request) -> JsonResult<UserListResponse> {
     let conn = db::pool();
+    let query: UserListQuery = query.extract().await?;
+    let username_filter = query.username.clone().unwrap_or_default();
+    let like_pattern = format!("%{}%", username_filter);
+    let offset = (query.current_page - 1) * query.page_size;
+    
+    let total = sqlx::query_scalar!(
+        r#"
+        SELECT COUNT(*) as "count!: i64" FROM users
+        WHERE username LIKE $1
+        "#,
+        like_pattern
+    )
+    .fetch_one(conn)
+    .await?;
+    
     let users = sqlx::query_as!(
         SafeUser,
         r#"
-            SELECT id, username FROM users
-            "#,
+        SELECT id, username FROM users
+        WHERE username LIKE $1
+        LIMIT $2 OFFSET $3
+        "#,
+        like_pattern,
+        query.page_size,
+        offset
     )
     .fetch_all(conn)
     .await?;
-    json_ok(users)
+    
+    json_ok(UserListResponse {
+        data: users,
+        total,
+        current_page: query.current_page,
+        page_size: query.page_size,
+    })
 }

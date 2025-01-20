@@ -120,8 +120,17 @@
     function userForm() {
       return {
         users: [],
+        total: 0,
+        currentPage: 1,
+        pageSize: 10,
+        searchUsername: '',
         fetchData() {
-          fetch("/api/users")
+          const params = new URLSearchParams({
+            page: this.currentPage,
+            size: this.pageSize,
+            username: this.searchUsername
+          });
+          fetch(`/api/users?${params.toString()}`)
             .then((response) => {
               if (!response.ok) {
                 throw new Error("Network response was not ok");
@@ -129,7 +138,8 @@
               return response.json();
             })
             .then((data) => {
-              this.users = data;
+              this.users = data.data;
+              this.total = data.total;
             })
             .catch((error) => {
               console.error(
@@ -138,17 +148,70 @@
               );
             });
         },
+        search() {
+          this.currentPage = 1;
+          this.fetchData();
+        },
+        prevPage() {
+          if (this.currentPage > 1) {
+            this.currentPage--;
+            this.fetchData();
+          }
+        },
+        nextPage() {
+          if (this.currentPage < Math.ceil(this.total / this.pageSize)) {
+            this.currentPage++;
+            this.fetchData();
+          }
+        },
         addUser() {
           Swal.fire({
             title: "{{add_user}}",
             showCancelButton: true,
+            confirmButtonText: "{{yes}}",
+            cancelButtonText: "{{cancel}}",
             html: `
-      <input id="swal-input1" class="swal2-input" placeholder="{{username}}">
-      <input id="swal-input2" class="swal2-input" placeholder="{{password}}">
-      `,
+    <input id="swal-input1" class="swal2-input" placeholder="{{username}}">
+    <input id="swal-input2" class="swal2-input" placeholder="{{password}}" type="password">
+    `,
             preConfirm: () => {
               return fetch("/api/users", {
                 method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  username: document.getElementById("swal-input1").value,
+                  password: document.getElementById("swal-input2").value,
+                }),
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error(response.statusText);
+                  }
+                  this.fetchData();
+                  return;
+                })
+                .catch((error) => {
+                  Swal.showValidationMessage(`Request failed: ${error}`);
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+          });
+        },
+        updateUser(id, currentUsername) {
+          Swal.fire({
+            title: "{{update}}",
+            showCancelButton: true,
+            confirmButtonText: "{{yes}}",
+            cancelButtonText: "{{cancel}}",
+            html: `
+    <input id="swal-input1" class="swal2-input" placeholder="{{username}}" value="${currentUsername}">
+    <input id="swal-input2" class="swal2-input" placeholder="{{password}}" type="password">
+    `,
+            preConfirm: () => {
+              return fetch(`/api/users/${id}`, {
+                method: "PUT",
                 headers: {
                   "Content-Type": "application/json",
                 },
@@ -199,5 +262,6 @@
         },
       };
     }
+
   </script>
 </html>
