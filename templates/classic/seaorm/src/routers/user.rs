@@ -1,8 +1,8 @@
 use rinja::Template;
 use salvo::oapi::extract::*;
 use salvo::prelude::*;
-use sea_orm::{ActiveModelTrait, EntityTrait, Set};
-use serde::Deserialize;
+use sea_orm::{ActiveModelTrait, EntityTrait, Set, QueryFilter, QuerySelect, ColumnTrait, PaginatorTrait};
+use serde::{Deserialize, Serialize};
 use ulid::Ulid;
 use validator::Validate;
 
@@ -95,10 +95,46 @@ pub async fn delete_user(user_id: PathParam<String>) -> EmptyResult {
     empty_ok()
 }
 
+#[derive(Debug, Deserialize, Validate, Extractible, ToSchema)]
+#[salvo(extract(default_source(from = "query")))]
+pub struct UserListQuery {
+    pub username: Option<String>,
+    #[serde(default = "default_page")]
+    pub current_page: u64,
+    #[serde(default = "default_page_size")]
+    pub page_size: u64,
+}
+
+fn default_page() -> u64 { 1 }
+fn default_page_size() -> u64 { 10 }
+
+#[derive(Debug, Serialize, ToSchema)]
+pub struct UserListResponse {
+    pub data: Vec<SafeUser>,
+    pub total: u64,
+    pub current_page: u64,
+    pub page_size: u64,
+}
+
 #[endpoint(tags("users"))]
-pub async fn list_users() -> JsonResult<Vec<SafeUser>> {
+pub async fn list_users(query: &mut Request) -> JsonResult<UserListResponse> {
+    let query: UserListQuery = query.extract().await?;
     let conn = db::pool();
-    let users = Users::find()
+    
+    let mut select = Users::find();
+    
+    // Apply username filter if provided
+    if let Some(username) = query.username.as_ref() {
+        select = select.filter(users::Column::Username.contains(username));
+    }
+    
+    // Get total count
+    let total = select.clone().count(conn).await?;
+    
+    // Apply pagination
+    let users = select
+        .offset(((query.current_page - 1) * query.page_size) as u64)
+        .limit(query.page_size)
         .all(conn)
         .await?
         .into_iter()
@@ -107,5 +143,11 @@ pub async fn list_users() -> JsonResult<Vec<SafeUser>> {
             username: user.username,
         })
         .collect::<Vec<_>>();
-    json_ok(users)
+    
+    json_ok(UserListResponse {
+        data: users,
+        total,
+        current_page: query.current_page,
+        page_size: query.page_size,
+    })
 }

@@ -89,7 +89,6 @@ async fn main() {
     .expect("diesel pool should be set");
     crate::db::migrate();
     {%- endif %}
-
     {%- elsif db_lib == "sqlx" %}
     {%- if db_type == "sqlite" %}
     let sqlx_pool = SqlitePool::connect(&config::get().db.url)
@@ -103,6 +102,9 @@ async fn main() {
         .expect("sqlx pool should be set");
     {%- endif %}
 
+    {%- if db_lib == "seaorm" %}
+    crate::db::init(&config.db).await;
+    {%- endif %}
     let _guard = config.log.guard();
     tracing::info!("log level: {}", &config.log.filter_level);
 
