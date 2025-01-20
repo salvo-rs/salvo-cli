@@ -1,4 +1,4 @@
-{%- if db_type == "postgres" %}
+{% if db_type == "postgres" %}
 use std::ops::Deref;
 use std::time::Duration;
 
@@ -76,10 +76,10 @@ pub enum PoolError {
     #[error("Failed to lock test database connection")]
     TestConnectionUnavailable,
 }
-{%- elsif db_type == "sqlite" %}
+{% elsif db_type == "sqlite" %}
 // SQLite does not support connection pooling as it is designed for single-file database access
 // Each connection directly operates on the database file
-{%- elsif db_type == "mysql" %}
+{% elsif db_type == "mysql" %}
 use std::ops::Deref;
 use std::time::Duration;
 
@@ -157,4 +157,4 @@ pub enum PoolError {
     #[error("Failed to lock test database connection")]
     TestConnectionUnavailable,
 }
-{%- endif %}
+{% endif %}

@@ -48,7 +48,6 @@ pub struct LoginInData {
     pub username: String,
     pub password: String,
 }
-
 #[derive(Serialize, ToSchema, Default, Debug)]
 pub struct LoginOutData {
     pub id: String,
@@ -56,7 +55,6 @@ pub struct LoginOutData {
     pub token: String,
     pub exp: i64,
 }
-
 #[endpoint(tags("auth"))]
 pub async fn post_login(
     idata: JsonBody<LoginInData>,
@@ -64,26 +62,26 @@ pub async fn post_login(
 ) -> JsonResult<LoginOutData> {
     let login_data = idata.into_inner();
     let rb = db::get_pool().ok_or_else(|| anyhow::Error::msg("Database not initialized"))?;
-    
+
     // Find user by username
-    let users = Users::select_by_column(rb, "username", &login_data.username)
+    let users = User::select_by_column(rb, "username", &login_data.username)
         .await
         .map_err(anyhow::Error::from)?;
-    
+
     let user = users.first().ok_or_else(|| {
         StatusError::unauthorized().brief("User does not exist.")
     })?;
-    
+
     // Verify password
     if utils::verify_password(&login_data.password, &user.password).await.is_err() {
         return Err(StatusError::unauthorized()
             .brief("Account not exist or password is incorrect.")
             .into());
     }
-    
+
     // Generate JWT token - using user ID as the token identifier
     let (token, exp) = jwt::get_token(&user.id)?;
-    
+
     let odata = LoginOutData {
         id: user.id.to_string(),
         username: user.username.to_string(),

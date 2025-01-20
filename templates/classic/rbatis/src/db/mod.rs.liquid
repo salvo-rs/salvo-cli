@@ -1,18 +1,19 @@
 use std::sync::OnceLock;
+{%- if db_type != "sqlite" %}
+use diesel::r2d2::{self, CustomizeConnection};
+{%- endif %}
+use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
+
+use crate::config::DbConfig;
 
 {%- if db_type == "postgres" %}
 use diesel::{PgConnection, RunQueryDsl};
-use diesel::r2d2::{self, CustomizeConnection};
 {%- elsif db_type == "mysql" %}
 use diesel::{MysqlConnection, RunQueryDsl};
-use diesel::r2d2::{self, CustomizeConnection};
 {%- elsif db_type == "sqlite" %}
 use diesel::{Connection, SqliteConnection, RunQueryDsl};
 {%- endif %}
-use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 use url::Url;
-
-use crate::config::DbConfig;
 
 {%- if db_type != "sqlite" %}
 pub mod pool;
