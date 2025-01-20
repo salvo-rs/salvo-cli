@@ -53,10 +53,7 @@ pub fn get_selected() -> Result<Option<Selected>> {
         }));
     }
 
-    let db_types: Vec<&str> = vec!["sqlite", "mysql", "postgres"];
-    // if db_lib == DbLib::Rbatis {
-    //     db_types = vec!["sqlite", "mysql", "postgres", "mssql"];
-    // }
+    let db_types = &[t!("db_type_sqlite"), t!("db_type_postgres"), t!("db_type_mysql")];
     let db_type_selection = Select::with_theme(&theme)
         .with_prompt(t!("select_db_type").replace(r"\n", "\n"))
         .default(0)
@@ -64,8 +61,8 @@ pub fn get_selected() -> Result<Option<Selected>> {
         .interact()?;
     let db_type = match db_type_selection {
         0 => DbType::Sqlite,
-        1 => DbType::Mysql,
-        2 => DbType::Postgres,
+        1 => DbType::Postgres,
+        2 => DbType::Mysql,
         _ => anyhow::bail!("Invalid db type selection"),
     };
 

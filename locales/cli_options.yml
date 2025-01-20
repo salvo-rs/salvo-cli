@@ -72,59 +72,59 @@ select_db_lib:
   el: επιλέξτε τύπο σύνδεσης βάσης δεδομένων
   da: vælg databaseforbindelsestype
 db_lib_sqlx:
-  en: SQLx is an async, pure Rust† SQL crate featuring compile-time checked queries without a DSL. 10K⭐
-  zh_CN: SQLx 是一个异步、纯 Rust† 的 SQL 库，具有无 DSL 的编译时检查查询。10K⭐
-  zh_TW: SQLx 是一個非同步、純 Rust† 的 SQL 函式庫，具有無 DSL 的編譯時檢查查詢。10K⭐
-  fr: SQLx est une caisse SQL asynchrone et pure Rust† avec des requêtes vérifiées au moment de la compilation sans DSL. 10K⭐
-  ja: SQLx は、DSL なしでコンパイル時にクエリをチェックする、非同期で純粋な Rust† SQL クレートです。10K⭐
-  es: SQLx es una caja SQL asíncrona y pura Rust† con consultas verificadas en tiempo de compilación sin DSL. 10K⭐
-  de: SQLx ist eine asynchrone, reine Rust† SQL-Kiste mit kompilierten Abfragen ohne DSL. 10K⭐
-  ru: SQLx - это асинхронный, чистый Rust† SQL ящик с проверкой запросов во время компиляции без DSL. 10K⭐
-  it: SQLx è una cassa SQL asincrona e pura Rust† con query verificate in fase di compilazione senza DSL. 10K⭐
-  pt: SQLx é uma caixa SQL assíncrona e pura Rust† com consultas verificadas no momento da compilação sem DSL. 10K⭐
-  ko: SQLx 는 DSL 없이 컴파일 시간에 쿼리를 확인하는 비동기, 순수 Rust† SQL 크레이트입니다. 10K⭐
-  no: SQLx er en asynkron, ren Rust† SQL-kasse med kompilerte spørringer uten DSL. 10K⭐
-  is: SQLx er asynkron, hrein Rust† SQL kassa með samþjöppuð fyrirspurnir án DSL. 10K⭐
-  uk: SQLx - це асинхронний, чистий Rust† SQL ящик з перевіреними на етапі компіляції запитами без DSL. 10K⭐
-  th: SQLx เป็น SQL crate แบบ async, pure Rust† ที่มีการตรวจสอบคิวรีในเวลาคอมไพล์โดยไม่มี DSL. 10K⭐
-  el: το SQLx είναι ένα ασύγχρονο, καθαρό Rust† SQL κιβώτιο με ερωτήματα ελεγμένα κατά τη σύνταξη χωρίς DSL. 10K⭐
-  da: SQLx er en asynkron, ren Rust† SQL-kasse med kompilerede forespørgsler uden DSL. 10K⭐
+  en: SQLx is an async, pure Rust† SQL crate featuring compile-time checked queries without a DSL. 14K⭐
+  zh_CN: SQLx 是一个异步、纯 Rust† 的 SQL 库，具有无 DSL 的编译时检查查询。14K⭐
+  zh_TW: SQLx 是一個非同步、純 Rust† 的 SQL 函式庫，具有無 DSL 的編譯時檢查查詢。14K⭐
+  fr: SQLx est une caisse SQL asynchrone et pure Rust† avec des requêtes vérifiées au moment de la compilation sans DSL. 14K⭐
+  ja: SQLx は、DSL なしでコンパイル時にクエリをチェックする、非同期で純粋な Rust† SQL クレートです。14K⭐
+  es: SQLx es una caja SQL asíncrona y pura Rust† con consultas verificadas en tiempo de compilación sin DSL. 14K⭐
+  de: SQLx ist eine asynchrone, reine Rust† SQL-Kiste mit kompilierten Abfragen ohne DSL. 14K⭐
+  ru: SQLx - это асинхронный, чистый Rust† SQL ящик с проверкой запросов во время компиляции без DSL. 14K⭐
+  it: SQLx è una cassa SQL asincrona e pura Rust† con query verificate in fase di compilazione senza DSL. 14K⭐
+  pt: SQLx é uma caixa SQL assíncrona e pura Rust† com consultas verificadas no momento da compilação sem DSL. 14K⭐
+  ko: SQLx 는 DSL 없이 컴파일 시간에 쿼리를 확인하는 비동기, 순수 Rust† SQL 크레이트입니다. 14K⭐
+  no: SQLx er en asynkron, ren Rust† SQL-kasse med kompilerte spørringer uten DSL. 14K⭐
+  is: SQLx er asynkron, hrein Rust† SQL kassa með samþjöppuð fyrirspurnir án DSL. 14K⭐
+  uk: SQLx - це асинхронний, чистий Rust† SQL ящик з перевіреними на етапі компіляції запитами без DSL. 14K⭐
+  th: SQLx เป็น SQL crate แบบ async, pure Rust† ที่มีการตรวจสอบคิวรีในเวลาคอมไพล์โดยไม่มี DSL. 14K⭐
+  el: το SQLx είναι ένα ασύγχρονο, καθαρό Rust† SQL κιβώτιο με ερωτήματα ελεγμένα κατά τη σύνταξη χωρίς DSL. 14K⭐
+  da: SQLx er en asynkron, ren Rust† SQL-kasse med kompilerede forespørgsler uden DSL. 14K⭐
 db_lib_diesel:
-  en: diesel:A safe, extensible ORM and Query Builder for Rust 11K⭐
-  zh_CN: diesel:Rust 的安全、可扩展的 ORM 和查询生成器 11K⭐
-  zh_TW: diesel:Rust 的安全、可擴展的 ORM 和查詢生成器 11K⭐
-  fr: diesel:ORM et générateur de requêtes extensible et sûr pour Rust 11K⭐
-  ja: diesel:Rust の安全で拡張可能な ORM とクエリビルダー 11K⭐
-  es: diesel:ORM y generador de consultas seguro y extensible para Rust 11K⭐
-  de: diesel:Eine sichere, erweiterbare ORM und Abfragegenerator für Rust 11K⭐
-  ru: diesel:ORM и генератор запросов безопасны и расширяемы для Rust 11K⭐
-  it: diesel:ORM e generatore di query sicuro ed estensibile per Rust 11K⭐
-  pt: diesel:ORM e gerador de consultas seguro e extensível para Rust 11K⭐
-  ko: diesel:Rust 의 안전하고 확장 가능한 ORM 및 쿼리 빌더 11K⭐
-  no: diesel:En sikker, utvidbar ORM og spørringsbygger for Rust 11K⭐
-  is: diesel:Öruggt, útvíkkandi ORM og fyrirspurnarbyggir fyrir Rust 11K⭐
-  uk: diesel:ORM та генератор запитів безпечні та розширювані для Rust 11K⭐
-  th: diesel:ORM และ Query Builder ที่ปลอดภัยและสามารถขยายได้สำหรับ Rust 11K⭐
-  el: diesel:ένα ασφαλές, επεκτάσιμο ORM και Query Builder για Rust 11K⭐
-  da: diesel:En sikker, udvidelig ORM og Query Builder til Rust 11K⭐
+  en: diesel:A safe, extensible ORM and Query Builder for Rust 13K⭐
+  zh_CN: diesel:Rust 的安全、可扩展的 ORM 和查询生成器 13K⭐
+  zh_TW: diesel:Rust 的安全、可擴展的 ORM 和查詢生成器 13K⭐
+  fr: diesel:ORM et générateur de requêtes extensible et sûr pour Rust 13K⭐
+  ja: diesel:Rust の安全で拡張可能な ORM とクエリビルダー 13K⭐
+  es: diesel:ORM y generador de consultas seguro y extensible para Rust 13K⭐
+  de: diesel:Eine sichere, erweiterbare ORM und Abfragegenerator für Rust 13K⭐
+  ru: diesel:ORM и генератор запросов безопасны и расширяемы для Rust 13K⭐
+  it: diesel:ORM e generatore di query sicuro ed estensibile per Rust 13K⭐
+  pt: diesel:ORM e gerador de consultas seguro e extensível para Rust 13K⭐
+  ko: diesel:Rust 의 안전하고 확장 가능한 ORM 및 쿼리 빌더 13K⭐
+  no: diesel:En sikker, utvidbar ORM og spørringsbygger for Rust 13K⭐
+  is: diesel:Öruggt, útvíkkandi ORM og fyrirspurnarbyggir fyrir Rust 13K⭐
+  uk: diesel:ORM та генератор запитів безпечні та розширювані для Rust 13K⭐
+  th: diesel:ORM และ Query Builder ที่ปลอดภัยและสามารถขยายได้สำหรับ Rust 13K⭐
+  el: diesel:ένα ασφαλές, επεκτάσιμο ORM και Query Builder για Rust 13K⭐
+  da: diesel:En sikker, udvidelig ORM og Query Builder til Rust 13K⭐
 db_lib_seaorm:
-  en: sea-orm:🐚 An async & dynamic ORM for Rust (I like it)
-  zh_CN: sea-orm:🐚 Rust 的异步和动态 ORM（我喜欢它）
-  zh_TW: sea-orm:🐚 Rust 的非同步和動態 ORM（我喜歡它）
-  fr: sea-orm:🐚 Un ORM asynchrone et dynamique pour Rust (je l'aime)
-  ja: sea-orm:🐚 Rust の非同期 & 動的 ORM（気に入っています）
-  es: sea-orm:🐚 Un ORM asíncrono y dinámico para Rust (me gusta)
-  de: sea-orm:🐚 Ein asynchrones und dynamisches ORM für Rust (ich mag es)
-  ru: sea-orm:🐚 Асинхронный и динамический ORM для Rust (мне нравится)
-  it: sea-orm:🐚 Un ORM asincrono e dinamico per Rust (mi piace)
-  pt: sea-orm:🐚 Um ORM assíncrono e dinâmico para Rust (eu gosto)
-  ko: sea-orm:🐚 Rust 의 비동기 및 동적 ORM (나는 좋아)
-  no: sea-orm:🐚 En asynkron og dynamisk ORM for Rust (jeg liker det)
-  is: sea-orm:🐚 Asynkron og hreyfanleg ORM fyrir Rust (mér líkar það)
-  uk: sea-orm:🐚 Асинхронний та динамічний ORM для Rust (мені подобається)
-  th: sea-orm:🐚 ORM แบบ async และ dynamic สำหรับ Rust (ฉันชอบมัน)
-  el: sea-orm:🐚 ένα ασύγχρονο και δυναμικό ORM για Rust (μου αρέσει)
-  da: sea-orm:🐚 En asynkron og dynamisk ORM til Rust (jeg kan lide det)
+  en: sea-orm:🐚 An async & dynamic ORM for Rust
+  zh_CN: sea-orm:🐚 Rust 的异步和动态 ORM
+  zh_TW: sea-orm:🐚 Rust 的非同步和動態 ORM
+  fr: sea-orm:🐚 Un ORM asynchrone et dynamique pour Rust 
+  ja: sea-orm:🐚 Rust の非同期 & 動的 ORM
+  es: sea-orm:🐚 Un ORM asíncrono y dinámico para Rust
+  de: sea-orm:🐚 Ein asynchrones und dynamisches ORM für Rust
+  ru: sea-orm:🐚 Асинхронный и динамический ORM для Rust
+  it: sea-orm:🐚 Un ORM asincrono e dinamico per Rust
+  pt: sea-orm:🐚 Um ORM assíncrono e dinâmico para Rust
+  ko: sea-orm:🐚 Rust 의 비동기 및 동적 ORM
+  no: sea-orm:🐚 En asynkron og dynamisk ORM for Rust
+  is: sea-orm:🐚 Asynkron og hreyfanleg ORM fyrir Rust
+  uk: sea-orm:🐚 Асинхронний та динамічний ORM для Rust
+  th: sea-orm:🐚 ORM แบบ async และ dynamic สำหรับ Rust
+  el: sea-orm:🐚 ένα ασύγχρονο και δυναμικό ORM για Rust
+  da: sea-orm:🐚 En asynkron og dynamisk ORM til Rust
 db_lib_rbatis:
   en: rbatis:A similar Mybatis (java) asynchronous ORM framework
   zh_CN: rbatis:类似 Mybatis (java) 的异步 ORM 框架
@@ -197,3 +197,57 @@ select_db_type:
   th: เลือกประเภทฐานข้อมูล
   el: επιλέξτε τύπο βάσης δεδομένων
   da: vælg databasetype
+db_type_sqlite:
+  en: "sqlite - Simple project for learning, ready to use out of the box"
+  zh_CN: "sqlite - 简单项目，学习使用，开箱即用"
+  zh_TW: "sqlite - 簡單項目，學習使用，開箱即用"
+  fr: "sqlite - Projet simple pour l'apprentissage, prêt à l'emploi"
+  ja: "sqlite - 学習用の簡単なプロジェクト、すぐに使用可能"
+  es: "sqlite - Proyecto simple para aprender, listo para usar"
+  de: "sqlite - Einfaches Projekt zum Lernen, sofort einsatzbereit"
+  ru: "sqlite - Простой проект для обучения, готовый к использованию"
+  it: "sqlite - Progetto semplice per l'apprendimento, pronto all'uso"
+  pt: "sqlite - Projeto simples para aprendizado, pronto para usar"
+  ko: "sqlite - 학습용 간단한 프로젝트, 즉시 사용 가능"
+  no: "sqlite - Enkelt prosjekt for læring, klar til bruk"
+  is: "sqlite - Einfalt verkefni til að læra, tilbúið til notkunar"
+  uk: "sqlite - Простий проект для навчання, готовий до використання"
+  th: "sqlite - โปรเจกต์ง่ายๆ สำหรับการเรียนรู้ พร้อมใช้งานทันที"
+  el: "sqlite - Απλό έργο για εκμάθηση, έτοιμο προς χρήση"
+  da: "sqlite - Simpelt projekt til læring, klar til brug"
+db_type_mysql:
+  en: "mysql - Perhaps you're required to use MySQL?"
+  zh_CN: "mysql - 或许你被要求使用MySQL?"
+  zh_TW: "mysql - 也許你被要求使用MySQL?"
+  fr: "mysql - Peut-être devez-vous utiliser MySQL ?"
+  ja: "mysql - MySQLの使用が必要かもしれません?"
+  es: "mysql - ¿Tal vez necesitas usar MySQL?"
+  de: "mysql - Vielleicht müssen Sie MySQL verwenden?"
+  ru: "mysql - Возможно, вам нужно использовать MySQL?"
+  it: "mysql - Forse ti serve utilizzare MySQL?"
+  pt: "mysql - Talvez você precise usar MySQL?"
+  ko: "mysql - MySQL을 사용해야 할 수도 있나요?"
+  no: "mysql - Kanskje du må bruke MySQL?"
+  is: "mysql - Kannski þarftu að nota MySQL?"
+  uk: "mysql - Можливо, вам потрібно використовувати MySQL?"
+  th: "mysql - บางทีคุณอาจต้องใช้ MySQL?"
+  el: "mysql - Ίσως χρειάζεται να χρησιμοποιήσετε MySQL?"
+  da: "mysql - Måske skal du bruge MySQL?"
+db_type_postgres:
+  en: "postgres - The most popular and excellent database"
+  zh_CN: "postgres - 最受欢迎的优秀的数据库"
+  zh_TW: "postgres - 最受歡迎的優秀資料庫"
+  fr: "postgres - La base de données la plus populaire et excellente"
+  ja: "postgres - 最も人気のある優れたデータベース"
+  es: "postgres - La base de datos más popular y excelente"
+  de: "postgres - Die beliebteste und ausgezeichnete Datenbank"
+  ru: "postgres - Самая популярная и отличная база данных"
+  it: "postgres - Il database più popolare ed eccellente"
+  pt: "postgres - O banco de dados mais popular e excelente"
+  ko: "postgres - 가장 인기 있고 우수한 데이터베이스"
+  no: "postgres - Den mest populære og utmerkede databasen"
+  is: "postgres - Vinsælasti og framúrskarandi gagnagrunnurinn"
+  uk: "postgres - Найпопулярніша та відмінна база даних"
+  th: "postgres - ฐานข้อมูลที่ได้รับความนิยมและยอดเยี่ยมที่สุด"
+  el: "postgres - Η πιο δημοφιλής και εξαιρετική βάση δεδομένων"
+  da: "postgres - Den mest populære og fremragende database"
