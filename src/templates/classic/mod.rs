@@ -53,6 +53,7 @@ fn create_files(project_path: &Path, user_selected: Selected, new_cmd: &NewCmd) 
         "user":t!("user"),
         "add_user":t!("add_user"),
         "lang":t!("lang"),
+        "rbatis_website":t!("rbatis_website"),
         "account":t!("account"),
         "password":t!("password"),
         "you_wont_be_able_to_revert_this":t!("you_wont_be_able_to_revert_this"),

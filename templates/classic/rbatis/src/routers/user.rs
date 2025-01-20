@@ -161,3 +161,4 @@ pub async fn list_users(query: &mut Request) -> JsonResult<UserListResponse> {
         page_size: query.page_size,
     })
 }
+
