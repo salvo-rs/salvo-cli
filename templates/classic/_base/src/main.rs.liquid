@@ -12,8 +12,6 @@ use scheduled_thread_pool::ScheduledThreadPool;
 use sqlx::SqlitePool;
 {%- elsif db_type == "postgres" %}
 use sqlx::PgPool;
-{%- elsif db_type == "mysql" %}
-use sqlx::mysql::MySqlPool;
 {%- endif %}
 {%- endif %}
 use dotenvy::dotenv;
@@ -97,8 +95,6 @@ async fn main() {
     let sqlx_pool = SqlitePool::connect(&config::get().db.url)
     {%- elsif db_type == "postgres" %}
     let sqlx_pool = PgPool::connect(&config::get().db.url)
-    {%- elsif db_type == "mysql" %}
-    let sqlx_pool = MySqlPool::connect(&config::get().db.url)
     {%- endif %}
         .await
         .expect("Database connection failed.");
