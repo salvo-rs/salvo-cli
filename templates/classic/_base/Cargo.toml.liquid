@@ -55,18 +55,18 @@ diesel = { version = "2", features = ["r2d2", "mysql"]}
 diesel = { version = "2", features = ["r2d2", "sqlite", "returning_clauses_for_sqlite_3_35"]}
 {%- endif %}
 {%- endif %}
-{%- if db_lib == "rbatis" and db_type == "postgres" %}
-rbatis = { version = "4", features = ["debug_mode"]}
+{%- if db_lib == "rbatis" %}
+rbatis = { version = "4.5"}
+rbs = { version = "4.5"}
 {%- if db_type == "postgres" %}
-rbdc-pg = { "version": "4"}
+rbdc-pg = { version = "4.5"}
 {%- endif %}
 {%- if db_type == "mysql" %}
-rbdc-mysql = { version = "4"}
+rbdc-mysql = { version = "4.5"}
 {%- endif %}
 {%- if db_type == "sqlite" %}
-rbdc-sqlite = { version = "4"}
+rbdc-sqlite = { version = "4.5"}
 {%- endif %}
-rbs = { version = "4"}
 {%- endif %}
 {%- if db_type == "mongodb" %}
 mongodb = { version = "2"}

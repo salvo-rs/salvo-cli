@@ -104,6 +104,9 @@ async fn main() {
 
     {%- if db_lib == "seaorm" %}
     crate::db::init(&config.db).await;
+    {%- elsif db_lib == "rbatis" %}
+    crate::db::init(&config.db.url).await.expect("Failed to initialize database");
+    crate::db::migrate().await.expect("Failed to migrate database");
     {%- endif %}
     let _guard = config.log.guard();
     tracing::info!("log level: {}", &config.log.filter_level);
