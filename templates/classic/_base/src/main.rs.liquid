@@ -59,8 +59,6 @@ async fn main() {
     crate::config::init();
     let config = crate::config::get();
     
-    crate::db::init(&config.db).await;
-
     {%- if db_lib == "diesel" %}
     {%- if db_type == "sqlite" %}
     {%- else %}
@@ -88,8 +86,9 @@ async fn main() {
     crate::db::DIESEL_POOL
     .set(db_primary)
     .expect("diesel pool should be set");
-    {%- endif %}
     crate::db::migrate();
+    {%- endif %}
+
     {%- elsif db_lib == "sqlx" %}
     let sqlx_pool = SqlitePool::connect(&config::get().db.url)
         .await
