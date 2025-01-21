@@ -11,15 +11,15 @@ pub async fn init(config: &DbConfig) {
     {%- if db_type == "sqlite" %}
     rb.init(rbdc_sqlite::driver::SqliteDriver {}, &config.url)
         .unwrap();
-    let sql_file = "./data/table_sqlite.sql";
+    let sql_file = "./data/init.sql";
     {%- elsif db_type == "postgres" %}
-    rb.init(rbdc_sqlite::driver::PostgresDriver {}, &config.url)
+    rb.init(rbdc_pg::driver::PgDriver {}, &config.url)
         .unwrap();
-    let sql_file = "./data/table_postgres.sql";
+    let sql_file = "./data/init.sql";
     {%- elsif db_type == "mysql" %}
-    rb.init(rbdc_sqlite::driver::SqliteDriver {}, &config.url)
+    rb.init(rbdc_mysql::driver::MysqlDriver {}, &config.url)
         .unwrap();
-    let sql_file = "./data/table_mysql.sql";
+    let sql_file = "./data/init.sql";
     {%- endif %}
 
     if sql_file != "" {
