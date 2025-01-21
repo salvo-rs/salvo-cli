@@ -8,20 +8,20 @@ use liquid::model::Object;
 use rust_i18n::t;
 
 use crate::printer::warning;
-use crate::{git, NewCmd};
+use crate::{git, Project};
 
-mod selection;
+pub(crate) mod selection;
 use selection::Selected;
 
 #[derive(rust_embed::RustEmbed)]
 #[folder = "./templates/classic"]
 struct Template;
 
-pub fn generate(new_cmd: &NewCmd) -> Result<()> {
+pub fn generate(proj: &Project) -> Result<()> {
     let Some(config) = selection::get_selected()? else {
         anyhow::bail!("cli quit!")
     };
-    let project_path = Path::new(&new_cmd.project_name);
+    let project_path = Path::new(&proj.name);
     match git::init_repository(project_path) {
         Ok(_) => {}
         Err(e) => {
@@ -29,15 +29,15 @@ pub fn generate(new_cmd: &NewCmd) -> Result<()> {
         }
     }
 
-    create_files(project_path, config, new_cmd)?;
+    create_files(project_path, config, proj)?;
     Ok(())
 }
 
-fn create_files(project_path: &Path, user_selected: Selected, new_cmd: &NewCmd) -> Result<()> {
+pub(crate) fn create_files(project_path: &Path, user_selected: Selected, proj: &Project) -> Result<()> {
     let db_lib = user_selected.db_lib.to_string();
     let db_type = user_selected.db_type.to_string();
     let data = liquid::object!({
-        "project_name": new_cmd.project_name,
+        "project_name": proj.name,
         "db_type":db_type,
         "db_lib":db_lib,
         "main_log_message":t!("main_log_message"),

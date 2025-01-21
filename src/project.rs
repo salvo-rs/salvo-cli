@@ -5,14 +5,12 @@ use std::{env, slice};
 use anyhow::{Context, Result};
 use rust_i18n::t;
 
-use crate::namer;
 use crate::printer::{self, success, warning};
-use crate::NewCmd;
+use crate::{namer, Project};
 
-pub fn create(new_cmd: &NewCmd) -> Result<()> {
-    check_name(&new_cmd.project_name)?;
-    let project_name = &new_cmd.project_name;
-    let project_path = Path::new(project_name);
+pub fn create(proj: &Project) -> Result<()> {
+    check_name(&proj.name)?;
+    let project_path = Path::new(&proj.name);
     if project_path.exists() {
         anyhow::bail!(t!(
             "error_project_path_exist",
@@ -21,8 +19,8 @@ pub fn create(new_cmd: &NewCmd) -> Result<()> {
     }
 
     check_path(project_path)?;
-    crate::templates::classic::generate(new_cmd)?;
-    after_print_info(project_name);
+    crate::templates::classic::generate(proj)?;
+    after_print_info(&proj.name);
     Ok(())
 }
 

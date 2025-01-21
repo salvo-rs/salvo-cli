@@ -31,15 +31,24 @@ pub struct NewCmd {
     #[clap(short, long)]
     lang: Option<String>,
 }
+#[derive(Debug, Clone)]
+pub struct Project {
+    pub name: String,
+    pub lang: String,
+}
 #[tokio::main]
 async fn main() -> Result<()> {
     printer::print_logo();
     let opts: Opts = Opts::parse();
     match opts.subcmd {
-        SubCommand::New(new_cmd) => {
-            set_locale(&new_cmd.lang);
+        SubCommand::New(NewCmd {project_name, lang}) => {
+            set_locale(&lang);
+            let proj = Project {
+                name: project_name,
+                lang: lang.unwrap_or("en".to_string()),
+            };
             // updater::check_for_updates().await;
-            match project::create(&new_cmd) {
+            match project::create(&proj) {
                 Ok(_) => (),
                 Err(e) => printer::error(e.to_string()),
             };

@@ -1,14 +1,13 @@
 #[cfg(test)]
 mod tests {
-    use crate::{
-        utils::{
-            create_project::write_project_file,
-            get_selection::{DbLib, DbType, Selected},
-        },
-        Project,
-    };
-    use itertools::Itertools;
     use std::path::Path;
+
+    use itertools::Itertools;
+
+    use crate::templates::classic;
+    use crate::templates::classic::selection::{DbLib, DbType, Selected};
+    use crate::Project;
+
     #[test]
     fn test_write_project_all_combinations() {
         //let db_types = [DbType::Sqlite, DbType::Mysql, DbType::Postgres, DbType::Mssql];
@@ -19,7 +18,6 @@ mod tests {
             DbLib::Diesel,
             DbLib::Rbatis,
             DbLib::Mongodb,
-            DbLib::Nothing,
         ];
 
         // Generate all combinations
@@ -30,10 +28,12 @@ mod tests {
 
         // Test each combination
         for (db_type, db_lib) in combinations {
-            // Generate a unique project name for each combination
-            let project_name = format!("test_{:?}_{:?}", db_type, db_lib);
-            println!("Testing combination: {:?}", project_name);
-            let path_str = format!("target/{}", project_name);
+            let proj = Project {
+                name: format!("test_{:?}_{:?}", db_type, db_lib),
+                lang: "zh".to_string(),
+            };
+            println!("Testing combination: {:?}", proj.name);
+            let path_str = format!("target/{}", proj.name);
             std::fs::remove_dir_all(&path_str).unwrap_or(());
             let path = Path::new(&path_str);
 
@@ -41,11 +41,7 @@ mod tests {
                 db_type: *db_type,
                 db_lib: *db_lib,
             };
-            let project = Project {
-                project_name: project_name.clone(),
-                lang: Some("zh".to_string()),
-            };
-            match write_project_file(path, user_selected, project) {
+            match classic::create_files(path, user_selected, &proj) {
                 Ok(()) => {
                     let output = std::process::Command::new("cargo")
                         .arg("check")
@@ -54,8 +50,8 @@ mod tests {
                         .expect("failed to execute process");
                     if !output.status.success() {
                         eprintln!(
-                            "Failed on combination: code_style={:?}, db_type={:?}, db_lib={:?}",
-                            code_style, db_type, db_lib
+                            "Failed on combination: db_type={:?}, db_lib={:?}",
+                            db_type, db_lib
                         );
                         eprintln!("Output: {:?}", output);
                         panic!();
@@ -63,8 +59,8 @@ mod tests {
                 }
                 Err(e) => {
                     eprintln!(
-                        "Failed to write project file on combination: code_style={:?}, db_type={:?}, db_lib={:?}",
-                        code_style, db_type, db_lib
+                        "Failed to write project file on combination: db_type={:?}, db_lib={:?}",
+                        db_type, db_lib
                     );
                     eprintln!("Error: {:?}", e);
                     panic!();
