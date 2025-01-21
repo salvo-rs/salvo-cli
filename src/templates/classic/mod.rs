@@ -120,7 +120,8 @@ pub(crate) fn create_files(project_path: &Path, selected: Selected, proj: &Proje
             let file_path = project_path.join(filename.as_ref().trim_start_matches("_base/"));
             write_file(&file.data, &file_path, &data)?;
         } else if filename.starts_with("_data/") {
-            if filename.contains(db_lib_str) && filename.contains(".sqlite") && db_type == "sqlite" {
+            if filename.contains(db_lib_str) && filename.contains(".sqlite") && db_type == "sqlite"
+            {
                 let file = Template::get(filename.as_ref()).expect("file must exist");
                 let file_path = project_path.join(filename.as_ref().trim_start_matches("_"));
                 write_file(&file.data, &file_path, &data)?;
