@@ -41,7 +41,7 @@ async fn main() -> Result<()> {
     printer::print_logo();
     let opts: Opts = Opts::parse();
     match opts.subcmd {
-        SubCommand::New(NewCmd {project_name, lang}) => {
+        SubCommand::New(NewCmd { project_name, lang }) => {
             set_locale(&lang);
             let proj = Project {
                 name: project_name,

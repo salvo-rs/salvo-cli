@@ -33,9 +33,9 @@ pub fn generate(proj: &Project) -> Result<()> {
     Ok(())
 }
 
-pub(crate) fn create_files(project_path: &Path, user_selected: Selected, proj: &Project) -> Result<()> {
-    let db_lib = user_selected.db_lib.to_string();
-    let db_type = user_selected.db_type.to_string();
+pub(crate) fn create_files(project_path: &Path, selected: Selected, proj: &Project) -> Result<()> {
+    let db_lib = selected.db_lib.to_string();
+    let db_type = selected.db_type.to_string();
     let data = liquid::object!({
         "project_name": proj.name,
         "db_type":db_type,
@@ -113,7 +113,7 @@ pub(crate) fn create_files(project_path: &Path, user_selected: Selected, proj: &
         "diesel_cli_website": t!("diesel_cli_website").replace(r"\n", "\n"),
     });
 
-    let db_lib_str = &*user_selected.db_lib.to_string();
+    let db_lib_str = &*selected.db_lib.to_string();
     for filename in Template::iter() {
         if filename.starts_with("_base/") {
             let file = Template::get(filename.as_ref()).expect("file must exist");
