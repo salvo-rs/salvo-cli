@@ -1,0 +1,244 @@
+{{ talk_to_me_lang }}
+Here is the refined, concise English version of your guidelines for AI:
+Salvo Framework Overview
+Salvo is a Rust-based web framework focused on simplicity, efficiency, and usability. Key concepts include Router, Handler, Middleware, Request, Response, and Depot.
+Key Concepts:
+	1.	Router:
+	•	Create with Router::new().
+	•	Define paths with path() or with_path().
+	•	Use HTTP methods like get(), post(), patch(), delete().
+	•	Support for path parameters (e.g., {id}, <id:num>).
+	•	Filters like filters::path(), filters::get() can be added.
+	•	Add middleware with hoop().
+	2.	Handler:
+	•	Use #[handler] macro for easy definition.
+	•	Optional parameters include Request, Depot, FlowCtrl.
+	•	Return types must implement Writer Trait (e.g., &str, String, Result<T, E>).
+	3.	Middleware:
+	•	Implement Handler Trait.
+	•	Use hoop() to add middleware to Router or Service.
+	•	Control execution flow with FlowCtrl, e.g., ctrl.skip_rest().
+	4.	Request:
+	•	Get path parameters with req.param::<T>("param_name").
+	•	Use req.query::<T>("query_name") for query parameters.
+	•	Parse form or JSON with req.form::<T>("name").await or req.parse_json::<T>().await.
+	•	Extract data into structures with req.extract().
+	5.	Response:
+	•	Render responses with res.render().
+	•	Return types like Text::Plain(), Text::Html(), Json().
+	•	Set status with res.status_code() or StatusError.
+	•	Use Redirect::found() for redirection.
+	6.	Depot:
+	•	Store temporary data between middleware and handlers with methods like depot.insert() and depot.obtain::<T>().
+	7.	Extractors:
+	•	Use #[salvo(extract(...))] annotations to map request data to structures.
+
+Core Features:
+	•	Static File Serving: Use StaticDir or StaticEmbed.
+	•	OpenAPI Support: Auto-generate docs with #[endpoint] macro.
+
+Routing:
+	•	Flat or tree-like route structure supported.
+
+Middleware:
+	•	Middleware is a Handler added to Router, Service, or Catcher.
+	•	FlowCtrl allows skipping handlers or middleware.
+
+Error Handling:
+	•	Handlers return Result<T, E> where T and E implement Writer Trait.
+	•	Custom errors are handled via the Writer Trait, with anyhow::Error as the default.
+
+Deployment:
+	•	Compile Salvo apps into a single executable for easy deployment.
+
+Project Structure:
+
+project/
+├── src/
+│   ├── routers/
+│   ├── models/
+│   ├── db/
+│   │   └── mod.rs    # MongoDB connection handling
+│   ├── error.rs
+│   └── utils.rs
+├── views/
+    └── *.html
+
+JSON Response Format:
+
+#[derive(Serialize)]
+pub struct JsonResponse<T> {
+    pub code: i32,
+    pub message: String,
+    pub data: T,
+}
+
+Frontend Guidelines:
+	1.	Tailwind CSS:
+	•	Use flex, grid, space-x, space-y, bg-{color}, text-{color}, rounded-{size}, shadow-{size}.
+	2.	Alpine.js:
+	•	Use x-data, x-model, @click, x-show, x-if.
+	3.	Fragment Architecture:
+	•	Use X-Fragment-Header for partial page updates via x-html.
+
+Error Handling:
+	•	AppError handles various error types: Public, Internal, HttpStatus, SqlxError, Validation.
+	•	Log errors with tracing and return appropriate HTTP status codes.
+
+Database Operations:
+	•	Use SQLx for async DB operations (e.g., query!, query_as!).
+	•	Paginate with LIMIT and OFFSET.
+
+Password Handling:
+	•	Use bcrypt/Argon2 for password hashing.
+
+Input Validation:
+	•	Use validator for validating and sanitizing inputs.
+
+Diesel ORM Guidelines:
+1. Database Connection Setup:
+   • PostgreSQL:
+     - URL format: postgres://user:password@host:port/dbname
+     - Enable features: diesel/postgres
+     - Types: Timestamp, Uuid, Json/Jsonb support
+2. Schema Definition:
+   ```rust
+   diesel::table! {
+       users (id) {
+           id -> Text,
+           username -> Text,
+           password -> Text,
+       }
+   }
+   ```
+
+3. Model Definition:
+   ```rust
+   #[derive(Queryable, Selectable, Insertable)]
+   #[diesel(table_name = users)]
+   pub struct User {
+       pub id: String,
+       pub username: String,
+       pub password: String,
+   }
+   ```
+
+4. Common Operations:
+   • Select:
+     ```rust
+     users::table.filter(users::id.eq(user_id)).first::<User>(conn)?
+     ```
+   • Insert:
+     ```rust
+     diesel::insert_into(users::table).values(&user).execute(conn)?
+     ```
+   • Update:
+     ```rust
+     diesel::update(users::table)
+         .filter(users::id.eq(user_id))
+         .set(users::username.eq(new_username))
+         .execute(conn)?
+     ```
+   • Delete:
+     ```rust
+     diesel::delete(users::table).filter(users::id.eq(user_id)).execute(conn)?
+     ```
+
+5. Relationships:
+   • belongs_to:
+     ```rust
+     #[derive(Associations)]
+     #[belongs_to(User)]
+     pub struct Post { ... }
+     ```
+   • has_many: Use inner joins
+     ```rust
+     users::table.inner_join(posts::table)
+     ```
+
+6. Migrations:
+   • Create: diesel migration generate create_users
+   • Run: diesel migration run
+   • Revert: diesel migration revert
+
+7. Database-Specific Features:
+   • PostgreSQL:
+     - JSONB operations
+     - Full-text search
+     - Array types
+  
+
+8. Best Practices:
+   • Use connection pools (r2d2)
+   • Implement From/Into for models
+   • Use transactions for atomic operations
+   • Use derive macros for boilerplate
+
+MongoDB Guidelines:
+
+1. Setup and Configuration:
+   • Add dependency:
+     ```toml
+     [dependencies]
+     mongodb = "3.2.0"
+     ```
+   • Connection URL format: mongodb://user:password@host:port/database
+   • Initialize client:
+     ```rust
+     let client = Client::with_uri_str(&config.url).await?;
+     ```
+
+2. Collection Operations:
+   • Get collection:
+     ```rust
+     client.database("db_name").collection::<Document>("collection_name")
+     ```
+   • Common operations:
+     - Find: collection.find(doc! { "field": "value" }).await?
+     - Insert: collection.insert_one(document).await?
+     - Update: collection.update_one(filter, update).await?
+     - Delete: collection.delete_one(filter).await?
+
+3. BSON Document Creation:
+   • Use doc! macro:
+     ```rust
+     doc! {
+         "username": username,
+         "password": password
+     }
+     ```
+   • ObjectId handling:
+     ```rust
+     ObjectId::from_str(&id_string)?
+     ```
+
+4. Cursor Operations:
+   • Stream results:
+     ```rust
+     let mut cursor = collection.find(filter).await?;
+     while let Some(result) = cursor.next().await {
+         let document = result?;
+     }
+     ```
+
+5. Indexes:
+   • Create unique index:
+     ```rust
+     let options = IndexOptions::builder().unique(true).build();
+     let model = IndexModel::builder()
+         .keys(doc! { "field": 1 })
+         .options(options)
+         .build();
+     collection.create_index(model).await?;
+     ```
+
+6. Best Practices:
+   • Implement proper error handling
+   • Use BSON types appropriately
+   • Create indexes during initialization
+   • Use proper MongoDB data types
+
+7. Error Handling:
+   • Handle MongoDB specific errors
+   • Use Result<T, mongodb::error::Error>
+   • Proper conversion between BSON and Rust types

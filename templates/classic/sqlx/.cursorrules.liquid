@@ -1,0 +1,213 @@
+{{ talk_to_me_lang }}
+Here is the refined, concise English version of your guidelines for AI:
+Salvo Framework Overview
+Salvo is a Rust-based web framework focused on simplicity, efficiency, and usability. Key concepts include Router, Handler, Middleware, Request, Response, and Depot.
+Key Concepts:
+	1.	Router:
+	•	Create with Router::new().
+	•	Define paths with path() or with_path().
+	•	Use HTTP methods like get(), post(), patch(), delete().
+	•	Support for path parameters (e.g., {id}, <id:num>).
+	•	Filters like filters::path(), filters::get() can be added.
+	•	Add middleware with hoop().
+	2.	Handler:
+	•	Use #[handler] macro for easy definition.
+	•	Optional parameters include Request, Depot, FlowCtrl.
+	•	Return types must implement Writer Trait (e.g., &str, String, Result<T, E>).
+	3.	Middleware:
+	•	Implement Handler Trait.
+	•	Use hoop() to add middleware to Router or Service.
+	•	Control execution flow with FlowCtrl, e.g., ctrl.skip_rest().
+	4.	Request:
+	•	Get path parameters with req.param::<T>("param_name").
+	•	Use req.query::<T>("query_name") for query parameters.
+	•	Parse form or JSON with req.form::<T>("name").await or req.parse_json::<T>().await.
+	•	Extract data into structures with req.extract().
+	5.	Response:
+	•	Render responses with res.render().
+	•	Return types like Text::Plain(), Text::Html(), Json().
+	•	Set status with res.status_code() or StatusError.
+	•	Use Redirect::found() for redirection.
+	6.	Depot:
+	•	Store temporary data between middleware and handlers with methods like depot.insert() and depot.obtain::<T>().
+	7.	Extractors:
+	•	Use #[salvo(extract(...))] annotations to map request data to structures.
+
+Core Features:
+	•	Static File Serving: Use StaticDir or StaticEmbed.
+	•	OpenAPI Support: Auto-generate docs with #[endpoint] macro.
+
+Routing:
+	•	Flat or tree-like route structure supported.
+
+Middleware:
+	•	Middleware is a Handler added to Router, Service, or Catcher.
+	•	FlowCtrl allows skipping handlers or middleware.
+
+Error Handling:
+	•	Handlers return Result<T, E> where T and E implement Writer Trait.
+	•	Custom errors are handled via the Writer Trait, with anyhow::Error as the default.
+
+Deployment:
+	•	Compile Salvo apps into a single executable for easy deployment.
+
+Project Structure:
+
+project/
+├── src/
+│   ├── routers/
+│   ├── models/
+│   ├── db/
+│   ├── error.rs
+│   └── utils.rs
+├── views/
+│   └── *.html
+├── migrations/
+└── assets/
+    ├── js/
+    └── css/
+
+JSON Response Format:
+
+#[derive(Serialize)]
+pub struct JsonResponse<T> {
+    pub code: i32,
+    pub message: String,
+    pub data: T,
+}
+
+Frontend Guidelines:
+	1.	Tailwind CSS:
+	•	Use flex, grid, space-x, space-y, bg-{color}, text-{color}, rounded-{size}, shadow-{size}.
+	2.	Alpine.js:
+	•	Use x-data, x-model, @click, x-show, x-if.
+	3.	Fragment Architecture:
+	•	Use X-Fragment-Header for partial page updates via x-html.
+
+Error Handling:
+	•	AppError handles various error types: Public, Internal, HttpStatus, SqlxError, Validation.
+	•	Log errors with tracing and return appropriate HTTP status codes.
+
+Database Operations:
+	•	Use SQLx for async DB operations (e.g., query!, query_as!).
+	•	Paginate with LIMIT and OFFSET.
+
+Password Handling:
+	•	Use bcrypt/Argon2 for password hashing.
+
+Input Validation:
+	•	Use validator for validating and sanitizing inputs.
+
+SQLx Guidelines:
+
+1. Database Connection Setup:
+   {%- if db_type == "postgres" %}
+   • PostgreSQL:
+     - URL format: postgres://user:password@host:port/dbname
+     - Enable features: sqlx/postgres
+     - Types: Timestamp, Uuid, Json/Jsonb support
+   {%- endif %}
+   
+   {%- if db_type == "mysql" %}
+   • MySQL:
+     - URL format: mysql://user:password@host/dbname
+     - Enable features: sqlx/mysql
+     - Types: DateTime for timestamps
+   {%- endif %}
+   
+   {%- if db_type == "sqlite" %}
+   • SQLite:
+     - URL format: sqlite://path/to/db.sqlite
+     - Enable features: sqlx/sqlite
+     - Types: INTEGER for auto-increment
+   {%- endif %}
+
+2. Query Macros:
+   ```rust
+   // Type-checked at compile time
+   sqlx::query!("SELECT * FROM users WHERE id = $1", id)
+   
+   // Named arguments
+   sqlx::query!("SELECT * FROM users WHERE id = $1 AND active = $2", id, active)
+   
+   // Insert with returning
+   sqlx::query!("INSERT INTO users (name) VALUES ($1) RETURNING id", name)
+   ```
+
+3. Model Integration:
+   ```rust
+   #[derive(sqlx::FromRow)]
+   struct User {
+       id: i64,
+       username: String,
+       created_at: chrono::DateTime&lt;chrono::Utc&gt;
+   }
+   
+   // Use with query_as!
+   sqlx::query_as!(User, "SELECT * FROM users")
+   ```
+
+4. Common Operations:
+   • Select:
+     ```rust
+     let user = sqlx::query_as!(User, 
+         "SELECT * FROM users WHERE id = $1", id
+     ).fetch_one(&pool).await?;
+     ```
+   • Insert:
+     ```rust
+     sqlx::query!(
+         "INSERT INTO users (username) VALUES ($1)",
+         username
+     ).execute(&pool).await?;
+     ```
+   • Update:
+     ```rust
+     sqlx::query!(
+         "UPDATE users SET username = $1 WHERE id = $2",
+         new_username, id
+     ).execute(&pool).await?;
+     ```
+   • Delete:
+     ```rust
+     sqlx::query!(
+         "DELETE FROM users WHERE id = $1", id
+     ).execute(&pool).await?;
+     ```
+
+5. Migrations:
+   • CLI Setup: cargo install sqlx-cli
+   • Create: sqlx migrate add create_users
+   • Run: sqlx migrate run
+   • Revert: sqlx migrate revert
+
+6. Best Practices:
+   • Use connection pools (sqlx::Pool)
+   • Enable compile-time checks with query! macros
+   • Use transactions for atomic operations
+   • Implement FromRow for models
+   • Use offline mode in CI with sqlx prepare
+
+7. Advanced Features:
+   {%- if db_type == "postgres" %}
+   • Postgres:
+     - Arrays: $1::text[]
+     - JSON: jsonb, json types
+     - LISTEN/NOTIFY support
+   {%- endif %}
+   {%- if db_type == "mysql" %}
+   • MySQL:
+     - Batch operations
+     - Transaction isolation levels
+   {%- endif %}
+   {%- if db_type == "sqlite" %}
+   • SQLite:
+     - In-memory databases
+     - WAL mode for concurrency
+   {%- endif %}
+
+8. Error Handling:
+   • Use anyhow or thiserror
+   • Handle database-specific errors
+   • Implement custom error types
+   • Use Result<T, sqlx::Error>

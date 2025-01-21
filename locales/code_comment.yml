@@ -740,3 +740,22 @@ next_page:
   th: ถัดไป
   el: Επόμενο
   da: Næste
+
+talk_to_me_lang:
+  en: "Talk to me in English"
+  zh_CN: "和我说中文"
+  zh_TW: "和我說中文"
+  fr: "Parlez-moi en français"
+  ja: "日本語で話してください"
+  es: "Háblame en español"
+  de: "Sprechen Sie mit mir auf Deutsch"
+  ru: "Говорите со мной по-русски"
+  it: "Parlami in italiano"
+  pt: "Fale comigo em português"
+  ko: "한국어로 말씀해 주세요"
+  no: "Snakk med meg på norsk"
+  is: "Talaðu við mig á íslensku"
+  uk: "Говоріть зі мною українською"
+  th: "พูดกับฉันเป็นภาษาไทย"
+  el: "Μίλα μου στα ελληνικά"
+  da: "Tal med mig på dansk"

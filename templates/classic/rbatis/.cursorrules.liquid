@@ -1,0 +1,163 @@
+{{ talk_to_me_lang }}
+Here is the refined, concise English version of your guidelines for AI:
+Salvo Framework Overview
+Salvo is a Rust-based web framework focused on simplicity, efficiency, and usability. Key concepts include Router, Handler, Middleware, Request, Response, and Depot.
+Key Concepts:
+	1.	Router:
+	•	Create with Router::new().
+	•	Define paths with path() or with_path().
+	•	Use HTTP methods like get(), post(), patch(), delete().
+	•	Support for path parameters (e.g., {id}, <id:num>).
+	•	Filters like filters::path(), filters::get() can be added.
+	•	Add middleware with hoop().
+	2.	Handler:
+	•	Use #[handler] macro for easy definition.
+	•	Optional parameters include Request, Depot, FlowCtrl.
+	•	Return types must implement Writer Trait (e.g., &str, String, Result<T, E>).
+	3.	Middleware:
+	•	Implement Handler Trait.
+	•	Use hoop() to add middleware to Router or Service.
+	•	Control execution flow with FlowCtrl, e.g., ctrl.skip_rest().
+	4.	Request:
+	•	Get path parameters with req.param::<T>("param_name").
+	•	Use req.query::<T>("query_name") for query parameters.
+	•	Parse form or JSON with req.form::<T>("name").await or req.parse_json::<T>().await.
+	•	Extract data into structures with req.extract().
+	5.	Response:
+	•	Render responses with res.render().
+	•	Return types like Text::Plain(), Text::Html(), Json().
+	•	Set status with res.status_code() or StatusError.
+	•	Use Redirect::found() for redirection.
+	6.	Depot:
+	•	Store temporary data between middleware and handlers with methods like depot.insert() and depot.obtain::<T>().
+	7.	Extractors:
+	•	Use #[salvo(extract(...))] annotations to map request data to structures.
+
+Core Features:
+	•	Static File Serving: Use StaticDir or StaticEmbed.
+	•	OpenAPI Support: Auto-generate docs with #[endpoint] macro.
+
+Routing:
+	•	Flat or tree-like route structure supported.
+
+Middleware:
+	•	Middleware is a Handler added to Router, Service, or Catcher.
+	•	FlowCtrl allows skipping handlers or middleware.
+
+Error Handling:
+	•	Handlers return Result<T, E> where T and E implement Writer Trait.
+	•	Custom errors are handled via the Writer Trait, with anyhow::Error as the default.
+
+Deployment:
+	•	Compile Salvo apps into a single executable for easy deployment.
+
+Project Structure:
+
+project/
+├── src/
+│   ├── routers/
+│   ├── models/
+│   ├── db/
+│   ├── error.rs
+│   └── utils.rs
+├── views/
+│   └── *.html
+├── migrations/
+└── assets/
+    ├── js/
+    └── css/
+
+Rbatis ORM Guidelines:
+
+1. Model Definition:
+   ```rust
+   #[crud_table]
+   #[derive(Clone, Debug, Serialize, Deserialize)]
+   pub struct User {
+       pub id: Option<String>,
+       pub username: Option<String>,
+       pub password: Option<String>,
+   }
+   crud!(User {});
+   ```
+
+2. Database Operations:
+   • Basic CRUD:
+   ```rust
+   // Insert
+   rb.save(&user, &[]).await?;
+   
+   // Select
+   rb.fetch_by_column("id", &id).await?;
+   
+   // Update
+   rb.update_by_column("id", &user).await?;
+   
+   // Delete
+   rb.remove_by_column::<User, _>("id", &id).await?;
+   ```
+
+3. Query Builder:
+   ```rust
+   let wrapper = rb.new_wrapper()
+       .eq("id", id)
+       .and()
+       .like("username", &pattern)
+       .order_by(true, &["id"]);
+   ```
+
+4. Pagination:
+   ```rust
+   #[derive(Debug, Deserialize)]
+   pub struct PageParams {
+       pub current_page: u64,
+       pub page_size: u64,
+   }
+   
+   let page = User::select_page(rb, &page_req).await?;
+   ```
+
+5. Custom Macros:
+   • #[py_sql] for Python-like SQL
+   • #[html_sql] for XML-style queries
+   • #[sql] for direct SQL statements
+
+6. Transaction Support:
+   ```rust
+   rb.acquire_begin().await?.defer_async(|tx| async move {
+       // Transaction operations
+       tx.commit().await
+   }).await?;
+   ```
+
+7. Best Practices:
+   • Use connection pools
+   • Implement proper error handling
+   • Use QueryWrapper for complex queries
+   • Leverage macro-based SQL generation
+   • Use Option<T> for nullable fields
+
+JSON Response Format:
+
+#[derive(Serialize)]
+pub struct JsonResponse<T> {
+    pub code: i32,
+    pub message: String,
+    pub data: T,
+}
+
+Frontend Guidelines:
+	1.	Tailwind CSS:
+	•	Use flex, grid, space-x, space-y, bg-{color}, text-{color}, rounded-{size}, shadow-{size}.
+	2.	Alpine.js:
+	•	Use x-data, x-model, @click, x-show, x-if.
+	3.	Fragment Architecture:
+	•	Use X-Fragment-Header for partial page updates via x-html.
+
+Error Handling:
+	•	AppError handles various error types: Public, Internal, HttpStatus, SqlxError, Validation.
+	•	Log errors with tracing and return appropriate HTTP status codes.
+
+Input Validation:
+	•	Use validator for validating and sanitizing inputs.
+

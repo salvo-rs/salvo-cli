@@ -1,0 +1,261 @@
+{{ talk_to_me_lang }}
+Here is the refined, concise English version of your guidelines for AI:
+Salvo Framework Overview
+Salvo is a Rust-based web framework focused on simplicity, efficiency, and usability. Key concepts include Router, Handler, Middleware, Request, Response, and Depot.
+Key Concepts:
+	1.	Router:
+	•	Create with Router::new().
+	•	Define paths with path() or with_path().
+	•	Use HTTP methods like get(), post(), patch(), delete().
+	•	Support for path parameters (e.g., {id}, <id:num>).
+	•	Filters like filters::path(), filters::get() can be added.
+	•	Add middleware with hoop().
+	2.	Handler:
+	•	Use #[handler] macro for easy definition.
+	•	Optional parameters include Request, Depot, FlowCtrl.
+	•	Return types must implement Writer Trait (e.g., &str, String, Result<T, E>).
+	3.	Middleware:
+	•	Implement Handler Trait.
+	•	Use hoop() to add middleware to Router or Service.
+	•	Control execution flow with FlowCtrl, e.g., ctrl.skip_rest().
+	4.	Request:
+	•	Get path parameters with req.param::<T>("param_name").
+	•	Use req.query::<T>("query_name") for query parameters.
+	•	Parse form or JSON with req.form::<T>("name").await or req.parse_json::<T>().await.
+	•	Extract data into structures with req.extract().
+	5.	Response:
+	•	Render responses with res.render().
+	•	Return types like Text::Plain(), Text::Html(), Json().
+	•	Set status with res.status_code() or StatusError.
+	•	Use Redirect::found() for redirection.
+	6.	Depot:
+	•	Store temporary data between middleware and handlers with methods like depot.insert() and depot.obtain::<T>().
+	7.	Extractors:
+	•	Use #[salvo(extract(...))] annotations to map request data to structures.
+
+Core Features:
+	•	Static File Serving: Use StaticDir or StaticEmbed.
+	•	OpenAPI Support: Auto-generate docs with #[endpoint] macro.
+
+Routing:
+	•	Flat or tree-like route structure supported.
+
+Middleware:
+	•	Middleware is a Handler added to Router, Service, or Catcher.
+	•	FlowCtrl allows skipping handlers or middleware.
+
+Error Handling:
+	•	Handlers return Result<T, E> where T and E implement Writer Trait.
+	•	Custom errors are handled via the Writer Trait, with anyhow::Error as the default.
+
+Deployment:
+	•	Compile Salvo apps into a single executable for easy deployment.
+
+Project Structure:
+
+project/
+├── src/
+│   ├── routers/
+│   ├── models/
+│   ├── db/
+│   ├── error.rs
+│   └── utils.rs
+├── views/
+│   └── *.html
+├── migrations/
+└── assets/
+    ├── js/
+    └── css/
+
+JSON Response Format:
+
+#[derive(Serialize)]
+pub struct JsonResponse<T> {
+    pub code: i32,
+    pub message: String,
+    pub data: T,
+}
+
+Frontend Guidelines:
+	1.	Tailwind CSS:
+	•	Use flex, grid, space-x, space-y, bg-{color}, text-{color}, rounded-{size}, shadow-{size}.
+	2.	Alpine.js:
+	•	Use x-data, x-model, @click, x-show, x-if.
+	3.	Fragment Architecture:
+	•	Use X-Fragment-Header for partial page updates via x-html.
+
+Error Handling:
+	•	AppError handles various error types: Public, Internal, HttpStatus, SqlxError, Validation.
+	•	Log errors with tracing and return appropriate HTTP status codes.
+
+Database Operations:
+	•	Use SQLx for async DB operations (e.g., query!, query_as!).
+	•	Paginate with LIMIT and OFFSET.
+
+Password Handling:
+	•	Use bcrypt/Argon2 for password hashing.
+
+Input Validation:
+	•	Use validator for validating and sanitizing inputs.
+1. Entity Definition:
+```rust
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel)]
+#[sea_orm(table_name = "users")]
+pub struct Model {
+  #[sea_orm(primary_key)]
+  pub id: i32,
+  pub name: String,
+  pub created_at: DateTime,
+}
+```
+
+2. Common Operations:
+• Select:
+```rust
+// Find by id
+let user: Option<user::Model> = User::find_by_id(1).one(db).await?;
+
+// Find all
+let users: Vec<user::Model> = User::find().all(db).await?;
+
+// Find with condition
+let users = User::find()
+    .filter(user::Column::Name.contains("John"))
+    .all(db).await?;
+```
+
+• Insert:
+```rust
+let user = user::ActiveModel {
+    name: Set("New User".to_owned()),
+    ..Default::default()
+};
+let res = user.insert(db).await?;
+```
+
+• Update:
+```rust
+let mut user: user::ActiveModel = User::find_by_id(1)
+    .one(db)
+    .await?
+    .unwrap()
+    .into();
+user.name = Set("New Name".to_owned());
+let user: user::Model = user.update(db).await?;
+```
+
+• Delete:
+```rust
+let user: user::Model = User::find_by_id(1).one(db).await?.unwrap();
+user.delete(db).await?;
+```
+
+3. Relationships:
+• One-to-One:
+```rust
+let (post, user) = Post::find_by_id(1)
+    .find_also_related(User)
+    .one(db)
+    .await?;
+```
+
+• One-to-Many:
+```rust
+let (user, posts) = User::find_by_id(1)
+    .find_with_related(Post)
+    .all(db)
+    .await?;
+```
+
+• Many-to-Many:
+```rust
+let (post, categories) = Post::find_by_id(1)
+    .find_with_related(Category)
+    .all(db)
+    .await?;
+```
+
+4. Pagination:
+```rust
+let paginator = User::find()
+  .paginate(db, 10);
+let num_pages = paginator.num_pages().await?;
+let users = paginator.fetch_page(0).await?;
+```
+
+5. SeaORM CLI Usage:
+• Installation:
+```bash
+cargo install sea-orm-cli
+```
+
+• Generate Entities:
+```bash
+sea-orm-cli generate entity \
+    -u postgres://user:pass@localhost/db \
+    -o src/entities
+```
+
+• Migration Commands:
+```bash
+# Initialize
+sea-orm-cli migrate init
+
+# Generate new
+sea-orm-cli migrate generate create_users_table
+
+# Run migrations
+sea-orm-cli migrate up
+
+# Rollback
+sea-orm-cli migrate down
+
+# Status check
+sea-orm-cli migrate status
+```
+
+6. Best Practices:
+• Use connection pools (e.g., sqlx::Pool)
+• Implement ActiveModelBehavior for custom logic
+• Use transactions for atomic operations
+• Leverage async/await for all database operations
+• Use Column enums for type-safe queries
+• Implement proper error handling with DbErr
+
+7. Query Building:
+```rust
+User::find()
+  .select_only()
+  .column(user::Column::Name)
+  .column_as(post::Column::Id.count(), "post_count")
+  .join(JoinType::LeftJoin, user::Relation::Posts.def())
+  .group_by(user::Column::Id)
+  .having(post::Column::Id.count().gt(5))
+  .order_by_asc(user::Column::Name)
+  .into_model::<UserWithPostCount>()
+  .all(db)
+  .await?
+```
+
+8. JSON Operations:
+```rust
+// Convert to JSON
+let json = user.into_json();
+
+// Query as JSON
+let users_json = User::find()
+  .into_json()
+  .all(db)
+  .await?;
+```
+
+9. Streaming:
+```rust
+let mut stream = User::find()
+  .stream(db)
+  .await?;
+
+while let Some(user) = stream.try_next().await? {
+  println!("User: {:?}", user);
+}
+```

@@ -65,6 +65,7 @@ pub(crate) fn create_files(project_path: &Path, selected: Selected, proj: &Proje
         "update":t!("update"),
         "delete":t!("delete"),
         "next_page":t!("next_page"),
+        "talk_to_me_lang":t!("talk_to_me_lang"),
         "salvo_cli_welcome":t!("salvo_cli_welcome"),
         "user_list":t!("user_list"),
         "are_you_sure_you_want_to_delete":t!("are_you_sure_you_want_to_delete"),
