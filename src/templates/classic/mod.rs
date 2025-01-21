@@ -3,12 +3,11 @@ use std::fs::{self, File};
 use std::io::Write;
 use std::path::Path;
 
+use crate::printer::{gray, warning};
+use crate::{git, Project};
 use anyhow::Result;
 use liquid::model::Object;
 use rust_i18n::t;
-
-use crate::printer::{success, warning};
-use crate::{git, Project};
 
 pub(crate) mod selection;
 use selection::Selected;
@@ -121,7 +120,7 @@ pub(crate) fn create_files(project_path: &Path, selected: Selected, proj: &Proje
             let file_path = project_path.join(filename.as_ref().trim_start_matches("_base/"));
             write_file(&file.data, &file_path, &data)?;
         } else if filename.starts_with("_data/") {
-            if filename.contains(db_lib_str) && filename.contains(db_lib_str) {
+            if filename.contains(db_lib_str) && filename.contains(".sqlite") && db_type == "sqlite" {
                 let file = Template::get(filename.as_ref()).expect("file must exist");
                 let file_path = project_path.join(filename.as_ref().trim_start_matches("_"));
                 write_file(&file.data, &file_path, &data)?;
@@ -146,7 +145,7 @@ fn write_file(tmpl: &[u8], file_path: &Path, data: &Object) -> Result<()> {
     }
     if file_path.extension() == Some(OsStr::new("liquid")) {
         let msg = t!("rendering_liquid_file").replace(r"\n", "\n") + &format!(" {:?}", file_path);
-        success(msg);
+        gray(msg);
         let template = liquid::ParserBuilder::with_stdlib()
             .build()
             .expect("should create liquid parser")

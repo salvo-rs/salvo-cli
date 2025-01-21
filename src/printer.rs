@@ -34,3 +34,7 @@ pub fn orange<S: AsRef<str>>(msg: S) {
 pub fn green<S: AsRef<str>>(msg: S) {
     println!("{}", Green.paint(msg.as_ref()));
 }
+
+pub fn gray<S: AsRef<str>>(msg: S) {
+    println!("{}", Colour::RGB(128, 128, 128).paint(msg.as_ref()));
+}
