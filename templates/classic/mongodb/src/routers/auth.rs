@@ -1,12 +1,11 @@
 use cookie::Cookie;
-use diesel::prelude::*;
+use mongodb::bson::doc;
 use rinja::Template;
 use salvo::oapi::extract::*;
 use salvo::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use crate::hoops::jwt;
-use crate::schema::*;
 use crate::{db, json_ok, utils, AppResult, JsonResult};
 
 #[handler]
@@ -44,29 +43,27 @@ pub async fn post_login(
     res: &mut Response,
 ) -> JsonResult<LoginOutData> {
     let idata = idata.into_inner();
-    let conn = &mut db::connect()?;
-    let Some((id, username, hashed)) = users::table
-        .filter(users::username.eq(&idata.username))
-        .select((users::id, users::username, users::password))
-        .first::<(String, String, String)>(conn)
-        .optional()?
+    let coll_users = db::users();
+
+    let Some(user) = coll_users
+        .find_one(doc! { "username": &idata.username })
+        .await?
     else {
         return Err(StatusError::unauthorized()
             .brief("User does not exist.")
             .into());
     };
 
-    if utils::verify_password(&idata.password, hashed).is_err()
-    {
+    if utils::verify_password(&idata.password, &user.get_str("password")?.to_string()).is_err() {
         return Err(StatusError::unauthorized()
             .brief("Addount not exist or password is incorrect.")
             .into());
     }
 
-    let (token, exp) = jwt::get_token(username.clone(), id.clone())?;
+    let (token, exp) = jwt::get_token(user.get_object_id("_id")?.to_string())?;
     let odata = LoginOutData {
-        id,
-        username,
+        id: user.get_object_id("_id")?.to_string(),
+        username: user.get_str("username")?.to_owned(),
         token,
         exp,
     };

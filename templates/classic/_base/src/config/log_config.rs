@@ -244,7 +244,7 @@ impl LogConfig {
                     .with_thread_ids(self.with_thread_ids)
                     .with_thread_names(self.with_thread_names)
                     .with_source_location(self.with_source_location),
-                );
+            );
             if self.stdout {
                 subscriber.with_writer(std::io::stdout).init();
             } else {

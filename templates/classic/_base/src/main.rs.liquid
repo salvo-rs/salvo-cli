@@ -55,7 +55,7 @@ async fn main() {
 
     crate::config::init();
     let config = crate::config::get();
-    {%- if db_lib == "rbatis" or  db_lib == "seaorm" %}
+    {%- if db_lib == "rbatis" or  db_lib == "seaorm" or  db_lib == "mongodb" %}
     crate::db::init(&config.db).await;
     {%- else %}
     crate::db::init(&config.db);

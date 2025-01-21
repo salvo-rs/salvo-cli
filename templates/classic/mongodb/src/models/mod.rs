@@ -1,18 +1,16 @@
-use rbatis::crud;
+use mongodb::bson::oid::ObjectId;
 use salvo::oapi::ToSchema;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct User {
-    pub id: String,
+    _id: Option<ObjectId>,
     pub username: String,
     pub password: String,
 }
-crud!(User {});
 
 #[derive(Serialize, Deserialize, ToSchema, Clone, Debug)]
 pub struct SafeUser {
     pub id: String,
     pub username: String,
 }
-crud!(SafeUser {});

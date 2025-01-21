@@ -1,13 +1,14 @@
-use diesel::prelude::*;
+use std::str::FromStr;
+
+use futures_util::StreamExt;
+use mongodb::bson::{doc, oid::ObjectId};
 use rinja::Template;
 use salvo::oapi::extract::*;
 use salvo::prelude::*;
 use serde::Deserialize;
-use ulid::Ulid;
 use validator::Validate;
 
-use crate::models::{SafeUser, User};
-use crate::schema::*;
+use crate::models::SafeUser;
 use crate::{db, empty_ok, json_ok, utils, AppResult, EmptyResult, JsonResult};
 
 #[derive(Template)]
@@ -44,17 +45,21 @@ pub struct CreateInData {
 #[endpoint(tags("users"))]
 pub async fn create_user(idata: JsonBody<CreateInData>) -> JsonResult<SafeUser> {
     let CreateInData { username, password } = idata.into_inner();
-    let conn = &mut db::connect()?;
-    let user = User {
-        id: Ulid::new().to_string(),
-        username,
-        password: utils::hash_password(&password)?,
+    let coll_users = db::users();
+    let user = doc! {
+        "username": username,
+        "password": utils::hash_password(&password)?
     };
-    diesel::insert_into(users::table)
-        .values(&user)
-        .execute(conn)?;
-    let User { id, username, .. } = user;
-    json_ok(SafeUser { id, username })
+    coll_users.insert_one(user.clone()).await?;
+    let Some(user) = coll_users.find_one(user).await? else {
+        return Err(StatusError::bad_request()
+            .brief("User does not exists.")
+            .into());
+    };
+    json_ok(SafeUser {
+        id: user.get_object_id("_id")?.to_string(),
+        username: user.get_str("username")?.to_string(),
+    })
 }
 
 #[derive(Deserialize, Debug, Validate, ToSchema)]
@@ -71,13 +76,14 @@ pub async fn update_user(
 ) -> JsonResult<SafeUser> {
     let user_id = user_id.into_inner();
     let UpdateInData { username, password } = idata.into_inner();
-    let conn = &mut db::connect()?;
-    diesel::update(users::table.find(&user_id))
-        .set((
-            users::username.eq(&username),
-            users::password.eq(utils::hash_password(&password).await?),
-        ))
-        .execute(conn)?;
+    let password = utils::hash_password(&password)?;
+    let coll_users = db::users();
+    coll_users
+        .update_one(
+            doc! { "_id": ObjectId::from_str(&user_id)? },
+            doc! { "$set": { "username": &username, "password": password } },
+        )
+        .await?;
     json_ok(SafeUser {
         id: user_id,
         username,
@@ -86,14 +92,24 @@ pub async fn update_user(
 
 #[endpoint(tags("users"))]
 pub async fn delete_user(user_id: PathParam<String>) -> EmptyResult {
-    let conn = &mut db::connect()?;
-    diesel::delete(users::table.find(user_id.into_inner())).execute(conn)?;
+    let user_id = user_id.into_inner();
+    let coll_users = db::users();
+    coll_users
+        .delete_one(doc! { "_id": ObjectId::from_str(&user_id)? })
+        .await?;
     empty_ok()
 }
 
 #[endpoint(tags("users"))]
 pub async fn list_users() -> JsonResult<Vec<SafeUser>> {
-    let conn = &mut db::connect()?;
-    let users = users::table.select(SafeUser::as_select()).load(conn)?;
+    let coll_users = db::users();
+    let mut cursor = coll_users.find(doc! {}).await?;
+    let mut users = Vec::new();
+    while let Some(result) = cursor.next().await {
+        let document = result?;
+        let id = document.get_object_id("_id")?.to_string();
+        let username = document.get_str("username")?.to_owned();
+        users.push(SafeUser { id, username });
+    }
     json_ok(users)
 }
