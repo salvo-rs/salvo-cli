@@ -11,7 +11,7 @@ mod tests {
     #[test]
     fn test_write_project_all_combinations() {
         //let db_types = [DbType::Sqlite, DbType::Mysql, DbType::Postgres, DbType::Mssql];
-        let db_types = [DbType::Sqlite];
+        let db_types = [DbType::Sqlite, DbType::Mongodb];
         let db_libs = [
             DbLib::Sqlx,
             DbLib::SeaOrm,
@@ -28,6 +28,12 @@ mod tests {
 
         // Test each combination
         for (db_type, db_lib) in combinations {
+            if (db_lib == &DbLib::Mongodb && db_type != &DbType::Mongodb)
+                || (db_lib != &DbLib::Mongodb && db_type == &DbType::Mongodb)
+            {
+                continue;
+            }
+
             let proj = Project {
                 name: format!("test_{:?}_{:?}", db_type, db_lib),
                 lang: "zh".to_string(),
