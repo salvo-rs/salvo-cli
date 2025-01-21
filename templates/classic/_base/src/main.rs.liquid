@@ -1,15 +1,3 @@
-{%- if db_lib == "diesel" %}
-{%- if db_type == "sqlite" %}
-{%- else %}
-{%- endif %}
-{%- endif %}
-{%- if db_lib == "sqlx" %}
-{%- if db_type == "sqlite" %}
-use sqlx::SqlitePool;
-{%- elsif db_type == "postgres" %}
-use sqlx::PgPool;
-{%- endif %}
-{%- endif %}
 use dotenvy::dotenv;
 use salvo::catcher::Catcher;
 use salvo::conn::rustls::{Keycert, RustlsConfig};
@@ -55,10 +43,10 @@ async fn main() {
 
     crate::config::init();
     let config = crate::config::get();
-    {%- if db_lib == "rbatis" or  db_lib == "seaorm" or  db_lib == "mongodb" %}
-    crate::db::init(&config.db).await;
-    {%- else %}
+    {%- if db_lib == "diesel" %}
     crate::db::init(&config.db);
+    {%- else %}
+    crate::db::init(&config.db).await;
     {%- endif %}
 
     let _guard = config.log.guard();

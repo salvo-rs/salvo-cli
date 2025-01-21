@@ -45,7 +45,7 @@ pub struct CreateInData {
 pub async fn create_user(idata: JsonBody<CreateInData>) -> JsonResult<SafeUser> {
     let CreateInData { username, password } = idata.into_inner();
     let id = Ulid::new().to_string();
-    let password = utils::hash_password(&password).await?;
+    let password = utils::hash_password(&password)?;
     let conn = db::pool();
     let model = users::ActiveModel {
         id: Set(id.clone()),
@@ -78,7 +78,7 @@ pub async fn update_user(
     };
     let mut user: users::ActiveModel = user.into();
     user.username = Set(username.to_owned());
-    user.password = Set(utils::hash_password(&password).await?);
+    user.password = Set(utils::hash_password(&password)?);
 
     let user: users::Model = user.update(conn).await?;
     json_ok(SafeUser {
