@@ -759,3 +759,22 @@ talk_to_me_lang:
   th: "พูดกับฉันเป็นภาษาไทย"
   el: "Μίλα μου στα ελληνικά"
   da: "Tal med mig på dansk"
+
+rendering_liquid_file:
+  en: rendering liquid file
+  zh_CN: 渲染 liquid 文件
+  zh_TW: 渲染 liquid 檔案
+  fr: rendu du fichier liquid
+  ja: liquid ファイルのレンダリング
+  es: renderizando archivo liquid
+  de: Rendering der Liquid-Datei
+  ru: рендеринг liquid файла
+  it: rendering del file liquid
+  pt: renderizando arquivo liquid
+  ko: liquid 파일 렌더링
+  no: rendering av liquid-fil
+  is: rendering liquid skrá
+  uk: рендеринг liquid файлу
+  th: การเรนเดอร์ไฟล์ liquid
+  el: απόδοση αρχείου liquid
+  da: rendering af liquid-fil

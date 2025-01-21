@@ -29,6 +29,7 @@ fn after_print_info(project_name: &String) {
     success(t!("create_info", project_name = project_name).replace(r"\n", "\n"));
     success(t!("create_success").replace(r"\n", "\n"));
     success(t!("rust_version_tip"));
+    success(t!("cursor_rules_info").replace(r"\n", "\n"));
     println!(); // a new line
 }
 

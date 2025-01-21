@@ -7,7 +7,7 @@ use anyhow::Result;
 use liquid::model::Object;
 use rust_i18n::t;
 
-use crate::printer::warning;
+use crate::printer::{success, warning};
 use crate::{git, Project};
 
 pub(crate) mod selection;
@@ -145,7 +145,8 @@ fn write_file(tmpl: &[u8], file_path: &Path, data: &Object) -> Result<()> {
         fs::create_dir_all(parent)?;
     }
     if file_path.extension() == Some(OsStr::new("liquid")) {
-        println!("rendering liquid file: {:?}", file_path);
+        let msg = t!("rendering_liquid_file").replace(r"\n", "\n") + &format!(" {:?}", file_path);
+        success(msg);
         let template = liquid::ParserBuilder::with_stdlib()
             .build()
             .expect("should create liquid parser")

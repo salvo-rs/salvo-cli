@@ -44,7 +44,7 @@ use crate::config::DbConfig;
 pub static SQLX_POOL: OnceLock<MySqlPool> = OnceLock::new();
 
 pub async fn init(config: &DbConfig) {
-    let sqlx_pool = SqlitePool::connect(&config.url).await
+    let sqlx_pool = MySqlPool::connect(&config.url).await
         .expect("Database connection failed.");
     crate::db::SQLX_POOL
         .set(sqlx_pool)
