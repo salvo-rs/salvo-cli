@@ -5,13 +5,13 @@ use clap::Parser;
 mod tests;
 mod utils;
 use i18n::set_locale;
-mod i18n;
 mod git;
-mod templates;
+mod i18n;
 mod project;
+mod templates;
 // mod updater;
-mod printer;
 mod namer;
+mod printer;
 
 rust_i18n::i18n!("locales", fallback = "en");
 #[derive(Parser, Debug)]
@@ -47,4 +47,3 @@ async fn main() -> Result<()> {
     }
     Ok(())
 }
-

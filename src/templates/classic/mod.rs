@@ -17,7 +17,6 @@ use selection::Selected;
 #[folder = "./templates/classic"]
 struct Template;
 
-
 pub fn generate(new_cmd: &NewCmd) -> Result<()> {
     let Some(config) = selection::get_selected()? else {
         anyhow::bail!("cli quit!")
@@ -140,7 +139,6 @@ fn create_files(project_path: &Path, user_selected: Selected, new_cmd: &NewCmd) 
     Ok(())
 }
 
-
 fn write_file(tmpl: &[u8], file_path: &Path, data: &Object) -> Result<()> {
     if let Some(parent) = file_path.parent() {
         fs::create_dir_all(parent)?;
@@ -161,4 +159,3 @@ fn write_file(tmpl: &[u8], file_path: &Path, data: &Object) -> Result<()> {
     }
     Ok(())
 }
-

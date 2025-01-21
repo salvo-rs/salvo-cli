@@ -54,7 +54,11 @@ pub fn get_selected() -> Result<Option<Selected>> {
         }));
     }
 
-    let db_types = &[t!("db_type_sqlite"), t!("db_type_postgres"), t!("db_type_mysql")];
+    let db_types = &[
+        t!("db_type_sqlite"),
+        t!("db_type_postgres"),
+        t!("db_type_mysql"),
+    ];
     let db_type_selection = Select::with_theme(&theme)
         .with_prompt(t!("select_db_type").replace(r"\n", "\n"))
         .default(0)
@@ -67,10 +71,7 @@ pub fn get_selected() -> Result<Option<Selected>> {
         _ => anyhow::bail!("Invalid db type selection"),
     };
 
-    Ok(Some(Selected {
-        db_type,
-        db_lib,
-    }))
+    Ok(Some(Selected { db_type, db_lib }))
 }
 
 #[derive(Debug, PartialEq, Clone, Copy, strum::Display)]
@@ -82,7 +83,7 @@ pub enum DbType {
     #[strum(serialize = "postgres")]
     Postgres,
     #[strum(serialize = "mongodb")]
-    Mongodb
+    Mongodb,
 }
 
 #[derive(Debug, PartialEq, Clone, Copy, strum::Display)]
@@ -96,5 +97,5 @@ pub enum DbLib {
     #[strum(serialize = "rbatis")]
     Rbatis,
     #[strum(serialize = "mongodb")]
-    Mongodb
+    Mongodb,
 }

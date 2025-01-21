@@ -5,8 +5,8 @@ use std::{env, slice};
 use anyhow::{Context, Result};
 use rust_i18n::t;
 
-use crate::printer::{self, success, warning};
 use crate::namer;
+use crate::printer::{self, success, warning};
 use crate::NewCmd;
 
 pub fn create(new_cmd: &NewCmd) -> Result<()> {
