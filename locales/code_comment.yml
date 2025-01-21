@@ -495,16 +495,16 @@ lang:
   da: da
 salvo_cli_welcome:
   en: Salvo-Cli Generated, Please Read README.md
-  zh_CN: 由Salvo-Cli生成，使用前请阅读README.md
-  zh_TW: 由Salvo-Cli生成，使用前請閱讀README.md
+  zh_CN: 由 Salvo-Cli 生成，使用前请阅读 README.md
+  zh_TW: 由 Salvo-Cli 生成，使用前請閱讀 README.md
   fr: Généré par Salvo-Cli, veuillez lire le fichier README.md
-  ja: Salvo-Cliで生成されました。README.mdをお読みください
+  ja: Salvo-Cli で生成されました。README.md をお読みください
   es: Generado por Salvo-Cli, por favor lea README.md
   de: Von Salvo-Cli generiert, bitte lesen Sie README.md
   ru: Сгенерировано Salvo-Cli, пожалуйста, прочтите README.md
   it: Generato da Salvo-Cli, si prega di leggere README.md
   pt: Gerado por Salvo-Cli, por favor leia o README.md
-  ko: Salvo-Cli로 생성됨, README.md를 읽어주세요
+  ko: Salvo-Cli 로 생성됨, README.md 를 읽어주세요
   no: Generert av Salvo-Cli, vennligst les README.md
   is: Búið til af Salvo-Cli, vinsamlegast lesið README.md
   uk: Згенеровано Salvo-Cli, будь ласка, прочитайте README.md
