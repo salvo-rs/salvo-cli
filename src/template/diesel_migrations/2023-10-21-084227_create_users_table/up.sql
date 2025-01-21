@@ -1,6 +1,0 @@
--- Your SQL goes here
-CREATE TABLE IF NOT EXISTS users (
-    id VARCHAR(255) PRIMARY KEY NOT NULL,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(511) NOT NULL
-);

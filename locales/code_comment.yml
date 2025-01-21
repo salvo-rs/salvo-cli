@@ -52,24 +52,6 @@ config_error_read:
   uk: Не вдалося прочитати файл конфігурації, повідомлення про помилку:{}
   th: ไม่สามารถอ่านไฟล์กำหนดค่าได้ ข้อความผิดพลาด:{}
   el: Απέτυχε η ανάγνωση του αρχείου ρυθμίσεων, μήνυμα σφάλματος:{}
-  da: Kunne ikke læse konfigurationsfilen, fejlmeddelelse:{}
-config_error_parse:
-  en: Failed to parse configuration file, error message:{}
-  zh_CN: 解析配置文件失败，错误信息:{}
-  zh_TW: 解析配置文件失敗，錯誤信息:{}
-  fr: Échec de l'analyse du fichier de configuration, message d'erreur:{}
-  ja: 設定ファイルの解析に失敗しました。エラーメッセージ:{}
-  es: Error al analizar el archivo de configuración, mensaje de error:{}
-  de: Fehler beim Analysieren der Konfigurationsdatei, Fehlermeldung:{}
-  ru: Ошибка анализа файла конфигурации, сообщение об ошибке:{}
-  it: Impossibile analizzare il file di configurazione, messaggio di errore:{}
-  pt: Falha ao analisar o arquivo de configuração, mensagem de erro:{}
-  ko: 구성 파일을 구문 분석하는 데 실패했습니다. 오류 메시지:{}
-  no: Kunne ikke analysere konfigurasjonsfilen, feilmelding:{}
-  is: Tókst ekki að greina stillingaskrá, villuboð:{}
-  uk: Не вдалося проаналізувати файл конфігурації, повідомлення про помилку:{}
-  th: ไม่สามารถแยกวิเคราะห์ไฟล์กำหนดค่าได้ ข้อความผิดพลาด:{}
-  el: Απέτυχε η ανάλυση του αρχείου ρυθμίσεων, μήνυμα σφάλματος:{}
   da: Kunne ikke analysere konfigurationsfilen, fejlmeddelelse:{}
 config_error_read_failed:
   en: failed to read file
@@ -274,24 +256,6 @@ username:
   th: ชื่อผู้ใช้
   el: Όνομα χρήστη
   da: Brugernavn
-generate_a_string_of_a_specified_length:
-  en: Generate a string of a specified length
-  zh_CN: 生成指定长度的字符串
-  zh_TW: 生成指定長度的字串
-  fr: Générer une chaîne de caractères d'une longueur spécifiée
-  ja: 指定した長さの文字列を生成する
-  es: Generar una cadena de una longitud especificada
-  de: Erzeugen Sie eine Zeichenkette einer bestimmten Länge
-  ru: Генерировать строку заданной длины
-  it: Generare una stringa di una lunghezza specificata
-  pt: Gerar uma string de um comprimento especificado
-  ko: 지정된 길이의 문자열 생성
-  no: Generer en streng av en spesifisert lengde
-  is: Búa til streng af tiltekinni lengd
-  uk: Генерувати рядок заданої довжини
-  th: สร้างสตริงความยาวที่ระบุ
-  el: Δημιουργήστε μια συμβολοσειρά ενός καθορισμένου μήκους
-  da: Generer en streng af en bestemt længde
 contact_support:
   en: Contact Support
   zh_CN: 联系支持
@@ -510,3 +474,269 @@ listen_on:
   th: ฟังที่
   el: ακούστε στο
   da: lyt på
+
+lang:
+  en: en
+  zh_CN: zh-cn
+  zh_TW: zh-tw
+  fr: fr
+  ja: ja
+  es: es
+  de: de
+  ru: ru
+  it: it
+  pt: pt
+  ko: ko
+  no: no
+  is: is
+  uk: uk
+  th: th
+  el: el
+  da: da
+salvo_cli_welcome:
+  en: Salvo-Cli Generated, Please Read README.md
+  zh_CN: 由Salvo-Cli生成，使用前请阅读README.md
+  zh_TW: 由Salvo-Cli生成，使用前請閱讀README.md
+  fr: Généré par Salvo-Cli, veuillez lire le fichier README.md
+  ja: Salvo-Cliで生成されました。README.mdをお読みください
+  es: Generado por Salvo-Cli, por favor lea README.md
+  de: Von Salvo-Cli generiert, bitte lesen Sie README.md
+  ru: Сгенерировано Salvo-Cli, пожалуйста, прочтите README.md
+  it: Generato da Salvo-Cli, si prega di leggere README.md
+  pt: Gerado por Salvo-Cli, por favor leia o README.md
+  ko: Salvo-Cli로 생성됨, README.md를 읽어주세요
+  no: Generert av Salvo-Cli, vennligst les README.md
+  is: Búið til af Salvo-Cli, vinsamlegast lesið README.md
+  uk: Згенеровано Salvo-Cli, будь ласка, прочитайте README.md
+  th: สร้างโดย Salvo-Cli กรุณาอ่าน README.md
+  el: Δημιουργήθηκε από το Salvo-Cli, παρακαλώ διαβάστε το README.md
+  da: Genereret af Salvo-Cli, læs venligst README.md
+
+you_wont_be_able_to_revert_this:
+  en: You won't be able to revert this!
+  zh_CN: 此操作无法撤销！
+  zh_TW: 此操作無法撤銷！
+  fr: Vous ne pourrez pas annuler cette action !
+  ja: この操作は元に戻せません！
+  es: ¡No podrás revertir esto!
+  de: Dies kann nicht rückgängig gemacht werden!
+  ru: Это действие нельзя отменить!
+  it: Non sarà possibile annullare questa operazione!
+  pt: Você não poderá reverter isso!
+  ko: 이 작업은 되돌릴 수 없습니다!
+  no: Du vil ikke kunne angre dette!
+  is: Þú munt ekki geta afturkallað þetta!
+  uk: Ви не зможете скасувати цю дію!
+  th: คุณจะไม่สามารถย้อนกลับการดำเนินการนี้ได้!
+  el: Δεν θα μπορείτε να το αναιρέσετε αυτό!
+  da: Du vil ikke kunne fortryde dette!
+_version: 2
+login:
+  en: Login
+  zh_CN: 登录
+  zh_TW: 登錄
+  fr: Connexion
+  ja: ログイン
+  es: Iniciar sesión
+  de: Anmelden
+  ru: Войти
+  ko: 로그인
+  pt: Entrar
+  it: Accedi
+
+username:
+  en: Username
+  zh_CN: 用户名
+  zh_TW: 用戶名
+  fr: Nom d'utilisateur
+  ja: ユーザー名
+  es: Nombre de usuario
+  de: Benutzername
+  ru: Имя пользователя
+  ko: 사용자 이름
+  pt: Nome de usuário
+  it: Nome utente
+
+password:
+  en: Password
+  zh_CN: 密码
+  zh_TW: 密碼
+  fr: Mot de passe
+  ja: パスワード
+  es: Contraseña
+  de: Passwort
+  ru: Пароль
+  ko: 비밀번호
+  pt: Senha
+  it: Password
+
+account:
+  en: Demo Account
+  zh_CN: 演示账号
+  zh_TW: 演示帳號
+  fr: Compte de démonstration
+  ja: デモアカウント
+  es: Cuenta de demostración
+  de: Demokonto
+  ru: Демо-аккаунт
+  ko: 데모 계정
+  pt: Conta de demonstração
+  it: Account demo
+
+salvo_cli_welcome:
+  en: Welcome to Salvo CLI Project
+  zh_CN: 欢迎使用 Salvo CLI 脚手架项目
+  zh_TW: 歡迎使用 Salvo CLI 腳手架項目
+  fr: Bienvenue sur le projet Salvo CLI
+  ja: Salvo CLI プロジェクトへようこそ
+  es: Bienvenido al proyecto de demostración de Salvo CLI
+  de: Willkommen im Salvo CLI-Projekt
+  ru: Добро пожаловать в демо Salvo CLI
+  ko: Salvo CLI 데모에 오신 것을 환영합니다
+  pt: Bem-vindo à demonstração do Salvo CLI
+  it: Benvenuto alla demo di Salvo CLI 
+lang:
+  en: en
+  zh_CN: zh_CN
+  zh_TW: zh_TW
+  fr: fr
+  ja: ja
+  es: es
+  de: de
+  ru: ru
+  ko: ko
+  pt: pt
+  it: it
+
+search_placeholder:
+  en: Search username...
+  zh_CN: 搜索用户名...
+  zh_TW: 搜索用戶名...
+  fr: Rechercher un nom d'utilisateur...
+  ja: ユーザー名を検索...
+  es: Buscar nombre de usuario...
+  de: Benutzernamen suchen...
+  ru: Поиск имени пользователя...
+  it: Cerca nome utente...
+  pt: Pesquisar nome de usuário...
+  ko: 사용자 이름 검색...
+  no: Søk brukernavn...
+  is: Leita að notandanafni...
+  uk: Пошук імені користувача...
+  th: ค้นหาชื่อผู้ใช้...
+  el: Αναζήτηση ονόματος χρήστη...
+  da: Søg brugernavn...
+
+search:
+  en: Search
+  zh_CN: 搜索
+  zh_TW: 搜索
+  fr: Rechercher
+  ja: 検索
+  es: Buscar
+  de: Suchen
+  ru: Поиск
+  it: Cerca
+  pt: Pesquisar
+  ko: 검색
+  no: Søk
+  is: Leita
+  uk: Пошук
+  th: ค้นหา
+  el: Αναζήτηση
+  da: Søg
+
+update:
+  en: Update
+  zh_CN: 更新
+  zh_TW: 更新
+  fr: Mettre à jour
+  ja: 更新
+  es: Actualizar
+  de: Aktualisieren
+  ru: Обновить
+  it: Aggiorna
+  pt: Atualizar
+  ko: 업데이트
+  no: Oppdater
+  is: Uppfæra
+  uk: Оновити
+  th: อัปเดต
+  el: Ενημέρωση
+  da: Opdater
+
+total_records:
+  en: Total records
+  zh_CN: 共 %{count} 条记录
+  zh_TW: 共 %{count} 條記錄
+  fr: Total des enregistrements
+  ja: 合計レコード
+  es: Total de registros
+  de: Gesamtanzahl der Einträge
+  ru: Всего записей
+  it: Totale record
+  pt: Total de registros
+  ko: 전체 기록
+  no: Totalt antall oppføringer
+  is: Heildarfjöldi færslna
+  uk: Всього записів
+  th: จำนวนรายการทั้งหมด
+  el: Σύνολο εγγραφών
+  da: Samlede poster
+
+page:
+  en: Page %{number}
+  zh_CN: 第 %{number} 页
+  zh_TW: 第 %{number} 頁
+  fr: Page %{number}
+  ja: ページ %{number}
+  es: Página %{number}
+  de: Seite %{number}
+  ru: Страница %{number}
+  it: Pagina %{number}
+  pt: Página %{number}
+  ko: 페이지 %{number}
+  no: Side %{number}
+  is: Síða %{number}
+  uk: Сторінка %{number}
+  th: หน้า %{number}
+  el: Σελίδα %{number}
+  da: Side %{number}
+
+previous_page:
+  en: Previous
+  zh_CN: 上一页
+  zh_TW: 上一頁
+  fr: Précédent
+  ja: 前へ
+  es: Anterior
+  de: Zurück
+  ru: Предыдущая
+  it: Precedente
+  pt: Anterior
+  ko: 이전
+  no: Forrige
+  is: Fyrri
+  uk: Попередня
+  th: ก่อนหน้า
+  el: Προηγούμενο
+  da: Forrige
+
+next_page:
+  en: Next
+  zh_CN: 下一页
+  zh_TW: 下一頁
+  fr: Suivant
+  ja: 次へ
+  es: Siguiente
+  de: Weiter
+  ru: Следующая
+  it: Successivo
+  pt: Próximo
+  ko: 다음
+  no: Neste
+  is: Næsta
+  uk: Наступна
+  th: ถัดไป
+  el: Επόμενο
+  da: Næste

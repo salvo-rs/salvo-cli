@@ -1,0 +1,67 @@
+# {{ introduction_title }}
+{{ introduction_content }}
+{{ rust_version_tip }}
+``` shell
+//{{ run_the_project }}
+cargo run
+//{{ run_the_tests }}
+cargo test
+```
+# {{ tip_title }}
+- {{ password_tip }}
+{%- if db_lib == "seaorm" and db_type == "sqlx" %}
+- {{ config_tip }}
+{%- endif %}
+# {{ orm_title }}
+{%- if db_type == "sqlx" %}
+{{ sqlx_website }}
+## sqlx_cli
+{{ sqlx_cli }} https://github.com/launchbadge/sqlx/blob/main/sqlx-cli/README.md
+## {{ initialization }}
+{%- if db_type == "sqlx" %}
+{{ seleted_sqlite }}
+{%- else %}
+- {{ initialization_sqlx_cli_not_sqlite }}
+{%- endif %}
+{%- endif %}
+{%- if db_lib == "seaorm" %}
+{{ seaorm_website }}
+## seaorm_cli
+{{ seaorm_cli_website }}
+## {{ initialization }}
+{%- endif %}
+{%- if db_lib == "seaorm" %}
+{%- if db_type == "sqlx" %}
+{{ seleted_sqlite }}
+{%- else %}
+- {{ initialization_seaorm_cli_not_sqlite }}
+{%- endif %}
+{%- endif %}
+{%- if db_lib == "diesel" %}
+{{ diesel_website }}
+## diesel_cli
+{{ diesel_cli_website }}
+## {{ initialization }}
+{%- if db_lib == "sqlite" %}
+{{ seleted_sqlite }}
+{%- else %}
+- {{ initialization_diesel_cli_not_sqlite }}
+{%- endif %}
+{%- endif %}
+{%- if db_lib == "rbatis" %}
+{{ rbatis_website }}
+## {{ initialization }}
+{%- if db_lib == "sqlite" %}
+{{ seleted_sqlite }}
+{%- else %}
+- {{ initialization_rbatis_cli_not_sqlite }}
+{%- endif%}
+{%- endif %}
+{%- if db_type == "mongodb" %}
+{{ mongodb_website }}
+## {{ initialization }}
+- {{ mongodb_usage_import_user_data }}
+{%- endif %}
+
+# {{ about_salvo }}
+{{ about_salvo_text }}

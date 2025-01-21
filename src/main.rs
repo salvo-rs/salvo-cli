@@ -1,10 +1,18 @@
+#![recursion_limit = "256"]
+
 use anyhow::Result;
 use clap::Parser;
-mod test;
+mod tests;
 mod utils;
 use i18n::set_locale;
-use utils::check_for_updates;
+mod git;
 mod i18n;
+mod project;
+mod templates;
+// mod updater;
+mod namer;
+mod printer;
+
 rust_i18n::i18n!("locales", fallback = "en");
 #[derive(Parser, Debug)]
 #[clap(version = env!("CARGO_PKG_VERSION"), author = "Fankai liu <liufankai137@outlook.com>")]
@@ -15,25 +23,34 @@ struct Opts {
 
 #[derive(Parser, Debug)]
 enum SubCommand {
-    New(Project),
+    New(NewCmd),
 }
 #[derive(Parser, Debug, Clone)]
-pub struct Project {
+pub struct NewCmd {
     pub project_name: String,
     #[clap(short, long)]
     lang: Option<String>,
 }
+#[derive(Debug, Clone)]
+pub struct Project {
+    pub name: String,
+    pub lang: String,
+}
 #[tokio::main]
 async fn main() -> Result<()> {
-    utils::print_logo();
+    printer::print_logo();
     let opts: Opts = Opts::parse();
     match opts.subcmd {
-        SubCommand::New(project) => {
-            set_locale(&project.lang);
-            check_for_updates().await;
-            match utils::create_project(project) {
+        SubCommand::New(NewCmd { project_name, lang }) => {
+            set_locale(&lang);
+            let proj = Project {
+                name: project_name,
+                lang: lang.unwrap_or("en".to_string()),
+            };
+            // updater::check_for_updates().await;
+            match project::create(&proj) {
                 Ok(_) => (),
-                Err(e) => utils::error(e.to_string()),
+                Err(e) => printer::error(e.to_string()),
             };
         }
     }
