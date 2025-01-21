@@ -31,6 +31,7 @@ pub fn get_selected() -> Result<Option<Selected>> {
         t!("db_lib_seaorm"),
         t!("db_lib_diesel"),
         t!("db_lib_rbatis"),
+        t!("db_lib_mongodb"),
         // "custom",
     ];
     let db_lib_selection = Select::with_theme(&theme)

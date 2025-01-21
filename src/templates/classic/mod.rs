@@ -103,6 +103,8 @@ fn create_files(project_path: &Path, user_selected: Selected, new_cmd: &NewCmd) 
         "sqlx_website": t!("sqlx_website"),
         "seaorm_website": t!("seaorm_website"),
         "diesel_website": t!("diesel_website"),
+        "mongodb_website": t!("mongodb_website"),
+        "mongodb_usage_import_user_data": t!("mongodb_usage_import_user_data"),
         "initialization": t!("initialization"),
         "initialization_sqlx_cli_not_sqlite": t!("initialization_sqlx_cli_not_sqlite").replace(r"\n", "\n"),
         "initialization_seaorm_cli_not_sqlite": t!("initialization_seaorm_cli_not_sqlite").replace(r"\n", "\n"),

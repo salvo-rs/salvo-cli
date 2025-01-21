@@ -54,7 +54,7 @@ salvo_web_site:
   el: salvo_web_site (Προεπιλεγμένο πρότυπο ιστότοπου)
   da: salvo_web_site (Standard websted skabelon)
 select_db_lib:
-  en: select database connection type
+  en: select database connection library
   zh_CN: 选择数据库连接类型
   zh_TW: 選擇資料庫連接類型
   fr: sélectionnez le type de connexion à la base de données
@@ -90,77 +90,77 @@ db_lib_sqlx:
   el: το SQLx είναι ένα ασύγχρονο, καθαρό Rust† SQL κιβώτιο με ερωτήματα ελεγμένα κατά τη σύνταξη χωρίς DSL. 14K⭐
   da: SQLx er en asynkron, ren Rust† SQL-kasse med kompilerede forespørgsler uden DSL. 14K⭐
 db_lib_diesel:
-  en: diesel:A safe, extensible ORM and Query Builder for Rust 13K⭐
-  zh_CN: diesel:Rust 的安全、可扩展的 ORM 和查询生成器 13K⭐
-  zh_TW: diesel:Rust 的安全、可擴展的 ORM 和查詢生成器 13K⭐
-  fr: diesel:ORM et générateur de requêtes extensible et sûr pour Rust 13K⭐
-  ja: diesel:Rust の安全で拡張可能な ORM とクエリビルダー 13K⭐
-  es: diesel:ORM y generador de consultas seguro y extensible para Rust 13K⭐
-  de: diesel:Eine sichere, erweiterbare ORM und Abfragegenerator für Rust 13K⭐
-  ru: diesel:ORM и генератор запросов безопасны и расширяемы для Rust 13K⭐
-  it: diesel:ORM e generatore di query sicuro ed estensibile per Rust 13K⭐
-  pt: diesel:ORM e gerador de consultas seguro e extensível para Rust 13K⭐
-  ko: diesel:Rust 의 안전하고 확장 가능한 ORM 및 쿼리 빌더 13K⭐
-  no: diesel:En sikker, utvidbar ORM og spørringsbygger for Rust 13K⭐
-  is: diesel:Öruggt, útvíkkandi ORM og fyrirspurnarbyggir fyrir Rust 13K⭐
-  uk: diesel:ORM та генератор запитів безпечні та розширювані для Rust 13K⭐
-  th: diesel:ORM และ Query Builder ที่ปลอดภัยและสามารถขยายได้สำหรับ Rust 13K⭐
-  el: diesel:ένα ασφαλές, επεκτάσιμο ORM και Query Builder για Rust 13K⭐
-  da: diesel:En sikker, udvidelig ORM og Query Builder til Rust 13K⭐
+  en: "diesel: A safe, extensible ORM and Query Builder for Rust 13K⭐"
+  zh_CN: "diesel: Rust 的安全、可扩展的 ORM 和查询生成器 13K⭐"
+  zh_TW: "diesel: Rust 的安全、可擴展的 ORM 和查詢生成器 13K⭐"
+  fr: "diesel: ORM et générateur de requêtes extensible et sûr pour Rust 13K⭐"
+  ja: "diesel: Rust の安全で拡張可能な ORM とクエリビルダー 13K⭐"
+  es: "diesel: ORM y generador de consultas seguro y extensible para Rust 13K⭐"
+  de: "diesel: Eine sichere, erweiterbare ORM und Abfragegenerator für Rust 13K⭐"
+  ru: "diesel: ORM и генератор запросов безопасны и расширяемы для Rust 13K⭐"
+  it: "diesel: ORM e generatore di query sicuro ed estensibile per Rust 13K⭐"
+  pt: "diesel: ORM e gerador de consultas seguro e extensível para Rust 13K⭐"
+  ko: "diesel: Rust 의 안전하고 확장 가능한 ORM 및 쿼리 빌더 13K⭐"
+  no: "diesel: En sikker, utvidbar ORM og spørringsbygger for Rust 13K⭐"
+  is: "diesel: Öruggt, útvíkkandi ORM og fyrirspurnarbyggir fyrir Rust 13K⭐"
+  uk: "diesel: ORM та генератор запитів безпечні та розширювані для Rust 13K⭐"
+  th: "diesel: ORM และ Query Builder ที่ปลอดภัยและสามารถขยายได้สำหรับ Rust 13K⭐"
+  el: "diesel: ένα ασφαλές, επεκτάσιμο ORM και Query Builder για Rust 13K⭐"
+  da: "diesel: En sikker, udvidelig ORM og Query Builder til Rust 13K⭐"
 db_lib_seaorm:
-  en: sea-orm:🐚 An async & dynamic ORM for Rust
-  zh_CN: sea-orm:🐚 Rust 的异步和动态 ORM
-  zh_TW: sea-orm:🐚 Rust 的非同步和動態 ORM
-  fr: sea-orm:🐚 Un ORM asynchrone et dynamique pour Rust 
-  ja: sea-orm:🐚 Rust の非同期 & 動的 ORM
-  es: sea-orm:🐚 Un ORM asíncrono y dinámico para Rust
-  de: sea-orm:🐚 Ein asynchrones und dynamisches ORM für Rust
-  ru: sea-orm:🐚 Асинхронный и динамический ORM для Rust
-  it: sea-orm:🐚 Un ORM asincrono e dinamico per Rust
-  pt: sea-orm:🐚 Um ORM assíncrono e dinâmico para Rust
-  ko: sea-orm:🐚 Rust 의 비동기 및 동적 ORM
-  no: sea-orm:🐚 En asynkron og dynamisk ORM for Rust
-  is: sea-orm:🐚 Asynkron og hreyfanleg ORM fyrir Rust
-  uk: sea-orm:🐚 Асинхронний та динамічний ORM для Rust
-  th: sea-orm:🐚 ORM แบบ async และ dynamic สำหรับ Rust
-  el: sea-orm:🐚 ένα ασύγχρονο και δυναμικό ORM για Rust
-  da: sea-orm:🐚 En asynkron og dynamisk ORM til Rust
+  en: "sea-orm: 🐚 An async & dynamic ORM for Rust"
+  zh_CN: "sea-orm: 🐚 Rust 的异步和动态 ORM"
+  zh_TW: "sea-orm: 🐚 Rust 的非同步和動態 ORM"
+  fr: "sea-orm: 🐚 Un ORM asynchrone et dynamique pour Rust"
+  ja: "sea-orm: 🐚 Rust の非同期 & 動的 ORM"
+  es: "sea-orm: 🐚 Un ORM asíncrono y dinámico para Rust"
+  de: "sea-orm: 🐚 Ein asynchrones und dynamisches ORM für Rust"
+  ru: "sea-orm: 🐚 Асинхронный и динамический ORM для Rust"
+  it: "sea-orm: 🐚 Un ORM asincrono e dinamico per Rust"
+  pt: "sea-orm: 🐚 Um ORM assíncrono e dinâmico para Rust"
+  ko: "sea-orm: 🐚 Rust 의 비동기 및 동적 ORM"
+  no: "sea-orm: 🐚 En asynkron og dynamisk ORM for Rust"
+  is: "sea-orm: 🐚 Asynkron og hreyfanleg ORM fyrir Rust"
+  uk: "sea-orm: 🐚 Асинхронний та динамічний ORM для Rust"
+  th: "sea-orm: 🐚 ORM แบบ async และ dynamic สำหรับ Rust"
+  el: "sea-orm: 🐚 ένα ασύγχρονο και δυναμικό ORM για Rust"
+  da: "sea-orm: 🐚 En asynkron og dynamisk ORM til Rust"
 db_lib_rbatis:
-  en: rbatis:A similar Mybatis (java) asynchronous ORM framework
-  zh_CN: rbatis:类似 Mybatis (java) 的异步 ORM 框架
-  zh_TW: rbatis:類似 Mybatis (java) 的非同步 ORM 框架
-  fr: rbatis:Un cadre ORM asynchrone similaire à Mybatis (java)
-  ja: rbatis:Mybatis (java) に似た非同期 ORM フレームワーク
-  es: rbatis:Un marco ORM asíncrono similar a Mybatis (java)
-  de: rbatis:Ein ähnliches Mybatis (java) asynchrones ORM-Framework
-  ru: rbatis:Асинхронный ORM-фреймворк, похожий на Mybatis (java)
-  it: rbatis:Un framework ORM asincrono simile a Mybatis (java)
-  pt: rbatis:Um framework ORM assíncrono semelhante ao Mybatis (java)
-  ko: rbatis:Mybatis (java) 와 유사한 비동기 ORM 프레임 워크
-  no: rbatis:Et lignende Mybatis (java) asynkront ORM-rammeverk
-  is: rbatis:Asynkron ORM kerfi sem líkist Mybatis (java)
-  uk: rbatis:Асинхронний ORM-фреймворк, схожий на Mybatis (java)
-  th: rbatis:เฟรมเวิร์ก ORM แบบ async ที่คล้ายกับ Mybatis (java)
-  el: rbatis:ένα παρόμοιο Mybatis (java) ασύγχρονο πλαίσιο ORM
-  da: rbatis:Et lignende Mybatis (java) asynkront ORM-rammeverk
+  en: "rbatis: A similar Mybatis (java) asynchronous ORM framework"
+  zh_CN: "rbatis: 类似 Mybatis (java) 的异步 ORM 框架"
+  zh_TW: "rbatis: 類似 Mybatis (java) 的非同步 ORM 框架"
+  fr: "batis: Un cadre ORM asynchrone similaire à Mybatis (java)"
+  ja: "batis: Mybatis (java) に似た非同期 ORM フレームワーク"
+  es: "batis: Un marco ORM asíncrono similar a Mybatis (java)"
+  de: "batis: Ein ähnliches Mybatis (java) asynchrones ORM-Framework"
+  ru: "batis: Асинхронный ORM-фреймворк, похожий на Mybatis (java)"
+  it: "batis: Un framework ORM asincrono simile a Mybatis (java)"
+  pt: "batis: Um framework ORM assíncrono semelhante ao Mybatis (java)"
+  ko: "batis: Mybatis (java) 와 유사한 비동기 ORM 프레임 워크"
+  no: "batis: Et lignende Mybatis (java) asynkront ORM-rammeverk"
+  is: "batis: Asynkron ORM kerfi sem líkist Mybatis (java)"
+  uk: "batis: Асинхронний ORM-фреймворк, схожий на Mybatis (java)"
+  th: "batis: เฟรมเวิร์ก ORM แบบ async ที่คล้ายกับ Mybatis (java)"
+  el: "batis: ένα παρόμοιο Mybatis (java) ασύγχρονο πλαίσιο ORM"
+  da: "batis: Et lignende Mybatis (java) asynkront ORM-rammeverk"
 db_lib_mongodb:
-  en: The official MongoDB driver for Rust
-  zh_CN: Rust 的官方 MongoDB 驱动程序
-  zh_TW: Rust 的官方 MongoDB 驱動程式
-  fr: Le pilote MongoDB officiel pour Rust
-  ja: Rust の公式 MongoDB ドライバー
-  es: El controlador MongoDB oficial para Rust
-  de: Der offizielle MongoDB-Treiber für Rust
-  ru: Официальный драйвер MongoDB для Rust
-  it: Il driver MongoDB ufficiale per Rust
-  pt: O driver oficial do MongoDB para Rust
-  ko: Rust 의 공식 MongoDB 드라이버
-  no: Den offisielle MongoDB-driveren for Rust
-  is: Opinber MongoDB keyrir fyrir Rust
-  uk: Офіційний драйвер MongoDB для Rust
-  th: ไดร์เวอร์ MongoDB อย่างเป็นทางการสำหรับ Rust
-  el: Ο επίσημος οδηγός MongoDB για Rust
-  da: Den officielle MongoDB-driver for Rust
+  en: "Mongodb: The official MongoDB driver for Rust"
+  zh_CN: "Mongodb: Rust 的官方 MongoDB 驱动程序"
+  zh_TW: "Mongodb: Rust 的官方 MongoDB 驱動程式"
+  fr: "Mongodb: Le pilote MongoDB officiel pour Rust"
+  ja: "Mongodb: Rust の公式 MongoDB ドライバー"
+  es: "Mongodb: El controlador MongoDB oficial para Rust"
+  de: "Mongodb: Der offizielle MongoDB-Treiber für Rust"
+  ru: "Mongodb: Официальный драйвер MongoDB для Rust"
+  it: "Mongodb: Il driver MongoDB ufficiale per Rust"
+  pt: "Mongodb: O driver oficial do MongoDB para Rust"
+  ko: "Mongodb: Rust 의 공식 MongoDB 드라이버"
+  no: "Mongodb: Den offisielle MongoDB-driveren for Rust"
+  is: "Mongodb: Opinber MongoDB keyrir fyrir Rust"
+  uk: "Mongodb: Офіційний драйвер MongoDB для Rust"
+  th: "Mongodb: ไดร์เวอร์ MongoDB อย่างเป็นทางการสำหรับ Rust"
+  el: "Mongodb: Ο επίσημος οδηγός MongoDB για Rust"
+  da: "Mongodb: Den officielle MongoDB-driver for Rust"
 db_lib_nothing:
   en: unnecessary
   zh_CN: 不需要
