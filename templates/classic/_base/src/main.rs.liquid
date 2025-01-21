@@ -121,11 +121,13 @@ mod tests {
 
     #[tokio::test]
     async fn test_hello_world() {
-        let service = Service::new(super::router());
+        config::init();
+
+        let service = Service::new(crate::routers::root());
 
         let content = TestClient::get(format!(
             "http://{}",
-            &config::get().address.replace("0.0.0.0", "127.0.0.1")
+            config::get().listen_addr.replace("0.0.0.0", "127.0.0.1")
         ))
         .send(&service)
         .await

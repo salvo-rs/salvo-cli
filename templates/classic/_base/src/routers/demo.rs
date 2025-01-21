@@ -15,21 +15,3 @@ pub async fn hello(req: &mut Request) -> AppResult<Text<String>> {
     };
     Ok(Text::Html(hello_tmpl.render().unwrap()))
 }
-
-mod tests {
-    #[tokio::test]
-    async fn test_hello_world() {
-        let service = Service::new(crate::routers::router());
-
-        let content = TestClient::get(format!(
-            "http://{}",
-            &config.listen_addr.replace("0.0.0.0", "127.0.0.1")
-        ))
-        .send(&service)
-        .await
-        .take_string()
-        .await
-        .unwrap();
-        assert_eq!(content, "Hello World from salvo");
-    }
-}
