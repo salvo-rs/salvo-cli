@@ -17,42 +17,6 @@ welcome_message:
   th: ยินดีต้อนรับสู่การใช้ salvo cli โปรดเลือกประเภทเทมเพลต\n   ช่องว่างเพื่อยืนยัน
   el: Καλώς ήλθατε στη χρήση του salvo cli, παρακαλώ επιλέξτε έναν τύπο προτύπου\n   διάστημα για επιβεβαίωση
   da: Velkommen til at bruge salvo cli, vælg venligst en skabelon type\n   mellemrum for at bekræfte
-salvo_web_api:
-  en: salvo_web_api (Default web api template)
-  zh_CN: salvo_web_api (默认 web api 模板)
-  zh_TW: salvo_web_api (默認 web api 模板)
-  fr: salvo_web_api (Modèle web api par défaut)
-  ja: salvo_web_api (デフォルトの Web API テンプレート)
-  es: salvo_web_api (Plantilla web api predeterminada)
-  de: salvo_web_api (Standard-Web-API-Vorlage)
-  ru: salvo_web_api (Шаблон веб-интерфейса по умолчанию)
-  it: salvo_web_api (Modello web api predefinito)
-  pt: salvo_web_api (Modelo web api padrão)
-  ko: salvo_web_api (기본 웹 API 템플릿)
-  no: salvo_web_api (Standard web api mal)
-  is: salvo_web_api (Sjálfgefið vef api sniðmát)
-  uk: salvo_web_api (Шаблон веб-інтерфейсу за замовчуванням)
-  th: salvo_web_api (เทมเพลตเว็บ api ตั้งต้น)
-  el: salvo_web_api (Προεπιλεγμένο πρότυπο διαδικτύου api)
-  da: salvo_web_api (Standard web api skabelon)
-salvo_web_site:
-  en: salvo_web_site (Default web site template)
-  zh_CN: salvo_web_site (默认 web site 模板)
-  zh_TW: salvo_web_site (默認 web site 模板)
-  fr: salvo_web_site (Modèle de site Web par défaut)
-  ja: salvo_web_site (デフォルトの Web サイトテンプレート)
-  es: salvo_web_site (Plantilla de sitio web predeterminada)
-  de: salvo_web_site (Standard-Website-Vorlage)
-  ru: salvo_web_site (Шаблон веб-сайта по умолчанию)
-  it: salvo_web_site (Modello di sito web predefinito)
-  pt: salvo_web_site (Modelo de site padrão)
-  ko: salvo_web_site (기본 웹 사이트 템플릿)
-  no: salvo_web_site (Standard web site mal)
-  is: salvo_web_site (Sjálfgefið vefsvæði sniðmát)
-  uk: salvo_web_site (Шаблон веб-сайту за замовчуванням)
-  th: salvo_web_site (เทมเพลตเว็บไซต์ตั้งต้น)
-  el: salvo_web_site (Προεπιλεγμένο πρότυπο ιστότοπου)
-  da: salvo_web_site (Standard websted skabelon)
 select_db_lib:
   en: select database connection library
   zh_CN: 选择数据库连接类型
@@ -161,42 +125,24 @@ db_lib_mongodb:
   th: "Mongodb: ไดร์เวอร์ MongoDB อย่างเป็นทางการสำหรับ Rust"
   el: "Mongodb: Ο επίσημος οδηγός MongoDB για Rust"
   da: "Mongodb: Den officielle MongoDB-driver for Rust"
-db_lib_nothing:
-  en: unnecessary
-  zh_CN: 不需要
-  zh_TW: 不需要
-  fr: inutile
-  ja: 不要
-  es: innecesario
-  de: unnötig
-  ru: ненужный
-  it: inutile
-  pt: desnecessário
-  ko: 불필요한
-  no: unødvendig
-  is: óþarfi
-  uk: непотрібний
-  th: ไม่จำเป็น
-  el: περιττός
-  da: unødvendig
 select_db_type:
-  en: select database type
-  zh_CN: 选择数据库类型
-  zh_TW: 選擇資料庫類型
-  fr: sélectionnez le type de base de données
-  ja: データベースタイプを選択
-  es: seleccione el tipo de base de datos
-  de: wählen Sie den Datenbanktyp aus
-  ru: выберите тип базы данных
-  it: seleziona il tipo di database
-  pt: selecione o tipo de banco de dados
-  ko: 데이터베이스 유형을 선택하십시오
-  no: velg databasetype
-  is: veldu gagnagrunnstegund
-  uk: виберіть тип бази даних
-  th: เลือกประเภทฐานข้อมูล
-  el: επιλέξτε τύπο βάσης δεδομένων
-  da: vælg databasetype
+  en: select database type (select sqlite to run code directly, others need to modify configuration and run migrations first, please check readme or related docs)
+  zh_CN: 选择数据库类型（选择sqlite可直接运行代码，选择其他的需要先修改配置，运行迁移等等，请查看readme或相关文档）
+  zh_TW: 選擇資料庫類型（選擇sqlite可直接運行代碼，選擇其他的需要先修改配置，運行遷移等等，請查看readme或相關文檔）
+  fr: sélectionnez le type de base de données (sélectionnez sqlite pour exécuter le code directement, les autres nécessitent de modifier la configuration et d'exécuter les migrations d'abord, veuillez consulter le readme ou la documentation associée)
+  ja: データベースタイプを選択（sqliteを選択すると直接コードを実行できます。他のものは設定の変更や移行の実行が必要です。readmeまたは関連ドキュメントを確認してください）
+  es: seleccione el tipo de base de datos (seleccione sqlite para ejecutar el código directamente, otros necesitan modificar la configuración y ejecutar migraciones primero, consulte el readme o la documentación relacionada)
+  de: wählen Sie den Datenbanktyp aus (wählen Sie sqlite, um den Code direkt auszuführen, andere erfordern zuerst Konfigurationsänderungen und Migrationen, bitte lesen Sie die Readme oder zugehörige Dokumentation)
+  ru: выберите тип базы данных (выберите sqlite для прямого запуска кода, для других нужно сначала изменить конфигурацию и запустить миграции, см. readme или соответствующую документацию)
+  it: seleziona il tipo di database (seleziona sqlite per eseguire il codice direttamente, altri richiedono di modificare la configurazione ed eseguire le migrazioni prima, consulta il readme o la documentazione correlata)
+  pt: selecione o tipo de banco de dados (selecione sqlite para executar o código diretamente, outros precisam modificar a configuração e executar migrações primeiro, verifique o readme ou documentação relacionada)
+  ko: 데이터베이스 유형을 선택하십시오 (sqlite를 선택하면 코드를 직접 실행할 수 있으며, 다른 것들은 먼저 구성을 수정하고 마이그레이션을 실행해야 합니다. readme 또는 관련 문서를 확인하십시오)
+  no: velg databasetype (velg sqlite for å kjøre koden direkte, andre trenger å endre konfigurasjon og kjøre migrasjoner først, se readme eller relatert dokumentasjon)
+  is: veldu gagnagrunnstegund (veldu sqlite til að keyra kóða beint, aðrir þurfa að breyta stillingar og keyra flutningar fyrst, vinsamlegast skoðaðu readme eða tengd skjöl)
+  uk: виберіть тип бази даних (виберіть sqlite для прямого запуску коду, для інших потрібно спочатку змінити конфігурацію та запустити міграції, див. readme або відповідну документацію)
+  th: เลือกประเภทฐานข้อมูล (เลือก sqlite เพื่อรันโค้ดโดยตรง อื่นๆ ต้องแก้ไขการกำหนดค่าและรันการย้ายข้อมูลก่อน โปรดดู readme หรือเอกสารที่เกี่ยวข้อง)
+  el: επιλέξτε τύπο βάσης δεδομένων (επιλέξτε sqlite για άμεση εκτέλεση κώδικα, άλλοι χρειάζονται τροποποίηση ρυθμίσεων και εκτέλεση μεταναστεύσεων πρώτα, παρακαλώ ελέγξτε το readme ή τη σχετική τεκμηρίωση)
+  da: vælg databasetype (vælg sqlite for at køre koden direkte, andre skal ændre konfiguration og køre migreringer først, se venligst readme eller relateret dokumentation)
 db_type_sqlite:
   en: "sqlite - Simple project for learning, ready to use out of the box"
   zh_CN: "sqlite - 简单项目，学习使用，开箱即用"

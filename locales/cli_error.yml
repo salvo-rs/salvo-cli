@@ -1,4 +1,22 @@
 _version: 2
+error_cli_quit:
+  en: "CLI is quitting!"
+  zh_CN: "CLI 正在退出！"
+  zh_TW: "CLI 正在退出！"
+  fr: "CLI se termine !"
+  ja: "CLIを終了しています！"
+  es: "¡CLI está saliendo!"
+  de: "CLI wird beendet!"
+  ru: "CLI завершает работу!"
+  it: "CLI sta uscendo!"
+  pt: "CLI está saindo!"
+  ko: "CLI가 종료됩니다!"
+  no: "CLI avslutter!"
+  is: "CLI er að hætta!"
+  uk: "CLI завершує роботу!"
+  th: "CLI กำลังออกจากระบบ!"
+  el: "Το CLI τερματίζεται!"
+  da: "CLI lukker ned!"
 error_is_keyword:
   en: "the name `%{name}` cannot be used as a project name, it is a Rust keyword"
   zh_CN: "名称 `%{name}` 不能作为项目名称，它是 Rust 关键字"

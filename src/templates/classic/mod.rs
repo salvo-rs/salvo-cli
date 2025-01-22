@@ -18,7 +18,7 @@ struct Template;
 
 pub fn generate(proj: &Project) -> Result<()> {
     let Some(config) = selection::get_selected()? else {
-        anyhow::bail!("cli quit!")
+        anyhow::bail!(t!("error_cli_quit"))
     };
     let project_path = Path::new(&proj.name);
     match git::init_repository(project_path) {
@@ -81,7 +81,6 @@ pub(crate) fn create_files(project_path: &Path, selected: Selected, proj: &Proje
         "create_success_mysql_or_pgsql_fist_use":t!("create_success_mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
         "create_success_seaorm__mysql_or_pgsql_fist_use":t!("create_success_seaorm__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
         "create_success_diesel__mysql_or_pgsql_fist_use":t!("create_success_diesel__mysql_or_pgsql_fist_use").replace(r"\n", "\n"),
-
         "is_starting": t!("is_starting"),
         "listen_on": t!("listen_on"),
         "database_connection_failed": t!("database_connection_failed"),

@@ -64,7 +64,7 @@ struct UpdateInData {
     #[validate(length(min = 6, message = "password length must be greater than 5"))]
     password: String,
 }
-#[endpoint(tags("users"), parameters(("id", description = "user id")))]
+#[endpoint(tags("users"), parameters(("user_id", description = "user id")))]
 pub async fn update_user(
     user_id: PathParam<String>,
     idata: JsonBody<UpdateInData>,

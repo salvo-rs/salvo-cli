@@ -9,7 +9,6 @@ pub fn print_logo() {
  \___ \ / _ \ | | \ \ / / | | |
   ___) / ___ \| |__\ V /| |_| |
  |____/_/   \_\_____\_/  \___/
-                                                 
 ";
     let lines = art.lines();
     for line in lines {

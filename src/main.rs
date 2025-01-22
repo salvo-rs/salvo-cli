@@ -9,7 +9,7 @@ mod git;
 mod i18n;
 mod project;
 mod templates;
-// mod updater;
+mod updater;
 mod namer;
 mod printer;
 
@@ -47,7 +47,7 @@ async fn main() -> Result<()> {
                 name: project_name,
                 lang: lang.unwrap_or("en".to_string()),
             };
-            // updater::check_for_updates().await;
+            updater::check_for_updates().await;
             match project::create(&proj) {
                 Ok(_) => (),
                 Err(e) => printer::error(e.to_string()),
