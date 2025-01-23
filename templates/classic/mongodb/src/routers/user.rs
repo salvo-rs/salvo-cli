@@ -5,8 +5,9 @@ use mongodb::bson::{doc, oid::ObjectId};
 use rinja::Template;
 use salvo::oapi::extract::*;
 use salvo::prelude::*;
-use serde::Deserialize;
+use serde::{Deserialize,Serialize};
 use validator::Validate;
+use crate::hoops::jwt;
 
 use crate::models::SafeUser;
 use crate::{db, empty_ok, json_ok, utils, AppResult, EmptyResult, JsonResult};
@@ -22,6 +23,12 @@ pub struct UserListFragTemplate {}
 #[handler]
 pub async fn list_page(req: &mut Request, res: &mut Response) -> AppResult<()> {
     let is_fragment = req.headers().get("X-Fragment-Header");
+    if let Some(cookie) = res.cookies().get("jwt_token") {
+        let token = cookie.value().to_string();
+        if !jwt::decode_token(&token) {
+            res.render(Redirect::other("/login"));
+        }
+    }
     match is_fragment {
         Some(_) => {
             let hello_tmpl = UserListFragTemplate {};
@@ -100,10 +107,44 @@ pub async fn delete_user(user_id: PathParam<String>) -> EmptyResult {
     empty_ok()
 }
 
+#[derive(Debug, Deserialize, Validate, Extractible, ToSchema)]
+#[salvo(extract(default_source(from = "query")))]
+pub struct UserListQuery {
+    pub username: Option<String>,
+    #[serde(default = "default_page")]
+    pub current_page: u64,
+    #[serde(default = "default_page_size")]
+    pub page_size: u64,
+}
+
+fn default_page() -> u64 { 1 }
+fn default_page_size() -> u64 { 10 }
+
+#[derive(Debug, Serialize, ToSchema)]
+pub struct UserListResponse {
+    pub data: Vec<SafeUser>,
+    pub total: u64,
+    pub current_page: u64,
+    pub page_size: u64,
+}
+
 #[endpoint(tags("users"))]
-pub async fn list_users() -> JsonResult<Vec<SafeUser>> {
+pub async fn list_users(query: &mut Request) -> JsonResult<UserListResponse> {
+    let query: UserListQuery = query.extract().await?;
     let coll_users = db::users();
-    let mut cursor = coll_users.find(doc! {}).await?;
+
+    let mut filter = doc! {};
+    if let Some(username) = &query.username {
+        filter.insert("username", doc! { "$regex": username, "$options": "i" });
+    }
+
+    let total = coll_users.count_documents(filter.clone()).await?;
+    let mut cursor = coll_users
+        .find(filter)
+        .await?
+        .skip(((query.current_page - 1) * query.page_size).try_into().unwrap())
+        .take(query.page_size as usize);
+
     let mut users = Vec::new();
     while let Some(result) = cursor.next().await {
         let document = result?;
@@ -111,5 +152,11 @@ pub async fn list_users() -> JsonResult<Vec<SafeUser>> {
         let username = document.get_str("username")?.to_owned();
         users.push(SafeUser { id, username });
     }
-    json_ok(users)
+
+    json_ok(UserListResponse {
+        data: users,
+        total,
+        current_page: query.current_page,
+        page_size: query.page_size,
+    })
 }

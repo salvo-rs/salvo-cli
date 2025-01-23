@@ -778,3 +778,75 @@ rendering_liquid_file:
   th: การเรนเดอร์ไฟล์ liquid
   el: απόδοση αρχείου liquid
   da: rendering af liquid-fil
+onion_model_middleware:
+  en: Middleware implementing the onion model with pre and post logic
+  zh_CN: 实现洋葱模型的中间件，具有前置和后置逻辑
+  zh_TW: 實現洋蔥模型的中間件，具有前置和後置邏輯
+  fr: Middleware implémentant le modèle en oignon avec une logique avant et après
+  ja: 前処理と後処理のロジックを持つオニオンモデルを実装するミドルウェア
+  es: Middleware que implementa el modelo de cebolla con lógica previa y posterior
+  de: Middleware, das das Zwiebelmodell mit Vor- und Nachlogik implementiert
+  ru: Промежуточное ПО, реализующее модель луковицы с предварительной и последующей логикой
+  it: Middleware che implementa il modello a cipolla con logica pre e post
+  pt: Middleware que implementa o modelo de cebola com lógica pré e pós
+  ko: 사전 및 사후 로직이 있는 양파 모델을 구현하는 미들웨어
+  no: Mellomvare som implementerer løkmodellen med pre- og postlogikk
+  is: Milliforrit sem útfærir lauklíkan með for- og eftirrökfræði
+  uk: Проміжне ПЗ, яке реалізує модель цибулі з попередньою та наступною логікою
+  th: มิดเดิลแวร์ที่ใช้โมเดลหัวหอมพร้อมตรรกะก่อนและหลัง
+  el: Middleware που υλοποιεί το μοντέλο κρεμμυδιού με προ- και μετα-λογική
+  da: Middleware, der implementerer løgmodellen med for- og efterlogik
+skip_remaining_handlers:
+  en: Middleware to skip remaining handlers
+  zh_CN: 跳过剩余处理程序的中间件
+  zh_TW: 跳過剩餘處理程序的中間件
+  fr: Middleware pour ignorer les gestionnaires restants
+  ja: 残りのハンドラーをスキップするミドルウェア
+  es: Middleware para omitir los manejadores restantes
+  de: Middleware zum Überspringen der verbleibenden Handler
+  ru: Промежуточное ПО для пропуска оставшихся обработчиков
+  it: Middleware per saltare i gestori rimanenti
+  pt: Middleware para pular os manipuladores restantes
+  ko: 남은 핸들러를 건너뛰는 미들웨어
+  no: Mellomvare for å hoppe over gjenværende håndterere
+  is: Milliforrit til að sleppa eftirfarandi meðhöndlum
+  uk: Проміжне ПЗ для пропуску залишкових обробників
+  th: มิดเดิลแวร์เพื่อข้ามตัวจัดการที่เหลือ
+  el: Middleware για να παραλείψετε τους υπόλοιπους χειριστές
+  da: Middleware til at springe de resterende håndterere over
+pre_processing_middleware:
+  en: Middleware that executes logic before the matched handler (Pre-processing)
+  zh_CN: 在命中的handle处理之前执行逻辑的中间件（预处理）
+  zh_TW: 在命中的handle處理之前執行邏輯的中間件（預處理）
+  fr: Middleware qui exécute la logique avant le gestionnaire correspondant (Pré-traitement)
+  ja: 命中したハンドラーの前にロジックを実行するミドルウェア（前処理）
+  es: Middleware que ejecuta lógica antes del manejador coincidente (Pre-procesamiento)
+  de: Middleware, die Logik vor dem übereinstimmenden Handler ausführt (Vorverarbeitung)
+  ru: Промежуточное ПО, выполняющее логику перед совпадающим обработчиком (Предварительная обработка)
+  it: Middleware che esegue la logica prima del gestore corrispondente (Pre-elaborazione)
+  pt: Middleware que executa lógica antes do manipulador correspondente (Pré-processamento)
+  ko: 일치하는 핸들러 전에 로직을 실행하는 미들웨어 (전처리)
+  no: Mellomvare som utfører logikk før den samsvarende håndtereren (Forbehandling)
+  is: Milliforrit sem framkvæmir rökfræði áður en samsvarandi meðhöndlari (Forvinnsla)
+  uk: Проміжне ПЗ, яке виконує логіку перед відповідним обробником (Попередня обробка)
+  th: มิดเดิลแวร์ที่ดำเนินการตรรกะก่อนตัวจัดการที่ตรงกัน (การประมวลผลล่วงหน้า)
+  el: Middleware που εκτελεί λογική πριν από τον αντίστοιχο χειριστή (Προ-επεξεργασία)
+  da: Middleware, der udfører logik før den matchende handler (Forbehandling)
+post_processing_middleware:
+  en: Middleware that executes logic after the next handler (Post-processing)
+  zh_CN: 在命中的handle处理之后执行逻辑的中间件（后处理）
+  zh_TW: 在命中的handle處理之後執行邏輯的中間件（後處理）
+  fr: Middleware qui exécute la logique après le prochain gestionnaire (Post-traitement)
+  ja: 次のハンドラーの後にロジックを実行するミドルウェア（後処理）
+  es: Middleware que ejecuta lógica después del siguiente manejador (Post-procesamiento)
+  de: Middleware, die Logik nach dem nächsten Handler ausführt (Nachbearbeitung)
+  ru: Промежуточное ПО, выполняющее логику после следующего обработчика (Пост-обработка)
+  it: Middleware che esegue la logica dopo il prossimo gestore (Post-elaborazione)
+  pt: Middleware que executa lógica após o próximo manipulador (Pós-processamento)
+  ko: 다음 핸들러 후에 로직을 실행하는 미들웨어 (후처리)
+  no: Mellomvare som utfører logikk etter neste håndterer (Etterbehandling)
+  is: Milliforrit sem framkvæmir rökfræði eftir næsta meðhöndlara (Eftirvinnsla)
+  uk: Проміжне ПЗ, яке виконує логіку після наступного обробника (Пост-обробка)
+  th: มิดเดิลแวร์ที่ดำเนินการตรรกะหลังจากตัวจัดการถัดไป (การประมวลผลภายหลัง)
+  el: Middleware που εκτελεί λογική μετά τον επόμενο χειριστή (Μετα-επεξεργασία)
+  da: Middleware, der udfører logik efter den næste handler (Efterbehandling)

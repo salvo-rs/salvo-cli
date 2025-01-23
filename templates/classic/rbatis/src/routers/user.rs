@@ -6,6 +6,7 @@ use salvo::prelude::*;
 use serde::{Deserialize, Serialize};
 use ulid::Ulid;
 use validator::Validate;
+use crate::hoops::jwt;
 
 use crate::models::{SafeUser, User};
 use crate::{db, empty_ok, json_ok, utils, AppResult, EmptyResult, JsonResult};
@@ -21,6 +22,12 @@ pub struct UserListFragTemplate {}
 #[handler]
 pub async fn list_page(req: &mut Request, res: &mut Response) -> AppResult<()> {
     let is_fragment = req.headers().get("X-Fragment-Header");
+    if let Some(cookie) = res.cookies().get("jwt_token") {
+        let token = cookie.value().to_string();
+        if !jwt::decode_token(&token) {
+            res.render(Redirect::other("/login"));
+        }
+    }
     match is_fragment {
         Some(_) => {
             let hello_tmpl = UserListFragTemplate {};
@@ -105,11 +112,11 @@ pub async fn delete_user(user_id: PathParam<String>) -> EmptyResult {
 
 impl_select_page!(User{select_page() =>"
      if !sql.contains('count(1)'):
-       `order by id desc`"});
+       `order by id desc`"},"users");
 
 impl_select_page!(User{select_page_by_username(username:&str) =>"
      if username != null && username != '':
-       `where username like #{username}`"});
+       `where username like #{username}`"},"users");
 
 #[derive(Debug, Deserialize, Validate, Extractible, ToSchema)]
 #[salvo(extract(default_source(from = "query")))]

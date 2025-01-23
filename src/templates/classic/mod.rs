@@ -110,6 +110,10 @@ pub(crate) fn create_files(project_path: &Path, selected: Selected, proj: &Proje
         "initialization_rbatis_cli_not_sqlite": t!("initialization_rbatis_cli_not_sqlite").replace(r"\n", "\n"),
         "seaorm_cli_website": t!("seaorm_cli_website").replace(r"\n", "\n"),
         "diesel_cli_website": t!("diesel_cli_website").replace(r"\n", "\n"),
+        "onion_model_middleware": t!("onion_model_middleware"),
+        "skip_remaining_handlers": t!("skip_remaining_handlers"),
+        "pre_processing_middleware": t!("pre_processing_middleware"),
+        "post_processing_middleware": t!("post_processing_middleware"),
     });
 
     let db_lib_str = &*selected.db_lib.to_string();

@@ -5,6 +5,7 @@ use sea_orm::{ActiveModelTrait, EntityTrait, Set, QueryFilter, QuerySelect, Colu
 use serde::{Deserialize, Serialize};
 use ulid::Ulid;
 use validator::Validate;
+use crate::hoops::jwt;
 
 use crate::entities::{prelude::Users, users};
 use crate::models::SafeUser;
@@ -21,6 +22,12 @@ pub struct UserListFragTemplate {}
 #[handler]
 pub async fn list_page(req: &mut Request, res: &mut Response) -> AppResult<()> {
     let is_fragment = req.headers().get("X-Fragment-Header");
+    if let Some(cookie) = res.cookies().get("jwt_token") {
+        let token = cookie.value().to_string();
+        if !jwt::decode_token(&token) {
+            res.render(Redirect::other("/login"));
+        }
+    }
     match is_fragment {
         Some(_) => {
             let hello_tmpl = UserListFragTemplate {};

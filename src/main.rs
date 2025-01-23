@@ -7,11 +7,11 @@ mod utils;
 use i18n::set_locale;
 mod git;
 mod i18n;
+mod namer;
+mod printer;
 mod project;
 mod templates;
 mod updater;
-mod namer;
-mod printer;
 
 rust_i18n::i18n!("locales", fallback = "en");
 #[derive(Parser, Debug)]
