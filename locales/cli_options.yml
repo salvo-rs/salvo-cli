@@ -127,16 +127,16 @@ db_lib_mongodb:
   da: "Mongodb: Den officielle MongoDB-driver for Rust"
 select_db_type:
   en: select database type (select sqlite to run code directly, others need to modify configuration and run migrations first, please check readme or related docs)
-  zh_CN: 选择数据库类型（选择sqlite可直接运行代码，选择其他的需要先修改配置，运行迁移等等，请查看readme或相关文档）
-  zh_TW: 選擇資料庫類型（選擇sqlite可直接運行代碼，選擇其他的需要先修改配置，運行遷移等等，請查看readme或相關文檔）
+  zh_CN: 选择数据库类型（选择 sqlite 可直接运行代码，选择其他的需要先修改配置，运行迁移等等，请查看 readme 或相关文档）
+  zh_TW: 選擇資料庫類型（選擇 sqlite 可直接運行代碼，選擇其他的需要先修改配置，運行遷移等等，請查看 readme 或相關文檔）
   fr: sélectionnez le type de base de données (sélectionnez sqlite pour exécuter le code directement, les autres nécessitent de modifier la configuration et d'exécuter les migrations d'abord, veuillez consulter le readme ou la documentation associée)
-  ja: データベースタイプを選択（sqliteを選択すると直接コードを実行できます。他のものは設定の変更や移行の実行が必要です。readmeまたは関連ドキュメントを確認してください）
+  ja: データベースタイプを選択（sqlite を選択すると直接コードを実行できます。他のものは設定の変更や移行の実行が必要です。readme または関連ドキュメントを確認してください）
   es: seleccione el tipo de base de datos (seleccione sqlite para ejecutar el código directamente, otros necesitan modificar la configuración y ejecutar migraciones primero, consulte el readme o la documentación relacionada)
   de: wählen Sie den Datenbanktyp aus (wählen Sie sqlite, um den Code direkt auszuführen, andere erfordern zuerst Konfigurationsänderungen und Migrationen, bitte lesen Sie die Readme oder zugehörige Dokumentation)
   ru: выберите тип базы данных (выберите sqlite для прямого запуска кода, для других нужно сначала изменить конфигурацию и запустить миграции, см. readme или соответствующую документацию)
   it: seleziona il tipo di database (seleziona sqlite per eseguire il codice direttamente, altri richiedono di modificare la configurazione ed eseguire le migrazioni prima, consulta il readme o la documentazione correlata)
   pt: selecione o tipo de banco de dados (selecione sqlite para executar o código diretamente, outros precisam modificar a configuração e executar migrações primeiro, verifique o readme ou documentação relacionada)
-  ko: 데이터베이스 유형을 선택하십시오 (sqlite를 선택하면 코드를 직접 실행할 수 있으며, 다른 것들은 먼저 구성을 수정하고 마이그레이션을 실행해야 합니다. readme 또는 관련 문서를 확인하십시오)
+  ko: 데이터베이스 유형을 선택하십시오 (sqlite 를 선택하면 코드를 직접 실행할 수 있으며, 다른 것들은 먼저 구성을 수정하고 마이그레이션을 실행해야 합니다. readme 또는 관련 문서를 확인하십시오)
   no: velg databasetype (velg sqlite for å kjøre koden direkte, andre trenger å endre konfigurasjon og kjøre migrasjoner først, se readme eller relatert dokumentasjon)
   is: veldu gagnagrunnstegund (veldu sqlite til að keyra kóða beint, aðrir þurfa að breyta stillingar og keyra flutningar fyrst, vinsamlegast skoðaðu readme eða tengd skjöl)
   uk: виберіть тип бази даних (виберіть sqlite для прямого запуску коду, для інших потрібно спочатку змінити конфігурацію та запустити міграції, див. readme або відповідну документацію)

@@ -51,6 +51,7 @@ async fn main() {
         .catcher(Catcher::default().hoop(hoops::error_404))
         .hoop(hoops::cors_hoop());
     println!("🔄 {{listen_on}} {}", &config.listen_addr);
+    //{{acme_support}}
     if let Some(tls) = &config.tls {
         let listen_addr = &config.listen_addr;
         println!(

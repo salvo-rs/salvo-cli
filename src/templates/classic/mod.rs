@@ -114,6 +114,7 @@ pub(crate) fn create_files(project_path: &Path, selected: Selected, proj: &Proje
         "skip_remaining_handlers": t!("skip_remaining_handlers"),
         "pre_processing_middleware": t!("pre_processing_middleware"),
         "post_processing_middleware": t!("post_processing_middleware"),
+        "acme_support": t!("acme_support"),
     });
 
     let db_lib_str = &*selected.db_lib.to_string();

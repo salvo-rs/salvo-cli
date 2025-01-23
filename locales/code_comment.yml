@@ -530,84 +530,6 @@ you_wont_be_able_to_revert_this:
   th: คุณจะไม่สามารถย้อนกลับการดำเนินการนี้ได้!
   el: Δεν θα μπορείτε να το αναιρέσετε αυτό!
   da: Du vil ikke kunne fortryde dette!
-_version: 2
-login:
-  en: Login
-  zh_CN: 登录
-  zh_TW: 登錄
-  fr: Connexion
-  ja: ログイン
-  es: Iniciar sesión
-  de: Anmelden
-  ru: Войти
-  ko: 로그인
-  pt: Entrar
-  it: Accedi
-
-username:
-  en: Username
-  zh_CN: 用户名
-  zh_TW: 用戶名
-  fr: Nom d'utilisateur
-  ja: ユーザー名
-  es: Nombre de usuario
-  de: Benutzername
-  ru: Имя пользователя
-  ko: 사용자 이름
-  pt: Nome de usuário
-  it: Nome utente
-
-password:
-  en: Password
-  zh_CN: 密码
-  zh_TW: 密碼
-  fr: Mot de passe
-  ja: パスワード
-  es: Contraseña
-  de: Passwort
-  ru: Пароль
-  ko: 비밀번호
-  pt: Senha
-  it: Password
-
-account:
-  en: Demo Account
-  zh_CN: 演示账号
-  zh_TW: 演示帳號
-  fr: Compte de démonstration
-  ja: デモアカウント
-  es: Cuenta de demostración
-  de: Demokonto
-  ru: Демо-аккаунт
-  ko: 데모 계정
-  pt: Conta de demonstração
-  it: Account demo
-
-salvo_cli_welcome:
-  en: Welcome to Salvo CLI Project
-  zh_CN: 欢迎使用 Salvo CLI 脚手架项目
-  zh_TW: 歡迎使用 Salvo CLI 腳手架項目
-  fr: Bienvenue sur le projet Salvo CLI
-  ja: Salvo CLI プロジェクトへようこそ
-  es: Bienvenido al proyecto de demostración de Salvo CLI
-  de: Willkommen im Salvo CLI-Projekt
-  ru: Добро пожаловать в демо Salvo CLI
-  ko: Salvo CLI 데모에 오신 것을 환영합니다
-  pt: Bem-vindo à demonstração do Salvo CLI
-  it: Benvenuto alla demo di Salvo CLI 
-lang:
-  en: en
-  zh_CN: zh_CN
-  zh_TW: zh_TW
-  fr: fr
-  ja: ja
-  es: es
-  de: de
-  ru: ru
-  ko: ko
-  pt: pt
-  it: it
-
 search_placeholder:
   en: Search username...
   zh_CN: 搜索用户名...
@@ -816,8 +738,8 @@ skip_remaining_handlers:
   da: Middleware til at springe de resterende håndterere over
 pre_processing_middleware:
   en: Middleware that executes logic before the matched handler (Pre-processing)
-  zh_CN: 在命中的handle处理之前执行逻辑的中间件（预处理）
-  zh_TW: 在命中的handle處理之前執行邏輯的中間件（預處理）
+  zh_CN: 在命中的 handle 处理之前执行逻辑的中间件（预处理）
+  zh_TW: 在命中的 handle 處理之前執行邏輯的中間件（預處理）
   fr: Middleware qui exécute la logique avant le gestionnaire correspondant (Pré-traitement)
   ja: 命中したハンドラーの前にロジックを実行するミドルウェア（前処理）
   es: Middleware que ejecuta lógica antes del manejador coincidente (Pre-procesamiento)
@@ -834,8 +756,8 @@ pre_processing_middleware:
   da: Middleware, der udfører logik før den matchende handler (Forbehandling)
 post_processing_middleware:
   en: Middleware that executes logic after the next handler (Post-processing)
-  zh_CN: 在命中的handle处理之后执行逻辑的中间件（后处理）
-  zh_TW: 在命中的handle處理之後執行邏輯的中間件（後處理）
+  zh_CN: 在命中的 handle 处理之后执行逻辑的中间件（后处理）
+  zh_TW: 在命中的 handle 處理之後執行邏輯的中間件（後處理）
   fr: Middleware qui exécute la logique après le prochain gestionnaire (Post-traitement)
   ja: 次のハンドラーの後にロジックを実行するミドルウェア（後処理）
   es: Middleware que ejecuta lógica después del siguiente manejador (Post-procesamiento)
@@ -850,3 +772,21 @@ post_processing_middleware:
   th: มิดเดิลแวร์ที่ดำเนินการตรรกะหลังจากตัวจัดการถัดไป (การประมวลผลภายหลัง)
   el: Middleware που εκτελεί λογική μετά τον επόμενο χειριστή (Μετα-επεξεργασία)
   da: Middleware, der udfører logik efter den næste handler (Efterbehandling)
+acme_support:
+  en: Acme support, automatically get TLS certificate from Let's Encrypt. For example, see https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs
+  zh_CN: Acme 支持，自动从 Let's Encrypt 获取 TLS 证书。例子请看 https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs
+  zh_TW: Acme 支援，自動從 Let's Encrypt 獲取 TLS 證書。例子請看 https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs
+  fr: Support Acme, obtention automatique du certificat TLS de Let's Encrypt. Pour exemple, voir https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs
+  ja: Acme サポート、Let's Encrypt から自動的に TLS 証明書を取得します。例については、https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs を参照してください
+  es: Soporte Acme, obtención automática del certificado TLS de Let's Encrypt. Para ejemplo, vea https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs
+  de: Acme-Unterstützung, automatisches Abrufen des TLS-Zertifikats von Let's Encrypt. Beispiel siehe https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs
+  ru: Поддержка Acme, автоматическое получение TLS-сертификата от Let's Encrypt. Пример см. https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs
+  it: Supporto Acme, ottenimento automatico del certificato TLS da Let's Encrypt. Per esempio, vedere https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs
+  pt: Suporte Acme, obtenção automática do certificado TLS do Let's Encrypt. Para exemplo, veja https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs
+  ko: Acme 지원, Let's Encrypt에서 TLS 인증서를 자동으로 가져옵니다. 예시는 https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs 를 참조하세요
+  no: Acme-støtte, automatisk henting av TLS-sertifikat fra Let's Encrypt. For eksempel, se https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs
+  is: Acme stuðningur, sjálfvirk öflun TLS skírteinis frá Let's Encrypt. Fyrir dæmi, sjá https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs
+  uk: Підтримка Acme, автоматичне отримання TLS-сертифіката від Let's Encrypt. Приклад див. https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs
+  th: รองรับ Acme, รับใบรับรอง TLS จาก Let's Encrypt โดยอัตโนมัติ ตัวอย่างดูที่ https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs
+  el: Υποστήριξη Acme, αυτόματη λήψη πιστοποιητικού TLS από το Let's Encrypt. Για παράδειγμα, δείτε https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs
+  da: Acme-support, automatisk hentning af TLS-certifikat fra Let's Encrypt. For eksempel, se https://github.com/salvo-rs/salvo/blob/main/examples/acme-http01-quinn/src/main.rs
