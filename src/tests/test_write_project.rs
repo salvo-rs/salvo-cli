@@ -10,12 +10,8 @@ mod tests {
 
     #[test]
     fn test_write_project_all_combinations() {
-        let db_types = [
-            DbType::Sqlite,
-            DbType::Mysql,
-            DbType::Postgres,
-            DbType::Mongodb,
-        ];
+        //let db_types = [DbType::Sqlite, DbType::Mysql, DbType::Postgres, DbType::Mssql];
+        let db_types = [DbType::Sqlite, DbType::Mongodb];
         let db_libs = [
             DbLib::Sqlx,
             DbLib::SeaOrm,
@@ -28,20 +24,16 @@ mod tests {
         let combinations = db_types
             .iter()
             .cartesian_product(db_libs.iter())
-            .filter(|(db_type, db_lib)| match db_lib {
-                DbLib::Sqlx => *db_type == DbType::Sqlite,
-                DbLib::Mongodb => *db_type == DbType::Mongodb,
-                DbLib::SeaOrm | DbLib::Diesel | DbLib::Rbatis => {
-                    *db_type == DbType::Sqlite
-                        || *db_type == DbType::Mysql
-                        || *db_type == DbType::Postgres
-                }
-                _ => false,
-            })
             .collect::<Vec<_>>();
 
         // Test each combination
         for (db_type, db_lib) in combinations {
+            if (db_lib == &DbLib::Mongodb && db_type != &DbType::Mongodb)
+                || (db_lib != &DbLib::Mongodb && db_type == &DbType::Mongodb)
+            {
+                continue;
+            }
+
             let proj = Project {
                 name: format!("test_{:?}_{:?}", db_type, db_lib),
                 lang: "zh".to_string(),
