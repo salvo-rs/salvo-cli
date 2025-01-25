@@ -9,16 +9,16 @@ cargo test
 ```
 # {{ tip_title }}
 - {{ password_tip }}
-{%- if db_lib == "seaorm" and db_type == "sqlx" %}
+{%- if db_lib == "seaorm" or db_lib == "sqlx" %}
 - {{ config_tip }}
 {%- endif %}
 # {{ orm_title }}
-{%- if db_type == "sqlx" %}
+{%- if db_lib == "sqlx" %}
 {{ sqlx_website }}
 ## sqlx_cli
 {{ sqlx_cli }} https://github.com/launchbadge/sqlx/blob/main/sqlx-cli/README.md
 ## {{ initialization }}
-{%- if db_type == "sqlx" %}
+{%- if db_lib == "sqlx" %}
 {{ seleted_sqlite }}
 {%- else %}
 - {{ initialization_sqlx_cli_not_sqlite }}
@@ -31,7 +31,7 @@ cargo test
 ## {{ initialization }}
 {%- endif %}
 {%- if db_lib == "seaorm" %}
-{%- if db_type == "sqlx" %}
+{%- if db_lib == "sqlx" %}
 {{ seleted_sqlite }}
 {%- else %}
 - {{ initialization_seaorm_cli_not_sqlite }}
@@ -57,7 +57,7 @@ cargo test
 - {{ initialization_rbatis_cli_not_sqlite }}
 {%- endif%}
 {%- endif %}
-{%- if db_type == "mongodb" %}
+{%- if db_lib == "mongodb" %}
 {{ mongodb_website }}
 ## {{ initialization }}
 - {{ mongodb_usage_import_user_data }}
