@@ -1,5 +1,5 @@
 use anyhow::Result;
-use dialoguer::{console::Style, theme::ColorfulTheme, Select};
+use dialoguer::{Select, console::Style, theme::ColorfulTheme};
 use rust_i18n::t;
 
 #[derive(Debug, Clone, Copy)]

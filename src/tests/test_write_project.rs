@@ -4,9 +4,9 @@ mod tests {
 
     use itertools::Itertools;
 
+    use crate::Project;
     use crate::templates::classic;
     use crate::templates::classic::selection::{DbLib, DbType, Selected};
-    use crate::Project;
 
     #[test]
     fn test_write_project_all_combinations() {

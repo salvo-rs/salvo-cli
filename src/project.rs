@@ -6,7 +6,7 @@ use anyhow::{Context, Result};
 use rust_i18n::t;
 
 use crate::printer::{self, success, warning};
-use crate::{namer, Project};
+use crate::{Project, namer};
 
 pub fn create(proj: &Project) -> Result<()> {
     check_name(&proj.name)?;

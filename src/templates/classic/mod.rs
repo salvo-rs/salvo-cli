@@ -4,7 +4,7 @@ use std::io::Write;
 use std::path::Path;
 
 use crate::printer::{gray, warning};
-use crate::{git, Project};
+use crate::{Project, git};
 use anyhow::Result;
 use liquid::model::Object;
 use rust_i18n::t;
