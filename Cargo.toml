@@ -2,8 +2,8 @@
 name = "salvo-cli"
 version = "0.2.0"
 authors = ["Fankai Liu <liufankai137@outlook.com>", "mrxiaozhuox <mrxzx.info@gmail.com>", "Chrislearn Young <chris@acroidea.com>"]
-edition = "2021"
-rust-version = "1.80"
+edition = "2024"
+rust-version = "1.85"
 readme = "./README.md"
 keywords = ["salvo", "cli", "template"]
 description = "Cli for the Salvo web framework, creates clean, easy-to-read code, saving you time for the more enjoyable aspects of life."
@@ -28,7 +28,7 @@ rust-embed = { version = "8" }
 rust-i18n = "3"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1"
-strum = { version = "0.26", features = ["derive"] }
+strum = { version = "0.27", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }
 unicode-xid = "0.2"
 walkdir = "2.5"
