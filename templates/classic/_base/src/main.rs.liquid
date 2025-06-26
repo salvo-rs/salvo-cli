@@ -62,7 +62,17 @@ async fn main() {
             "🔑 Login Page: https://{}/login",
             listen_addr.replace("0.0.0.0", "127.0.0.1")
         );
-        let config = RustlsConfig::new(Keycert::new().cert(tls.cert.clone()).key(tls.key.clone()));
+        // 按照直观理解，这里如果在config.toml中进行如下配置
+        // [tls]
+        // key = "certs/key.pem"
+        // cert = "certs/cert.pem"
+        // 之后，以下代码会报错，因为代码并不会把文件中的二进制数据读出来，可以做如下修改
+        let config = RustlsConfig::new(
+            Keycert::new()
+                .cert(std::fs::read(&tls.cert).expect("cert file not found"))
+                .key(std::fs::read(&tls.key).expect("key file not found")),
+        );
+        // -----
         let acceptor = TcpListener::new(listen_addr).rustls(config).bind().await;
         let server = Server::new(acceptor);
         tokio::spawn(shutdown_signal(server.handle()));
