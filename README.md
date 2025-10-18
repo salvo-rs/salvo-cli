@@ -1,5 +1,5 @@
 <div align="center">
-    <img alt="Savlo" width="132" src="https://p.sda1.dev/13/9268fb110f27611fa143c7aafbac61ab/monkeybread4352_a_technology_software_logo_for_windseabird_with_8fb4a0df-e233-414e-80a3-cf144ef44209.png" />
+    <img alt="Savlo" width="132" src="https://salvo.rs/images/logo-text.svg" />
 </div>
 <div align="center">
     <a href="https://github.com/salvo-rs/salvo-cli/actions">

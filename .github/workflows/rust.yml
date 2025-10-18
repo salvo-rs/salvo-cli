@@ -30,9 +30,7 @@ jobs:
       - name: Install stable
         uses: dtolnay/rust-toolchain@nightly
         with:
-          profile: minimal
           toolchain: stable
-          override: true
       - name: Check code format
         run: cargo fmt -- --check
       - name: Check the package for errors
