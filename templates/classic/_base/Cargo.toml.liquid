@@ -8,9 +8,9 @@ readme = "./README.md"
 [dependencies]
 anyhow = "1"
 figment = { version = "0.10", features = ["env", "toml"] }
-jsonwebtoken = "9"
+jsonwebtoken = {version = "10", features = ["rust_crypto"]}
 rust-embed = "8"
-salvo = {version = "0.81", features = ["full"]}
+salvo = {version = "0.84", features = ["cookie", "cors", "jwt-auth", "oapi", "serve-static", "rustls", "logging"]}
 serde = "1"
 thiserror = "2"
 time = "0.3"

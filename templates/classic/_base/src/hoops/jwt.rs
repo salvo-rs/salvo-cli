@@ -7,7 +7,7 @@ use time::{Duration, OffsetDateTime};
 
 use crate::config::{self, JwtConfig};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct JwtClaims {
     uid: String,
     exp: i64,
