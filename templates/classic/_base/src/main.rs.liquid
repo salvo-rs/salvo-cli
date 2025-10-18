@@ -8,15 +8,15 @@ use tracing::info;
 
 mod config;
 mod db;
+mod hoops;
 mod models;
-mod utils;
 {%- if db_lib == "diesel" %}
 mod schema;
 {%- elsif db_lib == "seaorm" %}
 mod entities;
 {%- endif %}
-mod hoops;
 mod routers;
+mod utils;
 
 mod error;
 pub use error::AppError;

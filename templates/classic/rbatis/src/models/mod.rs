@@ -8,7 +8,7 @@ pub struct User {
     pub username: String,
     pub password: String,
 }
-crud!(User {},"users");
+crud!(User {}, "users");
 
 #[derive(Serialize, Deserialize, ToSchema, Clone, Debug)]
 pub struct SafeUser {
