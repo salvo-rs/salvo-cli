@@ -2,7 +2,7 @@
 name = "{{ project_name }}"
 version = "0.1.1"
 edition = "2024"
-rust-version = "1.88"
+rust-version = "1.89"
 readme = "./README.md"
 
 [dependencies]
@@ -10,7 +10,7 @@ anyhow = "1"
 figment = { version = "0.10", features = ["env", "toml"] }
 jsonwebtoken = {version = "10", features = ["rust_crypto"]}
 rust-embed = "8"
-salvo = {version = "0.84", features = ["cookie", "cors", "jwt-auth", "oapi", "serve-static", "rustls", "logging"]}
+salvo = {version = "0.84", features = ["anyhow", "cookie", "cors", "jwt-auth", "oapi", "serve-static", "rustls", "logging"]}
 serde = "1"
 thiserror = "2"
 time = "0.3"

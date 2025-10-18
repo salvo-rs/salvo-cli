@@ -1,7 +1,7 @@
 use std::sync::OnceLock;
 
-use figment::providers::{Env, Format, Toml};
 use figment::Figment;
+use figment::providers::{Env, Format, Toml};
 use serde::Deserialize;
 
 mod log_config;

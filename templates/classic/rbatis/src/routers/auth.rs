@@ -1,29 +1,14 @@
 use anyhow::Result;
 use cookie::Cookie;
+use rbs::value;
 use rinja::Template;
 use salvo::oapi::extract::*;
 use salvo::prelude::*;
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::hoops::jwt;
-use crate::models::{SafeUser, User};
+use crate::models::User;
 use crate::{db, json_ok, utils, JsonResult};
-
-#[derive(Deserialize, Debug, Validate, ToSchema)]
-pub struct LoginRequest {
-    #[validate(length(min = 1, message = "username cannot be empty"))]
-    pub username: String,
-    #[validate(length(min = 1, message = "password cannot be empty"))]
-    pub password: String,
-}
-
-#[derive(Serialize, Debug, ToSchema)]
-pub struct LoginResponse {
-    pub user: SafeUser,
-    pub token: String,
-    pub exp: i64,
-}
 
 #[derive(Template)]
 #[template(path = "login.html")]
@@ -64,7 +49,7 @@ pub async fn post_login(
     let rb = db::engine();
 
     // Find user by username
-    let users = User::select_by_column(rb, "username", &login_data.username)
+    let users = User::select_by_map(rb, value!("username": &login_data.username))
         .await
         .map_err(anyhow::Error::from)?;
 
