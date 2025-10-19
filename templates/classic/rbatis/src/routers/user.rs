@@ -1,13 +1,14 @@
 use rbatis::impl_select_page;
 use rbatis::plugin::page::PageRequest;
+use rbs::value;
 use rinja::Template;
 use salvo::oapi::extract::*;
 use salvo::prelude::*;
 use serde::{Deserialize, Serialize};
 use ulid::Ulid;
 use validator::Validate;
-use crate::hoops::jwt;
 
+use crate::hoops::jwt;
 use crate::models::{SafeUser, User};
 use crate::{db, empty_ok, json_ok, utils, AppResult, EmptyResult, JsonResult};
 
@@ -91,7 +92,7 @@ pub async fn update_user(
         password: utils::hash_password(&idata.password)?,
     };
 
-    User::update_by_column(rb, &user, "id")
+    User::update_by_map(rb, &user, value!("id": &user_id))
         .await
         .map_err(anyhow::Error::from)?;
 
@@ -104,7 +105,7 @@ pub async fn update_user(
 #[endpoint(tags("users"))]
 pub async fn delete_user(user_id: PathParam<String>) -> EmptyResult {
     let rb = db::engine();
-    User::delete_by_column(rb, "id", &user_id.into_inner())
+    User::delete_by_map(rb, value!("id": &user_id.into_inner()))
         .await
         .map_err(anyhow::Error::from)?;
     empty_ok()
