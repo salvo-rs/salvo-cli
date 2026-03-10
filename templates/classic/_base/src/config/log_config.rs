@@ -76,7 +76,7 @@ impl Default for LogConfig {
 
 #[allow(dead_code)]
 impl LogConfig {
-    /// Will try_from_default_env while not setted.
+    /// Will try_from_default_env while not set.
     ///
     /// You can use value like "info", or something like "mycrate=trace".
     ///

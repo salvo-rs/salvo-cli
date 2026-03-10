@@ -1,0 +1,8 @@
+[default.extend-words]
+# Template variable name (typo, but used as key across locales and templates)
+seleted = "seleted"
+# German text in README
+Sie = "Sie"
+
+[files]
+extend-exclude = ["locales/", "**/*.js", "**/*.css"]
