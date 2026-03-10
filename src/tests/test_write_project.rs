@@ -11,19 +11,20 @@ mod tests {
 
     fn render_project(name: String, lang: &str, user_selected: Selected) -> String {
         let proj = Project {
-            name: name.clone(),
+            name,
             lang: lang.to_string(),
         };
         println!("Testing combination: {:?}", proj.name);
         let path_str = format!("target/{}", proj.name);
-        std::fs::remove_dir_all(&path_str).unwrap_or(());
+        fs::remove_dir_all(&path_str).unwrap_or(());
         let path = Path::new(&path_str);
-        classic::create_files(path, user_selected, &proj).expect("project files should render");
+        classic::create_files(path, user_selected, &proj)
+            .unwrap_or_else(|e| panic!("project '{}' should render: {e}", proj.name));
         path_str
     }
 
     fn cleanup(path_str: &str) {
-        std::fs::remove_dir_all(path_str).unwrap_or(());
+        fs::remove_dir_all(path_str).unwrap_or(());
     }
 
     #[test]
