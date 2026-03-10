@@ -1,5 +1,7 @@
 # Running Migrator CLI
 
+Run these commands from the `migration/` directory.
+
 - Generate a new migration file
     ```sh
     cargo run -- migrate generate MIGRATION_NAME
