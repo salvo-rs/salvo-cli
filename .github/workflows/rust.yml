@@ -9,6 +9,10 @@ on:
     paths:
       - '**.rs'
       - '**/Cargo.toml'
+      - 'Cargo.lock'
+      - 'locales/**'
+      - 'templates/**'
+      - 'rustfmt.toml'
       - 'typos.toml'
       - '.github/workflows/**'
   push:
@@ -17,6 +21,10 @@ on:
     paths:
       - '**.rs'
       - '**/Cargo.toml'
+      - 'Cargo.lock'
+      - 'locales/**'
+      - 'templates/**'
+      - 'rustfmt.toml'
       - 'typos.toml'
       - '.github/workflows/**'
 
