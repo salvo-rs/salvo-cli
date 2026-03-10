@@ -9,6 +9,7 @@ on:
     paths:
       - '**.rs'
       - '**/Cargo.toml'
+      - 'typos.toml'
       - '.github/workflows/**'
   push:
     branches:
@@ -16,6 +17,7 @@ on:
     paths:
       - '**.rs'
       - '**/Cargo.toml'
+      - 'typos.toml'
       - '.github/workflows/**'
 
 jobs:
