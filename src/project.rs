@@ -79,3 +79,44 @@ fn join_paths<T: AsRef<OsStr>>(paths: &[T], env: &str) -> Result<OsString> {
         message
     })
 }
+
+#[cfg(test)]
+mod tests {
+    use std::path::Path;
+
+    use super::{check_name, check_path, join_paths};
+
+    #[test]
+    fn check_name_rejects_reserved_names() {
+        assert!(check_name("test").is_err());
+        assert!(check_name("async").is_err());
+    }
+
+    #[test]
+    fn check_name_handles_windows_reserved_names_per_platform() {
+        let result = check_name("con");
+        if cfg!(windows) {
+            assert!(result.is_err());
+        } else {
+            assert!(result.is_ok());
+        }
+    }
+
+    #[test]
+    fn check_path_accepts_normal_project_paths() {
+        assert!(check_path(Path::new("salvo-demo")).is_ok());
+    }
+
+    #[test]
+    fn join_paths_includes_bad_path_in_error_message() {
+        let invalid_segment = if cfg!(windows) {
+            "bad\"path"
+        } else {
+            "bad:path"
+        };
+        let err = join_paths(&[invalid_segment], "PATH").unwrap_err();
+        let message = err.to_string();
+        assert!(message.contains("PATH"));
+        assert!(message.contains("bad"));
+    }
+}
