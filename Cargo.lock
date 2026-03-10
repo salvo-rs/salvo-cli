@@ -1466,6 +1466,7 @@ dependencies = [
  "reqwest",
  "rust-embed",
  "rust-i18n",
+ "semver",
  "serde",
  "serde_json",
  "strum",
@@ -1520,6 +1521,12 @@ dependencies = [
  "core-foundation-sys",
  "libc",
 ]
+
+[[package]]
+name = "semver"
+version = "1.0.27"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d767eb0aabc880b29956c35734170f26ed551a859dbd361d140cdbeca61ab1e2"
 
 [[package]]
 name = "serde"
