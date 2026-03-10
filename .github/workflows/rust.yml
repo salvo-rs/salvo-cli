@@ -1,45 +1,78 @@
-name: build_and_test
+name: ci
+
+permissions:
+  contents: read
 
 on:
-  push:
   pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.rs'
+      - '**/Cargo.toml'
+      - '.github/workflows/**'
+  push:
+    branches:
+      - main
+    paths:
+      - '**.rs'
+      - '**/Cargo.toml'
+      - '.github/workflows/**'
 
 jobs:
-  build-rust:
-    strategy:
-      matrix:
-        platform: [ ubuntu-latest ]
-    runs-on: ${{ matrix.platform }}
+  typos:
+    name: Typos
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+      - name: Typos check
+        uses: crate-ci/typos@master
+
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rustfmt
+      - name: Check code format
+        run: cargo fmt -- --check
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
       - name: Cache cargo registry
         uses: actions/cache@v4
         with:
-          path: ~/.cargo/registry
-          key: ${{ runner.os }}-cargo-registry
-      - name: Cache cargo index
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-clippy-${{ hashFiles('**/Cargo.lock') }}
+      - name: Lint rust sources
+        run: cargo clippy --all-targets --all-features --tests -- -D warnings
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: [typos, format, clippy]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Cache cargo registry
         uses: actions/cache@v4
         with:
-          path: ~/.cargo/git
-          key: ${{ runner.os }}-cargo-index
-      - name: Cache cargo build
-        uses: actions/cache@v4
-        with:
-          path: rust/target
-          key: ${{ runner.os }}-cargo-build-target
-      - name: Install stable
-        uses: dtolnay/rust-toolchain@nightly
-        with:
-          toolchain: stable
-      - name: Check code format
-        run: cargo fmt -- --check
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-test-${{ hashFiles('**/Cargo.lock') }}
       - name: Check the package for errors
         run: cargo check --all
-      - name: Lint rust sources
-        run: cargo clippy --all-targets --all-features --tests --benches -- -D warnings
       - name: Run tests
-        run: RUST_BACKTRACE=1 cargo test --all-features -- --test-threads=1 --nocapture
-      - name: Generate docs
-        run: cargo doc --all-features --no-deps
-      - name: AutoCorrect
-        uses: huacnlee/autocorrect-action@v2
+        run: cargo test --all-features -- --test-threads=1 --nocapture
