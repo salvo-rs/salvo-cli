@@ -62,7 +62,11 @@ async fn main() {
             "🔑 Login Page: https://{}/login",
             listen_addr.replace("0.0.0.0", "127.0.0.1")
         );
-        let config = RustlsConfig::new(Keycert::new().cert(tls.cert.clone()).key(tls.key.clone()));
+        let config = RustlsConfig::new(
+            Keycert::new()
+                .cert_from_path(&tls.cert).expect("failed to read cert file")
+                .key_from_path(&tls.key).expect("failed to read key file"),
+        );
         let acceptor = TcpListener::new(listen_addr).rustls(config).bind().await;
         let server = Server::new(acceptor);
         tokio::spawn(shutdown_signal(server.handle()));
