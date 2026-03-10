@@ -24,3 +24,34 @@ pub fn write_ignore_file(project_path: &Path) -> Result<()> {
     fp_ignore_file.write_all(b"/target\n/migration/target")?;
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use std::fs;
+    use std::path::PathBuf;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    use super::write_ignore_file;
+
+    fn unique_temp_dir() -> PathBuf {
+        let suffix = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("system time should be after unix epoch")
+            .as_nanos();
+        std::env::temp_dir().join(format!("salvo-cli-test-{}-{suffix}", std::process::id()))
+    }
+
+    #[test]
+    fn write_ignore_file_creates_expected_entries() {
+        let project_path = unique_temp_dir();
+        fs::create_dir_all(&project_path).expect("temp project directory should be created");
+
+        write_ignore_file(&project_path).expect(".gitignore should be written");
+
+        let ignore_contents =
+            fs::read_to_string(project_path.join(".gitignore")).expect(".gitignore should exist");
+        assert_eq!(ignore_contents, "/target\n/migration/target");
+
+        fs::remove_dir_all(&project_path).expect("temp project directory should be removed");
+    }
+}

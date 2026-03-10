@@ -75,3 +75,50 @@ pub fn validate_package_name(name: &str, what: &str) -> Result<()> {
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn validate_package_name_accepts_common_rust_names() {
+        assert!(validate_package_name("hello_world", "package name").is_ok());
+        assert!(validate_package_name("hello-world", "package name").is_ok());
+        assert!(validate_package_name("_internal", "package name").is_ok());
+    }
+
+    #[test]
+    fn validate_package_name_rejects_invalid_first_characters() {
+        let starts_with_digit = validate_package_name("1hello", "package name").unwrap_err();
+        assert!(
+            starts_with_digit
+                .to_string()
+                .contains("cannot start with a digit")
+        );
+
+        let invalid_symbol = validate_package_name("-hello", "package name").unwrap_err();
+        assert!(
+            invalid_symbol
+                .to_string()
+                .contains("the first character must be a Unicode XID start character")
+        );
+    }
+
+    #[test]
+    fn validate_package_name_rejects_invalid_body_characters() {
+        let err = validate_package_name("hello!", "package name").unwrap_err();
+        assert!(
+            err.to_string()
+                .contains("characters must be Unicode XID characters")
+        );
+    }
+
+    #[test]
+    fn helper_checks_match_expected_names() {
+        assert!(is_keyword("async"));
+        assert!(is_windows_reserved("COM1"));
+        assert!(is_conflicting_artifact_name("deps"));
+        assert!(is_non_ascii_name("测试"));
+        assert!(!is_non_ascii_name("salvo"));
+    }
+}
