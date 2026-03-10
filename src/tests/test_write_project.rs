@@ -68,12 +68,12 @@ mod tests {
                 .output()
                 .expect("failed to execute process");
             if !output.status.success() {
-                    eprintln!(
-                        "Failed on combination: db_type={:?}, db_lib={:?}",
-                        db_type, db_lib
-                    );
-                    eprintln!("Output: {:?}", output);
-                    panic!();
+                eprintln!(
+                    "Failed on combination: db_type={:?}, db_lib={:?}",
+                    db_type, db_lib
+                );
+                eprintln!("Output: {:?}", output);
+                panic!();
             }
 
             cleanup(&path_str);
@@ -116,9 +116,8 @@ mod tests {
                 "SeaORM migration README should clarify where to run migration commands"
             );
 
-            let migration_cargo =
-                fs::read_to_string(format!("{path_str}/migration/Cargo.toml"))
-                    .expect("migration Cargo.toml should exist");
+            let migration_cargo = fs::read_to_string(format!("{path_str}/migration/Cargo.toml"))
+                .expect("migration Cargo.toml should exist");
             assert!(
                 migration_cargo.contains(driver_feature),
                 "SeaORM migration crate should enable the correct driver feature for {db_type:?}"
