@@ -29,7 +29,7 @@ mod tests {
 
     #[test]
     fn test_write_project_all_combinations() {
-        //let db_types = [DbType::Sqlite, DbType::Mysql, DbType::Postgres, DbType::Mssql];
+        // let db_types = [DbType::Sqlite, DbType::Mysql, DbType::Postgres, DbType::Mssql];
         let db_types = [DbType::Sqlite, DbType::Mongodb];
         let db_libs = [
             DbLib::Sqlx,

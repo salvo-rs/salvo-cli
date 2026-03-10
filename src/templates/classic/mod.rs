@@ -3,11 +3,12 @@ use std::fs::{self, File};
 use std::io::Write;
 use std::path::Path;
 
-use crate::printer::{gray, warning};
-use crate::{Project, git};
 use anyhow::Result;
 use liquid::model::Object;
 use rust_i18n::t;
+
+use crate::printer::{gray, warning};
+use crate::{Project, git};
 
 pub(crate) mod selection;
 use selection::Selected;

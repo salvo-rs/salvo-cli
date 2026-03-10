@@ -1,6 +1,7 @@
+use std::time::Duration;
+
 use rust_i18n::t;
 use serde_json::Value;
-use std::time::Duration;
 use tokio::time::timeout;
 
 use crate::printer::{green, orange, success, warning};
