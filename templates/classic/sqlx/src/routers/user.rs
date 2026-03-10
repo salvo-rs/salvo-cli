@@ -81,7 +81,7 @@ pub async fn update_user(
 ) -> JsonResult<SafeUser> {
     let user_id = user_id.into_inner();
     let UpdateInData { username, password } = idata.into_inner();
-    let hashed_password = utils::hash_password(&password)?;
+    let password = utils::hash_password(&password)?;
     let conn = db::pool();
     let _ = sqlx::query!(
         r#"
@@ -90,7 +90,7 @@ pub async fn update_user(
             WHERE id = $3
             "#,
         username,
-        hashed_password,
+        password,
         user_id,
     )
     .execute(conn)
