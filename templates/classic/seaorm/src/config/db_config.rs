@@ -4,7 +4,7 @@ use super::default_false;
 
 #[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct DbConfig {
-    /// Settings for the primary database. This is usually writeable, but will be read-only in
+    /// Settings for the primary database. This is usually writable, but will be read-only in
     /// some configurations.
     /// An optional follower database. Always read-only.
     #[serde(alias = "database_url", default)]
