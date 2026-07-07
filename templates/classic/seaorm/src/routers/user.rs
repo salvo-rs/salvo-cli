@@ -124,8 +124,8 @@ pub struct UserListResponse {
 }
 
 #[endpoint(tags("users"))]
-pub async fn list_users(query: &mut Request) -> JsonResult<UserListResponse> {
-    let query: UserListQuery = query.extract().await?;
+pub async fn list_users(query: &mut Request, depot: &mut Depot) -> JsonResult<UserListResponse> {
+    let query: UserListQuery = query.extract(depot).await?;
     let conn = db::pool();
     
     let mut select = Users::find();

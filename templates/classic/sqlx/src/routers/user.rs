@@ -139,9 +139,9 @@ pub struct UserListResponse {
 }
 
 #[endpoint(tags("users"))]
-pub async fn list_users(query: &mut Request) -> JsonResult<UserListResponse> {
+pub async fn list_users(query: &mut Request, depot: &mut Depot) -> JsonResult<UserListResponse> {
     let conn = db::pool();
-    let query: UserListQuery = query.extract().await?;
+    let query: UserListQuery = query.extract(depot).await?;
     let username_filter = query.username.clone().unwrap_or_default();
     let like_pattern = format!("%{}%", username_filter);
     let offset = (query.current_page - 1) * query.page_size;

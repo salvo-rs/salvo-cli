@@ -1,4 +1,3 @@
-use rbatis::impl_select_page;
 use rbatis::plugin::page::PageRequest;
 use rbs::value;
 use rinja::Template;
@@ -111,13 +110,25 @@ pub async fn delete_user(user_id: PathParam<String>) -> EmptyResult {
     empty_ok()
 }
 
-impl_select_page!(User{select_page() =>"
-     if !sql.contains('count(1)'):
-       `order by id desc`"},"users");
+rbatis::pysql_select_page!(select_page() -> User =>
+r#"`select `
+  if do_count == true:
+    `count(1) as count`
+  if do_count == false:
+    `*`
+  ` from users`
+  if do_count == false:
+    ` order by id desc`"#);
 
-impl_select_page!(User{select_page_by_username(username:&str) =>"
-     if username != null && username != '':
-       `where username like #{username}`"},"users");
+rbatis::pysql_select_page!(select_page_by_username(username: &str) -> User =>
+r#"`select `
+  if do_count == true:
+    `count(1) as count`
+  if do_count == false:
+    `*`
+  ` from users where username like #{username}`
+  if do_count == false:
+    ` order by id desc`"#);
 
 #[derive(Debug, Deserialize, Validate, Extractible, ToSchema)]
 #[salvo(extract(default_source(from = "query")))]
@@ -145,19 +156,19 @@ pub struct UserListResponse {
 }
 
 #[endpoint(tags("users"), status_codes(200, 400))]
-pub async fn list_users(query: &mut Request) -> JsonResult<UserListResponse> {
+pub async fn list_users(query: &mut Request, depot: &mut Depot) -> JsonResult<UserListResponse> {
     let rb = db::engine();
-    let query: UserListQuery = query.extract().await?;
+    let query: UserListQuery = query.extract(depot).await?;
 
     let page_req = PageRequest::new(query.current_page, query.page_size);
 
     let page = if let Some(username) = query.username {
         let pattern = format!("%{}%", username);
-        User::select_page_by_username(rb, &page_req, &pattern)
+        select_page_by_username(rb, &page_req, &pattern)
             .await
             .map_err(anyhow::Error::from)?
     } else {
-        User::select_page(rb, &page_req)
+        select_page(rb, &page_req)
             .await
             .map_err(anyhow::Error::from)?
     };
