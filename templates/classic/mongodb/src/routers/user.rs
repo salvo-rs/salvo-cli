@@ -129,8 +129,8 @@ pub struct UserListResponse {
 }
 
 #[endpoint(tags("users"))]
-pub async fn list_users(query: &mut Request) -> JsonResult<UserListResponse> {
-    let query: UserListQuery = query.extract().await?;
+pub async fn list_users(query: &mut Request, depot: &mut Depot) -> JsonResult<UserListResponse> {
+    let query: UserListQuery = query.extract(depot).await?;
     let coll_users = db::users();
 
     let mut filter = doc! {};

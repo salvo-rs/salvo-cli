@@ -29,7 +29,7 @@ Key Concepts:
 	•	Set status with res.status_code() or StatusError.
 	•	Use Redirect::found() for redirection.
 	6.	Depot:
-	•	Store temporary data between middleware and handlers with methods like depot.insert() and depot.obtain::<T>().
+	•	Store temporary data between middleware and handlers with methods like depot.insert() and depot.get_typed::<T>().
 	7.	Extractors:
 	•	Use #[salvo(extract(...))] annotations to map request data to structures.
 
