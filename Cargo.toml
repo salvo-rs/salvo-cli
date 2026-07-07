@@ -19,7 +19,7 @@ ansi_term = "0.12.1"
 anyhow = "1.0.100"
 clap = { version = "4.5.49", features = ["derive"] }
 dialoguer = "0.12.0"
-git2 = "0.20.2"
+git2 = "0.21.0"
 itertools = "0.14.0"
 liquid = "0.26.11"
 once_cell = "1.21.3"
