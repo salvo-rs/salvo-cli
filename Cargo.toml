@@ -1,9 +1,9 @@
 [package]
 name = "salvo-cli"
-version = "0.3.0"
+version = "0.4.0"
 authors = ["Fankai Liu <liufankai137@outlook.com>", "mrxiaozhuox <mrxzx.info@gmail.com>", "Chrislearn Young <chris@acroidea.com>"]
 edition = "2024"
-rust-version = "1.89"
+rust-version = "1.94.0"
 readme = "./README.md"
 keywords = ["salvo", "cli", "template"]
 description = "Cli for the Salvo web framework, creates clean, easy-to-read code, saving you time for the more enjoyable aspects of life."
