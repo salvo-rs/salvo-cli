@@ -1,7 +1,7 @@
 [package]
 name = "salvo-cli"
 version = "0.3.0"
-authors = ["Fankai Liu <liufankai137@outlook.com>", "mrxiaozhuox <mrxzx.info@gmail.com>", "Chrislearn Young <chris@acroidea.com>"]
+authors = ["Fankai Liu <liufankai137@outlook.com>", "mrxiaozhuox <mrxzx.info@gmail.com>", "Chris Young <chris@veco.id>"]
 edition = "2024"
 rust-version = "1.89"
 readme = "./README.md"
